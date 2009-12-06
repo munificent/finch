@@ -1,0 +1,10 @@
+syntax: glob
+
+# mac desktop files
+**.DS_Store
+
+# revert backups
+**.orig
+
+# build files
+build/**

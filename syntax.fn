@@ -1,0 +1,83 @@
+finch:
+-----
+
+a < b then: { obj someMessage }
+
+a < b then: { obj someMessage
+               obj anotherMessage }
+
+a < b then: {: first second | obj someMessage
+                   obj anotherMessage }
+
+blocks:
+no args:  [obj someMessage]
+one arg:  [|arg| arg someMessage]
+two args: [|first second| first gets: second]
+
+a < b then:
+{
+    do something
+    something else
+}
+else:
+{
+    somethingElse do
+}
+
+compound expressions:
+obj first . obj second
+
+answer:
+^resultObject
+
+assignment:
+variable <- value
+
+cascade:
+foo bar; bang; baz
+
+local variables:
+|temp anotherTemp|
+
+
+smalltalk:
+---------
+
+messages:
+unary:   obj message
+binary:  obj + other
+keyword: obj send: a and: b and: c
+
+blocks:
+no args:  [obj someMessage]
+one arg:  [:arg| arg someMessage]
+two args: [:first :second| first gets: second]
+
+compound expressions:
+obj first . obj second
+
+answer:
+^resultObject
+
+assignment:
+variable := value
+
+cascade:
+foo bar; bang; baz
+
+local variables:
+|temp anotherTemp|
+
+method definition:
+SomeClass>>methodName
+    obj message.
+    ^answer
+
+SomeClass>>+ operand
+    instanceVariable := instanceVariable + operand.
+    ^self
+
+SomeClass>>keyword: object message: text
+    Transcript nextPut: object; nextPut: ' ';
+               nextPutAll: text;
+               cr.
