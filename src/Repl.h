@@ -1,7 +1,7 @@
 #pragma once
 
 #include "Macros.h"
-#include "Parser.h"
+#include "FinchParser.h"
 
 namespace Finch
 {
@@ -13,7 +13,7 @@ namespace Finch
         void Run();
         
     private:
-        Parser mParser;
+        FinchParser mParser;
         
         NO_COPY(Repl)
     };

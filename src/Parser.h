@@ -2,23 +2,26 @@
 
 #include "Macros.h"
 #include "Lexer.h"
-#include "ITokenReader.h"
 
 namespace Finch
 {
-    class Parser : private ITokenReader
+    class Parser
     {
     public:
-        Parser()
-        :   mLexer(this)
-        {}
+        Parser() {}
         
-        void Process(const char * line);
+        void StartLine(const char * line);
+        
+    protected:
+        bool            CurrentIs(TokenType type);
+        bool            ConsumeIf(TokenType type);
+        
+        const Token &   Consume();
+        const Token &   Consume(TokenType type);
         
     private:
-        virtual void Read(Token token);
-        
-        Lexer mLexer;
+        Lexer           mLexer;
+        auto_ptr<Token> mCurrent;
         
         NO_COPY(Parser)
     };

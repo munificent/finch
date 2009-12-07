@@ -1,3 +1,7 @@
+#pragma once
+
+#include <iostream>
+
 #define ASSERT_NOT_NULL(value)                      \
     ASSERT(value != NULL, "Expression " #value " cannot be null.")
 

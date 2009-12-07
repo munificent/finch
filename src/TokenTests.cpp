@@ -9,6 +9,5 @@ namespace Finch
         
         EXPECT_EQUAL(TOKEN_NAME, token.Type());
         EXPECT_EQUAL("name", token.Text());
-        EXPECT_EQUAL("name", "name");
     }
 }

@@ -8,7 +8,7 @@
 _Expect(__FILE__, __LINE__, condition, message)
 
 #define EXPECT_EQUAL(expected, actual) \
-_ExpectEqual(__FILE__, __LINE__, expected, actual)
+_ExpectEqual(__FILE__, __LINE__, #actual, expected, actual)
 
 namespace Finch
 {
@@ -28,16 +28,15 @@ namespace Finch
 
         template <typename Left, typename Right>
         static inline void _ExpectEqual(const char* file, int line,
+                                        const char* actualExpression,
                                         const Left & expected, const Right & actual)
         {
-            String message;
-            
-            message += "Expected ";
-            message += expected;
-            message += ", but was ";
-            message += actual;
-            
-            _Expect(file, line, expected == actual, message.c_str());
+            if (expected != actual)
+            {
+                std::cout << "FAIL " << file << ":" << line << " - "
+                << "Expected " << actualExpression << " to be "
+                << expected << ", but was " << actual << "." << std::endl;
+            }
         }
         
     private:

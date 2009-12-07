@@ -1,5 +1,6 @@
 #include <iostream>
 
+#include "Ref.h"
 #include "Repl.h"
 
 //#define UNIT_TEST
@@ -12,6 +13,8 @@ using namespace Finch;
 
 int main (int argc, char * const argv[])
 {
+    RefPool::Initialize();
+    
 #ifdef UNIT_TEST
     
     TestMain::Run();

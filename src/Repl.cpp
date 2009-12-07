@@ -24,7 +24,17 @@ namespace Finch
             }
             else
             {
-                mParser.Process(line.c_str());
+                auto_ptr<Expr> expr = mParser.ParseLine(line.c_str());
+                if (expr.get() != NULL)
+                {
+                    std::cout << "expr: ";
+                    expr->Trace(std::cout);
+                    std::cout << std::endl;
+                }
+                else
+                {
+                    std::cout << "Parse error" << std::endl;
+                }
             }
         }
     }
