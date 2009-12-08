@@ -10,15 +10,12 @@ namespace Finch
     void Parser::StartLine(const char * line)
     {
         mLexer.StartLine(line);
+        mCurrent.reset();
     }
 
     bool Parser::CurrentIs(TokenType type)
     {
-        // read as needed
-        if (mCurrent.get() == NULL)
-        {
-            Consume();
-        }
+        if (mCurrent.get() == NULL) mCurrent = mLexer.ReadToken();
         
         return mCurrent->Type() == type;
     }
@@ -36,13 +33,16 @@ namespace Finch
         }
     }
     
-    const Token & Parser::Consume()
+    auto_ptr<Token> Parser::Consume()
     {
-        mCurrent = mLexer.ReadToken();
-        return *mCurrent;
+        if (mCurrent.get() == NULL) mCurrent = mLexer.ReadToken();
+        
+        // return the current token. note that this will clear the auto_ptr
+        // so that we'll know to lex the next token later
+        return mCurrent;
     }
     
-    const Token & Parser::Consume(TokenType type)
+    auto_ptr<Token> Parser::Consume(TokenType type)
     {
         //### bob: need to check that current is right type!
         return Consume();

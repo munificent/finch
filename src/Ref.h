@@ -2,67 +2,54 @@
 
 namespace Finch
 {
-    class RefPool
-    {
-    public:
-        static void Initialize();
-    
-    protected:
-        struct CountedObject
-        {
-            int    refCount;
-            
-            // if refCount > 0 then this will point to the ref counted object
-            // otherwise, it will point to the next available CountedObject
-            void * data;
-        };
-        
-        static CountedObject* Add(void * object);
-        
-    private:
-        static const int MAX_COUNTED_OBJECTS = 1024;
-        
-        static CountedObject   sCounted[MAX_COUNTED_OBJECTS];
-        static CountedObject * sNextFree;
-    };
-
-    // Referenced-counter smart pointer.
+    // Referenced-linked smart pointer.
     template <class T>
-    class Ref : private RefPool
+    class Ref
     {
     public:
-        Ref(T * obj)
-        :   mCounted(RefPool::Add(obj))
+        explicit Ref(T * obj)
+        :   mObj(obj),
+            mPrev(this),
+            mNext(this)
         {}
         
-        Ref(const Ref & other)
-        :   mCounted(other.mCounted)
+        Ref(Ref & other)
+        :   mObj(other.mObj),
+            mPrev(other.mPrev),
+            mNext(&other)
         {
-            mCounted->refCount++;
+            // link it in
+            other.mPrev = this;
+            mPrev->mNext = this;
         }
         
         ~Ref()
         {
-            mCounted->refCount--;
-            
-            if (mCounted->refCount == 0)
+            if (mNext != this)
             {
-                //### bob: should allow custom allocator at some point
-                delete reinterpret_cast<T*>(mCounted->data);
+                // unlink it
+                mPrev->mNext = mNext;
+                mNext->mPrev = mPrev;
+            }
+            else
+            {
+                // linked to itself, so it's the last reference
+                delete mObj;
             }
         }
 
         T & operator *() const
         {
-            return *reinterpret_cast<T*>(mCounted->data);
+            return *mObj;
         }
         
         //### bob: not implemented yet
         Ref& operator =(const Ref & other);
         
-        int Count() const { return mCounted->refCount; }
-        
     private:        
-        CountedObject * mCounted;
+        T * mObj;
+        
+        Ref<T> * mPrev;
+        Ref<T> * mNext;
     };
 }

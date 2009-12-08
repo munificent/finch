@@ -37,8 +37,21 @@ namespace Finch
     
     auto_ptr<Expr> FinchParser::Operator()
     {
-        //### bob: implement me
-        return Unary();
+        // a + b + c + d
+        // (((a + b) + c) + d)
+        auto_ptr<Expr> object = Unary();
+        if (object.get() == NULL) return ParseError();
+        
+        while (CurrentIs(TOKEN_OPERATOR))
+        {
+            String op = Consume()->Text();
+            auto_ptr<Expr> arg = Unary();
+            if (arg.get() == NULL) return ParseError();
+
+            object = auto_ptr<Expr>(new OperatorExpr(object, op, arg));
+        }
+        
+        return object;
     }
     
     auto_ptr<Expr> FinchParser::Unary()
@@ -46,19 +59,20 @@ namespace Finch
         auto_ptr<Expr> object = Primary();
         if (object.get() == NULL) return ParseError();
         
-        if (CurrentIs(TOKEN_NAME))
+        while (CurrentIs(TOKEN_NAME))
         {
-            String message = Consume().Text();
-            return auto_ptr<Expr>(new UnaryExpr(object, message));
+            String message = Consume()->Text();
+            object = auto_ptr<Expr>(new UnaryExpr(object, message));
         }
-        else return Primary();
+        
+        return object;
     }
     
     auto_ptr<Expr> FinchParser::Primary()
     {
         if (CurrentIs(TOKEN_NAME))
         {
-            return auto_ptr<Expr>(new NameExpr(Consume().Text()));
+            return auto_ptr<Expr>(new NameExpr(Consume()->Text()));
         }
         else return ParseError();
     }

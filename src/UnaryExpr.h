@@ -19,7 +19,7 @@ namespace Finch
         :   mObject(object),
             mMessage(message)
         {
-            std::cout << "parse: unary " << *object << " " << message << std::endl;
+            std::cout << "parse: unary " << *mObject << " " << message << std::endl;
         }
         
         virtual void Trace(std::ostream & stream) const;

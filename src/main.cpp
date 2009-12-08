@@ -3,7 +3,7 @@
 #include "Ref.h"
 #include "Repl.h"
 
-//#define UNIT_TEST
+#define UNIT_TEST
 
 #ifdef UNIT_TEST
     #include "TestMain.h"
@@ -13,7 +13,6 @@ using namespace Finch;
 
 int main (int argc, char * const argv[])
 {
-    RefPool::Initialize();
     
 #ifdef UNIT_TEST
     

@@ -24,20 +24,18 @@ namespace Finch
         {
             Ref<int> r1(new int(1234));
             
-            // start with ref count of one
-            EXPECT_EQUAL(1, r1.Count());
-            
             // get the value back out
             EXPECT_EQUAL(1234, *r1);
             
             {
                 Ref<int> r2 = r1;
                 
-                EXPECT_EQUAL(2, r1.Count());
-                EXPECT_EQUAL(2, r2.Count());
+                // get the value back out
+                EXPECT_EQUAL(1234, *r2);
             }
             
-            EXPECT_EQUAL(1, r1.Count());
+            // still get the value back out
+            EXPECT_EQUAL(1234, *r1);
         }
         
         // test that object is actually freed when count hits zero

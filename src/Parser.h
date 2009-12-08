@@ -16,8 +16,8 @@ namespace Finch
         bool            CurrentIs(TokenType type);
         bool            ConsumeIf(TokenType type);
         
-        const Token &   Consume();
-        const Token &   Consume(TokenType type);
+        auto_ptr<Token> Consume();
+        auto_ptr<Token> Consume(TokenType type);
         
     private:
         Lexer           mLexer;
