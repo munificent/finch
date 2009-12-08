@@ -1,14 +1,11 @@
 #pragma once
 
-#include <memory>
-
 #include "Macros.h"
+#include "Ref.h"
 #include "Token.h"
 
 namespace Finch
 {
-    using std::auto_ptr;
-    
     class ITokenReader;
     
     class Lexer
@@ -22,7 +19,7 @@ namespace Finch
         
         void StartLine(const char * line);
         
-        auto_ptr<Token> ReadToken();
+        Ref<Token> ReadToken();
         
         /*
         //### bob: instead of having lexer drive parser, refactor to have
@@ -40,11 +37,11 @@ namespace Finch
             LEX_AT_END
         };
         
-        auto_ptr<Token> SingleToken(TokenType type);
-        void            StartToken(State state);
-        auto_ptr<Token> NameToken(bool condition, bool isKeyword, TokenType type);
+        Ref<Token> SingleToken(TokenType type);
+        void       StartToken(State state);
+        Ref<Token> NameToken(bool condition, bool isKeyword, TokenType type);
         
-        auto_ptr<Token> Emit(TokenType type);
+        Ref<Token> Emit(TokenType type);
 
         bool IsAlpha(char c) const;
         bool IsDigit(char c) const;

@@ -20,7 +20,8 @@ namespace Finch
         TOKEN_LEFT_BRACE,
         TOKEN_RIGHT_BRACE,
         TOKEN_COLON,
-
+        TOKEN_DOT,
+        
         TOKEN_EOF
     };
 

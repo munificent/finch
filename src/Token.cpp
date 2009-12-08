@@ -25,6 +25,7 @@ namespace Finch
             case TOKEN_LEFT_BRACE:      cout << "left brace"; break;
             case TOKEN_RIGHT_BRACE:     cout << "right brace"; break;
             case TOKEN_COLON:           cout << "colon"; break;
+            case TOKEN_DOT:             cout << "dot"; break;
             case TOKEN_EOF:             cout << "eof"; break;
         }
 

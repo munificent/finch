@@ -3,7 +3,7 @@
 #include "Ref.h"
 #include "Repl.h"
 
-#define UNIT_TEST
+//#define UNIT_TEST
 
 #ifdef UNIT_TEST
     #include "TestMain.h"

@@ -23,6 +23,7 @@
 		C4382BE410CC3AEF00989FFC /* NameExpr.cpp in Sources */ = {isa = PBXBuildFile; fileRef = C4382BE310CC3AEF00989FFC /* NameExpr.cpp */; };
 		C4382BE710CC3C0600989FFC /* OperatorExpr.cpp in Sources */ = {isa = PBXBuildFile; fileRef = C4382BE610CC3C0600989FFC /* OperatorExpr.cpp */; };
 		C4382BEA10CC3C9200989FFC /* KeywordExpr.cpp in Sources */ = {isa = PBXBuildFile; fileRef = C4382BE910CC3C9200989FFC /* KeywordExpr.cpp */; };
+		C4939A0410CE05E6003ECF01 /* SequenceExpr.cpp in Sources */ = {isa = PBXBuildFile; fileRef = C4939A0310CE05E6003ECF01 /* SequenceExpr.cpp */; };
 		C4C514AD10CB77050045AA86 /* Parser.cpp in Sources */ = {isa = PBXBuildFile; fileRef = C4C514AC10CB77050045AA86 /* Parser.cpp */; };
 		C4E3BEA010CCB3920031C104 /* FinchParser.cpp in Sources */ = {isa = PBXBuildFile; fileRef = C4E3BE9F10CCB3920031C104 /* FinchParser.cpp */; };
 /* End PBXBuildFile section */
@@ -72,6 +73,8 @@
 		C4382BE610CC3C0600989FFC /* OperatorExpr.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = OperatorExpr.cpp; sourceTree = "<group>"; };
 		C4382BE810CC3C9200989FFC /* KeywordExpr.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = KeywordExpr.h; sourceTree = "<group>"; };
 		C4382BE910CC3C9200989FFC /* KeywordExpr.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = KeywordExpr.cpp; sourceTree = "<group>"; };
+		C4939A0210CE05E6003ECF01 /* SequenceExpr.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SequenceExpr.h; sourceTree = "<group>"; };
+		C4939A0310CE05E6003ECF01 /* SequenceExpr.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = SequenceExpr.cpp; sourceTree = "<group>"; };
 		C4C514AB10CB77050045AA86 /* Parser.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Parser.h; sourceTree = "<group>"; };
 		C4C514AC10CB77050045AA86 /* Parser.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = Parser.cpp; sourceTree = "<group>"; };
 		C4E3BE9E10CCB3920031C104 /* FinchParser.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = FinchParser.h; sourceTree = "<group>"; };
@@ -141,14 +144,16 @@
 			children = (
 				C402054E10CC3A0000B521BB /* Expr.h */,
 				C402054F10CC3A0000B521BB /* Expr.cpp */,
-				C402051910CC39D100B521BB /* UnaryExpr.h */,
-				C402051A10CC39D100B521BB /* UnaryExpr.cpp */,
 				C4382BE210CC3AEF00989FFC /* NameExpr.h */,
 				C4382BE310CC3AEF00989FFC /* NameExpr.cpp */,
+				C402051910CC39D100B521BB /* UnaryExpr.h */,
+				C402051A10CC39D100B521BB /* UnaryExpr.cpp */,
 				C4382BE510CC3C0600989FFC /* OperatorExpr.h */,
 				C4382BE610CC3C0600989FFC /* OperatorExpr.cpp */,
 				C4382BE810CC3C9200989FFC /* KeywordExpr.h */,
 				C4382BE910CC3C9200989FFC /* KeywordExpr.cpp */,
+				C4939A0210CE05E6003ECF01 /* SequenceExpr.h */,
+				C4939A0310CE05E6003ECF01 /* SequenceExpr.cpp */,
 			);
 			name = AST;
 			sourceTree = "<group>";
@@ -249,6 +254,7 @@
 				C4382BE710CC3C0600989FFC /* OperatorExpr.cpp in Sources */,
 				C4382BEA10CC3C9200989FFC /* KeywordExpr.cpp in Sources */,
 				C4E3BEA010CCB3920031C104 /* FinchParser.cpp in Sources */,
+				C4939A0410CE05E6003ECF01 /* SequenceExpr.cpp in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

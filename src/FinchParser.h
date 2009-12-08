@@ -3,6 +3,7 @@
 #include "Macros.h"
 #include "Parser.h"
 #include "Expr.h"
+#include "Ref.h"
 
 namespace Finch
 {
@@ -11,16 +12,17 @@ namespace Finch
     public:
         FinchParser() {}
         
-        auto_ptr<Expr> ParseLine(const char * line);
+        Ref<Expr> ParseLine(const char * line);
         
     private:
-        auto_ptr<Expr> Expression();
-        auto_ptr<Expr> Keyword();
-        auto_ptr<Expr> Operator();
-        auto_ptr<Expr> Unary();
-        auto_ptr<Expr> Primary();
+        Ref<Expr> Expression();
+        Ref<Expr> Sequence();
+        Ref<Expr> Keyword();
+        Ref<Expr> Operator();
+        Ref<Expr> Unary();
+        Ref<Expr> Primary();
         
-        auto_ptr<Expr> ParseError();
+        Ref<Expr> ParseError();
         
         NO_COPY(FinchParser)
     };

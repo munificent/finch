@@ -2,6 +2,7 @@
 
 #include "Macros.h"
 #include "Lexer.h"
+#include "Ref.h"
 
 namespace Finch
 {
@@ -13,15 +14,14 @@ namespace Finch
         void StartLine(const char * line);
         
     protected:
-        bool            CurrentIs(TokenType type);
-        bool            ConsumeIf(TokenType type);
+        bool       CurrentIs(TokenType type);
+        bool       ConsumeIf(TokenType type);
         
-        auto_ptr<Token> Consume();
-        auto_ptr<Token> Consume(TokenType type);
+        Ref<Token> Consume();
         
     private:
-        Lexer           mLexer;
-        auto_ptr<Token> mCurrent;
+        Lexer      mLexer;
+        Ref<Token> mCurrent;
         
         NO_COPY(Parser)
     };

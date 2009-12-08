@@ -6,6 +6,12 @@ namespace Finch
 {
     void KeywordExpr::Trace(std::ostream & stream) const
     {
-        stream << "keyword trace not impl";
+        mObject->Trace(stream);
+        
+        for (int i = 0; i < mKeywords.size(); i++)
+        {
+            stream << " " << mKeywords[i] << ": ";
+            mArgs[i]->Trace(stream);
+        }
     }
 }

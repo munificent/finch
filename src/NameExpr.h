@@ -14,9 +14,7 @@ namespace Finch
     public:
         NameExpr(String name)
         :   mName(name)
-        {
-            std::cout << "parse: name " << mName << std::endl;
-        }
+        {}
         
         virtual void Trace(std::ostream & stream) const;
 

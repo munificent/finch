@@ -1,5 +1,8 @@
+#include <vector>
+
 #include "FinchParser.h"
 
+#include "SequenceExpr.h"
 #include "KeywordExpr.h"
 #include "NameExpr.h"
 #include "OperatorExpr.h"
@@ -7,80 +10,116 @@
 
 namespace Finch
 {
-    auto_ptr<Expr> FinchParser::ParseLine(const char * line)
+    using std::vector;
+    
+    Ref<Expr> FinchParser::ParseLine(const char * line)
     {
         StartLine(line);
         
         return Expression();
-        /*
-        while (true)
+    }
+    
+    Ref<Expr> FinchParser::Expression()
+    {
+        return Sequence();
+    }
+    
+    Ref<Expr> FinchParser::Sequence()
+    {
+        Ref<Expr> expression = Keyword();
+        if (expression.IsNull()) return ParseError();
+        
+        while (ConsumeIf(TOKEN_DOT))
         {
-            const Token & token = Consume();
+            Ref<Expr> second = Keyword();
+            if (second.IsNull()) return ParseError();
             
-            if (token.Type() == TOKEN_EOF) break;
+            expression = Ref<Expr>(new SequenceExpr(expression, second));
+        }
+        
+        return expression;
+    }
+    
+    Ref<Expr> FinchParser::Keyword()
+    {
+        Ref<Expr> object = Operator();
+        if (object.IsNull()) return ParseError();
+        
+        vector<String>      keywords;
+        vector<Ref<Expr> >  args;
+        
+        while (CurrentIs(TOKEN_KEYWORD))
+        {
+            String keyword = Consume()->Text();
+            Ref<Expr> arg = Operator();
+            if (arg.IsNull()) return ParseError();
             
-            //### bob: temp
-            std::cout << token << std::endl;
-        }*/
+            keywords.push_back(keyword);
+            args.push_back(arg);
+        }
+        
+        if (keywords.size() > 0)
+        {
+            object = Ref<Expr>(new KeywordExpr(object, keywords, args));
+        }
+        
+        return object;
     }
     
-    auto_ptr<Expr> FinchParser::Expression()
+    Ref<Expr> FinchParser::Operator()
     {
-        return Keyword();
-    }
-    
-    auto_ptr<Expr> FinchParser::Keyword()
-    {
-        //### bob: implement me
-        return Operator();
-    }
-    
-    auto_ptr<Expr> FinchParser::Operator()
-    {
-        // a + b + c + d
-        // (((a + b) + c) + d)
-        auto_ptr<Expr> object = Unary();
-        if (object.get() == NULL) return ParseError();
+        Ref<Expr> object = Unary();
+        if (object.IsNull()) return ParseError();
         
         while (CurrentIs(TOKEN_OPERATOR))
         {
             String op = Consume()->Text();
-            auto_ptr<Expr> arg = Unary();
-            if (arg.get() == NULL) return ParseError();
+            Ref<Expr> arg = Unary();
+            if (arg.IsNull()) return ParseError();
 
-            object = auto_ptr<Expr>(new OperatorExpr(object, op, arg));
+            object = Ref<Expr>(new OperatorExpr(object, op, arg));
         }
         
         return object;
     }
     
-    auto_ptr<Expr> FinchParser::Unary()
+    Ref<Expr> FinchParser::Unary()
     {
-        auto_ptr<Expr> object = Primary();
-        if (object.get() == NULL) return ParseError();
+        Ref<Expr> object = Primary();
+        if (object.IsNull()) return ParseError();
         
         while (CurrentIs(TOKEN_NAME))
         {
             String message = Consume()->Text();
-            object = auto_ptr<Expr>(new UnaryExpr(object, message));
+            object = Ref<Expr>(new UnaryExpr(object, message));
         }
         
         return object;
     }
     
-    auto_ptr<Expr> FinchParser::Primary()
+    Ref<Expr> FinchParser::Primary()
     {
         if (CurrentIs(TOKEN_NAME))
         {
-            return auto_ptr<Expr>(new NameExpr(Consume()->Text()));
+            return Ref<Expr>(new NameExpr(Consume()->Text()));
+        }
+        else if (ConsumeIf(TOKEN_LEFT_PAREN))
+        {
+            Ref<Expr> expression = Expression();
+            if (expression.IsNull()) return ParseError();
+            
+            ////### bob: note sure why this works but commented out line crashes :(
+            if (!CurrentIs(TOKEN_RIGHT_PAREN)) return ParseError();
+            Consume();
+            //if (!ConsumeIf(TOKEN_RIGHT_PAREN)) return ParseError();
+            
+            return expression;
         }
         else return ParseError();
     }
     
-    auto_ptr<Expr> FinchParser::ParseError()
+    Ref<Expr> FinchParser::ParseError()
     {
-        std::cout << "Parse error!" << std::endl;
-        
-        return auto_ptr<Expr>();
+        return Ref<Expr>();
     }
 }

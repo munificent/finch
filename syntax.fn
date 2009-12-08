@@ -1,40 +1,42 @@
 finch:
 -----
 
+
+
 a < b then: { obj someMessage }
 
-a < b then: { obj someMessage
+a < b then: { obj someMessage.
                obj anotherMessage }
 
-a < b then: {: first second | obj someMessage
+a < b then: |{ it someMessage.
                    obj anotherMessage }
 
-blocks:
-no args:  [obj someMessage]
-one arg:  [|arg| arg someMessage]
-two args: [|first second| first gets: second]
+a < b then: | arg { arg someMessage.
+                   obj anotherMessage }
 
-a < b then:
-{
-    do something
-    something else
-}
-else:
-{
-    somethingElse do
-}
+// blocks:
+no args:  { obj someMessage }
+one arg:  | arg { arg someMessage }
+          |{ it someMessage } // implicit arg name "it"
+two args: | first second { first gets: second }
 
-compound expressions:
+// compound expressions:
 obj first . obj second
 
-answer:
-^resultObject
+// answer:
+return resultObject
 
-assignment:
-variable <- value
+// assignment:
+set variable value
 
-cascade:
-foo bar; bang; baz
+// cascade:
+foo bar, bang, baz
+
+// set data slot
+someObj slotName: 123
+
+// get data slot
+someObj slotName
 
 local variables:
 |temp anotherTemp|

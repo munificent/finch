@@ -24,12 +24,12 @@ namespace Finch
             }
             else
             {
-                auto_ptr<Expr> expr = mParser.ParseLine(line.c_str());
-                if (expr.get() != NULL)
+                Ref<Expr> expr = mParser.ParseLine(line.c_str());
+                if (!expr.IsNull())
                 {
-                    std::cout << "expr: ";
+                    std::cout << "parsed \"";
                     expr->Trace(std::cout);
-                    std::cout << std::endl;
+                    std::cout << "\"" << std::endl;
                 }
                 else
                 {
