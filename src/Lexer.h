@@ -21,17 +21,11 @@ namespace Finch
         
         Ref<Token> ReadToken();
         
-        /*
-        //### bob: instead of having lexer drive parser, refactor to have
-        // NextToken() function in lexer that parser repeatedly calls. that
-        // way, it's easier to make recursive descent parser.
-        void Process(const char * line);
-        */
-        
     private:
         enum State
         {
             LEX_DEFAULT,
+            LEX_IN_NUMBER,
             LEX_IN_NAME,
             LEX_IN_OPERATOR,
             LEX_AT_END
@@ -39,9 +33,10 @@ namespace Finch
         
         Ref<Token> SingleToken(TokenType type);
         void       StartToken(State state);
-        Ref<Token> NameToken(bool condition, bool isKeyword, TokenType type);
+        Ref<Token> TextToken(bool condition, bool isKeyword, TokenType type);
         
-        Ref<Token> Emit(TokenType type);
+        Ref<Token> EmitNumber(TokenType type);
+        Ref<Token> EmitText(TokenType type);
 
         bool IsAlpha(char c) const;
         bool IsDigit(char c) const;

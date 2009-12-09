@@ -2,10 +2,12 @@
 
 #include "FinchParser.h"
 
-#include "SequenceExpr.h"
+#include "BlockExpr.h"
 #include "KeywordExpr.h"
 #include "NameExpr.h"
+#include "NumberExpr.h"
 #include "OperatorExpr.h"
+#include "SequenceExpr.h"
 #include "UnaryExpr.h"
 
 namespace Finch
@@ -21,7 +23,34 @@ namespace Finch
     
     Ref<Expr> FinchParser::Expression()
     {
-        return Sequence();
+        return Block();
+    }
+    
+    Ref<Expr> FinchParser::Block()
+    {
+        if (ConsumeIf(TOKEN_LEFT_BRACE))
+        {
+            vector<String> args;
+            
+            // see if there are args
+            if (ConsumeIf(TOKEN_PIPE))
+            {
+                while (CurrentIs(TOKEN_NAME))
+                {
+                    args.push_back(Consume()->Text());
+                }
+                
+                if (!ConsumeIf(TOKEN_PIPE)) return ParseError();
+            }
+            
+            Ref<Expr> body = Expression();
+            if (body.IsNull()) return ParseError();
+            
+            if (!ConsumeIf(TOKEN_RIGHT_BRACE)) return ParseError();
+            
+            return Ref<Expr>(new BlockExpr(args, body));
+        }
+        else return Sequence();
     }
     
     Ref<Expr> FinchParser::Sequence()
@@ -29,7 +58,7 @@ namespace Finch
         Ref<Expr> expression = Keyword();
         if (expression.IsNull()) return ParseError();
         
-        while (ConsumeIf(TOKEN_DOT))
+        while (ConsumeIf(TOKEN_SEMICOLON))
         {
             Ref<Expr> second = Keyword();
             if (second.IsNull()) return ParseError();
@@ -103,15 +132,16 @@ namespace Finch
         {
             return Ref<Expr>(new NameExpr(Consume()->Text()));
         }
+        else if (CurrentIs(TOKEN_NUMBER))
+        {
+            return Ref<Expr>(new NumberExpr(Consume()->Number()));
+        }
         else if (ConsumeIf(TOKEN_LEFT_PAREN))
         {
             Ref<Expr> expression = Expression();
             if (expression.IsNull()) return ParseError();
             
-            ////### bob: note sure why this works but commented out line crashes :(
-            if (!CurrentIs(TOKEN_RIGHT_PAREN)) return ParseError();
-            Consume();
-            //if (!ConsumeIf(TOKEN_RIGHT_PAREN)) return ParseError();
+            if (!ConsumeIf(TOKEN_RIGHT_PAREN)) return ParseError();
             
             return expression;
         }

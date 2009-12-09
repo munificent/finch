@@ -16,6 +16,7 @@ namespace Finch
         
     private:
         Ref<Expr> Expression();
+        Ref<Expr> Block();
         Ref<Expr> Sequence();
         Ref<Expr> Keyword();
         Ref<Expr> Operator();

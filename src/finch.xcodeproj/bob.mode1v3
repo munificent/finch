@@ -379,7 +379,7 @@
 										<key>_historyCapacity</key>
 										<integer>0</integer>
 										<key>bookmark</key>
-										<string>C4939A9410CE0CAB003ECF01</string>
+										<string>C4B9DB1510CF37C7003C556D</string>
 										<key>history</key>
 										<array>
 											<string>C402052010CC39EE00B521BB</string>
@@ -416,7 +416,7 @@
 											<string>C4939A3010CE0CAA003ECF01</string>
 											<string>C4939A3110CE0CAA003ECF01</string>
 											<string>C4939A3210CE0CAA003ECF01</string>
-											<string>C4939A3310CE0CAA003ECF01</string>
+											<string>C4939A9410CE0CAB003ECF01</string>
 										</array>
 										<key>prevStack</key>
 										<array>
@@ -453,128 +453,8 @@
 											<string>C4E3BF2710CD3A950031C104</string>
 											<string>C493999410CDFD60003ECF01</string>
 											<string>C493999510CDFD60003ECF01</string>
-											<string>C493999710CDFD60003ECF01</string>
-											<string>C493999810CDFD60003ECF01</string>
-											<string>C493999910CDFD60003ECF01</string>
-											<string>C493999A10CDFD60003ECF01</string>
-											<string>C493999B10CDFD60003ECF01</string>
-											<string>C493999C10CDFD60003ECF01</string>
-											<string>C493999D10CDFD60003ECF01</string>
-											<string>C493999E10CDFD60003ECF01</string>
-											<string>C493999F10CDFD60003ECF01</string>
-											<string>C49399A010CDFD60003ECF01</string>
-											<string>C49399A110CDFD60003ECF01</string>
-											<string>C49399A210CDFD60003ECF01</string>
-											<string>C49399A310CDFD60003ECF01</string>
-											<string>C49399A410CDFD60003ECF01</string>
-											<string>C49399A510CDFD60003ECF01</string>
-											<string>C49399A610CDFD60003ECF01</string>
-											<string>C49399A710CDFD60003ECF01</string>
-											<string>C49399A810CDFD60003ECF01</string>
-											<string>C49399A910CDFD60003ECF01</string>
-											<string>C49399AA10CDFD60003ECF01</string>
-											<string>C49399AB10CDFD60003ECF01</string>
-											<string>C49399D910CDFFF8003ECF01</string>
-											<string>C49399DA10CDFFF8003ECF01</string>
-											<string>C49399DB10CDFFF8003ECF01</string>
-											<string>C49399DC10CDFFF8003ECF01</string>
-											<string>C49399DD10CDFFF8003ECF01</string>
-											<string>C49399DE10CDFFF8003ECF01</string>
-											<string>C4939A3410CE0CAA003ECF01</string>
-											<string>C4939A3510CE0CAA003ECF01</string>
-											<string>C4939A3610CE0CAA003ECF01</string>
-											<string>C4939A3710CE0CAA003ECF01</string>
-											<string>C4939A3810CE0CAA003ECF01</string>
-											<string>C4939A3910CE0CAA003ECF01</string>
-											<string>C4939A3A10CE0CAA003ECF01</string>
-											<string>C4939A3B10CE0CAA003ECF01</string>
-											<string>C4939A3C10CE0CAA003ECF01</string>
-											<string>C4939A3D10CE0CAA003ECF01</string>
-											<string>C4939A3E10CE0CAA003ECF01</string>
-											<string>C4939A3F10CE0CAA003ECF01</string>
-											<string>C4939A4010CE0CAA003ECF01</string>
-											<string>C4939A4110CE0CAA003ECF01</string>
-											<string>C4939A4210CE0CAA003ECF01</string>
-											<string>C4939A4310CE0CAA003ECF01</string>
-											<string>C4939A4410CE0CAA003ECF01</string>
-											<string>C4939A4510CE0CAA003ECF01</string>
-											<string>C4939A4610CE0CAA003ECF01</string>
-											<string>C4939A4710CE0CAA003ECF01</string>
-											<string>C4939A4810CE0CAA003ECF01</string>
-											<string>C4939A4910CE0CAA003ECF01</string>
-											<string>C4939A4A10CE0CAA003ECF01</string>
-											<string>C4939A4B10CE0CAA003ECF01</string>
-											<string>C4939A4C10CE0CAA003ECF01</string>
-											<string>C4939A4D10CE0CAA003ECF01</string>
-											<string>C4939A4E10CE0CAA003ECF01</string>
-											<string>C4939A4F10CE0CAA003ECF01</string>
-											<string>C4939A5010CE0CAA003ECF01</string>
-											<string>C4939A5110CE0CAA003ECF01</string>
-											<string>C4939A5210CE0CAA003ECF01</string>
-											<string>C4939A5310CE0CAA003ECF01</string>
-											<string>C4939A5410CE0CAA003ECF01</string>
-											<string>C4939A5510CE0CAA003ECF01</string>
-											<string>C4939A5610CE0CAA003ECF01</string>
-											<string>C4939A5710CE0CAA003ECF01</string>
-											<string>C4939A5810CE0CAA003ECF01</string>
-											<string>C4939A5910CE0CAA003ECF01</string>
-											<string>C4939A5A10CE0CAA003ECF01</string>
-											<string>C4939A5B10CE0CAA003ECF01</string>
-											<string>C4939A5C10CE0CAA003ECF01</string>
-											<string>C4939A5D10CE0CAA003ECF01</string>
-											<string>C4939A5E10CE0CAA003ECF01</string>
-											<string>C4939A5F10CE0CAA003ECF01</string>
-											<string>C4939A6010CE0CAA003ECF01</string>
-											<string>C4939A6110CE0CAA003ECF01</string>
-											<string>C4939A6210CE0CAA003ECF01</string>
-											<string>C4939A6310CE0CAA003ECF01</string>
-											<string>C4939A6410CE0CAA003ECF01</string>
-											<string>C4939A6510CE0CAA003ECF01</string>
-											<string>C4939A6610CE0CAA003ECF01</string>
-											<string>C4939A6710CE0CAA003ECF01</string>
-											<string>C4939A6810CE0CAA003ECF01</string>
-											<string>C4939A6910CE0CAA003ECF01</string>
-											<string>C4939A6A10CE0CAA003ECF01</string>
-											<string>C4939A6B10CE0CAA003ECF01</string>
-											<string>C4939A6C10CE0CAA003ECF01</string>
-											<string>C4939A6D10CE0CAA003ECF01</string>
-											<string>C4939A6E10CE0CAA003ECF01</string>
-											<string>C4939A6F10CE0CAA003ECF01</string>
-											<string>C4939A7010CE0CAA003ECF01</string>
-											<string>C4939A7110CE0CAA003ECF01</string>
-											<string>C4939A7210CE0CAA003ECF01</string>
-											<string>C4939A7310CE0CAA003ECF01</string>
-											<string>C4939A7410CE0CAA003ECF01</string>
 											<string>C4939A7510CE0CAA003ECF01</string>
-											<string>C4939A7610CE0CAA003ECF01</string>
-											<string>C4939A7710CE0CAA003ECF01</string>
-											<string>C4939A7810CE0CAA003ECF01</string>
-											<string>C4939A7910CE0CAA003ECF01</string>
-											<string>C4939A7A10CE0CAA003ECF01</string>
 											<string>C4939A7B10CE0CAA003ECF01</string>
-											<string>C4939A7C10CE0CAA003ECF01</string>
-											<string>C4939A7D10CE0CAA003ECF01</string>
-											<string>C4939A7E10CE0CAA003ECF01</string>
-											<string>C4939A7F10CE0CAA003ECF01</string>
-											<string>C4939A8010CE0CAA003ECF01</string>
-											<string>C4939A8110CE0CAA003ECF01</string>
-											<string>C4939A8210CE0CAA003ECF01</string>
-											<string>C4939A8310CE0CAA003ECF01</string>
-											<string>C4939A8410CE0CAA003ECF01</string>
-											<string>C4939A8510CE0CAA003ECF01</string>
-											<string>C4939A8610CE0CAA003ECF01</string>
-											<string>C4939A8710CE0CAA003ECF01</string>
-											<string>C4939A8810CE0CAA003ECF01</string>
-											<string>C4939A8910CE0CAA003ECF01</string>
-											<string>C4939A8A10CE0CAA003ECF01</string>
-											<string>C4939A8B10CE0CAA003ECF01</string>
-											<string>C4939A8C10CE0CAA003ECF01</string>
-											<string>C4939A8D10CE0CAA003ECF01</string>
-											<string>C4939A8E10CE0CAA003ECF01</string>
-											<string>C4939A8F10CE0CAA003ECF01</string>
-											<string>C4939A9010CE0CAA003ECF01</string>
-											<string>C4939A9110CE0CAA003ECF01</string>
-											<string>C4939A9210CE0CAA003ECF01</string>
 										</array>
 									</dict>
 									<key>SplitCount</key>
@@ -632,9 +512,9 @@
 			</array>
 			<key>TableOfContents</key>
 			<array>
-				<string>C493996B10CDF869003ECF01</string>
+				<string>C4B9DB1610CF37C7003C556D</string>
 				<string>1CE0B1FE06471DED0097A5F4</string>
-				<string>C493996C10CDF869003ECF01</string>
+				<string>C4B9DB1710CF37C7003C556D</string>
 				<string>1CE0B20306471E060097A5F4</string>
 				<string>1CE0B20506471E060097A5F4</string>
 			</array>
@@ -753,7 +633,7 @@
 	<key>StatusbarIsVisible</key>
 	<true/>
 	<key>TimeStamp</key>
-	<real>281939115.03048199</real>
+	<real>282015684.11854899</real>
 	<key>ToolbarDisplayMode</key>
 	<integer>2</integer>
 	<key>ToolbarIsVisible</key>
@@ -768,11 +648,7 @@
 	<integer>5</integer>
 	<key>WindowOrderList</key>
 	<array>
-		<string>C49399E010CDFFF8003ECF01</string>
-		<string>C49399E110CDFFF8003ECF01</string>
-		<string>C41F4A7B10CC13830008390E</string>
 		<string>1CD10A99069EF8BA00B06720</string>
-		<string>1C78EAAD065D492600B07095</string>
 		<string>/Users/bob/Documents/dev/finch/src/finch.xcodeproj</string>
 	</array>
 	<key>WindowString</key>
@@ -975,13 +851,13 @@
 			<key>TableOfContents</key>
 			<array>
 				<string>1CD10A99069EF8BA00B06720</string>
-				<string>C493996D10CDF869003ECF01</string>
+				<string>C4B9DB1810CF37C7003C556D</string>
 				<string>1C162984064C10D400B95A72</string>
-				<string>C493996E10CDF869003ECF01</string>
-				<string>C493996F10CDF869003ECF01</string>
-				<string>C493997010CDF869003ECF01</string>
-				<string>C493997110CDF869003ECF01</string>
-				<string>C493997210CDF869003ECF01</string>
+				<string>C4B9DB1910CF37C7003C556D</string>
+				<string>C4B9DB1A10CF37C7003C556D</string>
+				<string>C4B9DB1B10CF37C7003C556D</string>
+				<string>C4B9DB1C10CF37C7003C556D</string>
+				<string>C4B9DB1D10CF37C7003C556D</string>
 			</array>
 			<key>ToolbarConfiguration</key>
 			<string>xcode.toolbar.config.debugV3</string>

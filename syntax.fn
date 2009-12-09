@@ -1,18 +1,24 @@
 finch:
 -----
 
-
-
 a < b then: { obj someMessage }
 
-a < b then: { obj someMessage.
-               obj anotherMessage }
+a < b then: || obj someMessage;
+               obj anotherMessage
 
-a < b then: |{ it someMessage.
+a < b then: |[ it someMessage;
+                   obj anotherMessage ]
+
+a < b then: {|arg| arg someMessage;
                    obj anotherMessage }
 
-a < b then: | arg { arg someMessage.
-                   obj anotherMessage }
+if: a < b then: ||
+    // this is a block because of the previous ||
+    something do
+else: // this continues the 'if' because of indentation
+    somethingElse do
+
+values each: |it[ Out write: it ]
 
 // blocks:
 no args:  { obj someMessage }
@@ -21,26 +27,57 @@ one arg:  | arg { arg someMessage }
 two args: | first second { first gets: second }
 
 // compound expressions:
-obj first . obj second
+obj first ; obj second
+//### bob: can we use newline for this?
+// the trick is getting keyword funcs (like if:then:else) to work
+// right while spanning multiple lines
+if: foo then: {
+    obj message
+} else: {
+    bar bang
+}
 
 // answer:
 return resultObject
 
 // assignment:
 set variable value
+//### bob: instead of this, what about having an automatic object that
+// represents the current local scope, then you can do:
+local varName: 123
+local varName // this is kind of tedious. but we can't do just
+              // 'varName' because now it's a *message*, not an object
 
 // cascade:
 foo bar, bang, baz
 
+// define data slot (basically creates set and get messages)
+field someObj slotName 123
+
+// define unary message
+method someObj messageName
+(   messageBody expression + 2 // () is not needed, can be single expr
+    another Expression)
+
+// define operator
+method someObj ++ arg (this + arg)
+
+// define keyword method
+method someObj do: arg with: other (arg + other)
+       // ^- this should be an expression that evals to an obj
+       // in that case, how do we know when the expression ends and
+       // the method name begins?
+
+// define parent slot?
+
 // set data slot
-someObj slotName: 123
+someObj slotName: 123 // not the same as defining a slot
 
 // get data slot
 someObj slotName
 
-local variables:
+// local variables
 |temp anotherTemp|
-
 
 smalltalk:
 ---------
