@@ -3,6 +3,7 @@
 #include <iostream>
 
 #include "Macros.h"
+#include "Ref.h"
 #include "String.h"
 
 namespace Finch
@@ -32,33 +33,23 @@ namespace Finch
     class Token
     {
     public:
+        // virtual constructors
+        static Ref<Token> New(TokenType type);
+        static Ref<Token> New(TokenType type, const String & text);
+        static Ref<Token> New(TokenType type, double number);
+        
+        TokenType           Type()   const { return mType; }
+        virtual String      Text()   const { return ""; }
+        virtual double      Number() const { return 0; }
+        
+    protected:
         Token(TokenType type)
-        :   mType(type),
-            mText(""),
-            mNumber(0)
+        :   mType(type)
         {}
         
-        Token(TokenType type, const String & text)
-        :   mType(type),
-            mText(text),
-            mNumber(0)
-        {}
-        
-        Token(TokenType type, double number)
-        :   mType(type),
-            mText(""),
-            mNumber(number)
-        {}
-        
-        TokenType   Type()   const { return mType; }
-        String      Text()   const { return mText; }
-        double      Number() const { return mNumber; }
-        
-    private:
+    private:        
         TokenType   mType;
-        String      mText;
-        double      mNumber;
     };
-
+    
     std::ostream& operator<<(std::ostream& cout, const Token & token);
 }

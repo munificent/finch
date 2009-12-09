@@ -2,6 +2,57 @@
 
 namespace Finch
 {
+    // "hidden" token subclasses
+    class NumberToken : public Token
+    {
+        friend class Token;
+        
+    public:
+        virtual double Number() const { return mNumber; }
+        
+    private:
+        NumberToken(TokenType type, double number)
+        :   Token(type),
+        mNumber(number)
+        {}
+        
+        double      mNumber;
+    };
+    
+    class StringToken : public Token
+    {
+        friend class Token;
+        
+    public:
+        virtual String Text() const { return mText; }
+        
+    private:
+        StringToken(TokenType type, const String & text)
+        :   Token(type),
+        mText(text)
+        {}
+        
+        TokenType   mType;
+        String      mText;
+        double      mNumber;
+    };
+    
+    // virtual constructors
+    Ref<Token> Token::New(TokenType type)
+    {
+        return Ref<Token>(new Token(type));
+    }
+    
+    Ref<Token> Token::New(TokenType type, const String & text)
+    {
+        return Ref<Token>(new StringToken(type, text));
+    }
+    
+    Ref<Token> Token::New(TokenType type, double number)
+    {
+        return Ref<Token>(new NumberToken(type, number));
+    }
+
     std::ostream& operator<<(std::ostream& cout, const Token & token)
     {
         switch (token.Type())

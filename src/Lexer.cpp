@@ -63,7 +63,7 @@ namespace Finch
                     break;
                     
                 case LEX_AT_END:
-                    token = Ref<Token>(new Token(TOKEN_EOF));
+                    token = Token::New(TOKEN_EOF);
                     break;
             }
             
@@ -79,7 +79,7 @@ namespace Finch
     Ref<Token> Lexer::SingleToken(TokenType type)
     {
         mIndex++;
-        return Ref<Token>(new Token(type));
+        return Token::New(type);
     }
     
     void Lexer::StartToken(State state)
@@ -122,7 +122,7 @@ namespace Finch
         
         double number = atof(text);
         
-        return Ref<Token>(new Token(type, number));
+        return Token::New(type, number);
     }
     
     Ref<Token> Lexer::EmitText(TokenType type)
@@ -132,7 +132,7 @@ namespace Finch
         strncpy(text, &mLine[mTokenStart], mIndex - mTokenStart);
         text[mIndex - mTokenStart] = '\0';
         
-        return Ref<Token>(new Token(type, text));
+        return Token::New(type, text);
     }
     
     bool Lexer::IsAlpha(char c) const

@@ -17,41 +17,28 @@ namespace Finch
         VALUE_OBJECT
     };
     
+    //### bob: instead of having all possible fields in one class, should use
+    // subclasses and virtual methods like Token/StringToken/NumberToken.
     class Value
     {
     public:
-        Value(double number)
-        :   mType(VALUE_NUMBER),
-            mNumber(number),
-            mString(),
-            mObject()
-        {}
-        
-        Value(String s)
-        :   mType(VALUE_STRING),
-            mNumber(0),
-            mString(s),
-            mObject()
-        {}
-        
-        Value(Ref<Object> object)
-        :   mType(VALUE_OBJECT),
-            mNumber(0),
-            mString(),
-            mObject(object)
-        {}
+        // virtual constructors
+        static Ref<Value> New(double value);
+        static Ref<Value> New(String value);
+        static Ref<Value> New(Ref<Object> value);
         
         ValueType Type() const { return mType; }
         
-        double      AsNumber() const;
-        String      AsString() const;
-        Ref<Object> AsObject() const;
+        virtual double      AsNumber() const;
+        virtual String      AsString() const;
+        virtual Ref<Object> AsObject() const;
+        
+    protected:
+        Value(ValueType type)
+        :   mType(type)
+        {}
         
     private:
         ValueType   mType;
-        
-        double      mNumber;
-        String      mString;
-        Ref<Object> mObject;
     };
 }

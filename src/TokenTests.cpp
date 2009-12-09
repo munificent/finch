@@ -5,9 +5,9 @@ namespace Finch
 {
     void TokenTests::Run()
     {
-        Token token(TOKEN_NAME, "name");
+        Ref<Token> token = Token::New(TOKEN_NAME, "name");
         
-        EXPECT_EQUAL(TOKEN_NAME, token.Type());
-        EXPECT_EQUAL("name", token.Text());
+        EXPECT_EQUAL(TOKEN_NAME, token->Type());
+        EXPECT_EQUAL("name", token->Text());
     }
 }
