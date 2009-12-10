@@ -4,6 +4,7 @@
 
 #include "Macros.h"
 #include "Expr.h"
+#include "ExprVisitor.h"
 #include "String.h"
 
 namespace Finch
@@ -18,6 +19,8 @@ namespace Finch
         
         virtual void Trace(std::ostream & stream) const;
 
+        EXPRESSION_VISITOR
+        
     private:
         String  mName;
     };

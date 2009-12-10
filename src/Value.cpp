@@ -3,6 +3,8 @@
 
 namespace Finch
 {
+    //### bob: not used anymore. everything's an object!
+    /*
     // "hidden" subclasses
     class NumberValue : public Value
     {
@@ -86,5 +88,5 @@ namespace Finch
         ASSERT(false, "Value is not an object.");
         return Ref<Object>();
     }
-    
+    */
 }

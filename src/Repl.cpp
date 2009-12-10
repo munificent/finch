@@ -27,9 +27,11 @@ namespace Finch
                 Ref<Expr> expr = mParser.ParseLine(line.c_str());
                 if (!expr.IsNull())
                 {
-                    std::cout << "parsed \"";
-                    expr->Trace(std::cout);
-                    std::cout << "\"" << std::endl;
+                    //std::cout << "parsed \"";
+                    //expr->Trace(std::cout);
+                    //std::cout << "\"" << std::endl;
+                    
+                    mEvaluator.Evaluate(expr);
                 }
                 else
                 {

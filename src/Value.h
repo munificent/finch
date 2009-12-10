@@ -8,6 +8,8 @@
 
 namespace Finch
 {
+    //### bob: not used anymore. everything's an object!
+    /*
     class Object;
     
     enum ValueType
@@ -27,6 +29,8 @@ namespace Finch
         static Ref<Value> New(String value);
         static Ref<Value> New(Ref<Object> value);
         
+        virtual ~Value() {}
+        
         ValueType Type() const { return mType; }
         
         virtual double      AsNumber() const;
@@ -41,4 +45,5 @@ namespace Finch
     private:
         ValueType   mType;
     };
+    */
 }

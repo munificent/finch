@@ -71,7 +71,7 @@ namespace Finch
             if (c == '\0') mState = LEX_AT_END;
         }
         
-        std::cout << "lex " << *token << std::endl;
+        // std::cout << "lex " << *token << std::endl;
         
         return token;
     }

@@ -5,6 +5,7 @@
 
 #include "Macros.h"
 #include "Expr.h"
+#include "ExprVisitor.h"
 #include "Ref.h"
 #include "String.h"
 
@@ -21,6 +22,8 @@ namespace Finch
         {}
         
         virtual void Trace(std::ostream & stream) const;
+        
+        EXPRESSION_VISITOR
 
     private:
         // the object receiving the message

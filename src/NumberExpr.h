@@ -4,6 +4,7 @@
 
 #include "Macros.h"
 #include "Expr.h"
+#include "ExprVisitor.h"
 #include "String.h"
 
 namespace Finch
@@ -16,8 +17,12 @@ namespace Finch
         :   mValue(value)
         {}
         
+        double Value() const { return mValue; }
+        
         virtual void Trace(std::ostream & stream) const;
         
+        EXPRESSION_VISITOR
+
     private:
         double mValue;
     };
