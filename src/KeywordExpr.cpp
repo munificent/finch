@@ -6,12 +6,11 @@ namespace Finch
 {
     void KeywordExpr::Trace(std::ostream & stream) const
     {
-        mObject->Trace(stream);
+        stream << *mReceiver;
         
         for (int i = 0; i < mKeywords.size(); i++)
         {
-            stream << " " << mKeywords[i] << ": ";
-            mArgs[i]->Trace(stream);
+            stream << " " << mKeywords[i] << " " << *mArgs[i];
         }
     }
 }

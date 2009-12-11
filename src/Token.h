@@ -21,6 +21,9 @@ namespace Finch
         TOKEN_SEMICOLON,
         TOKEN_PIPE,
         
+        TOKEN_DEF,
+        TOKEN_SET,
+        
         TOKEN_NUMBER,
         
         TOKEN_NAME,

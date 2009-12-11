@@ -1,58 +1,33 @@
 finch:
 -----
 
-a < b then: { obj someMessage }
-
-a < b then: || obj someMessage;
-               obj anotherMessage
-
-a < b then: |[ it someMessage;
-                   obj anotherMessage ]
-
-a < b then: {|arg| arg someMessage;
-                   obj anotherMessage }
-
-if: a < b then: ||
-    // this is a block because of the previous ||
-    something do
-else: // this continues the 'if' because of indentation
-    somethingElse do
-
-values each: |it[ Out write: it ]
+// symbol
+_symbolName
 
 // blocks:
 no args:  { obj someMessage }
-one arg:  | arg { arg someMessage }
-          |{ it someMessage } // implicit arg name "it"
-two args: | first second { first gets: second }
+one arg:  {|arg| someMessage }
+          {|| it someMessage } // implicit arg name "it"
+two args: {|first second| first gets: second }
 
 // compound expressions:
 obj first ; obj second
-//### bob: can we use newline for this?
-// the trick is getting keyword funcs (like if:then:else) to work
-// right while spanning multiple lines
-if: foo then: {
-    obj message
-} else: {
-    bar bang
-}
 
 // answer:
 return resultObject
 
 // assignment:
-set variable value
-//### bob: instead of this, what about having an automatic object that
-// represents the current local scope, then you can do:
-local varName: 123
-local varName // this is kind of tedious. but we can't do just
-              // 'varName' because now it's a *message*, not an object
+variable <- value
+// note that this is only valid for variables already declared
+// this is also not how fields (instance variables) are set, those
+// use message sends: myObj someField: newValue
 
 // cascade:
-foo bar, bang, baz
+foo bar, bang, baz // same as foo bar; foo bang; foo baz
 
 // define data slot (basically creates set and get messages)
-field someObj slotName 123
+someObj addField: _fieldName
+someObj addField: _fieldName value: 1234
 
 // define unary message
 method someObj messageName
@@ -77,7 +52,13 @@ someObj slotName: 123 // not the same as defining a slot
 someObj slotName
 
 // local variables
-|temp anotherTemp|
+set temp 123
+unset temp // note this is different from setting temp to Nil
+           // when you unset a variable, you unshadow that name
+           // from being accessible in a parent scope.
+
+// global variables
+var SomeGlobal // case distinguishes global from local
 
 smalltalk:
 ---------

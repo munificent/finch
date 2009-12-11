@@ -9,9 +9,11 @@ namespace Finch
         :   mValue(value)
         {}
         
-        virtual void Trace(std::ostream & stream) const;
+        virtual void Trace(std::ostream & stream) const { stream << mValue; }
         
         virtual Ref<Object> Receive(String message, vector<Ref<Object> > args);
+        
+        virtual double AsNumber() const { return mValue; }
 
     private:
         double mValue;
@@ -28,13 +30,9 @@ namespace Finch
         return cout;
     }
     
-    void NumberObject::Trace(std::ostream & stream) const
-    {
-        stream << mValue;
-    }
-
     Ref<Object> NumberObject::Receive(String message, vector<Ref<Object> > args)
     {
+        //### bob: this could be refactored into something more maintainable
         if ((message == "abs") && (args.size() == 0))
         {
             double value = (mValue < 0) ? -mValue : mValue;
@@ -43,6 +41,33 @@ namespace Finch
         else if ((message == "neg") && (args.size() == 0))
         {
             return Object::New(-mValue); 
+        }
+        else if ((message == "+") && (args.size() == 1))
+        {
+            double value = args[0]->AsNumber();
+            return Object::New(mValue + value); 
+        }
+        else if ((message == "-") && (args.size() == 1))
+        {
+            double value = args[0]->AsNumber();
+            return Object::New(mValue - value); 
+        }
+        else if ((message == "*") && (args.size() == 1))
+        {
+            double value = args[0]->AsNumber();
+            return Object::New(mValue * value); 
+        }
+        else if ((message == "/") && (args.size() == 1))
+        {
+            double value = args[0]->AsNumber();
+            return Object::New(mValue / value); 
+        }
+        //### bob: temp!
+        else if ((message == "hack:temp:") && (args.size() == 2))
+        {
+            double value1 = args[0]->AsNumber();
+            double value2 = args[1]->AsNumber();
+            return Object::New(mValue + value1 + value2); 
         }
         
         //### bob: should do some sort of message not handled thing here

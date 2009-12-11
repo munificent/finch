@@ -4,8 +4,8 @@
 #include <vector>
 
 #include "Macros.h"
+#include "Ref.h"
 #include "String.h"
-#include "Value.h"
 
 namespace Finch
 {
@@ -20,6 +20,8 @@ namespace Finch
         virtual ~Object() {}
         
         virtual Ref<Object> Receive(String message, vector<Ref<Object> > args) = 0;
+        
+        virtual double AsNumber() const = 0;
         
         virtual void Trace(std::ostream & stream) const = 0;
     };

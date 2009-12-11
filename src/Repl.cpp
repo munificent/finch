@@ -1,6 +1,7 @@
 #include <iostream>
 #include <string>
 
+#include "Scope.h"
 #include "String.h"
 #include "Repl.h"
 
@@ -27,9 +28,7 @@ namespace Finch
                 Ref<Expr> expr = mParser.ParseLine(line.c_str());
                 if (!expr.IsNull())
                 {
-                    //std::cout << "parsed \"";
-                    //expr->Trace(std::cout);
-                    //std::cout << "\"" << std::endl;
+                    //std::cout << "parsed \"" << *expr << "\"" << std::endl;
                     
                     mEvaluator.Evaluate(expr);
                 }

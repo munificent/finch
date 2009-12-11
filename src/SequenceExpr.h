@@ -19,6 +19,9 @@ namespace Finch
                 mSecond(second)
             {}
             
+            Ref<Expr> First()  const { return mFirst; }
+            Ref<Expr> Second() const { return mSecond; }
+            
             virtual void Trace(std::ostream & stream) const;
             
             EXPRESSION_VISITOR

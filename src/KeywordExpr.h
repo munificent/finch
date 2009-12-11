@@ -17,9 +17,9 @@ namespace Finch
     class KeywordExpr : public Expr
     {
     public:
-        KeywordExpr(Ref<Expr> object, vector<String> keywords,
+        KeywordExpr(Ref<Expr> receiver, vector<String> keywords,
                     vector<Ref<Expr> > args)
-        :   mObject(object),
+        :   mReceiver(receiver),
             mKeywords(keywords),
             mArgs(args)
         {
@@ -27,15 +27,18 @@ namespace Finch
                    "Must have same number of keywords and arguments.");
         }
         
+        Ref<Expr>                  Receiver()  const { return mReceiver; }
+        
+        const vector<String> &     Keywords()  const { return mKeywords; }
+        const vector<Ref<Expr> > & Arguments() const { return mArgs; }
+        
         virtual void Trace(std::ostream & stream) const;
         
         EXPRESSION_VISITOR
 
     private:
         // the object receiving the message
-        Ref<Expr> mObject;
-        
-        int mNumKeywords;
+        Ref<Expr> mReceiver;
         
         // the names of the keywords
         vector<String> mKeywords;

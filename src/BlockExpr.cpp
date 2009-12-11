@@ -22,10 +22,6 @@ namespace Finch
             stream << "|";
         }
         
-        stream << " ";
-        
-        mBody->Trace(stream);
-        
-        stream << " }";
+        stream << " " << *mBody << " }";
     }
 }

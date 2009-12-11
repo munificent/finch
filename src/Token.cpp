@@ -67,6 +67,8 @@ namespace Finch
             case TOKEN_COLON:           cout << "colon"; break;
             case TOKEN_SEMICOLON:       cout << "semicolon"; break;
             case TOKEN_PIPE:            cout << "pipe"; break;
+            case TOKEN_DEF:             cout << "def"; break;
+            case TOKEN_SET:             cout << "set"; break;
                 
             case TOKEN_NUMBER:
                 cout << "number " << token.Number() << "";

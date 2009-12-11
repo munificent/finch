@@ -99,9 +99,10 @@ namespace Finch
         }
         else if (isKeyword)
         {
-            token = EmitText(TOKEN_KEYWORD);
             // consume the colon
             mIndex++;
+            
+            token = EmitText(TOKEN_KEYWORD);
             mState = LEX_DEFAULT;
         }
         else
@@ -132,7 +133,13 @@ namespace Finch
         strncpy(text, &mLine[mTokenStart], mIndex - mTokenStart);
         text[mIndex - mTokenStart] = '\0';
         
-        return Token::New(type, text);
+        String name = text;
+        
+        // see if it's a reserved word
+        if (name == "def") return Token::New(TOKEN_DEF);
+        if (name == "set") return Token::New(TOKEN_SET);
+        
+        return Token::New(type, name);
     }
     
     bool Lexer::IsAlpha(char c) const

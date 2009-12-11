@@ -16,7 +16,7 @@ namespace Finch
     private:
         FinchParser mParser;
         Evaluator   mEvaluator;
-        
+
         NO_COPY(Repl)
     };
 }

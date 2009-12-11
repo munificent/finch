@@ -7,6 +7,7 @@
 #include "ExprVisitor.h"
 #include "Object.h"
 #include "Ref.h"
+#include "Scope.h"
 
 namespace Finch
 {
@@ -16,12 +17,16 @@ namespace Finch
         void Evaluate(Ref<Expr> expr);
         
     private:
+        virtual Ref<Object> Visit(const BlockExpr & expr);
+        virtual Ref<Object> Visit(const DefExpr & expr);
+        virtual Ref<Object> Visit(const KeywordExpr & expr);
         virtual Ref<Object> Visit(const NameExpr & expr);
         virtual Ref<Object> Visit(const NumberExpr & expr);
-        virtual Ref<Object> Visit(const UnaryExpr & expr);
         virtual Ref<Object> Visit(const OperatorExpr & expr);
-        virtual Ref<Object> Visit(const KeywordExpr & expr);
         virtual Ref<Object> Visit(const SequenceExpr & expr);
-        virtual Ref<Object> Visit(const BlockExpr & expr);
+        virtual Ref<Object> Visit(const SetExpr & expr);
+        virtual Ref<Object> Visit(const UnaryExpr & expr);
+        
+        Scope mScope;
     };
 }

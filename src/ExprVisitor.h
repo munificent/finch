@@ -8,13 +8,15 @@
 
 namespace Finch
 {
+    class BlockExpr;
+    class DefExpr;
+    class KeywordExpr;
     class NameExpr;
     class NumberExpr;
-    class UnaryExpr;
     class OperatorExpr;
-    class KeywordExpr;
     class SequenceExpr;
-    class BlockExpr;
+    class SetExpr;
+    class UnaryExpr;
     class Object;
     
     class ExprVisitor
@@ -22,12 +24,14 @@ namespace Finch
     public:
         virtual ~ExprVisitor() {}
         
+        virtual Ref<Object> Visit(const BlockExpr & expr) = 0;
+        virtual Ref<Object> Visit(const DefExpr & expr) = 0;
+        virtual Ref<Object> Visit(const KeywordExpr & expr) = 0;
         virtual Ref<Object> Visit(const NameExpr & expr) = 0;
         virtual Ref<Object> Visit(const NumberExpr & expr) = 0;
-        virtual Ref<Object> Visit(const UnaryExpr & expr) = 0;
         virtual Ref<Object> Visit(const OperatorExpr & expr) = 0;
-        virtual Ref<Object> Visit(const KeywordExpr & expr) = 0;
         virtual Ref<Object> Visit(const SequenceExpr & expr) = 0;
-        virtual Ref<Object> Visit(const BlockExpr & expr) = 0;
+        virtual Ref<Object> Visit(const SetExpr & expr) = 0;
+        virtual Ref<Object> Visit(const UnaryExpr & expr) = 0;
     };
 }

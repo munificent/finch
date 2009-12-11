@@ -3,11 +3,13 @@
 #include "FinchParser.h"
 
 #include "BlockExpr.h"
+#include "DefExpr.h"
 #include "KeywordExpr.h"
 #include "NameExpr.h"
 #include "NumberExpr.h"
 #include "OperatorExpr.h"
 #include "SequenceExpr.h"
+#include "SetExpr.h"
 #include "UnaryExpr.h"
 
 namespace Finch
@@ -23,9 +25,33 @@ namespace Finch
     
     Ref<Expr> FinchParser::Expression()
     {
-        return Block();
+        if (ConsumeIf(TOKEN_DEF))
+        {
+            if (!CurrentIs(TOKEN_NAME)) return ParseError();
+            
+            String name = Consume()->Text();
+            
+            // get the initial value
+            Ref<Expr> value = Block();
+            if (value.IsNull()) return ParseError();
+            
+            return Ref<Expr>(new DefExpr(name, value));
+        }
+        else if (ConsumeIf(TOKEN_SET))
+        {
+            if (!CurrentIs(TOKEN_NAME)) return ParseError();
+            
+            String name = Consume()->Text();
+            
+            // get the initial value
+            Ref<Expr> value = Block();
+            if (value.IsNull()) return ParseError();
+            
+            return Ref<Expr>(new SetExpr(name, value));
+        }
+        else return Block();
     }
-    
+
     Ref<Expr> FinchParser::Block()
     {
         if (ConsumeIf(TOKEN_LEFT_BRACE))
