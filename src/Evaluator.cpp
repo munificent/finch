@@ -10,12 +10,14 @@
 #include "OperatorExpr.h"
 #include "SequenceExpr.h"
 #include "SetExpr.h"
+#include "SymbolExpr.h"
 #include "UnaryExpr.h"
 
 namespace Finch
 {
-    Evaluator::Evaluator(Ref<Scope> scope)
-    :   mScope(scope)
+    Evaluator::Evaluator(Ref<Scope> scope, Ref<Object> nilObject)
+    :   mScope(scope),
+        mNil(nilObject)
     {
     }
     
@@ -60,13 +62,13 @@ namespace Finch
         }
         
         // send the message
-        return receiver->Receive(fullName, args);
+        return NullToNil(receiver->Receive(fullName, args));
     }
     
     Ref<Object> Evaluator::Visit(const NameExpr & expr)
     {
         //### bob: hack temp. always look up in global scope
-        return mScope->LookUp(expr.Name());
+        return NullToNil(mScope->LookUp(expr.Name()));
     }
 
     Ref<Object> Evaluator::Visit(const NumberExpr & expr)
@@ -82,7 +84,7 @@ namespace Finch
         vector<Ref<Object> > args;
         args.push_back(arg);
         
-        return receiver->Receive(expr.Operator(), args);
+        return NullToNil(receiver->Receive(expr.Operator(), args));
     }    
     
     Ref<Object> Evaluator::Visit(const SequenceExpr & expr)
@@ -104,10 +106,15 @@ namespace Finch
         return mScope->Set(expr.Name(), value);
     }
     
+    Ref<Object> Evaluator::Visit(const SymbolExpr & expr)
+    {
+        return Object::New(expr.Value());
+    }
+    
     Ref<Object> Evaluator::Visit(const UnaryExpr & expr)
     {
         Ref<Object> receiver = expr.Receiver()->Accept(*this);
         
-        return receiver->Receive(expr.Message(), vector<Ref<Object> >());
+        return NullToNil(receiver->Receive(expr.Message(), vector<Ref<Object> >()));
     }
 }

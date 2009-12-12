@@ -14,7 +14,8 @@ namespace Finch
         //### bob: this could be refactored into something more maintainable
         if ((message == "value") && (args.size() == 0))
         {
-            Evaluator evaluator(mParentScope);
+            //### bob: looking up nil here is kind of lame
+            Evaluator evaluator(mParentScope, mParentScope->LookUp("Nil"));
             return evaluator.Evaluate(mBody);
         }
         

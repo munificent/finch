@@ -31,7 +31,6 @@ namespace Finch
     {
         map<String, Ref<Object> >::iterator found = mVariables.lower_bound(name);
         
-        //### bob: should probably default to Nil object, not actual null ref
         Ref<Object> oldValue;
         
         if ((found != mVariables.end()) &&

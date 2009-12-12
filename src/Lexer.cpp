@@ -37,6 +37,8 @@ namespace Finch
                     else if (IsDigit(c))    StartToken(LEX_IN_NUMBER);
                     else if (IsAlpha(c))    StartToken(LEX_IN_NAME);
                     else if (IsOperator(c)) StartToken(LEX_IN_OPERATOR);
+                    else if (c == '`')      StartToken(LEX_IN_SYMBOL, true);
+                    
                     else mIndex++; // ignore other characters
                     break;
                     
@@ -62,6 +64,11 @@ namespace Finch
                                       false, TOKEN_OPERATOR);
                     break;
                     
+                case LEX_IN_SYMBOL:
+                    token = TextToken(IsAlpha(c) || IsDigit(c) || IsOperator(c),
+                                      false, TOKEN_SYMBOL);
+                    break;
+                    
                 case LEX_AT_END:
                     token = Token::New(TOKEN_EOF);
                     break;
@@ -82,11 +89,13 @@ namespace Finch
         return Token::New(type);
     }
     
-    void Lexer::StartToken(State state)
+    void Lexer::StartToken(State state, bool skipFirstChar)
     {
         mTokenStart = mIndex;
         mState = state;
         mIndex++;
+        
+        if (skipFirstChar) mTokenStart++;
     }
     
     Ref<Token> Lexer::TextToken(bool condition, bool isKeyword, TokenType type)

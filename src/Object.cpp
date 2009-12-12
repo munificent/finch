@@ -2,6 +2,7 @@
 #include "BlockObject.h"
 #include "DynamicObject.h"
 #include "NumberObject.h"
+#include "StringObject.h"
 
 namespace Finch
 {
@@ -13,6 +14,11 @@ namespace Finch
     Ref<Object> Object::New(double value)
     {
         return Ref<Object>(new NumberObject(value));
+    }
+    
+    Ref<Object> Object::New(String value)
+    {
+        return Ref<Object>(new StringObject(value));
     }
     
     Ref<Object> Object::New(Ref<Scope> parentScope, Ref<Expr> value)

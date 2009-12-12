@@ -86,6 +86,10 @@ namespace Finch
                 cout << "keyword '" << token.Text() << "'";
                 break;
                 
+            case TOKEN_SYMBOL:
+                cout << "symbol '" << token.Text() << "'";
+                break;
+                
             case TOKEN_EOF:             cout << "eof"; break;
         }
 

@@ -17,9 +17,11 @@ namespace Finch
         Ref<Scope> globalScope = Ref<Scope>(new Scope()); 
         
         //### bob: temp
+        Ref<Object> nilObject = Object::New();
         globalScope->Define("Object", Object::New());
+        globalScope->Define("Nil", nilObject);
         
-        Evaluator evaluator(globalScope);
+        Evaluator evaluator(globalScope, nilObject);
         
         std::cout << "finch 0.0.0d\n";
         

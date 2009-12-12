@@ -20,6 +20,7 @@ namespace Finch
         // virtual constructors
         static Ref<Object> New();
         static Ref<Object> New(double value);
+        static Ref<Object> New(String value);
         static Ref<Object> New(Ref<Scope> parentScope, Ref<Expr> value);
         
         virtual ~Object() {}
@@ -27,6 +28,7 @@ namespace Finch
         virtual Ref<Object> Receive(String message, vector<Ref<Object> > args) = 0;
         
         virtual double AsNumber() const { return 0; }
+        virtual String AsString() const { return ""; }
         
         virtual void Trace(std::ostream & stream) const = 0;
     };

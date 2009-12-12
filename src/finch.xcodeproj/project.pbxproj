@@ -37,6 +37,9 @@
 		C4C514AD10CB77050045AA86 /* Parser.cpp in Sources */ = {isa = PBXBuildFile; fileRef = C4C514AC10CB77050045AA86 /* Parser.cpp */; };
 		C4E3BEA010CCB3920031C104 /* FinchParser.cpp in Sources */ = {isa = PBXBuildFile; fileRef = C4E3BE9F10CCB3920031C104 /* FinchParser.cpp */; };
 		C4FC15C610D3566200E6ABD6 /* DynamicObject.cpp in Sources */ = {isa = PBXBuildFile; fileRef = C4FC15C510D3566200E6ABD6 /* DynamicObject.cpp */; };
+		C4FC15CD10D3DDE100E6ABD6 /* SymbolExpr.cpp in Sources */ = {isa = PBXBuildFile; fileRef = C4FC15CC10D3DDE100E6ABD6 /* SymbolExpr.cpp */; };
+		C4FC15D010D3DE6700E6ABD6 /* StringObject.cpp in Sources */ = {isa = PBXBuildFile; fileRef = C4FC15CF10D3DE6700E6ABD6 /* StringObject.cpp */; };
+		C4FC15E510D3E33F00E6ABD6 /* Dict.cpp in Sources */ = {isa = PBXBuildFile; fileRef = C4FC15E410D3E33F00E6ABD6 /* Dict.cpp */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXCopyFilesBuildPhase section */
@@ -113,6 +116,12 @@
 		C4E3BE9F10CCB3920031C104 /* FinchParser.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = FinchParser.cpp; sourceTree = "<group>"; };
 		C4FC15C410D3566200E6ABD6 /* DynamicObject.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = DynamicObject.h; sourceTree = "<group>"; };
 		C4FC15C510D3566200E6ABD6 /* DynamicObject.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = DynamicObject.cpp; sourceTree = "<group>"; };
+		C4FC15CB10D3DDE100E6ABD6 /* SymbolExpr.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SymbolExpr.h; sourceTree = "<group>"; };
+		C4FC15CC10D3DDE100E6ABD6 /* SymbolExpr.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = SymbolExpr.cpp; sourceTree = "<group>"; };
+		C4FC15CE10D3DE6700E6ABD6 /* StringObject.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = StringObject.h; sourceTree = "<group>"; };
+		C4FC15CF10D3DE6700E6ABD6 /* StringObject.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = StringObject.cpp; sourceTree = "<group>"; };
+		C4FC15E310D3E33F00E6ABD6 /* Dict.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Dict.h; sourceTree = "<group>"; };
+		C4FC15E410D3E33F00E6ABD6 /* Dict.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = Dict.cpp; sourceTree = "<group>"; };
 		C6859E8B029090EE04C91782 /* finch.1 */ = {isa = PBXFileReference; lastKnownFileType = text.man; name = finch.1; path = snow.1; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
@@ -196,6 +205,8 @@
 				C4939A0310CE05E6003ECF01 /* SequenceExpr.cpp */,
 				C49B8A5410D1F3CB004499F0 /* SetExpr.h */,
 				C49B8A5510D1F3CB004499F0 /* SetExpr.cpp */,
+				C4FC15CB10D3DDE100E6ABD6 /* SymbolExpr.h */,
+				C4FC15CC10D3DDE100E6ABD6 /* SymbolExpr.cpp */,
 				C402051910CC39D100B521BB /* UnaryExpr.h */,
 				C402051A10CC39D100B521BB /* UnaryExpr.cpp */,
 			);
@@ -213,6 +224,8 @@
 				C4FC15C510D3566200E6ABD6 /* DynamicObject.cpp */,
 				C416EBAC10D287E0006828EA /* NumberObject.h */,
 				C416EBAD10D287E0006828EA /* NumberObject.cpp */,
+				C4FC15CE10D3DE6700E6ABD6 /* StringObject.h */,
+				C4FC15CF10D3DE6700E6ABD6 /* StringObject.cpp */,
 				C4B9DB3310CF3CBC003C556D /* Value.h */,
 				C4B9DB3410CF3CBC003C556D /* Value.cpp */,
 				C45CE26710D09BFC0080DE6F /* Evaluator.h */,
@@ -231,6 +244,8 @@
 				C4012B8A10CAE4350088B77F /* String.cpp */,
 				C41F4A5310CC10340008390E /* Ref.h */,
 				C41F4A5710CC11A00008390E /* Ref.cpp */,
+				C4FC15E310D3E33F00E6ABD6 /* Dict.h */,
+				C4FC15E410D3E33F00E6ABD6 /* Dict.cpp */,
 			);
 			name = Base;
 			sourceTree = "<group>";
@@ -331,6 +346,9 @@
 				C416EBAE10D287E0006828EA /* NumberObject.cpp in Sources */,
 				C416EBB310D28870006828EA /* BlockObject.cpp in Sources */,
 				C4FC15C610D3566200E6ABD6 /* DynamicObject.cpp in Sources */,
+				C4FC15CD10D3DDE100E6ABD6 /* SymbolExpr.cpp in Sources */,
+				C4FC15D010D3DE6700E6ABD6 /* StringObject.cpp in Sources */,
+				C4FC15E510D3E33F00E6ABD6 /* Dict.cpp in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
