@@ -25,6 +25,27 @@ namespace Finch
     
     Ref<Expr> FinchParser::Expression()
     {
+        return Sequence();
+    }
+    
+    Ref<Expr> FinchParser::Sequence()
+    {
+        Ref<Expr> expression = Variable();
+        if (expression.IsNull()) return ParseError();
+        
+        while (ConsumeIf(TOKEN_SEMICOLON))
+        {
+            Ref<Expr> second = Variable();
+            if (second.IsNull()) return ParseError();
+            
+            expression = Ref<Expr>(new SequenceExpr(expression, second));
+        }
+        
+        return expression;
+    }
+    
+    Ref<Expr> FinchParser::Variable()
+    {
         if (ConsumeIf(TOKEN_DEF))
         {
             if (!CurrentIs(TOKEN_NAME)) return ParseError();
@@ -32,7 +53,7 @@ namespace Finch
             String name = Consume()->Text();
             
             // get the initial value
-            Ref<Expr> value = Block();
+            Ref<Expr> value = Keyword();
             if (value.IsNull()) return ParseError();
             
             return Ref<Expr>(new DefExpr(name, value));
@@ -44,55 +65,12 @@ namespace Finch
             String name = Consume()->Text();
             
             // get the initial value
-            Ref<Expr> value = Block();
+            Ref<Expr> value = Keyword();
             if (value.IsNull()) return ParseError();
             
             return Ref<Expr>(new SetExpr(name, value));
         }
-        else return Block();
-    }
-
-    Ref<Expr> FinchParser::Block()
-    {
-        if (ConsumeIf(TOKEN_LEFT_BRACE))
-        {
-            vector<String> args;
-            
-            // see if there are args
-            if (ConsumeIf(TOKEN_PIPE))
-            {
-                while (CurrentIs(TOKEN_NAME))
-                {
-                    args.push_back(Consume()->Text());
-                }
-                
-                if (!ConsumeIf(TOKEN_PIPE)) return ParseError();
-            }
-            
-            Ref<Expr> body = Expression();
-            if (body.IsNull()) return ParseError();
-            
-            if (!ConsumeIf(TOKEN_RIGHT_BRACE)) return ParseError();
-            
-            return Ref<Expr>(new BlockExpr(args, body));
-        }
-        else return Sequence();
-    }
-    
-    Ref<Expr> FinchParser::Sequence()
-    {
-        Ref<Expr> expression = Keyword();
-        if (expression.IsNull()) return ParseError();
-        
-        while (ConsumeIf(TOKEN_SEMICOLON))
-        {
-            Ref<Expr> second = Keyword();
-            if (second.IsNull()) return ParseError();
-            
-            expression = Ref<Expr>(new SequenceExpr(expression, second));
-        }
-        
-        return expression;
+        else return Keyword();
     }
     
     Ref<Expr> FinchParser::Keyword()
@@ -170,6 +148,28 @@ namespace Finch
             if (!ConsumeIf(TOKEN_RIGHT_PAREN)) return ParseError();
             
             return expression;
+        }
+        if (ConsumeIf(TOKEN_LEFT_BRACE))
+        {
+            vector<String> args;
+            
+            // see if there are args
+            if (ConsumeIf(TOKEN_PIPE))
+            {
+                while (CurrentIs(TOKEN_NAME))
+                {
+                    args.push_back(Consume()->Text());
+                }
+                
+                if (!ConsumeIf(TOKEN_PIPE)) return ParseError();
+            }
+            
+            Ref<Expr> body = Expression();
+            if (body.IsNull()) return ParseError();
+            
+            if (!ConsumeIf(TOKEN_RIGHT_BRACE)) return ParseError();
+            
+            return Ref<Expr>(new BlockExpr(args, body));
         }
         else return ParseError();
     }

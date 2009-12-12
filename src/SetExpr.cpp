@@ -6,6 +6,6 @@ namespace Finch
 {
     void SetExpr::Trace(std::ostream & stream) const
     {
-        stream << "set " << mName << *mValue;
+        stream << "set " << mName << " " << mValue;
     }
 }

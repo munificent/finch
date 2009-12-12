@@ -1,5 +1,7 @@
 #pragma once
 
+#include <iostream>
+
 #include "Macros.h"
 
 namespace Finch
@@ -26,7 +28,10 @@ namespace Finch
             mPrev(this),
             mNext(this)
         {
-            Link(other);
+            if (&other != this)
+            {
+                Link(other);
+            }
         }
         
         ~Ref() { Clear(); }
@@ -54,6 +59,9 @@ namespace Finch
                 // unlink it
                 mPrev->mNext = mNext;
                 mNext->mPrev = mPrev;
+                
+                mPrev = this;
+                mNext = this;
             }
             else if (mObj != NULL)
             {
@@ -87,4 +95,19 @@ namespace Finch
         mutable const Ref<T> * mPrev;
         mutable const Ref<T> * mNext;
     };
+    
+    template <class T>
+    std::ostream& operator<<(std::ostream& cout, const Ref<T> & ref)
+    {
+        if (ref.IsNull())
+        {
+            cout << "(null reference)";
+        }
+        else
+        {
+            cout << *ref;
+        }
+        
+        return cout;
+    }
 }

@@ -19,6 +19,8 @@
 		C402051610CC38FA00B521BB /* RefTests.cpp in Sources */ = {isa = PBXBuildFile; fileRef = C402051510CC38FA00B521BB /* RefTests.cpp */; };
 		C402051B10CC39D100B521BB /* UnaryExpr.cpp in Sources */ = {isa = PBXBuildFile; fileRef = C402051A10CC39D100B521BB /* UnaryExpr.cpp */; };
 		C402055010CC3A0000B521BB /* Expr.cpp in Sources */ = {isa = PBXBuildFile; fileRef = C402054F10CC3A0000B521BB /* Expr.cpp */; };
+		C416EBAE10D287E0006828EA /* NumberObject.cpp in Sources */ = {isa = PBXBuildFile; fileRef = C416EBAD10D287E0006828EA /* NumberObject.cpp */; };
+		C416EBB310D28870006828EA /* BlockObject.cpp in Sources */ = {isa = PBXBuildFile; fileRef = C416EBB210D28870006828EA /* BlockObject.cpp */; };
 		C41F4A5810CC11A00008390E /* Ref.cpp in Sources */ = {isa = PBXBuildFile; fileRef = C41F4A5710CC11A00008390E /* Ref.cpp */; };
 		C4382BE410CC3AEF00989FFC /* NameExpr.cpp in Sources */ = {isa = PBXBuildFile; fileRef = C4382BE310CC3AEF00989FFC /* NameExpr.cpp */; };
 		C4382BE710CC3C0600989FFC /* OperatorExpr.cpp in Sources */ = {isa = PBXBuildFile; fileRef = C4382BE610CC3C0600989FFC /* OperatorExpr.cpp */; };
@@ -73,6 +75,10 @@
 		C402051A10CC39D100B521BB /* UnaryExpr.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = UnaryExpr.cpp; sourceTree = "<group>"; };
 		C402054E10CC3A0000B521BB /* Expr.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Expr.h; sourceTree = "<group>"; };
 		C402054F10CC3A0000B521BB /* Expr.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = Expr.cpp; sourceTree = "<group>"; };
+		C416EBAC10D287E0006828EA /* NumberObject.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = NumberObject.h; sourceTree = "<group>"; };
+		C416EBAD10D287E0006828EA /* NumberObject.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = NumberObject.cpp; sourceTree = "<group>"; };
+		C416EBB110D28870006828EA /* BlockObject.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = BlockObject.h; sourceTree = "<group>"; };
+		C416EBB210D28870006828EA /* BlockObject.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = BlockObject.cpp; sourceTree = "<group>"; };
 		C41F4A5310CC10340008390E /* Ref.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Ref.h; sourceTree = "<group>"; };
 		C41F4A5710CC11A00008390E /* Ref.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = Ref.cpp; sourceTree = "<group>"; };
 		C4382BE210CC3AEF00989FFC /* NameExpr.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = NameExpr.h; sourceTree = "<group>"; };
@@ -198,6 +204,10 @@
 			children = (
 				C4B9DB3010CF3C29003C556D /* Object.h */,
 				C4B9DB3110CF3C29003C556D /* Object.cpp */,
+				C416EBB110D28870006828EA /* BlockObject.h */,
+				C416EBB210D28870006828EA /* BlockObject.cpp */,
+				C416EBAC10D287E0006828EA /* NumberObject.h */,
+				C416EBAD10D287E0006828EA /* NumberObject.cpp */,
 				C4B9DB3310CF3CBC003C556D /* Value.h */,
 				C4B9DB3410CF3CBC003C556D /* Value.cpp */,
 				C45CE26710D09BFC0080DE6F /* Evaluator.h */,
@@ -313,6 +323,8 @@
 				C49DD9BD10D137F700D79C36 /* DefExpr.cpp in Sources */,
 				C49B8A3810D1EA80004499F0 /* Scope.cpp in Sources */,
 				C49B8A5610D1F3CB004499F0 /* SetExpr.cpp in Sources */,
+				C416EBAE10D287E0006828EA /* NumberObject.cpp in Sources */,
+				C416EBB310D28870006828EA /* BlockObject.cpp in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

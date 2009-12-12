@@ -6,45 +6,74 @@ namespace Finch
     class DestructorTester
     {
     public:
+        DestructorTester()
+        {
+            sDestructed = false;
+        }
         ~DestructorTester()
         {
-            sDestructed++;
+            sDestructed = true;
         }
         
-        static int Destructed() { return sDestructed; }
+        static bool Destructed() { return sDestructed; }
     private:
-        static int sDestructed;
+        static bool sDestructed;
     };
 
-    int DestructorTester::sDestructed = 0;
+    bool DestructorTester::sDestructed = 0;
     
     void RefTests::Run()
     {
-        // test ref-counting and assignment
+        // dereferencing
         {
-            Ref<int> r1(new int(1234));
+            Ref<int> r(new int(1234));
             
             // get the value back out
-            EXPECT_EQUAL(1234, *r1);
-            
+            EXPECT_EQUAL(1234, *r);
+        }
+        
+        // nested reference
+        {
             {
-                Ref<int> r2 = r1;
+                Ref<DestructorTester> r1(new DestructorTester());
                 
-                // get the value back out
-                EXPECT_EQUAL(1234, *r2);
+                {
+                    Ref<DestructorTester> r2 = r1;
+                    Ref<DestructorTester> r3 = r1;
+                    Ref<DestructorTester> r4 = r2;
+                }
+                
+                EXPECT_EQUAL(false, DestructorTester::Destructed());
             }
             
-            // still get the value back out
-            EXPECT_EQUAL(1234, *r1);
+            EXPECT_EQUAL(true, DestructorTester::Destructed());
         }
         
-        // test that object is actually freed when count hits zero
+        // chained reference
         {
-            EXPECT_EQUAL(0, DestructorTester::Destructed());
+            {
+                Ref<DestructorTester> r1;
+                
+                {
+                    Ref<DestructorTester> r2(new DestructorTester());
+                    r1 = r2;
+                }
+                
+                EXPECT_EQUAL(false, DestructorTester::Destructed());
+            }
             
-            Ref<DestructorTester> r(new DestructorTester());
+            EXPECT_EQUAL(true, DestructorTester::Destructed());
         }
         
-        EXPECT_EQUAL(1, DestructorTester::Destructed());
+        // setting to null
+        {
+            Ref<DestructorTester> r1(new DestructorTester());
+            
+            EXPECT_EQUAL(false, DestructorTester::Destructed());
+            
+            r1 = Ref<DestructorTester>();
+            
+            EXPECT_EQUAL(true, DestructorTester::Destructed());
+        }
     }
 }

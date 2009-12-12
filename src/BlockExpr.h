@@ -22,6 +22,8 @@ namespace Finch
             mBody(body)
         {}
         
+        Ref<Expr> Body() const { return mBody; }
+        
         virtual void Trace(std::ostream & stream) const;
         
         EXPRESSION_VISITOR

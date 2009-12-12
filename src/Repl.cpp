@@ -30,7 +30,16 @@ namespace Finch
                 {
                     //std::cout << "parsed \"" << *expr << "\"" << std::endl;
                     
-                    mEvaluator.Evaluate(expr);
+                    Ref<Object> result = mEvaluator.Evaluate(expr);
+                    
+                    if (!result.IsNull())
+                    {
+                        std::cout << "< " << *result << std::endl;
+                    }
+                    else
+                    {
+                        std::cout << "< ERROR NULL RESULT OBJECT" << std::endl;
+                    }
                 }
                 else
                 {

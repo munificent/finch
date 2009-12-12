@@ -6,6 +6,6 @@ namespace Finch
 {
     void UnaryExpr::Trace(std::ostream & stream) const
     {
-        stream << *mReceiver << " " << mMessage;
+        stream << mReceiver << " " << mMessage;
     }
 }

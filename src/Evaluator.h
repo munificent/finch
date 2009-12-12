@@ -14,7 +14,10 @@ namespace Finch
     class Evaluator : private ExprVisitor
     {
     public:
-        void Evaluate(Ref<Expr> expr);
+        Evaluator();
+        Evaluator(Ref<Scope> parentScope);
+        
+        Ref<Object> Evaluate(Ref<Expr> expr);
         
     private:
         virtual Ref<Object> Visit(const BlockExpr & expr);
@@ -27,6 +30,6 @@ namespace Finch
         virtual Ref<Object> Visit(const SetExpr & expr);
         virtual Ref<Object> Visit(const UnaryExpr & expr);
         
-        Scope mScope;
+        Ref<Scope> mScope;
     };
 }

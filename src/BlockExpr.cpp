@@ -22,6 +22,6 @@ namespace Finch
             stream << "|";
         }
         
-        stream << " " << *mBody << " }";
+        stream << " " << mBody << " }";
     }
 }

@@ -14,24 +14,24 @@
 
 namespace Finch
 {
-    void Evaluator::Evaluate(Ref<Expr> expr)
+    Evaluator::Evaluator()
+    :   mScope(new Scope())
     {
-        Ref<Object> result = expr->Accept(*this);
-        
-        if (!result.IsNull())
-        {
-            std::cout << "< " << *result << std::endl;
-        }
-        else
-        {
-            std::cout << "< ERROR NULL RESULT OBJECT" << std::endl;
-        }
+    }
+    
+    Evaluator::Evaluator(Ref<Scope> parentScope)
+    :   mScope(new Scope(parentScope))
+    {
+    }
+    
+    Ref<Object> Evaluator::Evaluate(Ref<Expr> expr)
+    {
+        return expr->Accept(*this);
     }
     
     Ref<Object> Evaluator::Visit(const BlockExpr & expr)
     {
-        //### bob: not implemented yet
-        return Ref<Object>();
+        return Object::New(mScope, expr.Body());
     }
     
     Ref<Object> Evaluator::Visit(const DefExpr & expr)
@@ -46,7 +46,7 @@ namespace Finch
         }
         
         //### bob: hack temp. always define in global scope
-        return mScope.Assign(expr.Name(), value);
+        return mScope->Define(expr.Name(), value);
     }
     
     Ref<Object> Evaluator::Visit(const KeywordExpr & expr)
@@ -71,7 +71,7 @@ namespace Finch
     Ref<Object> Evaluator::Visit(const NameExpr & expr)
     {
         //### bob: hack temp. always look up in global scope
-        return mScope.LookUp(expr.Name());
+        return mScope->LookUp(expr.Name());
     }
 
     Ref<Object> Evaluator::Visit(const NumberExpr & expr)
@@ -93,8 +93,9 @@ namespace Finch
     Ref<Object> Evaluator::Visit(const SequenceExpr & expr)
     {
         // evaluate the first, discarding the result
-        expr.First()->Accept(*this);
+        Ref<Object> first = expr.First()->Accept(*this);
         
+        // evaluate the second
         return expr.Second()->Accept(*this);
     }
     
@@ -103,9 +104,9 @@ namespace Finch
         Ref<Object> value = expr.Value()->Accept(*this);
         
         //### bob: hack temp. always set in global scope
-        // should look up name to figure out which scope it's defined in and
-        // set there
-        return mScope.Assign(expr.Name(), value);
+        // should look up name to figure out which scope
+        // it's defined in and there
+        return mScope->Set(expr.Name(), value);
     }
     
     Ref<Object> Evaluator::Visit(const UnaryExpr & expr)

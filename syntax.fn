@@ -52,13 +52,36 @@ someObj slotName: 123 // not the same as defining a slot
 someObj slotName
 
 // local variables
-set temp 123
-unset temp // note this is different from setting temp to Nil
-           // when you unset a variable, you unshadow that name
-           // from being accessible in a parent scope.
+def temp 123 // defines a new local at this scope
+
+set temp 123 // sets the value of 'temp' at whatever scope it was
+             // previously defined. use this to change variables
+             // defined in outer scopes
+             
+unset temp // remove a previously defined variable at this scope
+// note this is different from setting temp to Nil
+// when you unset a variable, you unshadow that name
+// from being accessible in a parent scope. consider:
+{
+    def a 1
+    
+    // set to nil
+    {
+        def a 2
+        set a Nil
+        Out write: a // writes 'nil'
+    }
+    
+    // unset
+    {
+        def a 2
+        unset a
+        Out write: a // writes 1
+    }
+}
 
 // global variables
-var SomeGlobal // case distinguishes global from local
+def SomeGlobal // case distinguishes global from local
 
 smalltalk:
 ---------
