@@ -1,6 +1,7 @@
 #include <iostream>
 #include <string>
 
+#include "Evaluator.h"
 #include "Scope.h"
 #include "String.h"
 #include "Repl.h"
@@ -11,6 +12,14 @@ namespace Finch
     {
         bool   running = true;
         String line;
+        
+        // build the global scope
+        Ref<Scope> globalScope = Ref<Scope>(new Scope()); 
+        
+        //### bob: temp
+        globalScope->Define("Object", Object::New());
+        
+        Evaluator evaluator(globalScope);
         
         std::cout << "finch 0.0.0d\n";
         
@@ -30,7 +39,7 @@ namespace Finch
                 {
                     //std::cout << "parsed \"" << *expr << "\"" << std::endl;
                     
-                    Ref<Object> result = mEvaluator.Evaluate(expr);
+                    Ref<Object> result = evaluator.Evaluate(expr);
                     
                     if (!result.IsNull())
                     {
@@ -38,7 +47,7 @@ namespace Finch
                     }
                     else
                     {
-                        std::cout << "< ERROR NULL RESULT OBJECT" << std::endl;
+                        std::cout << "< no result" << std::endl;
                     }
                 }
                 else

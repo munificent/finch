@@ -2,7 +2,6 @@
 
 #include "Macros.h"
 #include "FinchParser.h"
-#include "Evaluator.h"
 
 namespace Finch
 {
@@ -15,7 +14,6 @@ namespace Finch
         
     private:
         FinchParser mParser;
-        Evaluator   mEvaluator;
 
         NO_COPY(Repl)
     };

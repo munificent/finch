@@ -1,9 +1,15 @@
 #include "Object.h"
 #include "BlockObject.h"
+#include "DynamicObject.h"
 #include "NumberObject.h"
 
 namespace Finch
 {
+    Ref<Object> Object::New()
+    {
+        return Ref<Object>(new DynamicObject());
+    }
+    
     Ref<Object> Object::New(double value)
     {
         return Ref<Object>(new NumberObject(value));

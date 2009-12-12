@@ -14,8 +14,7 @@ namespace Finch
     class Evaluator : private ExprVisitor
     {
     public:
-        Evaluator();
-        Evaluator(Ref<Scope> parentScope);
+        Evaluator(Ref<Scope> scope);
         
         Ref<Object> Evaluate(Ref<Expr> expr);
         

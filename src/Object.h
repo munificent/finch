@@ -18,6 +18,7 @@ namespace Finch
     {
     public:
         // virtual constructors
+        static Ref<Object> New();
         static Ref<Object> New(double value);
         static Ref<Object> New(Ref<Scope> parentScope, Ref<Expr> value);
         

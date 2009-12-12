@@ -36,6 +36,7 @@
 		C4B9DB4210CF44A8003C556D /* BlockExpr.cpp in Sources */ = {isa = PBXBuildFile; fileRef = C4B9DB4110CF44A8003C556D /* BlockExpr.cpp */; };
 		C4C514AD10CB77050045AA86 /* Parser.cpp in Sources */ = {isa = PBXBuildFile; fileRef = C4C514AC10CB77050045AA86 /* Parser.cpp */; };
 		C4E3BEA010CCB3920031C104 /* FinchParser.cpp in Sources */ = {isa = PBXBuildFile; fileRef = C4E3BE9F10CCB3920031C104 /* FinchParser.cpp */; };
+		C4FC15C610D3566200E6ABD6 /* DynamicObject.cpp in Sources */ = {isa = PBXBuildFile; fileRef = C4FC15C510D3566200E6ABD6 /* DynamicObject.cpp */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXCopyFilesBuildPhase section */
@@ -110,6 +111,8 @@
 		C4C514AC10CB77050045AA86 /* Parser.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = Parser.cpp; sourceTree = "<group>"; };
 		C4E3BE9E10CCB3920031C104 /* FinchParser.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = FinchParser.h; sourceTree = "<group>"; };
 		C4E3BE9F10CCB3920031C104 /* FinchParser.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = FinchParser.cpp; sourceTree = "<group>"; };
+		C4FC15C410D3566200E6ABD6 /* DynamicObject.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = DynamicObject.h; sourceTree = "<group>"; };
+		C4FC15C510D3566200E6ABD6 /* DynamicObject.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = DynamicObject.cpp; sourceTree = "<group>"; };
 		C6859E8B029090EE04C91782 /* finch.1 */ = {isa = PBXFileReference; lastKnownFileType = text.man; name = finch.1; path = snow.1; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
@@ -206,6 +209,8 @@
 				C4B9DB3110CF3C29003C556D /* Object.cpp */,
 				C416EBB110D28870006828EA /* BlockObject.h */,
 				C416EBB210D28870006828EA /* BlockObject.cpp */,
+				C4FC15C410D3566200E6ABD6 /* DynamicObject.h */,
+				C4FC15C510D3566200E6ABD6 /* DynamicObject.cpp */,
 				C416EBAC10D287E0006828EA /* NumberObject.h */,
 				C416EBAD10D287E0006828EA /* NumberObject.cpp */,
 				C4B9DB3310CF3CBC003C556D /* Value.h */,
@@ -325,6 +330,7 @@
 				C49B8A5610D1F3CB004499F0 /* SetExpr.cpp in Sources */,
 				C416EBAE10D287E0006828EA /* NumberObject.cpp in Sources */,
 				C416EBB310D28870006828EA /* BlockObject.cpp in Sources */,
+				C4FC15C610D3566200E6ABD6 /* DynamicObject.cpp in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

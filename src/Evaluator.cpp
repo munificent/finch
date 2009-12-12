@@ -14,13 +14,8 @@
 
 namespace Finch
 {
-    Evaluator::Evaluator()
-    :   mScope(new Scope())
-    {
-    }
-    
-    Evaluator::Evaluator(Ref<Scope> parentScope)
-    :   mScope(new Scope(parentScope))
+    Evaluator::Evaluator(Ref<Scope> scope)
+    :   mScope(scope)
     {
     }
     
