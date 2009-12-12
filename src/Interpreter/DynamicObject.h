@@ -18,11 +18,18 @@ namespace Finch
     class DynamicObject : public Object
     {
     public:
+        DynamicObject() {}
+        
+        DynamicObject(Ref<Object> prototype)
+        :   mPrototype(prototype)
+        {}
+        
         virtual void Trace(std::ostream & stream) const;
         
-        virtual Ref<Object> Receive(String message, vector<Ref<Object> > args);
+        virtual Ref<Object> Receive(Ref<Object> thisRef, String message, vector<Ref<Object> > args);
         
     private:
+        Ref<Object>               mPrototype;
         map<String, Ref<Object> > mFields;
     };    
 }

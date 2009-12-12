@@ -7,7 +7,7 @@ namespace Finch
         stream << mValue;
     }
 
-    Ref<Object> NumberObject::Receive(String message, vector<Ref<Object> > args)
+    Ref<Object> NumberObject::Receive(Ref<Object> thisRef, String message, vector<Ref<Object> > args)
     {
         //### bob: this could be refactored into something more maintainable
         if (message == "abs")

@@ -9,7 +9,7 @@ namespace Finch
         stream << "block " << mBody;
     }
     
-    Ref<Object> BlockObject::Receive(String message, vector<Ref<Object> > args)
+    Ref<Object> BlockObject::Receive(Ref<Object> thisRef, String message, vector<Ref<Object> > args)
     {
         //### bob: this could be refactored into something more maintainable
         if ((message == "value") && (args.size() == 0))

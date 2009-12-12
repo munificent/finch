@@ -49,7 +49,7 @@ namespace Finch
     Ref<Object> Evaluator::Visit(const KeywordExpr & expr)
     {
         // get the object receiving the message
-        Ref<Object>          receiver = expr.Receiver()->Accept(*this);
+        Ref<Object> receiver = expr.Receiver()->Accept(*this);
         
         // evaluate the arguments
         String               fullName;
@@ -62,7 +62,7 @@ namespace Finch
         }
         
         // send the message
-        return NullToNil(receiver->Receive(fullName, args));
+        return NullToNil(receiver->Receive(receiver, fullName, args));
     }
     
     Ref<Object> Evaluator::Visit(const NameExpr & expr)
@@ -84,7 +84,7 @@ namespace Finch
         vector<Ref<Object> > args;
         args.push_back(arg);
         
-        return NullToNil(receiver->Receive(expr.Operator(), args));
+        return NullToNil(receiver->Receive(receiver, expr.Operator(), args));
     }    
     
     Ref<Object> Evaluator::Visit(const SequenceExpr & expr)
@@ -115,6 +115,6 @@ namespace Finch
     {
         Ref<Object> receiver = expr.Receiver()->Accept(*this);
         
-        return NullToNil(receiver->Receive(expr.Message(), vector<Ref<Object> >()));
+        return NullToNil(receiver->Receive(receiver, expr.Message(), vector<Ref<Object> >()));
     }
 }

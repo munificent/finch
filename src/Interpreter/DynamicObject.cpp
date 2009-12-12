@@ -7,13 +7,11 @@ namespace Finch
         stream << "object";
     }
     
-    Ref<Object> DynamicObject::Receive(String message, vector<Ref<Object> > args)
+    Ref<Object> DynamicObject::Receive(Ref<Object> thisRef, String message, vector<Ref<Object> > args)
     {
         if (message == "copy")
         {
-            //### bob: temp. just make a new empty object. should actually
-            // make a new one with its prototype set to this
-            return Object::New();
+            return Object::New(thisRef);
         }
         
         if (message == "add-field:value:")
@@ -62,6 +60,17 @@ namespace Finch
                 
                 return oldValue;
             }
+        }
+        
+        // walk up the prototype chain
+        if (!mPrototype.IsNull())
+        {
+            // we're using thisRef and not the prototype's own reference here
+            // on purpose. this way, if you send a "copy" message to some
+            // object a few links down the prototype chain from Object, you'll
+            // get a copy of *that* object, and not Object itself where "copy"
+            // is implemented.
+            return mPrototype->Receive(thisRef, message, args);
         }
         
         //### bob: should do some sort of message not handled thing here

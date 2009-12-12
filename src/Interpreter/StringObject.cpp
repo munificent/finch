@@ -7,7 +7,7 @@ namespace Finch
         stream << "\"" << mValue << "\"";
     }
     
-    Ref<Object> StringObject::Receive(String message, vector<Ref<Object> > args)
+    Ref<Object> StringObject::Receive(Ref<Object> thisRef, String message, vector<Ref<Object> > args)
     {
         //### bob: should do some sort of message not handled thing here
         return Ref<Object>();

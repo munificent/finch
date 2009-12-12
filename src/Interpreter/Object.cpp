@@ -6,9 +6,9 @@
 
 namespace Finch
 {
-    Ref<Object> Object::New()
+    Ref<Object> Object::New(Ref<Object> prototype)
     {
-        return Ref<Object>(new DynamicObject());
+        return Ref<Object>(new DynamicObject(prototype));
     }
     
     Ref<Object> Object::New(double value)

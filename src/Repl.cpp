@@ -17,8 +17,8 @@ namespace Finch
         Ref<Scope> globalScope = Ref<Scope>(new Scope()); 
         
         //### bob: temp
-        Ref<Object> nilObject = Object::New();
-        globalScope->Define("Object", Object::New());
+        Ref<Object> nilObject = Object::New(Ref<Object>());
+        globalScope->Define("Object", Object::New(Ref<Object>()));
         globalScope->Define("Nil", nilObject);
         
         Evaluator evaluator(globalScope, nilObject);
