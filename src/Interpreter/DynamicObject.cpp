@@ -17,7 +17,7 @@ namespace Finch
             return Object::New(thisRef);
         }
         
-        if (message == "add-field:value:")
+        if (message == "addField:value:")
         {
             String      name  = args[0]->AsString();
             Ref<Object> value = args[1];
@@ -37,7 +37,7 @@ namespace Finch
             return value;
         }
         
-        if (message == "add-method:body:")
+        if (message == "addMethod:body:")
         {
             String      name  = args[0]->AsString();
             Ref<Object> value = args[1];
@@ -104,6 +104,17 @@ namespace Finch
             return result;
         }
         
+        // see if it's a primitive call
+        map<String, PrimitiveMethod>::iterator primitive = mPrimitives.find(message);
+        if (primitive != mPrimitives.end())
+        {
+            PrimitiveMethod method = primitive->second;
+            
+            ASSERT_NOT_NULL(method);
+            
+            return method(thisRef, context, message, args);
+        }
+        
         // walk up the prototype chain
         if (!mPrototype.IsNull())
         {
@@ -117,5 +128,10 @@ namespace Finch
         
         //### bob: should do some sort of message not handled thing here
         return Ref<Object>();
+    }
+    
+    void DynamicObject::RegisterPrimitive(String message, PrimitiveMethod method)
+    {
+        mPrimitives[message] = method;
     }
 }

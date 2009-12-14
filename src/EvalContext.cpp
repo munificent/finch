@@ -2,6 +2,8 @@
 
 #include "Evaluator.h"
 #include "Expr.h"
+#include "DynamicObject.h"
+#include "Console.h"
 
 namespace Finch
 {
@@ -22,6 +24,14 @@ namespace Finch
         
         mFalse = Object::New(rootObject, "False");
         mGlobals->Define("False", mFalse);
+        
+        Ref<Object> console = Object::New(rootObject, "Console");
+        mGlobals->Define("Console", console);
+        
+        // add its methods
+        DynamicObject* consoleObj = &static_cast<DynamicObject&>(*console);
+        consoleObj->RegisterPrimitive("write:", ConsoleWrite);
+        consoleObj->RegisterPrimitive("writeLine:", ConsoleWriteLine);
     }
     
     Ref<Object> EvalContext::EvaluateBlock(Ref<Expr> expr)

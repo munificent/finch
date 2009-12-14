@@ -1,0 +1,21 @@
+True addMethod: `then: body: {|| it value }
+True addMethod: `then:else: body: {|true false| true value }
+
+False addMethod: `then: body: {|| Nil }
+False addMethod: `then:else: body: {|true false| false value }
+
+// relies on tail recursion
+Block addMethod: `whileTrue: body:
+{|do|
+    .value then: (.whileTrue: do)
+}
+
+Number addMethod: `to:do:` body:
+{|max do|
+    def i .;
+    i < max whileTrue: 
+    {
+        do value;
+        set i i + 1
+    }
+}

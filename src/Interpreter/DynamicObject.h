@@ -15,6 +15,9 @@ namespace Finch
     using std::map;
     using std::vector;
     
+    typedef Ref<Object> (*PrimitiveMethod)(Ref<Object> thisRef, EvalContext & context,
+                                           String message, vector<Ref<Object> > args);
+
     class DynamicObject : public Object
     {
     public:
@@ -35,10 +38,13 @@ namespace Finch
         virtual Ref<Object> Receive(Ref<Object> thisRef, EvalContext & context,
                                     String message, vector<Ref<Object> > args);
         
+        void RegisterPrimitive(String message, PrimitiveMethod method);
+        
     private:
         Ref<Object>               mPrototype;
         String                    mName; //### bob: hack temp
         map<String, Ref<Object> > mFields;
         map<String, Ref<Object> > mMethods;
+        map<String, PrimitiveMethod > mPrimitives;
     };    
 }
