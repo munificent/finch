@@ -2,6 +2,7 @@
 #include <string>
 
 #include "Evaluator.h"
+#include "EvalContext.h"
 #include "Scope.h"
 #include "String.h"
 #include "Repl.h"
@@ -13,15 +14,8 @@ namespace Finch
         bool   running = true;
         String line;
         
-        // build the global scope
-        Ref<Scope> globalScope = Ref<Scope>(new Scope()); 
-        
-        //### bob: temp
-        Ref<Object> nilObject = Object::New(Ref<Object>());
-        globalScope->Define("Object", Object::New(Ref<Object>()));
-        globalScope->Define("Nil", nilObject);
-        
-        Evaluator evaluator(globalScope, nilObject);
+        EvalContext context;
+        Evaluator evaluator(context);
         
         std::cout << "finch 0.0.0d\n";
         

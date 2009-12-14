@@ -13,22 +13,27 @@ namespace Finch
     
     class Expr;
     class Scope;
+    class BlockObject;
+    class EvalContext;
     
     class Object
     {
     public:
         // virtual constructors
+        static Ref<Object> New(Ref<Object> prototype, String name);
         static Ref<Object> New(Ref<Object> prototype);
         static Ref<Object> New(double value);
         static Ref<Object> New(String value);
-        static Ref<Object> New(Ref<Scope> parentScope, Ref<Expr> value);
+        static Ref<Object> New(Ref<Expr> value);
         
         virtual ~Object() {}
         
-        virtual Ref<Object> Receive(Ref<Object> thisRef, String message, vector<Ref<Object> > args) = 0;
+        virtual Ref<Object> Receive(Ref<Object> thisRef, EvalContext & context,
+                                    String message, vector<Ref<Object> > args) = 0;
         
-        virtual double AsNumber() const { return 0; }
-        virtual String AsString() const { return ""; }
+        virtual double        AsNumber() const { return 0; }
+        virtual String        AsString() const { return ""; }
+        virtual BlockObject * AsBlock()        { return NULL; }
         
         virtual void Trace(std::ostream & stream) const = 0;
     };

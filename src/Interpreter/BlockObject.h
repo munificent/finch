@@ -17,17 +17,20 @@ namespace Finch
     class BlockObject : public Object
     {
     public:
-        BlockObject(Ref<Scope> parentScope, Ref<Expr> body)
-        :   mParentScope(parentScope),
-            mBody(body)
+        BlockObject(Ref<Expr> body)
+        :   mBody(body)
         {}
+        
+        Ref<Expr> Body() const { return mBody; }
+        
+        virtual Ref<Object> Receive(Ref<Object> thisRef, EvalContext & context,
+                                    String message, vector<Ref<Object> > args);
+        
+        virtual BlockObject * AsBlock() { return this; }
         
         virtual void Trace(std::ostream & stream) const;
         
-        virtual Ref<Object> Receive(Ref<Object> thisRef, String message, vector<Ref<Object> > args);
-        
     private:
-        Ref<Scope> mParentScope;
         Ref<Expr>  mBody;
     };    
 }

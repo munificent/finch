@@ -65,7 +65,8 @@ namespace Finch
                     break;
                     
                 case LEX_IN_SYMBOL:
-                    token = TextToken(IsAlpha(c) || IsDigit(c) || IsOperator(c),
+                    token = TextToken(IsAlpha(c) || IsDigit(c) ||
+                                      IsOperator(c) || (c == ':'),
                                       false, TOKEN_SYMBOL);
                     break;
                     

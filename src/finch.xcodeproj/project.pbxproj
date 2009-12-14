@@ -39,6 +39,7 @@
 		C4FC167410D4334800E6ABD6 /* Token.cpp in Sources */ = {isa = PBXBuildFile; fileRef = C4FC166F10D4334800E6ABD6 /* Token.cpp */; };
 		C4FC167A10D4336500E6ABD6 /* Ref.cpp in Sources */ = {isa = PBXBuildFile; fileRef = C4FC167610D4336500E6ABD6 /* Ref.cpp */; };
 		C4FC167B10D4336500E6ABD6 /* String.cpp in Sources */ = {isa = PBXBuildFile; fileRef = C4FC167810D4336500E6ABD6 /* String.cpp */; };
+		C4FC169710D5EA8900E6ABD6 /* EvalContext.cpp in Sources */ = {isa = PBXBuildFile; fileRef = C4FC169610D5EA8900E6ABD6 /* EvalContext.cpp */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXCopyFilesBuildPhase section */
@@ -119,6 +120,8 @@
 		C4FC167710D4336500E6ABD6 /* Ref.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = Ref.h; path = Base/Ref.h; sourceTree = "<group>"; };
 		C4FC167810D4336500E6ABD6 /* String.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = String.cpp; path = Base/String.cpp; sourceTree = "<group>"; };
 		C4FC167910D4336500E6ABD6 /* String.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = String.h; path = Base/String.h; sourceTree = "<group>"; };
+		C4FC169510D5EA8900E6ABD6 /* EvalContext.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = EvalContext.h; sourceTree = "<group>"; };
+		C4FC169610D5EA8900E6ABD6 /* EvalContext.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = EvalContext.cpp; sourceTree = "<group>"; };
 		C6859E8B029090EE04C91782 /* finch.1 */ = {isa = PBXFileReference; lastKnownFileType = text.man; name = finch.1; path = snow.1; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
@@ -227,6 +230,8 @@
 				C4FC15FD10D4328300E6ABD6 /* Scope.cpp */,
 				C4FC160010D4328300E6ABD6 /* StringObject.h */,
 				C4FC15FF10D4328300E6ABD6 /* StringObject.cpp */,
+				C4FC169510D5EA8900E6ABD6 /* EvalContext.h */,
+				C4FC169610D5EA8900E6ABD6 /* EvalContext.cpp */,
 			);
 			name = Interpreter;
 			sourceTree = "<group>";
@@ -343,6 +348,7 @@
 				C4FC167410D4334800E6ABD6 /* Token.cpp in Sources */,
 				C4FC167A10D4336500E6ABD6 /* Ref.cpp in Sources */,
 				C4FC167B10D4336500E6ABD6 /* String.cpp in Sources */,
+				C4FC169710D5EA8900E6ABD6 /* EvalContext.cpp in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

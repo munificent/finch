@@ -21,7 +21,8 @@ namespace Finch
         
         virtual void Trace(std::ostream & stream) const;
         
-        virtual Ref<Object> Receive(Ref<Object> thisRef, String message, vector<Ref<Object> > args);
+        virtual Ref<Object> Receive(Ref<Object> thisRef, EvalContext & context,
+                                    String message, vector<Ref<Object> > args);
         
         virtual double AsNumber() const { return mValue; }
         

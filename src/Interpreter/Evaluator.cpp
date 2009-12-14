@@ -2,6 +2,7 @@
 
 #include "Evaluator.h"
 
+#include "EvalContext.h"
 #include "BlockExpr.h"
 #include "DefExpr.h"
 #include "KeywordExpr.h"
@@ -15,12 +16,6 @@
 
 namespace Finch
 {
-    Evaluator::Evaluator(Ref<Scope> scope, Ref<Object> nilObject)
-    :   mScope(scope),
-        mNil(nilObject)
-    {
-    }
-    
     Ref<Object> Evaluator::Evaluate(Ref<Expr> expr)
     {
         return expr->Accept(*this);
@@ -28,7 +23,7 @@ namespace Finch
     
     Ref<Object> Evaluator::Visit(const BlockExpr & expr)
     {
-        return Object::New(mScope, expr.Body());
+        return Object::New(expr.Body());
     }
     
     Ref<Object> Evaluator::Visit(const DefExpr & expr)
@@ -43,7 +38,7 @@ namespace Finch
         }
         
         //### bob: hack temp. always define in global scope
-        return mScope->Define(expr.Name(), value);
+        return mContext.CurrentScope()->Define(expr.Name(), value);
     }
     
     Ref<Object> Evaluator::Visit(const KeywordExpr & expr)
@@ -62,13 +57,15 @@ namespace Finch
         }
         
         // send the message
-        return NullToNil(receiver->Receive(receiver, fullName, args));
+        return NullToNil(receiver->Receive(receiver, mContext, fullName, args));
     }
     
     Ref<Object> Evaluator::Visit(const NameExpr & expr)
     {
+        if (expr.Name() == ".") return mContext.Self();
+        
         //### bob: hack temp. always look up in global scope
-        return NullToNil(mScope->LookUp(expr.Name()));
+        return NullToNil(mContext.CurrentScope()->LookUp(expr.Name()));
     }
 
     Ref<Object> Evaluator::Visit(const NumberExpr & expr)
@@ -84,7 +81,7 @@ namespace Finch
         vector<Ref<Object> > args;
         args.push_back(arg);
         
-        return NullToNil(receiver->Receive(receiver, expr.Operator(), args));
+        return NullToNil(receiver->Receive(receiver, mContext, expr.Operator(), args));
     }    
     
     Ref<Object> Evaluator::Visit(const SequenceExpr & expr)
@@ -103,7 +100,7 @@ namespace Finch
         //### bob: hack temp. always set in global scope
         // should look up name to figure out which scope
         // it's defined in and there
-        return mScope->Set(expr.Name(), value);
+        return mContext.CurrentScope()->Set(expr.Name(), value);
     }
     
     Ref<Object> Evaluator::Visit(const SymbolExpr & expr)
@@ -115,6 +112,13 @@ namespace Finch
     {
         Ref<Object> receiver = expr.Receiver()->Accept(*this);
         
-        return NullToNil(receiver->Receive(receiver, expr.Message(), vector<Ref<Object> >()));
+        return NullToNil(receiver->Receive(receiver, mContext, expr.Message(), vector<Ref<Object> >()));
+    }
+    
+    Ref<Object> Evaluator::NullToNil(Ref<Object> result) const
+    {
+        if (result.IsNull()) return mContext.Nil();
+        
+        return result;
     }
 }

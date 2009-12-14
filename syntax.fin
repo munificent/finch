@@ -7,6 +7,21 @@
 {|| it someMessage } // implicit arg name "it"
 {|first second| first gets: second }
 
+// no args, no locals
+{ obj message }
+
+// one arg, no locals
+{:arg obj message }
+
+// it arg, no locals
+{:it obj message }
+
+// locals, no args
+{|local other| obj message }
+
+// args, locals
+{:(arg other) |local another| obj message }
+
 // compound expressions:
 obj first; obj second
 
@@ -21,9 +36,9 @@ someObj add-field: `fieldName
 someObj add-field: `fieldName value: 1234
 
 // define methods:
-someObj add-method: `message-name block: { self do-something }
-someObj add-method: `+some-op block: {|rhs| self do-something }
-someObj add-method: `key:word:method: block: {|a b c| self do-something }
+someObj add-method: `message-name body: { self do-something }
+someObj add-method: `+some-op body: {|rhs| self do-something }
+someObj add-method: `key:word:method: body: {|a b c| self do-something }
 
 // define prototype slot:
 someObj prototype: thePrototype
@@ -41,7 +56,7 @@ set temp 123 // sets the value of 'temp' at whatever scope it was
              // previously defined. use this to change variables
              // defined in outer scopes
              
-unset temp // remove a previously defined variable at this scope
+undef temp // remove a previously defined variable at this scope
 // note this is different from setting temp to Nil
 // when you unset a variable, you unshadow that name
 // from being accessible in a parent scope. consider:
@@ -58,10 +73,15 @@ unset temp // remove a previously defined variable at this scope
     // unset
     {
         def a 2
-        unset a
+        undef a
         Out write: a // writes 1
     }
 }
 
 // global variables:
 def SomeGlobal // case distinguishes global from local
+
+// self:
+// within the body of a method, you can access the object that owns
+// the method using "."
+.name // sends the "name" message to self

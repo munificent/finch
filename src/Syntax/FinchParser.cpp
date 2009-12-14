@@ -145,6 +145,10 @@ namespace Finch
         {
             return Ref<Expr>(new SymbolExpr(Consume()->Text()));
         }
+        else if (ConsumeIf(TOKEN_DOT))
+        {
+            return Ref<Expr>(new NameExpr("."));
+        }
         else if (ConsumeIf(TOKEN_LEFT_PAREN))
         {
             Ref<Expr> expression = Expression();

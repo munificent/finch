@@ -1,6 +1,6 @@
 #include "BlockObject.h"
 #include "BlockExpr.h"
-#include "Evaluator.h"
+#include "EvalContext.h"
 
 namespace Finch
 {
@@ -9,14 +9,13 @@ namespace Finch
         stream << "block " << mBody;
     }
     
-    Ref<Object> BlockObject::Receive(Ref<Object> thisRef, String message, vector<Ref<Object> > args)
+    Ref<Object> BlockObject::Receive(Ref<Object> thisRef, EvalContext & context,
+                                     String message, vector<Ref<Object> > args)
     {
         //### bob: this could be refactored into something more maintainable
         if ((message == "value") && (args.size() == 0))
         {
-            //### bob: looking up nil here is kind of lame
-            Evaluator evaluator(mParentScope, mParentScope->LookUp("Nil"));
-            return evaluator.Evaluate(mBody);
+            return context.EvaluateBlock(mBody);
         }
         
         //### bob: need to handle block arguments too

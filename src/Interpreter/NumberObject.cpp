@@ -1,4 +1,5 @@
 #include "NumberObject.h"
+#include "EvalContext.h"
 
 namespace Finch
 {
@@ -7,7 +8,8 @@ namespace Finch
         stream << mValue;
     }
 
-    Ref<Object> NumberObject::Receive(Ref<Object> thisRef, String message, vector<Ref<Object> > args)
+    Ref<Object> NumberObject::Receive(Ref<Object> thisRef, EvalContext & context,
+                                      String message, vector<Ref<Object> > args)
     {
         //### bob: this could be refactored into something more maintainable
         if (message == "abs")
@@ -39,12 +41,35 @@ namespace Finch
             double value = args[0]->AsNumber();
             return Object::New(mValue / value); 
         }
-        //### bob: temp!
-        else if (message == "hack:temp:")
+        else if (message == "=")
         {
-            double value1 = args[0]->AsNumber();
-            double value2 = args[1]->AsNumber();
-            return Object::New(mValue + value1 + value2); 
+            double value = args[0]->AsNumber();
+            return (mValue == value) ? context.True() : context.False(); 
+        }
+        else if (message == "!=")
+        {
+            double value = args[0]->AsNumber();
+            return (mValue != value) ? context.True() : context.False(); 
+        }
+        else if (message == "<")
+        {
+            double value = args[0]->AsNumber();
+            return (mValue < value) ? context.True() : context.False(); 
+        }
+        else if (message == ">")
+        {
+            double value = args[0]->AsNumber();
+            return (mValue > value) ? context.True() : context.False(); 
+        }
+        else if (message == "<=")
+        {
+            double value = args[0]->AsNumber();
+            return (mValue <= value) ? context.True() : context.False(); 
+        }
+        else if (message == ">=")
+        {
+            double value = args[0]->AsNumber();
+            return (mValue >= value) ? context.True() : context.False(); 
         }
         
         //### bob: should do some sort of message not handled thing here

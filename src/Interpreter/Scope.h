@@ -34,6 +34,8 @@ namespace Finch
         // gets the value of the given variable.
         Ref<Object> LookUp(String name);
         
+        Ref<Scope> Parent() const { return mParent; }
+        
     private:
         Ref<Scope>                mParent;
         map<String, Ref<Object> > mVariables;
