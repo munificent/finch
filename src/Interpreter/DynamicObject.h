@@ -16,7 +16,7 @@ namespace Finch
     using std::vector;
     
     typedef Ref<Object> (*PrimitiveMethod)(Ref<Object> thisRef, EvalContext & context,
-                                           String message, vector<Ref<Object> > args);
+                                           String message, const vector<Ref<Object> > & args);
 
     class DynamicObject : public Object
     {
@@ -36,7 +36,7 @@ namespace Finch
         virtual String AsString() const { return mName; }
 
         virtual Ref<Object> Receive(Ref<Object> thisRef, EvalContext & context,
-                                    String message, vector<Ref<Object> > args);
+                                    String message, const vector<Ref<Object> > & args);
         
         void RegisterPrimitive(String message, PrimitiveMethod method);
         

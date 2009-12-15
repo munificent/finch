@@ -3,7 +3,9 @@
 #include "Evaluator.h"
 #include "Expr.h"
 #include "DynamicObject.h"
-#include "Console.h"
+#include "BlockPrimitives.h"
+#include "ConsolePrimitives.h"
+#include "NumberPrimitives.h"
 
 namespace Finch
 {
@@ -16,15 +18,44 @@ namespace Finch
         Ref<Object> rootObject = Object::New(Ref<Object>(), "Object");
         mGlobals->Define("Object", rootObject);
         
+        // define Block prototype
+        mBlock = Object::New(rootObject, "Block");
+        mGlobals->Define("Block", mBlock);
+        
+        DynamicObject* blockObj = &static_cast<DynamicObject&>(*mBlock);
+        blockObj->RegisterPrimitive("value", BlockValue);
+        blockObj->RegisterPrimitive("while:", BlockWhile);
+        
+        // define Number prototype
+        mNumber = Object::New(rootObject, "Number");
+        mGlobals->Define("Number", mNumber);
+        
+        DynamicObject* numberObj = &static_cast<DynamicObject&>(*mNumber);
+        numberObj->RegisterPrimitive("abs", NumberAbs);
+        numberObj->RegisterPrimitive("neg", NumberNeg);
+        numberObj->RegisterPrimitive("+",   NumberPlus);
+        numberObj->RegisterPrimitive("-",   NumberMinus);
+        numberObj->RegisterPrimitive("*",   NumberMultiply);
+        numberObj->RegisterPrimitive("/",   NumberDivide);
+        numberObj->RegisterPrimitive("=",   NumberEquals);
+        numberObj->RegisterPrimitive("!=",  NumberNotEquals);
+        numberObj->RegisterPrimitive("<",   NumberLessThan);
+        numberObj->RegisterPrimitive(">",   NumberGreaterThan);
+        numberObj->RegisterPrimitive("<=",  NumberLessThanOrEqual);
+        numberObj->RegisterPrimitive(">=",  NumberGreaterThanOrEqual);
+        
+        // define nil
         mNil = Object::New(rootObject, "Nil");
         mGlobals->Define("Nil", mNil);
         
+        // define true and false
         mTrue = Object::New(rootObject, "True");
         mGlobals->Define("True", mTrue);
         
         mFalse = Object::New(rootObject, "False");
         mGlobals->Define("False", mFalse);
         
+        // define Console
         Ref<Object> console = Object::New(rootObject, "Console");
         mGlobals->Define("Console", console);
         

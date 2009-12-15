@@ -1487,18 +1487,32 @@
 		path = /Users/bob/Documents/dev/finch/src/Parser.cpp;
 		sourceTree = "<absolute>";
 	};
-	C4CDF85010D680BE001C9D4A /* Console.h */ = {
+	C4CDF85010D680BE001C9D4A /* ConsolePrimitives.h */ = {
 		uiCtxt = {
 			sepNavIntBoundsRect = "{{0, 0}, {777, 748}}";
-			sepNavSelRange = "{358, 0}";
-			sepNavVisRange = "{0, 477}";
+			sepNavSelRange = "{489, 0}";
+			sepNavVisRange = "{0, 493}";
 		};
 	};
-	C4CDF85110D680BE001C9D4A /* Console.cpp */ = {
+	C4CDF85110D680BE001C9D4A /* ConsolePrimitives.cpp */ = {
 		uiCtxt = {
 			sepNavIntBoundsRect = "{{0, 0}, {777, 748}}";
-			sepNavSelRange = "{525, 0}";
-			sepNavVisRange = "{0, 539}";
+			sepNavSelRange = "{49, 0}";
+			sepNavVisRange = "{0, 643}";
+		};
+	};
+	C4CDF85B10D7C723001C9D4A /* BlockPrimitives.h */ = {
+		uiCtxt = {
+			sepNavIntBoundsRect = "{{0, 0}, {777, 748}}";
+			sepNavSelRange = "{483, 0}";
+			sepNavVisRange = "{0, 483}";
+		};
+	};
+	C4CDF85C10D7C723001C9D4A /* BlockPrimitives.cpp */ = {
+		uiCtxt = {
+			sepNavIntBoundsRect = "{{0, 0}, {777, 748}}";
+			sepNavSelRange = "{580, 0}";
+			sepNavVisRange = "{0, 976}";
 		};
 	};
 	C4E3BE9E10CCB3920031C104 /* FinchParser.h */ = {
@@ -1603,30 +1617,30 @@
 	};
 	C4FC15F310D4328300E6ABD6 /* BlockObject.cpp */ = {
 		uiCtxt = {
-			sepNavIntBoundsRect = "{{0, 0}, {829, 364}}";
-			sepNavSelRange = "{571, 0}";
-			sepNavVisRange = "{284, 433}";
+			sepNavIntBoundsRect = "{{0, 0}, {777, 748}}";
+			sepNavSelRange = "{377, 0}";
+			sepNavVisRange = "{0, 501}";
 		};
 	};
 	C4FC15F410D4328300E6ABD6 /* BlockObject.h */ = {
 		uiCtxt = {
 			sepNavIntBoundsRect = "{{0, 0}, {777, 748}}";
-			sepNavSelRange = "{0, 760}";
-			sepNavVisRange = "{0, 760}";
+			sepNavSelRange = "{573, 0}";
+			sepNavVisRange = "{0, 768}";
 		};
 	};
 	C4FC15F510D4328300E6ABD6 /* DynamicObject.cpp */ = {
 		uiCtxt = {
 			sepNavIntBoundsRect = "{{0, 0}, {777, 1918}}";
-			sepNavSelRange = "{3322, 0}";
-			sepNavVisRange = "{2536, 1853}";
+			sepNavSelRange = "{369, 0}";
+			sepNavVisRange = "{0, 1630}";
 		};
 	};
 	C4FC15F610D4328300E6ABD6 /* DynamicObject.h */ = {
 		uiCtxt = {
 			sepNavIntBoundsRect = "{{0, 0}, {777, 748}}";
-			sepNavSelRange = "{1069, 15}";
-			sepNavVisRange = "{0, 1374}";
+			sepNavSelRange = "{409, 0}";
+			sepNavVisRange = "{0, 1390}";
 		};
 	};
 	C4FC15F710D4328300E6ABD6 /* Evaluator.cpp */ = {
@@ -1645,30 +1659,30 @@
 	};
 	C4FC15F910D4328300E6ABD6 /* NumberObject.cpp */ = {
 		uiCtxt = {
-			sepNavIntBoundsRect = "{{0, 0}, {777, 1134}}";
-			sepNavSelRange = "{51, 0}";
-			sepNavVisRange = "{0, 1644}";
+			sepNavIntBoundsRect = "{{0, 0}, {777, 1092}}";
+			sepNavSelRange = "{657, 0}";
+			sepNavVisRange = "{0, 1652}";
 		};
 	};
 	C4FC15FA10D4328300E6ABD6 /* NumberObject.h */ = {
 		uiCtxt = {
 			sepNavIntBoundsRect = "{{0, 0}, {777, 748}}";
-			sepNavSelRange = "{497, 0}";
-			sepNavVisRange = "{0, 666}";
+			sepNavSelRange = "{546, 0}";
+			sepNavVisRange = "{0, 674}";
 		};
 	};
 	C4FC15FB10D4328300E6ABD6 /* Object.cpp */ = {
 		uiCtxt = {
-			sepNavIntBoundsRect = "{{0, 0}, {777, 748}}";
-			sepNavSelRange = "{273, 0}";
-			sepNavVisRange = "{0, 886}";
+			sepNavIntBoundsRect = "{{0, 0}, {509, 546}}";
+			sepNavSelRange = "{413, 0}";
+			sepNavVisRange = "{339, 294}";
 		};
 	};
 	C4FC15FC10D4328300E6ABD6 /* Object.h */ = {
 		uiCtxt = {
 			sepNavIntBoundsRect = "{{0, 0}, {777, 748}}";
-			sepNavSelRange = "{373, 0}";
-			sepNavVisRange = "{0, 1135}";
+			sepNavSelRange = "{263, 0}";
+			sepNavVisRange = "{0, 1182}";
 		};
 	};
 	C4FC15FD10D4328300E6ABD6 /* Scope.cpp */ = {
@@ -1688,15 +1702,15 @@
 	C4FC15FF10D4328300E6ABD6 /* StringObject.cpp */ = {
 		uiCtxt = {
 			sepNavIntBoundsRect = "{{0, 0}, {777, 748}}";
-			sepNavSelRange = "{282, 0}";
-			sepNavVisRange = "{0, 441}";
+			sepNavSelRange = "{331, 0}";
+			sepNavVisRange = "{0, 449}";
 		};
 	};
 	C4FC160010D4328300E6ABD6 /* StringObject.h */ = {
 		uiCtxt = {
 			sepNavIntBoundsRect = "{{0, 0}, {777, 748}}";
-			sepNavSelRange = "{497, 0}";
-			sepNavVisRange = "{0, 666}";
+			sepNavSelRange = "{546, 0}";
+			sepNavVisRange = "{0, 674}";
 		};
 	};
 	C4FC161710D4329D00E6ABD6 /* PBXTextBookmark */ = {
@@ -1951,6 +1965,13 @@
 			sepNavVisRange = "{0, 1142}";
 		};
 	};
+	C4FC167710D4336500E6ABD6 /* Ref.h */ = {
+		uiCtxt = {
+			sepNavIntBoundsRect = "{{0, 0}, {777, 1652}}";
+			sepNavSelRange = "{652, 0}";
+			sepNavVisRange = "{232, 1208}";
+		};
+	};
 	C4FC167D10D433C200E6ABD6 /* PBXTextBookmark */ = {
 		isa = PBXTextBookmark;
 		fRef = C4FC15F410D4328300E6ABD6 /* BlockObject.h */;
@@ -1980,15 +2001,15 @@
 	C4FC169510D5EA8900E6ABD6 /* EvalContext.h */ = {
 		uiCtxt = {
 			sepNavIntBoundsRect = "{{0, 0}, {777, 748}}";
-			sepNavSelRange = "{917, 0}";
-			sepNavVisRange = "{0, 927}";
+			sepNavSelRange = "{951, 0}";
+			sepNavVisRange = "{0, 1016}";
 		};
 	};
 	C4FC169610D5EA8900E6ABD6 /* EvalContext.cpp */ = {
 		uiCtxt = {
-			sepNavIntBoundsRect = "{{0, 0}, {777, 826}}";
-			sepNavSelRange = "{865, 0}";
-			sepNavVisRange = "{0, 1596}";
+			sepNavIntBoundsRect = "{{0, 0}, {777, 966}}";
+			sepNavSelRange = "{725, 0}";
+			sepNavVisRange = "{0, 1770}";
 		};
 	};
 	C4FC16BA10D5F67800E6ABD6 /* PBXTextBookmark */ = {
@@ -2116,7 +2137,7 @@
 		fRef = C4FC15F310D4328300E6ABD6 /* BlockObject.cpp */;
 		name = "BlockObject.cpp: 19";
 		rLen = 0;
-		rLoc = 562;
+		rLoc = 377;
 		rType = 0;
 		vrLen = 754;
 		vrLoc = 0;
@@ -2146,7 +2167,7 @@
 		fRef = C4FC169510D5EA8900E6ABD6 /* EvalContext.h */;
 		name = "EvalContext.h: 37";
 		rLen = 0;
-		rLoc = 917;
+		rLoc = 1006;
 		rType = 0;
 		vrLen = 927;
 		vrLoc = 0;
@@ -2196,7 +2217,7 @@
 		fRef = C4FC15F610D4328300E6ABD6 /* DynamicObject.h */;
 		name = "DynamicObject.h: 26";
 		rLen = 0;
-		rLoc = 643;
+		rLoc = 651;
 		rType = 0;
 		vrLen = 1067;
 		vrLoc = 0;
@@ -2226,7 +2247,7 @@
 		fRef = C4FC169610D5EA8900E6ABD6 /* EvalContext.cpp */;
 		name = "EvalContext.cpp: 25";
 		rLen = 0;
-		rLoc = 1077;
+		rLoc = 1537;
 		rType = 0;
 		vrLen = 1284;
 		vrLoc = 0;
@@ -2256,7 +2277,7 @@
 		fRef = C4FC15F610D4328300E6ABD6 /* DynamicObject.h */;
 		name = "DynamicObject.h: 22";
 		rLen = 0;
-		rLoc = 463;
+		rLoc = 471;
 		rType = 0;
 		vrLen = 692;
 		vrLoc = 0;
@@ -2286,7 +2307,7 @@
 		fRef = C4FC15F610D4328300E6ABD6 /* DynamicObject.h */;
 		name = "DynamicObject.h: 29";
 		rLen = 0;
-		rLoc = 969;
+		rLoc = 977;
 		rType = 0;
 		vrLen = 713;
 		vrLoc = 0;
@@ -2296,7 +2317,7 @@
 		fRef = C4FC15F410D4328300E6ABD6 /* BlockObject.h */;
 		name = "BlockObject.h: 27";
 		rLen = 0;
-		rLoc = 700;
+		rLoc = 708;
 		rType = 0;
 		vrLen = 673;
 		vrLoc = 0;
@@ -2308,7 +2329,7 @@
 		rLen = 0;
 		rLoc = 321;
 		rType = 0;
-		vrLen = 824;
+		vrLen = 754;
 		vrLoc = 0;
 	};
 	C4FC16DA10D5F67800E6ABD6 /* PBXTextBookmark */ = {
@@ -2336,7 +2357,7 @@
 		fRef = C4FC15FC10D4328300E6ABD6 /* Object.h */;
 		name = "Object.h: 28";
 		rLen = 0;
-		rLoc = 735;
+		rLoc = 774;
 		rType = 0;
 		vrLen = 887;
 		vrLoc = 0;
@@ -2356,7 +2377,7 @@
 		fRef = C4FC15FC10D4328300E6ABD6 /* Object.h */;
 		name = "Object.h: 28";
 		rLen = 0;
-		rLoc = 735;
+		rLoc = 774;
 		rType = 0;
 		vrLen = 887;
 		vrLoc = 0;
@@ -2416,7 +2437,7 @@
 		fRef = C4FC15F510D4328300E6ABD6 /* DynamicObject.cpp */;
 		name = "DynamicObject.cpp: 14";
 		rLen = 0;
-		rLoc = 410;
+		rLoc = 418;
 		rType = 0;
 		vrLen = 1604;
 		vrLoc = 0;
@@ -2446,7 +2467,7 @@
 		fRef = C4FC15F510D4328300E6ABD6 /* DynamicObject.cpp */;
 		name = "DynamicObject.cpp: 43";
 		rLen = 0;
-		rLoc = 2113;
+		rLoc = 2121;
 		rType = 0;
 		vrLen = 1921;
 		vrLoc = 507;
@@ -2456,7 +2477,7 @@
 		fRef = C4FC15F610D4328300E6ABD6 /* DynamicObject.h */;
 		name = "DynamicObject.h: 23";
 		rLen = 0;
-		rLoc = 481;
+		rLoc = 489;
 		rType = 0;
 		vrLen = 713;
 		vrLoc = 0;
@@ -2466,7 +2487,7 @@
 		fRef = C4FC15F510D4328300E6ABD6 /* DynamicObject.cpp */;
 		name = "DynamicObject.cpp: 43";
 		rLen = 0;
-		rLoc = 2113;
+		rLoc = 2121;
 		rType = 0;
 		vrLen = 1643;
 		vrLoc = 27;
@@ -2536,7 +2557,7 @@
 		fRef = C4FC15F510D4328300E6ABD6 /* DynamicObject.cpp */;
 		name = "DynamicObject.cpp: 16";
 		rLen = 0;
-		rLoc = 469;
+		rLoc = 477;
 		rType = 0;
 		vrLen = 1643;
 		vrLoc = 27;
@@ -2546,7 +2567,7 @@
 		fRef = C4FC15F610D4328300E6ABD6 /* DynamicObject.h */;
 		name = "DynamicObject.h: 34";
 		rLen = 0;
-		rLoc = 1309;
+		rLoc = 1325;
 		rType = 0;
 		vrLen = 757;
 		vrLoc = 0;
@@ -2556,7 +2577,7 @@
 		fRef = C4FC15F510D4328300E6ABD6 /* DynamicObject.cpp */;
 		name = "DynamicObject.cpp: 47";
 		rLen = 0;
-		rLoc = 1673;
+		rLoc = 1681;
 		rType = 0;
 		vrLen = 1674;
 		vrLoc = 507;
@@ -2566,7 +2587,7 @@
 		fRef = C4FC15FC10D4328300E6ABD6 /* Object.h */;
 		name = "Object.h: 32";
 		rLen = 0;
-		rLoc = 956;
+		rLoc = 1003;
 		rType = 0;
 		vrLen = 984;
 		vrLoc = 0;
@@ -2576,7 +2597,7 @@
 		fRef = C4FC15F510D4328300E6ABD6 /* DynamicObject.cpp */;
 		name = "DynamicObject.cpp: 47";
 		rLen = 0;
-		rLoc = 1673;
+		rLoc = 1681;
 		rType = 0;
 		vrLen = 1661;
 		vrLoc = 507;
@@ -2586,7 +2607,7 @@
 		fRef = C4FC15FC10D4328300E6ABD6 /* Object.h */;
 		name = "Object.h: 32";
 		rLen = 64;
-		rLoc = 915;
+		rLoc = 962;
 		rType = 0;
 		vrLen = 986;
 		vrLoc = 0;
@@ -2596,7 +2617,7 @@
 		fRef = C4FC15F410D4328300E6ABD6 /* BlockObject.h */;
 		name = "BlockObject.h: 27";
 		rLen = 0;
-		rLoc = 700;
+		rLoc = 708;
 		rType = 0;
 		vrLen = 673;
 		vrLoc = 0;
@@ -2606,7 +2627,7 @@
 		fRef = C4FC15FC10D4328300E6ABD6 /* Object.h */;
 		name = "Object.h: 32";
 		rLen = 64;
-		rLoc = 915;
+		rLoc = 962;
 		rType = 0;
 		vrLen = 986;
 		vrLoc = 0;
@@ -2616,7 +2637,7 @@
 		fRef = C4FC15F410D4328300E6ABD6 /* BlockObject.h */;
 		name = "BlockObject.h: 28";
 		rLen = 0;
-		rLoc = 642;
+		rLoc = 650;
 		rType = 0;
 		vrLen = 746;
 		vrLoc = 0;
@@ -2626,7 +2647,7 @@
 		fRef = C4FC15FC10D4328300E6ABD6 /* Object.h */;
 		name = "Object.h: 33";
 		rLen = 0;
-		rLoc = 961;
+		rLoc = 1008;
 		rType = 0;
 		vrLen = 1009;
 		vrLoc = 0;
@@ -2636,7 +2657,7 @@
 		fRef = C4FC15F410D4328300E6ABD6 /* BlockObject.h */;
 		name = "BlockObject.h: 27";
 		rLen = 0;
-		rLoc = 616;
+		rLoc = 624;
 		rType = 0;
 		vrLen = 739;
 		vrLoc = 0;
@@ -2646,7 +2667,7 @@
 		fRef = C4FC15F510D4328300E6ABD6 /* DynamicObject.cpp */;
 		name = "DynamicObject.cpp: 96";
 		rLen = 0;
-		rLoc = 3228;
+		rLoc = 3236;
 		rType = 0;
 		vrLen = 1909;
 		vrLoc = 1728;
@@ -2676,7 +2697,7 @@
 		fRef = C4FC15F510D4328300E6ABD6 /* DynamicObject.cpp */;
 		name = "DynamicObject.cpp: 97";
 		rLen = 0;
-		rLoc = 3228;
+		rLoc = 3236;
 		rType = 0;
 		vrLen = 1869;
 		vrLoc = 1798;
@@ -2696,9 +2717,9 @@
 		fRef = C4FC15F310D4328300E6ABD6 /* BlockObject.cpp */;
 		name = "BlockObject.cpp: 21";
 		rLen = 0;
-		rLoc = 580;
+		rLoc = 377;
 		rType = 0;
-		vrLen = 824;
+		vrLen = 754;
 		vrLoc = 0;
 	};
 	C4FC170110D5F67800E6ABD6 /* PBXTextBookmark */ = {
@@ -2706,7 +2727,7 @@
 		fRef = C4FC15F410D4328300E6ABD6 /* BlockObject.h */;
 		name = "BlockObject.h: 27";
 		rLen = 0;
-		rLoc = 616;
+		rLoc = 624;
 		rType = 0;
 		vrLen = 739;
 		vrLoc = 0;
@@ -2716,7 +2737,7 @@
 		fRef = C4FC15F510D4328300E6ABD6 /* DynamicObject.cpp */;
 		name = "DynamicObject.cpp: 90";
 		rLen = 0;
-		rLoc = 2852;
+		rLoc = 2860;
 		rType = 0;
 		vrLen = 1989;
 		vrLoc = 1764;
@@ -2746,7 +2767,7 @@
 		fRef = C4FC15F510D4328300E6ABD6 /* DynamicObject.cpp */;
 		name = "DynamicObject.cpp: 101";
 		rLen = 0;
-		rLoc = 3228;
+		rLoc = 3236;
 		rType = 0;
 		vrLen = 1884;
 		vrLoc = 1991;
@@ -2766,7 +2787,7 @@
 		fRef = C4FC15F510D4328300E6ABD6 /* DynamicObject.cpp */;
 		name = "DynamicObject.cpp: 101";
 		rLen = 0;
-		rLoc = 3228;
+		rLoc = 3236;
 		rType = 0;
 		vrLen = 1655;
 		vrLoc = 187;
@@ -2776,7 +2797,7 @@
 		fRef = C4FC15F610D4328300E6ABD6 /* DynamicObject.h */;
 		name = "DynamicObject.h: 34";
 		rLen = 0;
-		rLoc = 1309;
+		rLoc = 1325;
 		rType = 0;
 		vrLen = 757;
 		vrLoc = 0;
@@ -2786,7 +2807,7 @@
 		fRef = C4FC15F510D4328300E6ABD6 /* DynamicObject.cpp */;
 		name = "DynamicObject.cpp: 101";
 		rLen = 0;
-		rLoc = 3228;
+		rLoc = 3236;
 		rType = 0;
 		vrLen = 1867;
 		vrLoc = 1776;
@@ -2816,7 +2837,7 @@
 		fRef = C4FC169510D5EA8900E6ABD6 /* EvalContext.h */;
 		name = "EvalContext.h: 22";
 		rLen = 0;
-		rLoc = 726;
+		rLoc = 787;
 		rType = 0;
 		vrLen = 629;
 		vrLoc = 0;
@@ -2826,7 +2847,7 @@
 		fRef = C4FC169610D5EA8900E6ABD6 /* EvalContext.cpp */;
 		name = "EvalContext.cpp: 6";
 		rLen = 0;
-		rLoc = 1728;
+		rLoc = 2188;
 		rType = 0;
 		vrLen = 142;
 		vrLoc = 0;
@@ -2856,7 +2877,7 @@
 		fRef = C4FC169510D5EA8900E6ABD6 /* EvalContext.h */;
 		name = "EvalContext.h: 21";
 		rLen = 0;
-		rLoc = 726;
+		rLoc = 787;
 		rType = 0;
 		vrLen = 629;
 		vrLoc = 0;
@@ -2876,7 +2897,7 @@
 		fRef = C4FC169610D5EA8900E6ABD6 /* EvalContext.cpp */;
 		name = "EvalContext.cpp: 6";
 		rLen = 0;
-		rLoc = 1728;
+		rLoc = 2188;
 		rType = 0;
 		vrLen = 142;
 		vrLoc = 0;
@@ -2896,7 +2917,7 @@
 		fRef = C4FC169510D5EA8900E6ABD6 /* EvalContext.h */;
 		name = "EvalContext.h: 21";
 		rLen = 0;
-		rLoc = 726;
+		rLoc = 787;
 		rType = 0;
 		vrLen = 629;
 		vrLoc = 0;
@@ -2906,7 +2927,7 @@
 		fRef = C4FC169610D5EA8900E6ABD6 /* EvalContext.cpp */;
 		name = "EvalContext.cpp: 11";
 		rLen = 0;
-		rLoc = 1728;
+		rLoc = 2188;
 		rType = 0;
 		vrLen = 141;
 		vrLoc = 0;
@@ -2926,7 +2947,7 @@
 		fRef = C4FC169610D5EA8900E6ABD6 /* EvalContext.cpp */;
 		name = "EvalContext.cpp: 6";
 		rLen = 0;
-		rLoc = 170;
+		rLoc = 209;
 		rType = 0;
 		vrLen = 305;
 		vrLoc = 0;
@@ -2946,7 +2967,7 @@
 		fRef = C4FC169610D5EA8900E6ABD6 /* EvalContext.cpp */;
 		name = "EvalContext.cpp: 11";
 		rLen = 0;
-		rLoc = 421;
+		rLoc = 818;
 		rType = 0;
 		vrLen = 573;
 		vrLoc = 0;
@@ -2956,7 +2977,7 @@
 		fRef = C4FC169510D5EA8900E6ABD6 /* EvalContext.h */;
 		name = "EvalContext.h: 24";
 		rLen = 0;
-		rLoc = 726;
+		rLoc = 787;
 		rType = 0;
 		vrLen = 673;
 		vrLoc = 0;
@@ -3008,7 +3029,7 @@
 		rLen = 19;
 		rLoc = 240;
 		rType = 0;
-		vrLen = 792;
+		vrLen = 754;
 		vrLoc = 0;
 	};
 	C4FC172010D5F67800E6ABD6 /* PBXTextBookmark */ = {
@@ -3016,7 +3037,7 @@
 		fRef = C4FC15F410D4328300E6ABD6 /* BlockObject.h */;
 		name = "BlockObject.h: 27";
 		rLen = 0;
-		rLoc = 616;
+		rLoc = 624;
 		rType = 0;
 		vrLen = 739;
 		vrLoc = 0;
@@ -3028,7 +3049,7 @@
 		rLen = 0;
 		rLoc = 223;
 		rType = 0;
-		vrLen = 792;
+		vrLen = 754;
 		vrLoc = 0;
 	};
 	C4FC172210D5F67800E6ABD6 /* PBXTextBookmark */ = {
@@ -3036,7 +3057,7 @@
 		fRef = C4FC15F510D4328300E6ABD6 /* DynamicObject.cpp */;
 		name = "DynamicObject.cpp: 101";
 		rLen = 0;
-		rLoc = 3228;
+		rLoc = 3236;
 		rType = 0;
 		vrLen = 1634;
 		vrLoc = 76;
@@ -3046,9 +3067,9 @@
 		fRef = C4FC15F310D4328300E6ABD6 /* BlockObject.cpp */;
 		name = "BlockObject.cpp: 18";
 		rLen = 0;
-		rLoc = 513;
+		rLoc = 377;
 		rType = 0;
-		vrLen = 813;
+		vrLen = 754;
 		vrLoc = 0;
 	};
 	C4FC172410D5F67800E6ABD6 /* PBXTextBookmark */ = {
@@ -3068,7 +3089,7 @@
 		rLen = 0;
 		rLoc = 321;
 		rType = 0;
-		vrLen = 850;
+		vrLen = 754;
 		vrLoc = 0;
 	};
 	C4FC172610D5F67800E6ABD6 /* PBXTextBookmark */ = {
@@ -3076,7 +3097,7 @@
 		fRef = C4FC15F610D4328300E6ABD6 /* DynamicObject.h */;
 		name = "DynamicObject.h: 30";
 		rLen = 0;
-		rLoc = 969;
+		rLoc = 977;
 		rType = 0;
 		vrLen = 816;
 		vrLoc = 0;
@@ -3116,7 +3137,7 @@
 		fRef = C4FC15FC10D4328300E6ABD6 /* Object.h */;
 		name = "Object.h: 30";
 		rLen = 0;
-		rLoc = 735;
+		rLoc = 774;
 		rType = 0;
 		vrLen = 1068;
 		vrLoc = 0;
@@ -3146,7 +3167,7 @@
 		fRef = C4FC15F510D4328300E6ABD6 /* DynamicObject.cpp */;
 		name = "DynamicObject.cpp: 96";
 		rLen = 0;
-		rLoc = 2975;
+		rLoc = 2983;
 		rType = 0;
 		vrLen = 1561;
 		vrLoc = 2314;
@@ -3256,7 +3277,7 @@
 		fRef = C4FC15FC10D4328300E6ABD6 /* Object.h */;
 		name = "Object.h: 31";
 		rLen = 0;
-		rLoc = 735;
+		rLoc = 774;
 		rType = 0;
 		vrLen = 1091;
 		vrLoc = 0;
@@ -3286,9 +3307,9 @@
 		fRef = C4FC15F310D4328300E6ABD6 /* BlockObject.cpp */;
 		name = "BlockObject.cpp: 19";
 		rLen = 0;
-		rLoc = 513;
+		rLoc = 377;
 		rType = 0;
-		vrLen = 936;
+		vrLen = 754;
 		vrLoc = 0;
 	};
 	C4FC173C10D5F67800E6ABD6 /* PBXTextBookmark */ = {
@@ -3296,7 +3317,7 @@
 		fRef = C4FC15F410D4328300E6ABD6 /* BlockObject.h */;
 		name = "BlockObject.h: 32";
 		rLen = 0;
-		rLoc = 722;
+		rLoc = 730;
 		rType = 0;
 		vrLen = 702;
 		vrLoc = 0;
@@ -3306,9 +3327,9 @@
 		fRef = C4FC15F310D4328300E6ABD6 /* BlockObject.cpp */;
 		name = "BlockObject.cpp: 19";
 		rLen = 0;
-		rLoc = 513;
+		rLoc = 377;
 		rType = 0;
-		vrLen = 936;
+		vrLen = 754;
 		vrLoc = 0;
 	};
 	C4FC173E10D5F67800E6ABD6 /* PBXTextBookmark */ = {
@@ -3336,9 +3357,9 @@
 		fRef = C4FC15F310D4328300E6ABD6 /* BlockObject.cpp */;
 		name = "BlockObject.cpp: 15";
 		rLen = 0;
-		rLoc = 369;
+		rLoc = 377;
 		rType = 0;
-		vrLen = 961;
+		vrLen = 754;
 		vrLoc = 0;
 	};
 	C4FC174110D5F67800E6ABD6 /* PBXTextBookmark */ = {
@@ -3346,7 +3367,7 @@
 		fRef = C4FC15F510D4328300E6ABD6 /* DynamicObject.cpp */;
 		name = "DynamicObject.cpp: 101";
 		rLen = 0;
-		rLoc = 3227;
+		rLoc = 3235;
 		rType = 0;
 		vrLen = 1644;
 		vrLoc = 2231;
@@ -3366,7 +3387,7 @@
 		fRef = C4FC169510D5EA8900E6ABD6 /* EvalContext.h */;
 		name = "EvalContext.h: 27";
 		rLen = 0;
-		rLoc = 726;
+		rLoc = 787;
 		rType = 0;
 		vrLen = 733;
 		vrLoc = 0;
@@ -3376,7 +3397,7 @@
 		fRef = C4FC169610D5EA8900E6ABD6 /* EvalContext.cpp */;
 		name = "EvalContext.cpp: 30";
 		rLen = 0;
-		rLoc = 1728;
+		rLoc = 2188;
 		rType = 0;
 		vrLen = 721;
 		vrLoc = 0;
@@ -3386,7 +3407,7 @@
 		fRef = C4FC169510D5EA8900E6ABD6 /* EvalContext.h */;
 		name = "EvalContext.h: 27";
 		rLen = 0;
-		rLoc = 726;
+		rLoc = 787;
 		rType = 0;
 		vrLen = 716;
 		vrLoc = 0;
@@ -3396,7 +3417,7 @@
 		fRef = C4FC15F510D4328300E6ABD6 /* DynamicObject.cpp */;
 		name = "DynamicObject.cpp: 32";
 		rLen = 0;
-		rLoc = 874;
+		rLoc = 882;
 		rType = 0;
 		vrLen = 1565;
 		vrLoc = 0;
@@ -3416,7 +3437,7 @@
 		fRef = C4FC15F510D4328300E6ABD6 /* DynamicObject.cpp */;
 		name = "DynamicObject.cpp: 32";
 		rLen = 0;
-		rLoc = 874;
+		rLoc = 882;
 		rType = 0;
 		vrLen = 1907;
 		vrLoc = 1968;
@@ -3446,7 +3467,7 @@
 		fRef = C4FC169510D5EA8900E6ABD6 /* EvalContext.h */;
 		name = "EvalContext.h: 27";
 		rLen = 0;
-		rLoc = 726;
+		rLoc = 787;
 		rType = 0;
 		vrLen = 716;
 		vrLoc = 0;
@@ -3456,7 +3477,7 @@
 		fRef = C4FC169610D5EA8900E6ABD6 /* EvalContext.cpp */;
 		name = "EvalContext.cpp: 30";
 		rLen = 0;
-		rLoc = 1728;
+		rLoc = 2188;
 		rType = 0;
 		vrLen = 721;
 		vrLoc = 0;
@@ -3476,7 +3497,7 @@
 		fRef = C4FC169510D5EA8900E6ABD6 /* EvalContext.h */;
 		name = "EvalContext.h: 25";
 		rLen = 0;
-		rLoc = 726;
+		rLoc = 787;
 		rType = 0;
 		vrLen = 757;
 		vrLoc = 0;
@@ -3506,7 +3527,7 @@
 		fRef = C4FC169610D5EA8900E6ABD6 /* EvalContext.cpp */;
 		name = "EvalContext.cpp: 22";
 		rLen = 0;
-		rLoc = 1294;
+		rLoc = 1754;
 		rType = 0;
 		vrLen = 897;
 		vrLoc = 0;
@@ -3518,7 +3539,7 @@
 		rLen = 0;
 		rLoc = 48;
 		rType = 0;
-		vrLen = 894;
+		vrLen = 754;
 		vrLoc = 0;
 	};
 	C4FC175310D5F67800E6ABD6 /* PBXTextBookmark */ = {
@@ -3526,7 +3547,7 @@
 		fRef = C4FC15F510D4328300E6ABD6 /* DynamicObject.cpp */;
 		name = "DynamicObject.cpp: 104";
 		rLen = 0;
-		rLoc = 3107;
+		rLoc = 3115;
 		rType = 0;
 		vrLen = 1765;
 		vrLoc = 2110;
@@ -3536,7 +3557,7 @@
 		fRef = C4FC15F310D4328300E6ABD6 /* BlockObject.cpp */;
 		name = "BlockObject.cpp: 19";
 		rLen = 0;
-		rLoc = 562;
+		rLoc = 377;
 		rType = 0;
 		vrLen = 754;
 		vrLoc = 0;
@@ -3546,7 +3567,7 @@
 		fRef = C4FC169510D5EA8900E6ABD6 /* EvalContext.h */;
 		name = "EvalContext.h: 28";
 		rLen = 0;
-		rLoc = 726;
+		rLoc = 787;
 		rType = 0;
 		vrLen = 783;
 		vrLoc = 0;
@@ -3556,7 +3577,7 @@
 		fRef = C4FC169610D5EA8900E6ABD6 /* EvalContext.cpp */;
 		name = "EvalContext.cpp: 31";
 		rLen = 33;
-		rLoc = 1432;
+		rLoc = 1892;
 		rType = 0;
 		vrLen = 1048;
 		vrLoc = 0;
@@ -3566,7 +3587,7 @@
 		fRef = C4FC169510D5EA8900E6ABD6 /* EvalContext.h */;
 		name = "EvalContext.h: 28";
 		rLen = 0;
-		rLoc = 726;
+		rLoc = 787;
 		rType = 0;
 		vrLen = 751;
 		vrLoc = 0;
@@ -3576,7 +3597,7 @@
 		fRef = C4FC169610D5EA8900E6ABD6 /* EvalContext.cpp */;
 		name = "EvalContext.cpp: 32";
 		rLen = 0;
-		rLoc = 1486;
+		rLoc = 1946;
 		rType = 0;
 		vrLen = 1048;
 		vrLoc = 0;
@@ -3596,7 +3617,7 @@
 		fRef = C4FC169510D5EA8900E6ABD6 /* EvalContext.h */;
 		name = "EvalContext.h: 30";
 		rLen = 0;
-		rLoc = 748;
+		rLoc = 809;
 		rType = 0;
 		vrLen = 817;
 		vrLoc = 0;
@@ -3616,7 +3637,7 @@
 		fRef = C4FC169610D5EA8900E6ABD6 /* EvalContext.cpp */;
 		name = "EvalContext.cpp: 28";
 		rLen = 0;
-		rLoc = 1390;
+		rLoc = 1850;
 		rType = 0;
 		vrLen = 1236;
 		vrLoc = 0;
@@ -3646,7 +3667,7 @@
 		fRef = C4FC169510D5EA8900E6ABD6 /* EvalContext.h */;
 		name = "EvalContext.h: 30";
 		rLen = 0;
-		rLoc = 748;
+		rLoc = 809;
 		rType = 0;
 		vrLen = 751;
 		vrLoc = 0;
@@ -3656,7 +3677,7 @@
 		fRef = C4FC169610D5EA8900E6ABD6 /* EvalContext.cpp */;
 		name = "EvalContext.cpp: 30";
 		rLen = 0;
-		rLoc = 1402;
+		rLoc = 1862;
 		rType = 0;
 		vrLen = 1048;
 		vrLoc = 0;
@@ -3686,7 +3707,7 @@
 		fRef = C4FC15F910D4328300E6ABD6 /* NumberObject.cpp */;
 		name = "NumberObject.cpp: 22";
 		rLen = 0;
-		rLoc = 659;
+		rLoc = 667;
 		rType = 0;
 		vrLen = 1598;
 		vrLoc = 0;
@@ -3696,7 +3717,7 @@
 		fRef = C4FC169510D5EA8900E6ABD6 /* EvalContext.h */;
 		name = "EvalContext.h: 37";
 		rLen = 0;
-		rLoc = 917;
+		rLoc = 1006;
 		rType = 0;
 		vrLen = 927;
 		vrLoc = 0;
@@ -3706,7 +3727,7 @@
 		fRef = C4FC169610D5EA8900E6ABD6 /* EvalContext.cpp */;
 		name = "EvalContext.cpp: 25";
 		rLen = 0;
-		rLoc = 1077;
+		rLoc = 1537;
 		rType = 0;
 		vrLen = 1283;
 		vrLoc = 0;
@@ -3746,7 +3767,7 @@
 		fRef = C4FC15F610D4328300E6ABD6 /* DynamicObject.h */;
 		name = "DynamicObject.h: 23";
 		rLen = 0;
-		rLoc = 579;
+		rLoc = 587;
 		rType = 0;
 		vrLen = 880;
 		vrLoc = 0;
@@ -3756,7 +3777,7 @@
 		fRef = C4FC15FC10D4328300E6ABD6 /* Object.h */;
 		name = "Object.h: 34";
 		rLen = 62;
-		rLoc = 853;
+		rLoc = 900;
 		rType = 0;
 		vrLen = 1067;
 		vrLoc = 0;
@@ -3766,7 +3787,7 @@
 		fRef = C4FC15F510D4328300E6ABD6 /* DynamicObject.cpp */;
 		name = "DynamicObject.cpp: 102";
 		rLen = 0;
-		rLoc = 3107;
+		rLoc = 3115;
 		rType = 0;
 		vrLen = 1930;
 		vrLoc = 1945;
@@ -3776,7 +3797,7 @@
 		fRef = C4FC15F610D4328300E6ABD6 /* DynamicObject.h */;
 		name = "DynamicObject.h: 28";
 		rLen = 0;
-		rLoc = 817;
+		rLoc = 825;
 		rType = 0;
 		vrLen = 939;
 		vrLoc = 0;
@@ -3796,7 +3817,7 @@
 		fRef = C4FC15F610D4328300E6ABD6 /* DynamicObject.h */;
 		name = "DynamicObject.h: 26";
 		rLen = 0;
-		rLoc = 643;
+		rLoc = 651;
 		rType = 0;
 		vrLen = 1067;
 		vrLoc = 0;
@@ -3826,7 +3847,7 @@
 		fRef = C4FC169610D5EA8900E6ABD6 /* EvalContext.cpp */;
 		name = "EvalContext.cpp: 23";
 		rLen = 0;
-		rLoc = 663;
+		rLoc = 1093;
 		rType = 0;
 		vrLen = 1318;
 		vrLoc = 0;

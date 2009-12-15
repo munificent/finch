@@ -10,17 +10,9 @@ namespace Finch
     }
     
     Ref<Object> BlockObject::Receive(Ref<Object> thisRef, EvalContext & context,
-                                     String message, vector<Ref<Object> > args)
+                                     String message, const vector<Ref<Object> > & args)
     {
-        //### bob: this could be refactored into something more maintainable
-        if ((message == "value") && (args.size() == 0))
-        {
-            return context.EvaluateBlock(mBody);
-        }
-        
-        //### bob: need to handle block arguments too
-        
-        //### bob: should do some sort of message not handled thing here
-        return Ref<Object>();
+        // pass on to the block prototype
+        return context.Block()->Receive(thisRef, context, message, args);
     }
 }

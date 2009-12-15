@@ -24,7 +24,7 @@ namespace Finch
         Ref<Expr> Body() const { return mBody; }
         
         virtual Ref<Object> Receive(Ref<Object> thisRef, EvalContext & context,
-                                    String message, vector<Ref<Object> > args);
+                                    String message, const vector<Ref<Object> > & args);
         
         virtual BlockObject * AsBlock() { return this; }
         

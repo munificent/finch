@@ -22,6 +22,8 @@ namespace Finch
         Ref<Object> Self()          const { return mSelf; }
 
         Ref<Object> Nil()           const { return mNil; }
+        Ref<Object> Block()         const { return mBlock; }
+        Ref<Object> Number()        const { return mNumber; }
         Ref<Object> True()          const { return mTrue; }
         Ref<Object> False()         const { return mFalse; }
         
@@ -33,6 +35,8 @@ namespace Finch
         Ref<Scope> mCurrentScope;
         Ref<Object> mSelf;
         Ref<Object> mNil;
+        Ref<Object> mBlock;
+        Ref<Object> mNumber;
         Ref<Object> mTrue;
         Ref<Object> mFalse;
     };

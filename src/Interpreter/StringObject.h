@@ -22,7 +22,7 @@ namespace Finch
         virtual void Trace(std::ostream & stream) const;
         
         virtual Ref<Object> Receive(Ref<Object> thisRef, EvalContext & context,
-                                    String message, vector<Ref<Object> > args);
+                                    String message, const vector<Ref<Object> > & args);
         
         virtual String AsString() const { return mValue; }
         

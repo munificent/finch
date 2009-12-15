@@ -28,8 +28,9 @@ namespace Finch
         
         virtual ~Object() {}
         
+        //### bob: pass args by const&
         virtual Ref<Object> Receive(Ref<Object> thisRef, EvalContext & context,
-                                    String message, vector<Ref<Object> > args) = 0;
+                                    String message, const vector<Ref<Object> > & args) = 0;
         
         virtual double        AsNumber() const { return 0; }
         virtual String        AsString() const { return ""; }
