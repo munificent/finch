@@ -38,6 +38,7 @@ namespace Finch
                     else if (IsAlpha(c))    StartToken(LEX_IN_NAME);
                     else if (IsOperator(c)) StartToken(LEX_IN_OPERATOR);
                     else if (c == '`')      StartToken(LEX_IN_SYMBOL, true);
+                    else if (c == '\"')     StartToken(LEX_IN_STRING, true);
                     
                     else mIndex++; // ignore other characters
                     break;
@@ -70,12 +71,22 @@ namespace Finch
                                       false, TOKEN_SYMBOL);
                     break;
                     
+                case LEX_IN_STRING:
+                    if (c == '\"')
+                    {
+                        token = EmitText(TOKEN_STRING);
+                        mState = LEX_DEFAULT;
+                    }
+                    mIndex++;
+                    break;
+                    
                 case LEX_AT_END:
                     token = Token::New(TOKEN_EOF);
                     break;
             }
             
             // after processing the null, we're done
+            //### bob: what if we're in the middle of a string?
             if (c == '\0') mState = LEX_AT_END;
         }
         

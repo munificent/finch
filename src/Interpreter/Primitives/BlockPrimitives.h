@@ -14,7 +14,4 @@ namespace Finch
     
     Ref<Object> BlockValue(Ref<Object> thisRef, EvalContext & context,
                            String message, const vector<Ref<Object> > & args);
-    
-    Ref<Object> BlockWhile(Ref<Object> thisRef, EvalContext & context,
-                             String message, const vector<Ref<Object> > & args);
 }

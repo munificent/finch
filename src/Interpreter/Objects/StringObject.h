@@ -15,14 +15,12 @@ namespace Finch
     class StringObject : public Object
     {
     public:
-        StringObject(String value)
-        :   mValue(value)
+        StringObject(Ref<Object> prototype, String value)
+        :   Object(prototype),
+            mValue(value)
         {}
         
         virtual void Trace(std::ostream & stream) const;
-        
-        virtual Ref<Object> Receive(Ref<Object> thisRef, EvalContext & context,
-                                    String message, const vector<Ref<Object> > & args);
         
         virtual String AsString() const { return mValue; }
         

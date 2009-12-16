@@ -17,14 +17,12 @@ namespace Finch
     class BlockObject : public Object
     {
     public:
-        BlockObject(Ref<Expr> body)
-        :   mBody(body)
+        BlockObject(Ref<Object> prototype, Ref<Expr> body)
+        :   Object(prototype),
+            mBody(body)
         {}
         
         Ref<Expr> Body() const { return mBody; }
-        
-        virtual Ref<Object> Receive(Ref<Object> thisRef, EvalContext & context,
-                                    String message, const vector<Ref<Object> > & args);
         
         virtual BlockObject * AsBlock() { return this; }
         

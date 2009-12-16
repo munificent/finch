@@ -15,14 +15,12 @@ namespace Finch
     class NumberObject : public Object
     {
     public:
-        NumberObject(double value)
-        :   mValue(value)
+        NumberObject(Ref<Object> prototype, double value)
+        :   Object(prototype),
+            mValue(value)
         {}
         
         virtual void Trace(std::ostream & stream) const;
-        
-        virtual Ref<Object> Receive(Ref<Object> thisRef, EvalContext & context,
-                                    String message, const vector<Ref<Object> > & args);
         
         virtual double AsNumber() const { return mValue; }
         

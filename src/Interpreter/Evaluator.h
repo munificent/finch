@@ -31,6 +31,7 @@ namespace Finch
         virtual Ref<Object> Visit(const OperatorExpr & expr);
         virtual Ref<Object> Visit(const SequenceExpr & expr);
         virtual Ref<Object> Visit(const SetExpr & expr);
+        virtual Ref<Object> Visit(const StringExpr & expr);
         virtual Ref<Object> Visit(const SymbolExpr & expr);
         virtual Ref<Object> Visit(const UnaryExpr & expr);
         

@@ -5,6 +5,7 @@
 #include "DynamicObject.h"
 #include "BlockPrimitives.h"
 #include "ConsolePrimitives.h"
+#include "NilPrimitives.h"
 #include "NumberPrimitives.h"
 
 namespace Finch
@@ -24,7 +25,6 @@ namespace Finch
         
         DynamicObject* blockObj = &static_cast<DynamicObject&>(*mBlock);
         blockObj->RegisterPrimitive("value", BlockValue);
-        blockObj->RegisterPrimitive("while:", BlockWhile);
         
         // define Number prototype
         mNumber = Object::New(rootObject, "Number");
@@ -44,9 +44,22 @@ namespace Finch
         numberObj->RegisterPrimitive("<=",  NumberLessThanOrEqual);
         numberObj->RegisterPrimitive(">=",  NumberGreaterThanOrEqual);
         
+        // define Symbol prototype
+        mSymbol = Object::New(rootObject, "Symbol");
+        mGlobals->Define("Symbol", mSymbol);
+        
+        // define String prototype
+        mString = Object::New(rootObject, "String");
+        mGlobals->Define("String", mString);
+        
         // define nil
         mNil = Object::New(rootObject, "Nil");
         mGlobals->Define("Nil", mNil);
+        
+        DynamicObject* nilObj = &static_cast<DynamicObject&>(*mNil);
+        nilObj->RegisterPrimitive("while:do:", NilWhileDo);
+        nilObj->RegisterPrimitive("if:then:", NilIfThen);
+        nilObj->RegisterPrimitive("if:then:else:", NilIfThenElse);
         
         // define true and false
         mTrue = Object::New(rootObject, "True");

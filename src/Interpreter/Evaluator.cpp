@@ -11,6 +11,7 @@
 #include "OperatorExpr.h"
 #include "SequenceExpr.h"
 #include "SetExpr.h"
+#include "StringExpr.h"
 #include "SymbolExpr.h"
 #include "UnaryExpr.h"
 
@@ -23,7 +24,7 @@ namespace Finch
     
     Ref<Object> Evaluator::Visit(const BlockExpr & expr)
     {
-        return Object::New(expr.Body());
+        return Object::New(mContext.Block(), expr.Body());
     }
     
     Ref<Object> Evaluator::Visit(const DefExpr & expr)
@@ -70,7 +71,7 @@ namespace Finch
 
     Ref<Object> Evaluator::Visit(const NumberExpr & expr)
     {
-        return Object::New(expr.Value());
+        return Object::New(mContext.Number(), expr.Value());
     }
     
     Ref<Object> Evaluator::Visit(const OperatorExpr & expr)
@@ -103,9 +104,14 @@ namespace Finch
         return mContext.CurrentScope()->Set(expr.Name(), value);
     }
     
+    Ref<Object> Evaluator::Visit(const StringExpr & expr)
+    {
+        return Object::NewString(mContext.String(), expr.Value());
+    }
+    
     Ref<Object> Evaluator::Visit(const SymbolExpr & expr)
     {
-        return Object::New(expr.Value());
+        return Object::NewString(mContext.Symbol(), expr.Value());
     }
     
     Ref<Object> Evaluator::Visit(const UnaryExpr & expr)

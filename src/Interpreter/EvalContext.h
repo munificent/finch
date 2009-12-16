@@ -24,6 +24,8 @@ namespace Finch
         Ref<Object> Nil()           const { return mNil; }
         Ref<Object> Block()         const { return mBlock; }
         Ref<Object> Number()        const { return mNumber; }
+        Ref<Object> String()        const { return mString; }
+        Ref<Object> Symbol()        const { return mSymbol; }
         Ref<Object> True()          const { return mTrue; }
         Ref<Object> False()         const { return mFalse; }
         
@@ -37,6 +39,8 @@ namespace Finch
         Ref<Object> mNil;
         Ref<Object> mBlock;
         Ref<Object> mNumber;
+        Ref<Object> mString;
+        Ref<Object> mSymbol;
         Ref<Object> mTrue;
         Ref<Object> mFalse;
     };

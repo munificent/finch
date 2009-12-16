@@ -22,12 +22,12 @@ namespace Finch
     {
     public:
         DynamicObject(Ref<Object> prototype, String name)
-        :   mPrototype(prototype),
+        :   Object(prototype),
             mName(name)
         {}
         
         DynamicObject(Ref<Object> prototype)
-        :   mPrototype(prototype),
+        :   Object(prototype),
             mName("object")
         {}
         
@@ -41,7 +41,6 @@ namespace Finch
         void RegisterPrimitive(String message, PrimitiveMethod method);
         
     private:
-        Ref<Object>               mPrototype;
         String                    mName; //### bob: hack temp
         map<String, Ref<Object> > mFields;
         map<String, Ref<Object> > mMethods;

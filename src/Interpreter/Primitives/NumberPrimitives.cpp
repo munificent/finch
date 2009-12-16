@@ -7,26 +7,26 @@ namespace Finch
     Ref<Object> NumberPlus(Ref<Object> thisRef, EvalContext & context,
                            String message, const vector<Ref<Object> > & args)
     {
-        return Object::New(thisRef->AsNumber() + args[0]->AsNumber());
+        return Object::New(context.Number(), thisRef->AsNumber() + args[0]->AsNumber());
     }
 
     Ref<Object> NumberMinus(Ref<Object> thisRef, EvalContext & context,
                             String message, const vector<Ref<Object> > & args)
     {
-        return Object::New(thisRef->AsNumber() - args[0]->AsNumber());
+        return Object::New(context.Number(), thisRef->AsNumber() - args[0]->AsNumber());
     }
     
     Ref<Object> NumberMultiply(Ref<Object> thisRef, EvalContext & context,
                                String message, const vector<Ref<Object> > & args)
     {
-        return Object::New(thisRef->AsNumber() * args[0]->AsNumber());
+        return Object::New(context.Number(), thisRef->AsNumber() * args[0]->AsNumber());
     }
     
     Ref<Object> NumberDivide(Ref<Object> thisRef, EvalContext & context,
                              String message, const vector<Ref<Object> > & args)
     {
         //### bob: need to check for div by zero
-        return Object::New(thisRef->AsNumber() / args[0]->AsNumber());
+        return Object::New(context.Number(), thisRef->AsNumber() / args[0]->AsNumber());
     }    
 
     Ref<Object> NumberAbs(Ref<Object> thisRef, EvalContext & context,
@@ -34,13 +34,13 @@ namespace Finch
     {
         double number = thisRef->AsNumber();        
         double value = (number < 0) ? -number : number;
-        return Object::New(value);
+        return Object::New(context.Number(), value);
     }
 
     Ref<Object> NumberNeg(Ref<Object> thisRef, EvalContext & context,
                           String message, const vector<Ref<Object> > & args)
     {
-        return Object::New(-thisRef->AsNumber());
+        return Object::New(context.Number(), -thisRef->AsNumber());
     }
 
     Ref<Object> NumberEquals(Ref<Object> thisRef, EvalContext & context,

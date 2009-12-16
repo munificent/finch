@@ -23,6 +23,8 @@ namespace Finch
         Ref<Expr> Unary();
         Ref<Expr> Primary();
         
+        Ref<Expr> KeywordMessage(Ref<Expr> object);
+        
         Ref<Expr> ParseError();
         
         NO_COPY(FinchParser)

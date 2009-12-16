@@ -25,6 +25,7 @@ namespace Finch
         TOKEN_SET,
         
         TOKEN_NUMBER,
+        TOKEN_STRING,
         
         TOKEN_NAME,
         TOKEN_OPERATOR,

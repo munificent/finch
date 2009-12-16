@@ -10,6 +10,7 @@
 #include "OperatorExpr.h"
 #include "SequenceExpr.h"
 #include "SetExpr.h"
+#include "StringExpr.h"
 #include "SymbolExpr.h"
 #include "UnaryExpr.h"
 
@@ -79,23 +80,8 @@ namespace Finch
         Ref<Expr> object = Operator();
         if (object.IsNull()) return ParseError();
         
-        vector<String>      keywords;
-        vector<Ref<Expr> >  args;
-        
-        while (CurrentIs(TOKEN_KEYWORD))
-        {
-            String keyword = Consume()->Text();
-            Ref<Expr> arg = Operator();
-            if (arg.IsNull()) return ParseError();
-            
-            keywords.push_back(keyword);
-            args.push_back(arg);
-        }
-        
-        if (keywords.size() > 0)
-        {
-            object = Ref<Expr>(new KeywordExpr(object, keywords, args));
-        }
+        Ref<Expr> keyword = KeywordMessage(object);
+        if (!keyword.IsNull()) return keyword;
         
         return object;
     }
@@ -145,6 +131,15 @@ namespace Finch
         {
             return Ref<Expr>(new SymbolExpr(Consume()->Text()));
         }
+        else if (CurrentIs(TOKEN_STRING))
+        {
+            return Ref<Expr>(new StringExpr(Consume()->Text()));
+        }
+        else if (CurrentIs(TOKEN_KEYWORD))
+        {
+            // implicit Nil keyword message
+            return KeywordMessage(Ref<Expr>(new NameExpr("Nil")));
+        }
         else if (ConsumeIf(TOKEN_DOT))
         {
             return Ref<Expr>(new NameExpr("."));
@@ -181,6 +176,30 @@ namespace Finch
             return Ref<Expr>(new BlockExpr(args, body));
         }
         else return ParseError();
+    }
+    
+    // Parses just the message send part of a keyword message: "foo: a bar: b"
+    Ref<Expr> FinchParser::KeywordMessage(Ref<Expr> object)
+    {
+        vector<String>      keywords;
+        vector<Ref<Expr> >  args;
+        
+        while (CurrentIs(TOKEN_KEYWORD))
+        {
+            String keyword = Consume()->Text();
+            Ref<Expr> arg = Operator();
+            if (arg.IsNull()) return ParseError();
+            
+            keywords.push_back(keyword);
+            args.push_back(arg);
+        }
+        
+        if (keywords.size() > 0)
+        {
+            return Ref<Expr>(new KeywordExpr(object, keywords, args));
+        }
+        
+        return Ref<Expr>();
     }
     
     Ref<Expr> FinchParser::ParseError()

@@ -22,6 +22,9 @@
 // args, locals
 {:(arg other) |local another| obj message }
 
+// implicit nil keyword message
+while: { a < 10 } do: { set a a + 1 }
+
 // compound expressions:
 obj first; obj second
 
