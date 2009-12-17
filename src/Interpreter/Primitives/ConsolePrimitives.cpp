@@ -4,7 +4,7 @@
 
 namespace Finch
 {
-    Ref<Object> ConsoleWrite(Ref<Object> thisRef, EvalContext & context,
+    Ref<Object> ConsoleWrite(Ref<Object> thisRef, Environment & env,
                              String message, const vector<Ref<Object> > & args)
     {
         String text = args[0]->AsString();
@@ -13,7 +13,7 @@ namespace Finch
         return Ref<Object>();
     }
     
-    Ref<Object> ConsoleWriteLine(Ref<Object> thisRef, EvalContext & context,
+    Ref<Object> ConsoleWriteLine(Ref<Object> thisRef, Environment & env,
                              String message, const vector<Ref<Object> > & args)
     {
         String text = args[0]->AsString();

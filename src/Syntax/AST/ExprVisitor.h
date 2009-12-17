@@ -17,7 +17,6 @@ namespace Finch
     class SequenceExpr;
     class SetExpr;
     class StringExpr;
-    class SymbolExpr;
     class UnaryExpr;
     class Object;
     
@@ -35,7 +34,6 @@ namespace Finch
         virtual Ref<Object> Visit(const SequenceExpr & expr) = 0;
         virtual Ref<Object> Visit(const SetExpr & expr) = 0;
         virtual Ref<Object> Visit(const StringExpr & expr) = 0;
-        virtual Ref<Object> Visit(const SymbolExpr & expr) = 0;
         virtual Ref<Object> Visit(const UnaryExpr & expr) = 0;
     };
 }

@@ -11,10 +11,10 @@ namespace Finch
 {
     class Expr;
     
-    class EvalContext
+    class Environment
     {
     public:
-        EvalContext();
+        Environment();
         
         Ref<Scope>  Globals()       const { return mGlobals; }
         Ref<Scope>  CurrentScope()  const { return mCurrentScope; }

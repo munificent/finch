@@ -1,6 +1,5 @@
 #include "BlockObject.h"
 #include "BlockExpr.h"
-#include "EvalContext.h"
 
 namespace Finch
 {

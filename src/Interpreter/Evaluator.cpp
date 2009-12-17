@@ -2,7 +2,7 @@
 
 #include "Evaluator.h"
 
-#include "EvalContext.h"
+#include "Environment.h"
 #include "BlockExpr.h"
 #include "DefExpr.h"
 #include "KeywordExpr.h"
@@ -12,7 +12,6 @@
 #include "SequenceExpr.h"
 #include "SetExpr.h"
 #include "StringExpr.h"
-#include "SymbolExpr.h"
 #include "UnaryExpr.h"
 
 namespace Finch
@@ -24,7 +23,7 @@ namespace Finch
     
     Ref<Object> Evaluator::Visit(const BlockExpr & expr)
     {
-        return Object::New(mContext.Block(), expr.Body());
+        return Object::NewBlock(mEnvironment.Block(), expr.Body());
     }
     
     Ref<Object> Evaluator::Visit(const DefExpr & expr)
@@ -39,7 +38,7 @@ namespace Finch
         }
         
         //### bob: hack temp. always define in global scope
-        return mContext.CurrentScope()->Define(expr.Name(), value);
+        return mEnvironment.CurrentScope()->Define(expr.Name(), value);
     }
     
     Ref<Object> Evaluator::Visit(const KeywordExpr & expr)
@@ -58,20 +57,20 @@ namespace Finch
         }
         
         // send the message
-        return NullToNil(receiver->Receive(receiver, mContext, fullName, args));
+        return NullToNil(receiver->Receive(receiver, mEnvironment, fullName, args));
     }
     
     Ref<Object> Evaluator::Visit(const NameExpr & expr)
     {
-        if (expr.Name() == ".") return mContext.Self();
+        if (expr.Name() == ".") return mEnvironment.Self();
         
         //### bob: hack temp. always look up in global scope
-        return NullToNil(mContext.CurrentScope()->LookUp(expr.Name()));
+        return NullToNil(mEnvironment.CurrentScope()->LookUp(expr.Name()));
     }
 
     Ref<Object> Evaluator::Visit(const NumberExpr & expr)
     {
-        return Object::New(mContext.Number(), expr.Value());
+        return Object::NewNumber(mEnvironment.Number(), expr.Value());
     }
     
     Ref<Object> Evaluator::Visit(const OperatorExpr & expr)
@@ -82,7 +81,7 @@ namespace Finch
         vector<Ref<Object> > args;
         args.push_back(arg);
         
-        return NullToNil(receiver->Receive(receiver, mContext, expr.Operator(), args));
+        return NullToNil(receiver->Receive(receiver, mEnvironment, expr.Operator(), args));
     }    
     
     Ref<Object> Evaluator::Visit(const SequenceExpr & expr)
@@ -101,29 +100,24 @@ namespace Finch
         //### bob: hack temp. always set in global scope
         // should look up name to figure out which scope
         // it's defined in and there
-        return mContext.CurrentScope()->Set(expr.Name(), value);
+        return mEnvironment.CurrentScope()->Set(expr.Name(), value);
     }
     
     Ref<Object> Evaluator::Visit(const StringExpr & expr)
     {
-        return Object::NewString(mContext.String(), expr.Value());
-    }
-    
-    Ref<Object> Evaluator::Visit(const SymbolExpr & expr)
-    {
-        return Object::NewString(mContext.Symbol(), expr.Value());
+        return Object::NewString(mEnvironment.String(), expr.Value());
     }
     
     Ref<Object> Evaluator::Visit(const UnaryExpr & expr)
     {
         Ref<Object> receiver = expr.Receiver()->Accept(*this);
         
-        return NullToNil(receiver->Receive(receiver, mContext, expr.Message(), vector<Ref<Object> >()));
+        return NullToNil(receiver->Receive(receiver, mEnvironment, expr.Message(), vector<Ref<Object> >()));
     }
     
     Ref<Object> Evaluator::NullToNil(Ref<Object> result) const
     {
-        if (result.IsNull()) return mContext.Nil();
+        if (result.IsNull()) return mEnvironment.Nil();
         
         return result;
     }

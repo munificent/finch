@@ -2,7 +2,7 @@
 #include <string>
 
 #include "Evaluator.h"
-#include "EvalContext.h"
+#include "Environment.h"
 #include "Scope.h"
 #include "String.h"
 #include "Repl.h"
@@ -14,8 +14,8 @@ namespace Finch
         bool   running = true;
         String line;
         
-        EvalContext context;
-        Evaluator evaluator(context);
+        Environment env;
+        Evaluator evaluator(env);
         
         std::cout << "finch 0.0.0d\n";
         

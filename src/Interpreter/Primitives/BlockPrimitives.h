@@ -12,6 +12,6 @@ namespace Finch
 {
     using std::vector;
     
-    Ref<Object> BlockValue(Ref<Object> thisRef, EvalContext & context,
+    Ref<Object> BlockValue(Ref<Object> thisRef, Environment & env,
                            String message, const vector<Ref<Object> > & args);
 }

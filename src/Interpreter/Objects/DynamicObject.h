@@ -15,7 +15,7 @@ namespace Finch
     using std::map;
     using std::vector;
     
-    typedef Ref<Object> (*PrimitiveMethod)(Ref<Object> thisRef, EvalContext & context,
+    typedef Ref<Object> (*PrimitiveMethod)(Ref<Object> thisRef, Environment & env,
                                            String message, const vector<Ref<Object> > & args);
 
     class DynamicObject : public Object
@@ -33,10 +33,14 @@ namespace Finch
         
         virtual void Trace(std::ostream & stream) const;
         
-        virtual String AsString() const { return mName; }
+        virtual String AsString() const     { return mName; }
+        virtual DynamicObject * AsDynamic() { return this; }
 
-        virtual Ref<Object> Receive(Ref<Object> thisRef, EvalContext & context,
+        virtual Ref<Object> Receive(Ref<Object> thisRef, Environment & env,
                                     String message, const vector<Ref<Object> > & args);
+        
+        Ref<Object> AddField(String name, Ref<Object> value);
+        Ref<Object> AddMethod(String name, Ref<Object> body);
         
         void RegisterPrimitive(String message, PrimitiveMethod method);
         

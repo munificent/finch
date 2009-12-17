@@ -14,6 +14,7 @@
 		C4012ACC10CAD89A0088B77F /* TokenTests.cpp in Sources */ = {isa = PBXBuildFile; fileRef = C4012ACB10CAD89A0088B77F /* TokenTests.cpp */; };
 		C4012ACF10CAD8ED0088B77F /* Test.cpp in Sources */ = {isa = PBXBuildFile; fileRef = C4012ACE10CAD8ED0088B77F /* Test.cpp */; };
 		C402051610CC38FA00B521BB /* RefTests.cpp in Sources */ = {isa = PBXBuildFile; fileRef = C402051510CC38FA00B521BB /* RefTests.cpp */; };
+		C473A8AB10DA741B00695099 /* ObjectPrimitives.cpp in Sources */ = {isa = PBXBuildFile; fileRef = C473A8AA10DA741B00695099 /* ObjectPrimitives.cpp */; };
 		C4CDF8A610D88DDF001C9D4A /* BlockObject.cpp in Sources */ = {isa = PBXBuildFile; fileRef = C4CDF89C10D88DDF001C9D4A /* BlockObject.cpp */; };
 		C4CDF8A710D88DDF001C9D4A /* DynamicObject.cpp in Sources */ = {isa = PBXBuildFile; fileRef = C4CDF89E10D88DDF001C9D4A /* DynamicObject.cpp */; };
 		C4CDF8A810D88DDF001C9D4A /* NumberObject.cpp in Sources */ = {isa = PBXBuildFile; fileRef = C4CDF8A010D88DDF001C9D4A /* NumberObject.cpp */; };
@@ -23,7 +24,7 @@
 		C4CDF8B410D88DF3001C9D4A /* NilPrimitives.cpp in Sources */ = {isa = PBXBuildFile; fileRef = C4CDF8AE10D88DF3001C9D4A /* NilPrimitives.cpp */; };
 		C4CDF8B510D88DF3001C9D4A /* ConsolePrimitives.cpp in Sources */ = {isa = PBXBuildFile; fileRef = C4CDF8B010D88DF3001C9D4A /* ConsolePrimitives.cpp */; };
 		C4CDF8B610D88DF3001C9D4A /* BlockPrimitives.cpp in Sources */ = {isa = PBXBuildFile; fileRef = C4CDF8B210D88DF3001C9D4A /* BlockPrimitives.cpp */; };
-		C4CDF8B910D88E1F001C9D4A /* EvalContext.cpp in Sources */ = {isa = PBXBuildFile; fileRef = C4CDF8B810D88E1F001C9D4A /* EvalContext.cpp */; };
+		C4CDF8B910D88E1F001C9D4A /* Environment.cpp in Sources */ = {isa = PBXBuildFile; fileRef = C4CDF8B810D88E1F001C9D4A /* Environment.cpp */; };
 		C4CDF8BC10D88E43001C9D4A /* StringExpr.cpp in Sources */ = {isa = PBXBuildFile; fileRef = C4CDF8BB10D88E43001C9D4A /* StringExpr.cpp */; };
 		C4FC15E510D3E33F00E6ABD6 /* Dict.cpp in Sources */ = {isa = PBXBuildFile; fileRef = C4FC15E410D3E33F00E6ABD6 /* Dict.cpp */; };
 		C4FC160310D4328300E6ABD6 /* Evaluator.cpp in Sources */ = {isa = PBXBuildFile; fileRef = C4FC15F710D4328300E6ABD6 /* Evaluator.cpp */; };
@@ -37,7 +38,6 @@
 		C4FC166410D4331C00E6ABD6 /* OperatorExpr.cpp in Sources */ = {isa = PBXBuildFile; fileRef = C4FC165410D4331C00E6ABD6 /* OperatorExpr.cpp */; };
 		C4FC166510D4331C00E6ABD6 /* SequenceExpr.cpp in Sources */ = {isa = PBXBuildFile; fileRef = C4FC165610D4331C00E6ABD6 /* SequenceExpr.cpp */; };
 		C4FC166610D4331C00E6ABD6 /* SetExpr.cpp in Sources */ = {isa = PBXBuildFile; fileRef = C4FC165810D4331C00E6ABD6 /* SetExpr.cpp */; };
-		C4FC166710D4331C00E6ABD6 /* SymbolExpr.cpp in Sources */ = {isa = PBXBuildFile; fileRef = C4FC165A10D4331C00E6ABD6 /* SymbolExpr.cpp */; };
 		C4FC166810D4331C00E6ABD6 /* UnaryExpr.cpp in Sources */ = {isa = PBXBuildFile; fileRef = C4FC165C10D4331C00E6ABD6 /* UnaryExpr.cpp */; };
 		C4FC167110D4334800E6ABD6 /* FinchParser.cpp in Sources */ = {isa = PBXBuildFile; fileRef = C4FC166910D4334800E6ABD6 /* FinchParser.cpp */; };
 		C4FC167210D4334800E6ABD6 /* Lexer.cpp in Sources */ = {isa = PBXBuildFile; fileRef = C4FC166B10D4334800E6ABD6 /* Lexer.cpp */; };
@@ -73,6 +73,8 @@
 		C4012ACE10CAD8ED0088B77F /* Test.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = Test.cpp; sourceTree = "<group>"; };
 		C402051410CC38FA00B521BB /* RefTests.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = RefTests.h; sourceTree = "<group>"; };
 		C402051510CC38FA00B521BB /* RefTests.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = RefTests.cpp; sourceTree = "<group>"; };
+		C473A8A910DA741B00695099 /* ObjectPrimitives.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ObjectPrimitives.h; sourceTree = "<group>"; };
+		C473A8AA10DA741B00695099 /* ObjectPrimitives.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = ObjectPrimitives.cpp; sourceTree = "<group>"; };
 		C4CDF89C10D88DDF001C9D4A /* BlockObject.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = BlockObject.cpp; path = Interpreter/Objects/BlockObject.cpp; sourceTree = "<group>"; };
 		C4CDF89D10D88DDF001C9D4A /* BlockObject.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = BlockObject.h; path = Interpreter/Objects/BlockObject.h; sourceTree = "<group>"; };
 		C4CDF89E10D88DDF001C9D4A /* DynamicObject.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = DynamicObject.cpp; path = Interpreter/Objects/DynamicObject.cpp; sourceTree = "<group>"; };
@@ -91,8 +93,8 @@
 		C4CDF8B010D88DF3001C9D4A /* ConsolePrimitives.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = ConsolePrimitives.cpp; path = Interpreter/Primitives/ConsolePrimitives.cpp; sourceTree = "<group>"; };
 		C4CDF8B110D88DF3001C9D4A /* BlockPrimitives.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = BlockPrimitives.h; path = Interpreter/Primitives/BlockPrimitives.h; sourceTree = "<group>"; };
 		C4CDF8B210D88DF3001C9D4A /* BlockPrimitives.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = BlockPrimitives.cpp; path = Interpreter/Primitives/BlockPrimitives.cpp; sourceTree = "<group>"; };
-		C4CDF8B710D88E1F001C9D4A /* EvalContext.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = EvalContext.h; path = Interpreter/EvalContext.h; sourceTree = "<group>"; };
-		C4CDF8B810D88E1F001C9D4A /* EvalContext.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = EvalContext.cpp; path = Interpreter/EvalContext.cpp; sourceTree = "<group>"; };
+		C4CDF8B710D88E1F001C9D4A /* Environment.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = Environment.h; path = Interpreter/Environment.h; sourceTree = "<group>"; };
+		C4CDF8B810D88E1F001C9D4A /* Environment.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = Environment.cpp; path = Interpreter/Environment.cpp; sourceTree = "<group>"; };
 		C4CDF8BA10D88E43001C9D4A /* StringExpr.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = StringExpr.h; path = Syntax/AST/StringExpr.h; sourceTree = "<group>"; };
 		C4CDF8BB10D88E43001C9D4A /* StringExpr.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = StringExpr.cpp; path = Syntax/AST/StringExpr.cpp; sourceTree = "<group>"; };
 		C4FC15E310D3E33F00E6ABD6 /* Dict.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Dict.h; sourceTree = "<group>"; };
@@ -120,8 +122,6 @@
 		C4FC165710D4331C00E6ABD6 /* SequenceExpr.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = SequenceExpr.h; path = Syntax/AST/SequenceExpr.h; sourceTree = "<group>"; };
 		C4FC165810D4331C00E6ABD6 /* SetExpr.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = SetExpr.cpp; path = Syntax/AST/SetExpr.cpp; sourceTree = "<group>"; };
 		C4FC165910D4331C00E6ABD6 /* SetExpr.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = SetExpr.h; path = Syntax/AST/SetExpr.h; sourceTree = "<group>"; };
-		C4FC165A10D4331C00E6ABD6 /* SymbolExpr.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = SymbolExpr.cpp; path = Syntax/AST/SymbolExpr.cpp; sourceTree = "<group>"; };
-		C4FC165B10D4331C00E6ABD6 /* SymbolExpr.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = SymbolExpr.h; path = Syntax/AST/SymbolExpr.h; sourceTree = "<group>"; };
 		C4FC165C10D4331C00E6ABD6 /* UnaryExpr.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = UnaryExpr.cpp; path = Syntax/AST/UnaryExpr.cpp; sourceTree = "<group>"; };
 		C4FC165D10D4331C00E6ABD6 /* UnaryExpr.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = UnaryExpr.h; path = Syntax/AST/UnaryExpr.h; sourceTree = "<group>"; };
 		C4FC166910D4334800E6ABD6 /* FinchParser.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = FinchParser.cpp; path = Syntax/FinchParser.cpp; sourceTree = "<group>"; };
@@ -222,8 +222,6 @@
 				C4FC165810D4331C00E6ABD6 /* SetExpr.cpp */,
 				C4CDF8BA10D88E43001C9D4A /* StringExpr.h */,
 				C4CDF8BB10D88E43001C9D4A /* StringExpr.cpp */,
-				C4FC165B10D4331C00E6ABD6 /* SymbolExpr.h */,
-				C4FC165A10D4331C00E6ABD6 /* SymbolExpr.cpp */,
 				C4FC165D10D4331C00E6ABD6 /* UnaryExpr.h */,
 				C4FC165C10D4331C00E6ABD6 /* UnaryExpr.cpp */,
 			);
@@ -233,8 +231,8 @@
 		C4B9DB2F10CF3C19003C556D /* Interpreter */ = {
 			isa = PBXGroup;
 			children = (
-				C4CDF8B710D88E1F001C9D4A /* EvalContext.h */,
-				C4CDF8B810D88E1F001C9D4A /* EvalContext.cpp */,
+				C4CDF8B710D88E1F001C9D4A /* Environment.h */,
+				C4CDF8B810D88E1F001C9D4A /* Environment.cpp */,
 				C4FC15F810D4328300E6ABD6 /* Evaluator.h */,
 				C4FC15F710D4328300E6ABD6 /* Evaluator.cpp */,
 				C4FC15FE10D4328300E6ABD6 /* Scope.h */,
@@ -286,6 +284,8 @@
 				C4CDF8AE10D88DF3001C9D4A /* NilPrimitives.cpp */,
 				C4CDF8AB10D88DF3001C9D4A /* NumberPrimitives.h */,
 				C4CDF8AC10D88DF3001C9D4A /* NumberPrimitives.cpp */,
+				C473A8A910DA741B00695099 /* ObjectPrimitives.h */,
+				C473A8AA10DA741B00695099 /* ObjectPrimitives.cpp */,
 			);
 			name = Primitives;
 			sourceTree = "<group>";
@@ -376,7 +376,6 @@
 				C4FC166410D4331C00E6ABD6 /* OperatorExpr.cpp in Sources */,
 				C4FC166510D4331C00E6ABD6 /* SequenceExpr.cpp in Sources */,
 				C4FC166610D4331C00E6ABD6 /* SetExpr.cpp in Sources */,
-				C4FC166710D4331C00E6ABD6 /* SymbolExpr.cpp in Sources */,
 				C4FC166810D4331C00E6ABD6 /* UnaryExpr.cpp in Sources */,
 				C4FC167110D4334800E6ABD6 /* FinchParser.cpp in Sources */,
 				C4FC167210D4334800E6ABD6 /* Lexer.cpp in Sources */,
@@ -393,8 +392,9 @@
 				C4CDF8B410D88DF3001C9D4A /* NilPrimitives.cpp in Sources */,
 				C4CDF8B510D88DF3001C9D4A /* ConsolePrimitives.cpp in Sources */,
 				C4CDF8B610D88DF3001C9D4A /* BlockPrimitives.cpp in Sources */,
-				C4CDF8B910D88E1F001C9D4A /* EvalContext.cpp in Sources */,
+				C4CDF8B910D88E1F001C9D4A /* Environment.cpp in Sources */,
 				C4CDF8BC10D88E43001C9D4A /* StringExpr.cpp in Sources */,
+				C473A8AB10DA741B00695099 /* ObjectPrimitives.cpp in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

@@ -11,13 +11,16 @@
 
 namespace Finch
 {
-    class EvalContext;
+    class Environment;
     
+    // The core runtime class for Finch. Given a Finch expression, it evaluates
+    // it by walking the tree, performs any side-effects, and returns the
+    // result.
     class Evaluator : private ExprVisitor
     {
     public:
-        Evaluator(EvalContext & context)
-        :   mContext(context)
+        Evaluator(Environment & env)
+        :   mEnvironment(env)
         {}
         
         Ref<Object> Evaluate(Ref<Expr> expr);
@@ -32,11 +35,10 @@ namespace Finch
         virtual Ref<Object> Visit(const SequenceExpr & expr);
         virtual Ref<Object> Visit(const SetExpr & expr);
         virtual Ref<Object> Visit(const StringExpr & expr);
-        virtual Ref<Object> Visit(const SymbolExpr & expr);
         virtual Ref<Object> Visit(const UnaryExpr & expr);
         
         Ref<Object> NullToNil(Ref<Object> result) const;
         
-        EvalContext & mContext;
+        Environment & mEnvironment;
     };
 }

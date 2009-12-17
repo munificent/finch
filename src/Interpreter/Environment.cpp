@@ -1,4 +1,4 @@
-#include "EvalContext.h"
+#include "Environment.h"
 
 #include "Evaluator.h"
 #include "Expr.h"
@@ -7,27 +7,32 @@
 #include "ConsolePrimitives.h"
 #include "NilPrimitives.h"
 #include "NumberPrimitives.h"
+#include "ObjectPrimitives.h"
 
 namespace Finch
 {
-    EvalContext::EvalContext()
+    Environment::Environment()
     {
         // build the global scope
         mGlobals = Ref<Scope>(new Scope()); 
         mCurrentScope = mGlobals;
         
-        Ref<Object> rootObject = Object::New(Ref<Object>(), "Object");
+        Ref<Object> rootObject = Object::NewObject(Ref<Object>(), "Object");
         mGlobals->Define("Object", rootObject);
-        
+        DynamicObject* objectObj = &static_cast<DynamicObject&>(*rootObject);
+        objectObj->RegisterPrimitive("copy", ObjectCopy);
+        objectObj->RegisterPrimitive("add-field:value:", ObjectAddFieldValue);
+        objectObj->RegisterPrimitive("add-method:body:", ObjectAddMethodValue);
+
         // define Block prototype
-        mBlock = Object::New(rootObject, "Block");
+        mBlock = Object::NewObject(rootObject, "Block");
         mGlobals->Define("Block", mBlock);
         
         DynamicObject* blockObj = &static_cast<DynamicObject&>(*mBlock);
         blockObj->RegisterPrimitive("value", BlockValue);
         
         // define Number prototype
-        mNumber = Object::New(rootObject, "Number");
+        mNumber = Object::NewObject(rootObject, "Number");
         mGlobals->Define("Number", mNumber);
         
         DynamicObject* numberObj = &static_cast<DynamicObject&>(*mNumber);
@@ -45,15 +50,15 @@ namespace Finch
         numberObj->RegisterPrimitive(">=",  NumberGreaterThanOrEqual);
         
         // define Symbol prototype
-        mSymbol = Object::New(rootObject, "Symbol");
+        mSymbol = Object::NewObject(rootObject, "Symbol");
         mGlobals->Define("Symbol", mSymbol);
         
         // define String prototype
-        mString = Object::New(rootObject, "String");
+        mString = Object::NewObject(rootObject, "String");
         mGlobals->Define("String", mString);
         
         // define nil
-        mNil = Object::New(rootObject, "Nil");
+        mNil = Object::NewObject(rootObject, "Nil");
         mGlobals->Define("Nil", mNil);
         
         DynamicObject* nilObj = &static_cast<DynamicObject&>(*mNil);
@@ -62,14 +67,14 @@ namespace Finch
         nilObj->RegisterPrimitive("if:then:else:", NilIfThenElse);
         
         // define true and false
-        mTrue = Object::New(rootObject, "True");
+        mTrue = Object::NewObject(rootObject, "True");
         mGlobals->Define("True", mTrue);
         
-        mFalse = Object::New(rootObject, "False");
+        mFalse = Object::NewObject(rootObject, "False");
         mGlobals->Define("False", mFalse);
         
         // define Console
-        Ref<Object> console = Object::New(rootObject, "Console");
+        Ref<Object> console = Object::NewObject(rootObject, "Console");
         mGlobals->Define("Console", console);
         
         // add its methods
@@ -78,7 +83,7 @@ namespace Finch
         consoleObj->RegisterPrimitive("writeLine:", ConsoleWriteLine);
     }
     
-    Ref<Object> EvalContext::EvaluateBlock(Ref<Expr> expr)
+    Ref<Object> Environment::EvaluateBlock(Ref<Expr> expr)
     {
         mCurrentScope = Ref<Scope>(new Scope(mCurrentScope));
         
@@ -90,7 +95,7 @@ namespace Finch
         return result;
     }
     
-    Ref<Object> EvalContext::EvaluateMethod(Ref<Object> self, Ref<Expr> expr)
+    Ref<Object> Environment::EvaluateMethod(Ref<Object> self, Ref<Expr> expr)
     {
         Ref<Object> previousSelf = mSelf;
         mSelf = self;

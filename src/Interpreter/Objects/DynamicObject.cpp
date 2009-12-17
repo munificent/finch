@@ -1,6 +1,6 @@
 #include "DynamicObject.h"
 #include "BlockObject.h"
-#include "EvalContext.h"
+#include "Environment.h"
 
 namespace Finch
 {
@@ -9,60 +9,9 @@ namespace Finch
         stream << mName;
     }
     
-    Ref<Object> DynamicObject::Receive(Ref<Object> thisRef, EvalContext & context, 
+    Ref<Object> DynamicObject::Receive(Ref<Object> thisRef, Environment & env, 
                                        String message, const vector<Ref<Object> > & args)
     {
-        if (message == "copy")
-        {
-            return Object::New(thisRef);
-        }
-        
-        if (message == "addField:value:")
-        {
-            String      name  = args[0]->AsString();
-            Ref<Object> value = args[1];
-            
-            if (name.size() == 0)
-            {
-                //### bob: need better error handling
-                std::cout << "oops. need a name to add a field." << std::endl;
-                return Ref<Object>();
-            }
-            
-            //### bob: should this fail if the field already exists?
-            
-            // add the field
-            mFields[name] = value;
-            
-            return value;
-        }
-        
-        if (message == "addMethod:body:")
-        {
-            String      name  = args[0]->AsString();
-            Ref<Object> value = args[1];
-            
-            //### bob: need better error handling
-            if (name.size() == 0)
-            {
-                std::cout << "oops. need a name to add a method." << std::endl;
-                return Ref<Object>();
-            }
-            
-            if (value->AsBlock() == NULL)
-            {
-                std::cout << "oops. 'body:' argument must be a block." << std::endl;
-                return Ref<Object>();
-            }
-            
-            //### bob: should this fail if the method already exists?
-            
-            // add the method
-            mMethods[name] = value;
-            
-            return Ref<Object>();
-        }
-        
         // see if it's a field access
         map<String, Ref<Object> >::iterator found = mFields.find(message);
         if (found != mFields.end())
@@ -99,7 +48,7 @@ namespace Finch
             
             ASSERT_NOT_NULL(block);
             
-            Ref<Object> result = context.EvaluateMethod(thisRef, block->Body());
+            Ref<Object> result = env.EvaluateMethod(thisRef, block->Body());
             
             return result;
         }
@@ -112,10 +61,49 @@ namespace Finch
             
             ASSERT_NOT_NULL(method);
             
-            return method(thisRef, context, message, args);
+            return method(thisRef, env, message, args);
         }
         
-        return Object::Receive(thisRef, context, message, args);
+        return Object::Receive(thisRef, env, message, args);
+    }
+    
+    Ref<Object> DynamicObject::AddField(String name, Ref<Object> value)
+    {
+        if (name.size() == 0)
+        {
+            //### bob: need better error handling
+            std::cout << "oops. need a name to add a field." << std::endl;
+            return Ref<Object>();
+        }
+        
+        //### bob: should this fail if the field already exists?
+        
+        // add the field
+        mFields[name] = value;
+        return value;
+    }
+    
+    Ref<Object> DynamicObject::AddMethod(String name, Ref<Object> body)
+    {
+        //### bob: need better error handling
+        if (name.size() == 0)
+        {
+            std::cout << "oops. need a name to add a method." << std::endl;
+            return Ref<Object>();
+        }
+        
+        if (body->AsBlock() == NULL)
+        {
+            std::cout << "oops. 'body:' argument must be a block." << std::endl;
+            return Ref<Object>();
+        }
+        
+        //### bob: should this fail if the method already exists?
+        
+        // add the method
+        mMethods[name] = body;
+        
+        return Ref<Object>();        
     }
     
     void DynamicObject::RegisterPrimitive(String message, PrimitiveMethod method)

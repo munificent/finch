@@ -12,10 +12,10 @@ namespace Finch
 {
     using std::vector;
     
-    Ref<Object> NilWhileDo(Ref<Object> thisRef, Environment & env,
+    Ref<Object> ObjectCopy(Ref<Object> thisRef, Environment & env,
                            String message, const vector<Ref<Object> > & args);
-    Ref<Object> NilIfThen(Ref<Object> thisRef, Environment & env,
+    Ref<Object> ObjectAddFieldValue(Ref<Object> thisRef, Environment & env,
                            String message, const vector<Ref<Object> > & args);
-    Ref<Object> NilIfThenElse(Ref<Object> thisRef, Environment & env,
-                          String message, const vector<Ref<Object> > & args);
+    Ref<Object> ObjectAddMethodValue(Ref<Object> thisRef, Environment & env,
+                           String message, const vector<Ref<Object> > & args);
 }

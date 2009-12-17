@@ -12,9 +12,9 @@ namespace Finch
 {
     using std::vector;
     
-    Ref<Object> ConsoleWrite(Ref<Object> thisRef, EvalContext & context,
+    Ref<Object> ConsoleWrite(Ref<Object> thisRef, Environment & env,
                              String message, const vector<Ref<Object> > & args);
     
-    Ref<Object> ConsoleWriteLine(Ref<Object> thisRef, EvalContext & context,
+    Ref<Object> ConsoleWriteLine(Ref<Object> thisRef, Environment & env,
                              String message, const vector<Ref<Object> > & args);
 }

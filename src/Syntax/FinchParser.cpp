@@ -11,7 +11,6 @@
 #include "SequenceExpr.h"
 #include "SetExpr.h"
 #include "StringExpr.h"
-#include "SymbolExpr.h"
 #include "UnaryExpr.h"
 
 namespace Finch
@@ -126,10 +125,6 @@ namespace Finch
         else if (CurrentIs(TOKEN_NUMBER))
         {
             return Ref<Expr>(new NumberExpr(Consume()->Number()));
-        }
-        else if (CurrentIs(TOKEN_SYMBOL))
-        {
-            return Ref<Expr>(new SymbolExpr(Consume()->Text()));
         }
         else if (CurrentIs(TOKEN_STRING))
         {

@@ -1,87 +1,87 @@
 #include "NumberPrimitives.h"
 #include "NumberObject.h"
-#include "EvalContext.h"
+#include "Environment.h"
 
 namespace Finch
 {
-    Ref<Object> NumberPlus(Ref<Object> thisRef, EvalContext & context,
+    Ref<Object> NumberPlus(Ref<Object> thisRef, Environment & env,
                            String message, const vector<Ref<Object> > & args)
     {
-        return Object::New(context.Number(), thisRef->AsNumber() + args[0]->AsNumber());
+        return Object::NewNumber(env.Number(), thisRef->AsNumber() + args[0]->AsNumber());
     }
 
-    Ref<Object> NumberMinus(Ref<Object> thisRef, EvalContext & context,
+    Ref<Object> NumberMinus(Ref<Object> thisRef, Environment & env,
                             String message, const vector<Ref<Object> > & args)
     {
-        return Object::New(context.Number(), thisRef->AsNumber() - args[0]->AsNumber());
+        return Object::NewNumber(env.Number(), thisRef->AsNumber() - args[0]->AsNumber());
     }
     
-    Ref<Object> NumberMultiply(Ref<Object> thisRef, EvalContext & context,
+    Ref<Object> NumberMultiply(Ref<Object> thisRef, Environment & env,
                                String message, const vector<Ref<Object> > & args)
     {
-        return Object::New(context.Number(), thisRef->AsNumber() * args[0]->AsNumber());
+        return Object::NewNumber(env.Number(), thisRef->AsNumber() * args[0]->AsNumber());
     }
     
-    Ref<Object> NumberDivide(Ref<Object> thisRef, EvalContext & context,
+    Ref<Object> NumberDivide(Ref<Object> thisRef, Environment & env,
                              String message, const vector<Ref<Object> > & args)
     {
         //### bob: need to check for div by zero
-        return Object::New(context.Number(), thisRef->AsNumber() / args[0]->AsNumber());
+        return Object::NewNumber(env.Number(), thisRef->AsNumber() / args[0]->AsNumber());
     }    
 
-    Ref<Object> NumberAbs(Ref<Object> thisRef, EvalContext & context,
+    Ref<Object> NumberAbs(Ref<Object> thisRef, Environment & env,
                           String message, const vector<Ref<Object> > & args)
     {
         double number = thisRef->AsNumber();        
         double value = (number < 0) ? -number : number;
-        return Object::New(context.Number(), value);
+        return Object::NewNumber(env.Number(), value);
     }
 
-    Ref<Object> NumberNeg(Ref<Object> thisRef, EvalContext & context,
+    Ref<Object> NumberNeg(Ref<Object> thisRef, Environment & env,
                           String message, const vector<Ref<Object> > & args)
     {
-        return Object::New(context.Number(), -thisRef->AsNumber());
+        return Object::NewNumber(env.Number(), -thisRef->AsNumber());
     }
 
-    Ref<Object> NumberEquals(Ref<Object> thisRef, EvalContext & context,
+    Ref<Object> NumberEquals(Ref<Object> thisRef, Environment & env,
                              String message, const vector<Ref<Object> > & args)
     {
         bool result = thisRef->AsNumber() == args[0]->AsNumber();
-        return result ? context.True() : context.False();
+        return result ? env.True() : env.False();
     }
 
-    Ref<Object> NumberNotEquals(Ref<Object> thisRef, EvalContext & context,
+    Ref<Object> NumberNotEquals(Ref<Object> thisRef, Environment & env,
                                 String message, const vector<Ref<Object> > & args)
     {
         bool result = thisRef->AsNumber() != args[0]->AsNumber();
-        return result ? context.True() : context.False();
+        return result ? env.True() : env.False();
     }
     
-    Ref<Object> NumberLessThan(Ref<Object> thisRef, EvalContext & context,
+    Ref<Object> NumberLessThan(Ref<Object> thisRef, Environment & env,
                                String message, const vector<Ref<Object> > & args)
     {
         bool result = thisRef->AsNumber() < args[0]->AsNumber();
-        return result ? context.True() : context.False();
+        return result ? env.True() : env.False();
     }
     
-    Ref<Object> NumberGreaterThan(Ref<Object> thisRef, EvalContext & context,
+    Ref<Object> NumberGreaterThan(Ref<Object> thisRef, Environment & env,
                                   String message, const vector<Ref<Object> > & args)
     {
         bool result = thisRef->AsNumber() > args[0]->AsNumber();
-        return result ? context.True() : context.False();
+        return result ? env.True() : env.False();
     }
     
-    Ref<Object> NumberLessThanOrEqual(Ref<Object> thisRef, EvalContext & context,
+    Ref<Object> NumberLessThanOrEqual(Ref<Object> thisRef, Environment & env,
                                       String message, const vector<Ref<Object> > & args)
     {
         bool result = thisRef->AsNumber() <= args[0]->AsNumber();
-        return result ? context.True() : context.False();
+        return result ? env.True() : env.False();
     }
     
-    Ref<Object> NumberGreaterThanOrEqual(Ref<Object> thisRef, EvalContext & context,
+    Ref<Object> NumberGreaterThanOrEqual(Ref<Object> thisRef, Environment & env,
                                          String message, const vector<Ref<Object> > & args)
     {
         bool result = thisRef->AsNumber() >= args[0]->AsNumber();
-        return result ? context.True() : context.False();
+        return result ? env.True() : env.False();
     }
 }

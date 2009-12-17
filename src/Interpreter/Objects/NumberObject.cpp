@@ -1,5 +1,4 @@
 #include "NumberObject.h"
-#include "EvalContext.h"
 
 namespace Finch
 {
