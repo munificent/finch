@@ -13,6 +13,7 @@ namespace Finch
     
     class Object;
     
+    // A local variable scope. Basically a dictionary of name -> value pairs.
     class Scope
     {
     public:

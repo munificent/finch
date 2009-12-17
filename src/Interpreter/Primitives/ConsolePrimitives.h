@@ -12,6 +12,8 @@ namespace Finch
 {
     using std::vector;
     
+    // Primitive methods for the global Console object.
+    
     Ref<Object> ConsoleWrite(Ref<Object> thisRef, Environment & env,
                              String message, const vector<Ref<Object> > & args);
     

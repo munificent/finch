@@ -28,7 +28,6 @@ namespace Finch
             LEX_IN_NUMBER,
             LEX_IN_NAME,
             LEX_IN_OPERATOR,
-            LEX_IN_SYMBOL,
             LEX_IN_STRING,
             LEX_AT_END
         };

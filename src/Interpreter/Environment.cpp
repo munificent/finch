@@ -49,10 +49,6 @@ namespace Finch
         numberObj->RegisterPrimitive("<=",  NumberLessThanOrEqual);
         numberObj->RegisterPrimitive(">=",  NumberGreaterThanOrEqual);
         
-        // define Symbol prototype
-        mSymbol = Object::NewObject(rootObject, "Symbol");
-        mGlobals->Define("Symbol", mSymbol);
-        
         // define String prototype
         mString = Object::NewObject(rootObject, "String");
         mGlobals->Define("String", mString);
@@ -80,7 +76,7 @@ namespace Finch
         // add its methods
         DynamicObject* consoleObj = &static_cast<DynamicObject&>(*console);
         consoleObj->RegisterPrimitive("write:", ConsoleWrite);
-        consoleObj->RegisterPrimitive("writeLine:", ConsoleWriteLine);
+        consoleObj->RegisterPrimitive("write-line:", ConsoleWriteLine);
     }
     
     Ref<Object> Environment::EvaluateBlock(Ref<Expr> expr)

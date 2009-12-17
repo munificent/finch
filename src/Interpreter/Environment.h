@@ -11,6 +11,9 @@ namespace Finch
 {
     class Expr;
     
+    // Represents the global runtime environment. Code is executed withing the
+    // context of this object. It provides access to global variables as well
+    // as tracking the current local scope and other contextual information.
     class Environment
     {
     public:
@@ -25,7 +28,6 @@ namespace Finch
         Ref<Object> Block()         const { return mBlock; }
         Ref<Object> Number()        const { return mNumber; }
         Ref<Object> String()        const { return mString; }
-        Ref<Object> Symbol()        const { return mSymbol; }
         Ref<Object> True()          const { return mTrue; }
         Ref<Object> False()         const { return mFalse; }
         
@@ -40,7 +42,6 @@ namespace Finch
         Ref<Object> mBlock;
         Ref<Object> mNumber;
         Ref<Object> mString;
-        Ref<Object> mSymbol;
         Ref<Object> mTrue;
         Ref<Object> mFalse;
     };

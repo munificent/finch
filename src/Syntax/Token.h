@@ -30,7 +30,6 @@ namespace Finch
         TOKEN_NAME,
         TOKEN_OPERATOR,
         TOKEN_KEYWORD,
-        TOKEN_SYMBOL,
         
         TOKEN_EOF
     };

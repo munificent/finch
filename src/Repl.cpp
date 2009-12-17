@@ -15,12 +15,13 @@ namespace Finch
         String line;
         
         Environment env;
-        Evaluator evaluator(env);
+        Evaluator   evaluator(env);
         
         std::cout << "finch 0.0.0d\n";
         
         while (running)
         {
+            // ansi color: std::cout << "\033[0;32m";
             std::cout << "> ";
             getline(std::cin, line);
             

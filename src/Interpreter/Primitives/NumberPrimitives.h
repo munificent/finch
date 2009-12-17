@@ -12,6 +12,8 @@ namespace Finch
 {
     using std::vector;
     
+    // Primitive methods for numbers.
+    
     Ref<Object> NumberPlus(Ref<Object> thisRef, Environment & env,
                            String message, const vector<Ref<Object> > & args);
     

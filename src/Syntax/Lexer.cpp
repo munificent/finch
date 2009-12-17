@@ -37,7 +37,6 @@ namespace Finch
                     else if (IsDigit(c))    StartToken(LEX_IN_NUMBER);
                     else if (IsAlpha(c))    StartToken(LEX_IN_NAME);
                     else if (IsOperator(c)) StartToken(LEX_IN_OPERATOR);
-                    else if (c == '`')      StartToken(LEX_IN_SYMBOL, true);
                     else if (c == '\"')     StartToken(LEX_IN_STRING, true);
                     
                     else mIndex++; // ignore other characters
@@ -63,12 +62,6 @@ namespace Finch
                 case LEX_IN_OPERATOR:
                     token = TextToken(IsAlpha(c) || IsDigit(c) || IsOperator(c),
                                       false, TOKEN_OPERATOR);
-                    break;
-                    
-                case LEX_IN_SYMBOL:
-                    token = TextToken(IsAlpha(c) || IsDigit(c) ||
-                                      IsOperator(c) || (c == ':'),
-                                      false, TOKEN_SYMBOL);
                     break;
                     
                 case LEX_IN_STRING:

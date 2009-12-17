@@ -12,6 +12,8 @@ namespace Finch
 {
     using std::vector;
     
+    // Primitive methods for dynamic (i.e. regular) objects.
+    
     Ref<Object> ObjectCopy(Ref<Object> thisRef, Environment & env,
                            String message, const vector<Ref<Object> > & args);
     Ref<Object> ObjectAddFieldValue(Ref<Object> thisRef, Environment & env,

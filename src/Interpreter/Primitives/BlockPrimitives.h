@@ -12,6 +12,8 @@ namespace Finch
 {
     using std::vector;
     
+    // Primitive methods for blocks.
+    
     Ref<Object> BlockValue(Ref<Object> thisRef, Environment & env,
                            String message, const vector<Ref<Object> > & args);
 }
