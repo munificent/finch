@@ -8,15 +8,15 @@ namespace Finch
     {
         stream << "{";
         
-        if (mArgs.size() > 0)
+        if (mParams.size() > 0)
         {
             stream << "|";
             
-            for (int i = 0; i < mArgs.size(); i++)
+            for (int i = 0; i < mParams.size(); i++)
             {
-                stream << mArgs[i];
+                stream << mParams[i];
                 
-                if(i < mArgs.size() - 1) stream << " ";
+                if(i < mParams.size() - 1) stream << " ";
             }            
             
             stream << "|";

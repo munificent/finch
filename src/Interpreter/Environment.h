@@ -1,6 +1,7 @@
 #pragma once
 
 #include <iostream>
+#include <vector>
 
 #include "Macros.h"
 #include "Object.h"
@@ -9,8 +10,12 @@
 
 namespace Finch
 {
+    using std::vector;
+    
+    class BlockObject;
     class Expr;
     
+    //### bob: this should be a DynamicObject.
     // Represents the global runtime environment. Code is executed withing the
     // context of this object. It provides access to global variables as well
     // as tracking the current local scope and other contextual information.
@@ -31,8 +36,11 @@ namespace Finch
         Ref<Object> True()          const { return mTrue; }
         Ref<Object> False()         const { return mFalse; }
         
-        Ref<Object> EvaluateBlock(Ref<Expr> expr);
-        Ref<Object> EvaluateMethod(Ref<Object> self, Ref<Expr> expr);
+        Ref<Object> EvaluateBlock(const BlockObject * block,
+                                  const vector<Ref<Object> > & args);
+        Ref<Object> EvaluateMethod(Ref<Object> self,
+                                   const BlockObject * block,
+                                   const vector<Ref<Object> > & args);
         
     private:
         Ref<Scope> mGlobals;

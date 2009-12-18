@@ -25,7 +25,7 @@ namespace Finch
         static Ref<Object> NewObject(Ref<Object> prototype);
         static Ref<Object> NewNumber(Ref<Object> prototype, double value);
         static Ref<Object> NewString(Ref<Object> prototype, String value);
-        static Ref<Object> NewBlock(Ref<Object> prototype, Ref<Expr> value);
+        static Ref<Object> NewBlock(Ref<Object> prototype, vector<String> params, Ref<Expr> value);
         
         virtual ~Object() {}
         

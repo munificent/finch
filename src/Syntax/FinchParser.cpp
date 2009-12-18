@@ -161,6 +161,10 @@ namespace Finch
                 }
                 
                 if (!ConsumeIf(TOKEN_PIPE)) return ParseError();
+                
+                // if there were no named args, but there were pipes (||),
+                // use an automatic "it" arg
+                if (args.size() == 0) args.push_back("it");
             }
             
             Ref<Expr> body = Expression();

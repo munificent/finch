@@ -12,7 +12,6 @@ namespace Finch
         BlockObject* block = thisRef->AsBlock();
         ASSERT_NOT_NULL(block);
         
-        //### bob: need to handle block arguments too
-        return env.EvaluateBlock(block->Body());
+        return env.EvaluateBlock(block, args);
     }
 }

@@ -22,7 +22,7 @@
 {|local other| obj message }
 
 // args, locals
-{:(arg other) |local another| obj message }
+{:(arg other) obj message }
 
 // implicit nil keyword message
 while: { a < 10 } do: { set a a + 1 }

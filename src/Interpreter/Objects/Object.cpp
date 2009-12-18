@@ -26,9 +26,9 @@ namespace Finch
         return Ref<Object>(new StringObject(prototype, value));
     }
     
-    Ref<Object> Object::NewBlock(Ref<Object> prototype, Ref<Expr> value)
+    Ref<Object> Object::NewBlock(Ref<Object> prototype, vector<String> params, Ref<Expr> value)
     {
-        return Ref<Object>(new BlockObject(prototype, value));
+        return Ref<Object>(new BlockObject(prototype, params, value));
     }
     
     Ref<Object> Object::Receive(Ref<Object> thisRef, Environment & env,

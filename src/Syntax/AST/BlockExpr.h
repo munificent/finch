@@ -13,23 +13,24 @@ namespace Finch
 {
     using std::vector;
     
-    // AST node for a block: "{|arg| obj message }"
+    // AST node for a block: "{|param| obj message }"
     class BlockExpr : public Expr
     {
     public:
-        BlockExpr(vector<String> args, Ref<Expr> body)
-        :   mArgs(args),
+        BlockExpr(vector<String> params, Ref<Expr> body)
+        :   mParams(params),
             mBody(body)
         {}
         
-        Ref<Expr> Body() const { return mBody; }
+        vector<String>  Params() const { return mParams; }
+        Ref<Expr>       Body() const { return mBody; }
         
         virtual void Trace(std::ostream & stream) const;
         
         EXPRESSION_VISITOR
 
     private:
-        vector<String> mArgs;
+        vector<String> mParams;
         Ref<Expr>      mBody;
     };
 }

@@ -23,7 +23,7 @@ namespace Finch
     
     Ref<Object> Evaluator::Visit(const BlockExpr & expr)
     {
-        return Object::NewBlock(mEnvironment.Block(), expr.Body());
+        return Object::NewBlock(mEnvironment.Block(), expr.Params(), expr.Body());
     }
     
     Ref<Object> Evaluator::Visit(const DefExpr & expr)

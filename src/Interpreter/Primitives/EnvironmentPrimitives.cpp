@@ -47,7 +47,7 @@ namespace Finch
     Ref<Object> EnvironmentWhileDo(Ref<Object> thisRef, Environment & env,
                                    String message, const vector<Ref<Object> > & args)
     {
-        BlockObject* condition = args[0]->AsBlock();
+        BlockObject * condition = args[0]->AsBlock();
         
         // do nothing if the condition isn't a block
         //### bob: report error here?
@@ -55,7 +55,7 @@ namespace Finch
         
         vector<Ref<Object> > noArgs;
         
-        while (env.EvaluateBlock(condition->Body()) == env.True())
+        while (env.EvaluateBlock(condition, noArgs) == env.True())
         {
             args[1]->Receive(args[1], env, "value", noArgs);
         }

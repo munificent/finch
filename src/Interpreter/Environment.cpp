@@ -2,6 +2,7 @@
 
 #include "Evaluator.h"
 #include "Expr.h"
+#include "BlockObject.h"
 #include "DynamicObject.h"
 #include "BlockPrimitives.h"
 #include "EnvironmentPrimitives.h"
@@ -29,6 +30,12 @@ namespace Finch
         
         DynamicObject* blockObj = &static_cast<DynamicObject&>(*mBlock);
         blockObj->RegisterPrimitive("value", BlockValue);
+        blockObj->RegisterPrimitive("value:", BlockValue);
+        blockObj->RegisterPrimitive("value:value:", BlockValue);
+        blockObj->RegisterPrimitive("value:value:value:", BlockValue);
+        blockObj->RegisterPrimitive("value:value:value:value:", BlockValue);
+        blockObj->RegisterPrimitive("value:value:value:value:value:", BlockValue);
+        blockObj->RegisterPrimitive("value:value:value:value:value:value:", BlockValue);
         
         // define Number prototype
         mNumber = Object::NewObject(rootObject, "Number");
@@ -64,37 +71,60 @@ namespace Finch
         mGlobals->Define("False", mFalse);
         
         // define Environment
+        //### bob: this should actually refer to this object itself. but first
+        // Environment will need to be a DynamicObject. note that this will
+        // also pretty much kill the ref-counter: Environment will have a
+        // circular reference to itself and will in turn reference everything
+        // else. :(
         Ref<Object> environment = Object::NewObject(rootObject, "Environment");
         mGlobals->Define("Environment", environment);
         
         DynamicObject* environmentObj = &static_cast<DynamicObject&>(*environment);
-        environmentObj->RegisterPrimitive("if:then:", EnvironmentIfThen);
-        environmentObj->RegisterPrimitive("if:then:else:", EnvironmentIfThenElse);
-        environmentObj->RegisterPrimitive("while:do:", EnvironmentWhileDo);
-        environmentObj->RegisterPrimitive("write:", EnvironmentWrite);
-        environmentObj->RegisterPrimitive("write-line:", EnvironmentWriteLine);
-        environmentObj->RegisterPrimitive("load:", EnvironmentLoad);
+        environmentObj->RegisterPrimitive("if:then:",       EnvironmentIfThen);
+        environmentObj->RegisterPrimitive("if:then:else:",  EnvironmentIfThenElse);
+        environmentObj->RegisterPrimitive("while:do:",      EnvironmentWhileDo);
+        environmentObj->RegisterPrimitive("write:",         EnvironmentWrite);
+        environmentObj->RegisterPrimitive("write-line:",    EnvironmentWriteLine);
+        environmentObj->RegisterPrimitive("load:",          EnvironmentLoad);
     }
     
-    Ref<Object> Environment::EvaluateBlock(Ref<Expr> expr)
+    Ref<Object> Environment::EvaluateBlock(const BlockObject * block,
+                                           const vector<Ref<Object> > & args)
     {
         mCurrentScope = Ref<Scope>(new Scope(mCurrentScope));
         
+        if (block->Params().size() != args.size())
+        {
+            //### bob: need better error handling
+            std::cout << "block expects " << block->Params().size()
+                 << " arguments, but got " << args.size() << "." << std::endl;
+            
+            return Ref<Object>();
+        }
+        
+        // bind the arguments
+        for (int i = 0; i < args.size(); i++)
+        {
+            mCurrentScope->Define(block->Params()[i], args[i]);
+        }
+        
         Evaluator evaluator(*this);
-        Ref<Object> result = evaluator.Evaluate(expr);
+        Ref<Object> result = evaluator.Evaluate(block->Body());
 
         mCurrentScope = mCurrentScope->Parent();
         
         return result;
     }
     
-    Ref<Object> Environment::EvaluateMethod(Ref<Object> self, Ref<Expr> expr)
+    Ref<Object> Environment::EvaluateMethod(Ref<Object> self,
+                                            const BlockObject * block,
+                                            const vector<Ref<Object> > & args)
     {
+        // swap out the current self object
         Ref<Object> previousSelf = mSelf;
         mSelf = self;
         
-        Evaluator evaluator(*this);
-        Ref<Object> result = evaluator.Evaluate(expr);
+        Ref<Object> result = EvaluateBlock(block, args);
         
         mSelf = previousSelf;
         
