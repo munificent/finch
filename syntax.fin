@@ -1,6 +1,8 @@
 // symbols:
 `symbolName
 
+' comment
+
 // blocks:
 { obj someMessage }
 {|arg| someMessage }

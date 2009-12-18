@@ -132,8 +132,8 @@ namespace Finch
         }
         else if (CurrentIs(TOKEN_KEYWORD))
         {
-            // implicit Nil keyword message
-            return KeywordMessage(Ref<Expr>(new NameExpr("Nil")));
+            // implicit Environment keyword message
+            return KeywordMessage(Ref<Expr>(new NameExpr("Environment")));
         }
         else if (ConsumeIf(TOKEN_DOT))
         {

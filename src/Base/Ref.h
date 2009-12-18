@@ -39,7 +39,7 @@ namespace Finch
         T & operator *() const { return *mObj; }
         T * operator ->() const { return mObj; }
         
-        bool operator ==(const Ref<T> & other)
+        bool operator ==(const Ref<T> & other) const
         {
             return mObj == other.mObj;
         }

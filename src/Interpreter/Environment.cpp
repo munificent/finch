@@ -4,8 +4,7 @@
 #include "Expr.h"
 #include "DynamicObject.h"
 #include "BlockPrimitives.h"
-#include "ConsolePrimitives.h"
-#include "NilPrimitives.h"
+#include "EnvironmentPrimitives.h"
 #include "NumberPrimitives.h"
 #include "ObjectPrimitives.h"
 
@@ -57,11 +56,6 @@ namespace Finch
         mNil = Object::NewObject(rootObject, "Nil");
         mGlobals->Define("Nil", mNil);
         
-        DynamicObject* nilObj = &static_cast<DynamicObject&>(*mNil);
-        nilObj->RegisterPrimitive("while:do:", NilWhileDo);
-        nilObj->RegisterPrimitive("if:then:", NilIfThen);
-        nilObj->RegisterPrimitive("if:then:else:", NilIfThenElse);
-        
         // define true and false
         mTrue = Object::NewObject(rootObject, "True");
         mGlobals->Define("True", mTrue);
@@ -69,14 +63,17 @@ namespace Finch
         mFalse = Object::NewObject(rootObject, "False");
         mGlobals->Define("False", mFalse);
         
-        // define Console
-        Ref<Object> console = Object::NewObject(rootObject, "Console");
-        mGlobals->Define("Console", console);
+        // define Environment
+        Ref<Object> environment = Object::NewObject(rootObject, "Environment");
+        mGlobals->Define("Environment", environment);
         
-        // add its methods
-        DynamicObject* consoleObj = &static_cast<DynamicObject&>(*console);
-        consoleObj->RegisterPrimitive("write:", ConsoleWrite);
-        consoleObj->RegisterPrimitive("write-line:", ConsoleWriteLine);
+        DynamicObject* environmentObj = &static_cast<DynamicObject&>(*environment);
+        environmentObj->RegisterPrimitive("if:then:", EnvironmentIfThen);
+        environmentObj->RegisterPrimitive("if:then:else:", EnvironmentIfThenElse);
+        environmentObj->RegisterPrimitive("while:do:", EnvironmentWhileDo);
+        environmentObj->RegisterPrimitive("write:", EnvironmentWrite);
+        environmentObj->RegisterPrimitive("write-line:", EnvironmentWriteLine);
+        environmentObj->RegisterPrimitive("load:", EnvironmentLoad);
     }
     
     Ref<Object> Environment::EvaluateBlock(Ref<Expr> expr)
