@@ -6,51 +6,52 @@
 #include "Scope.h"
 #include "String.h"
 #include "Repl.h"
+#include "LineNormalizer.h"
+#include "FinchParser.h"
+#include "ReplLineReader.h"
 
 namespace Finch
 {
+    using std::cin;
+    using std::cout;
+    using std::endl;
+    
     void Repl::Run()
     {
-        bool   running = true;
-        String line;
-        
         Environment env;
         Evaluator   evaluator(env);
         
-        std::cout << "finch 0.0.0d\n";
+        ReplLineReader reader;
+        Lexer          lexer(&reader);
+        LineNormalizer normalizer(&lexer);
+        FinchParser    parser(&normalizer);
+                
+        cout << "finch 0.0.0d" << endl;
+        cout << "------------" << endl;
         
-        while (running)
+        while (env.Running())
         {
             // ansi color: std::cout << "\033[0;32m";
-            std::cout << "> ";
-            getline(std::cin, line);
-            
-            if (line == "quit")
+            reader.Reset();
+            Ref<Expr> expr = parser.ParseLine();
+            if (!expr.IsNull())
             {
-                running = false;
-            }
-            else
-            {
-                Ref<Expr> expr = mParser.ParseLine(line.c_str());
-                if (!expr.IsNull())
+                //cout << "parsed \"" << *expr << "\"" << endl;
+                
+                Ref<Object> result = evaluator.Evaluate(expr);
+                
+                if (!result.IsNull())
                 {
-                    //std::cout << "parsed \"" << *expr << "\"" << std::endl;
-                    
-                    Ref<Object> result = evaluator.Evaluate(expr);
-                    
-                    if (!result.IsNull())
-                    {
-                        std::cout << "< " << *result << std::endl;
-                    }
-                    else
-                    {
-                        std::cout << "< no result" << std::endl;
-                    }
+                    cout << *result << endl;
                 }
                 else
                 {
-                    std::cout << "Parse error" << std::endl;
+                    cout << "no result" << endl;
                 }
+            }
+            else
+            {
+                cout << "parse error" << endl;
             }
         }
     }

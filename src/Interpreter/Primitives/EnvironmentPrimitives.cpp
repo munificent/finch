@@ -7,6 +7,7 @@
 #include "Evaluator.h"
 #include "Expr.h"
 #include "FinchParser.h"
+#include "FileLineReader.h"
 
 namespace Finch
 {
@@ -15,6 +16,13 @@ namespace Finch
     using std::endl;
     using std::ifstream;
     using std::ios;
+    
+    Ref<Object> EnvironmentQuit(Ref<Object> thisRef, Environment & env,
+                                String message, const vector<Ref<Object> > & args)
+    {
+        env.StopRunning();
+        return Ref<Object>();
+    }
     
     Ref<Object> EnvironmentIfThen(Ref<Object> thisRef, Environment & env,
                           String message, const vector<Ref<Object> > & args)
@@ -86,36 +94,29 @@ namespace Finch
     {
         String fileName = args[0]->AsString();
         
-        ifstream file;        
+        /*
+        FileLineReader reader(fileName);
         
-        file.open(fileName.c_str(), ios::in);
-        
-        if (!file)
+        if (reader.EndOfLines())
         {
             // couldn't open
-            cout << "Couldn't open file \"" << file << "\"" << endl;
+            cout << "Couldn't open file \"" << fileName << "\"" << endl;
             //### bob: need error reporting
             return Ref<Object>();
         }
         
         FinchParser parser;
         Evaluator   evaluator(env);
+        */
         Ref<Object> result;
-        
-        while (!file.eof())
-        {
-            String line;
-            getline(file, line);
+        /*
+        Ref<Expr> expr = parser.Parse(reader);
 
-            cout << line.c_str() << endl;
-            
-            Ref<Expr> expr = parser.ParseLine(line.c_str());
-            if (!expr.IsNull())
-            {
-                result = evaluator.Evaluate(expr);
-            }
+        if (!expr.IsNull())
+        {
+            result = evaluator.Evaluate(expr);
         }
-        
+        */
         return result;
     }
 }

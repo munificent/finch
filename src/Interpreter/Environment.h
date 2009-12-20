@@ -24,6 +24,8 @@ namespace Finch
     public:
         Environment();
         
+        bool Running() const { return mRunning; }
+        
         Ref<Scope>  Globals()       const { return mGlobals; }
         Ref<Scope>  CurrentScope()  const { return mCurrentScope; }
 
@@ -42,7 +44,11 @@ namespace Finch
                                    const BlockObject * block,
                                    const vector<Ref<Object> > & args);
         
+        void StopRunning() { mRunning = false; }
+        
     private:
+        bool mRunning;
+        
         Ref<Scope> mGlobals;
         Ref<Scope> mCurrentScope;
         Ref<Object> mSelf;

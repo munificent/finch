@@ -6,22 +6,26 @@
 
 namespace Finch
 {
+    class ILineReader;
+    class ITokenSource;
+    
     class Parser
     {
     public:
-        Parser() {}
-        
-        void StartLine(const char * line);
-        
+        Parser(ITokenSource * tokens)
+        :   mTokens(tokens)
+        {}
+
     protected:
+        Ref<Token> Current() { return mCurrent; }
         bool       CurrentIs(TokenType type);
         bool       ConsumeIf(TokenType type);
         
         Ref<Token> Consume();
-        
+
     private:
-        Lexer      mLexer;
-        Ref<Token> mCurrent;
+        ITokenSource * mTokens;
+        Ref<Token>     mCurrent;
         
         NO_COPY(Parser)
     };

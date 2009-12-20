@@ -7,13 +7,18 @@
 
 namespace Finch
 {
+    class ILineReader;
+    
     class FinchParser : private Parser
     {
     public:
-        FinchParser() {}
+        FinchParser(ITokenSource * tokens)
+        :   Parser(tokens)
+        {}
         
-        Ref<Expr> ParseLine(const char * line);
-        
+        Ref<Expr> Parse();
+        Ref<Expr> ParseLine();
+
     private:
         Ref<Expr> Expression();
         Ref<Expr> Sequence();
@@ -26,6 +31,7 @@ namespace Finch
         Ref<Expr> KeywordMessage(Ref<Expr> object);
         
         Ref<Expr> ParseError();
+        Ref<Expr> ParseError(const char * message);
         
         NO_COPY(FinchParser)
     };

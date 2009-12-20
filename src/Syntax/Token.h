@@ -17,8 +17,6 @@ namespace Finch
         TOKEN_LEFT_BRACE,
         TOKEN_RIGHT_BRACE,
         TOKEN_DOT,
-        TOKEN_COLON,
-        TOKEN_SEMICOLON,
         TOKEN_PIPE,
         
         TOKEN_DEF,
@@ -31,6 +29,7 @@ namespace Finch
         TOKEN_OPERATOR,
         TOKEN_KEYWORD,
         
+        TOKEN_LINE,
         TOKEN_EOF
     };
 

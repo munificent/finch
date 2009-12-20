@@ -4,7 +4,7 @@
 
 #include "Macros.h"
 #include "Expr.h"
-#include "ExprVisitor.h"
+#include "IExprVisitor.h"
 #include "Object.h"
 #include "Ref.h"
 #include "Scope.h"
@@ -16,7 +16,7 @@ namespace Finch
     // The core runtime class for Finch. Given a Finch expression, it evaluates
     // it by walking the tree, performs any side-effects, and returns the
     // result.
-    class Evaluator : private ExprVisitor
+    class Evaluator : private IExprVisitor
     {
     public:
         Evaluator(Environment & env)

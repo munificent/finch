@@ -20,10 +20,10 @@ namespace Finch
     class UnaryExpr;
     class Object;
     
-    class ExprVisitor
+    class IExprVisitor
     {
     public:
-        virtual ~ExprVisitor() {}
+        virtual ~IExprVisitor() {}
         
         virtual Ref<Object> Visit(const BlockExpr & expr) = 0;
         virtual Ref<Object> Visit(const DefExpr & expr) = 0;

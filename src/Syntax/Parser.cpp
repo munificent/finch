@@ -1,18 +1,14 @@
 #include <iostream>
 
 #include "Parser.h"
+#include "ILineReader.h"
+#include "ITokenSource.h"
 
 namespace Finch
 {
-    void Parser::StartLine(const char * line)
-    {
-        mLexer.StartLine(line);
-        mCurrent.Clear();
-    }
-
     bool Parser::CurrentIs(TokenType type)
     {
-        if (mCurrent.IsNull()) mCurrent = mLexer.ReadToken();
+        if (mCurrent.IsNull()) mCurrent = mTokens->ReadToken();
         
         return mCurrent->Type() == type;
     }
@@ -32,11 +28,11 @@ namespace Finch
     
     Ref<Token> Parser::Consume()
     {
-        if (mCurrent.IsNull()) mCurrent = mLexer.ReadToken();
+        if (mCurrent.IsNull()) mCurrent = mTokens->ReadToken();
         
         Ref<Token> read = mCurrent;
         mCurrent.Clear();
-
+        
         return read;
     }
 }

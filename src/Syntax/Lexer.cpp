@@ -2,23 +2,28 @@
 #include <cstdlib>
 
 #include "Lexer.h"
+#include "ILineReader.h"
 
 namespace Finch
 {
-    void Lexer::StartLine(const char * line)
-    {
-        mLine = line;
-        mIndex = 0;
-        mState = LEX_DEFAULT;
-    }
-    
     Ref<Token> Lexer::ReadToken()
     {
         Ref<Token> token;
         
         while (token.IsNull())
         {
-            char c = mLine[mIndex];
+            if (mState == LEX_NOT_STARTED)
+            {
+                mReader->Start();
+                mState = LEX_NEED_NEW_LINE;
+            }
+            
+            if (mState == LEX_NEED_NEW_LINE)
+            {
+                StartLine();
+            }
+            
+            char c = mLine.c_str()[mIndex];
             
             switch (mState)
             {
@@ -30,15 +35,17 @@ namespace Finch
                     else if (c == '{')      token = SingleToken(TOKEN_LEFT_BRACE);
                     else if (c == '}')      token = SingleToken(TOKEN_RIGHT_BRACE);
                     else if (c == '.')      token = SingleToken(TOKEN_DOT);
-                    else if (c == ':')      token = SingleToken(TOKEN_COLON);
-                    else if (c == ';')      token = SingleToken(TOKEN_SEMICOLON);
+                    else if (c == ':')      token = SingleToken(TOKEN_KEYWORD);
+                    else if (c == ';')      token = SingleToken(TOKEN_LINE);
                     else if (c == '|')      token = SingleToken(TOKEN_PIPE);
                     
                     else if (IsDigit(c))    StartToken(LEX_IN_NUMBER);
                     else if (IsAlpha(c))    StartToken(LEX_IN_NAME);
                     else if (IsOperator(c)) StartToken(LEX_IN_OPERATOR);
                     else if (c == '\"')     StartToken(LEX_IN_STRING, true);
-                    
+
+                    else if (c == '\'')     StartToken(LEX_IN_COMMENT);
+
                     else mIndex++; // ignore other characters
                     break;
                     
@@ -64,6 +71,11 @@ namespace Finch
                                       false, TOKEN_OPERATOR);
                     break;
                     
+                case LEX_IN_COMMENT:
+                    // just advance
+                    mIndex++;
+                    break;
+                    
                 case LEX_IN_STRING:
                     if (c == '\"')
                     {
@@ -73,19 +85,38 @@ namespace Finch
                     mIndex++;
                     break;
                     
-                case LEX_AT_END:
-                    token = Token::New(TOKEN_EOF);
+                case LEX_AT_END_OF_LINE:
+                    token = Token::New(TOKEN_LINE);
+                    
+                    mState = LEX_NEED_NEW_LINE;
                     break;
             }
             
-            // after processing the null, we're done
+            // after processing the null, we're done with the line
             //### bob: what if we're in the middle of a string?
-            if (c == '\0') mState = LEX_AT_END;
+            if ((mState != LEX_NEED_NEW_LINE) && (c == '\0'))
+            {
+                mState = LEX_AT_END_OF_LINE;
+            }
         }
         
-        // std::cout << "lex " << *token << std::endl;
+        //std::cout << "lex " << *token << std::endl;
         
         return token;
+    }
+    
+    void Lexer::StartLine()
+    {
+        if (mReader->EndOfLines())
+        {
+            mState = LEX_DONE;
+        }
+        else
+        {
+            mLine = mReader->NextLine();
+            mIndex = 0;
+            mState = LEX_DEFAULT;
+        }
     }
     
     Ref<Token> Lexer::SingleToken(TokenType type)

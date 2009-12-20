@@ -3,34 +3,40 @@
 #include "Macros.h"
 #include "Ref.h"
 #include "Token.h"
+#include "ITokenSource.h"
 
 namespace Finch
 {
-    class ITokenReader;
+    class ILineReader;
     
-    class Lexer
+    class Lexer : public ITokenSource
     {
     public:
-        Lexer()
-        :   mState(LEX_DEFAULT),
+        Lexer(ILineReader * reader)
+        :   mReader(reader),
+            mState(LEX_NOT_STARTED),
             mIndex(0),
             mTokenStart(0)
         {}
         
-        void StartLine(const char * line);
-        
-        Ref<Token> ReadToken();
+        virtual Ref<Token> ReadToken();
         
     private:
         enum State
         {
+            LEX_NOT_STARTED,
             LEX_DEFAULT,
             LEX_IN_NUMBER,
             LEX_IN_NAME,
             LEX_IN_OPERATOR,
             LEX_IN_STRING,
-            LEX_AT_END
+            LEX_IN_COMMENT,
+            LEX_AT_END_OF_LINE,
+            LEX_NEED_NEW_LINE,
+            LEX_DONE
         };
+        
+        void StartLine();
         
         Ref<Token> SingleToken(TokenType type);
         void       StartToken(State state, bool skipFirstChar = false);
@@ -45,11 +51,12 @@ namespace Finch
         bool IsSpace(char c) const;
         bool IsNull(char c) const;
         
-        State mState;
+        ILineReader * mReader;
+        State         mState;
         
-        const char *    mLine;
-        int             mIndex;
-        int             mTokenStart;
+        String        mLine;
+        int           mIndex;
+        int           mTokenStart;
         
         NO_COPY(Lexer)
     };

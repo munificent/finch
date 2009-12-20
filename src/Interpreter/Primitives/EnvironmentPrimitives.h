@@ -13,6 +13,8 @@ namespace Finch
     using std::vector;
     
     // Primitive methods for the global Environment object.
+    Ref<Object> EnvironmentQuit(Ref<Object> thisRef, Environment & env,
+                                  String message, const vector<Ref<Object> > & args);
     
     // Flow control
     Ref<Object> EnvironmentIfThen(Ref<Object> thisRef, Environment & env,

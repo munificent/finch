@@ -7,15 +7,15 @@
 #include "Ref.h"
 #include "String.h"
 
-#define EXPRESSION_VISITOR                                      \
-        virtual Ref<Object> Accept(ExprVisitor & visitor) const \
-        {                                                       \
-            return visitor.Visit(*this);                        \
-        }                                                       \
+#define EXPRESSION_VISITOR                                       \
+        virtual Ref<Object> Accept(IExprVisitor & visitor) const \
+        {                                                        \
+            return visitor.Visit(*this);                         \
+        }                                                        \
 
 namespace Finch
 {
-    class ExprVisitor;
+    class IExprVisitor;
     class Object;
     
     class Expr
@@ -25,7 +25,7 @@ namespace Finch
         
         //### bob: coupling ast to interpreter (object) here is gross.
         // wish you could do template virtual methods. :(
-        virtual Ref<Object> Accept(ExprVisitor & visitor) const = 0;
+        virtual Ref<Object> Accept(IExprVisitor & visitor) const = 0;
         
         virtual void Trace(std::ostream & stream) const = 0;
     };

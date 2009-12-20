@@ -4,6 +4,7 @@
 
 #include "BlockExpr.h"
 #include "DefExpr.h"
+#include "ILineReader.h"
 #include "KeywordExpr.h"
 #include "NameExpr.h"
 #include "NumberExpr.h"
@@ -17,16 +18,30 @@ namespace Finch
 {
     using std::vector;
     
-    Ref<Expr> FinchParser::ParseLine(const char * line)
+    Ref<Expr> FinchParser::Parse()
     {
-        StartLine(line);
-        
         return Expression();
+    }
+    
+    Ref<Expr> FinchParser::ParseLine()
+    {
+        // skip past Sequence() otherwise we'll keep reading lines forever
+        Ref<Expr> expr = Variable();
+        
+        // eat any trailing line
+        ConsumeIf(TOKEN_LINE);
+        
+        return expr;
     }
     
     Ref<Expr> FinchParser::Expression()
     {
-        return Sequence();
+        Ref<Expr> expr = Sequence();
+        
+        // eat any trailing line
+        ConsumeIf(TOKEN_LINE);
+        
+        return expr;
     }
     
     Ref<Expr> FinchParser::Sequence()
@@ -34,10 +49,15 @@ namespace Finch
         Ref<Expr> expression = Variable();
         if (expression.IsNull()) return ParseError();
         
-        while (ConsumeIf(TOKEN_SEMICOLON))
+        while (ConsumeIf(TOKEN_LINE))
         {
+            // there may be a trailing line after the last expression in a
+            // block. if we eat the line and then see a closing brace, just
+            // stop here.
+            if (CurrentIs(TOKEN_RIGHT_BRACE)) break;
+            
             Ref<Expr> second = Variable();
-            if (second.IsNull()) return ParseError();
+            if (second.IsNull()) return ParseError("Expect expression after ';'.");
             
             expression = Ref<Expr>(new SequenceExpr(expression, second));
         }
@@ -94,7 +114,7 @@ namespace Finch
         {
             String op = Consume()->Text();
             Ref<Expr> arg = Unary();
-            if (arg.IsNull()) return ParseError();
+            if (arg.IsNull()) return ParseError("Expect expression after operator.");
 
             object = Ref<Expr>(new OperatorExpr(object, op, arg));
         }
@@ -137,14 +157,14 @@ namespace Finch
         }
         else if (ConsumeIf(TOKEN_DOT))
         {
-            return Ref<Expr>(new NameExpr("."));
+            return Ref<Expr>(new NameExpr("self"));
         }
         else if (ConsumeIf(TOKEN_LEFT_PAREN))
         {
             Ref<Expr> expression = Expression();
-            if (expression.IsNull()) return ParseError();
+            if (expression.IsNull()) return ParseError("Expect expression after '('.");
             
-            if (!ConsumeIf(TOKEN_RIGHT_PAREN)) return ParseError();
+            if (!ConsumeIf(TOKEN_RIGHT_PAREN)) return ParseError("Expect closing ')'.");
             
             return expression;
         }
@@ -160,7 +180,7 @@ namespace Finch
                     args.push_back(Consume()->Text());
                 }
                 
-                if (!ConsumeIf(TOKEN_PIPE)) return ParseError();
+                if (!ConsumeIf(TOKEN_PIPE)) return ParseError("Expect closing '|' after block arguments.");
                 
                 // if there were no named args, but there were pipes (||),
                 // use an automatic "it" arg
@@ -168,9 +188,9 @@ namespace Finch
             }
             
             Ref<Expr> body = Expression();
-            if (body.IsNull()) return ParseError();
+            if (body.IsNull()) return ParseError("Expect expression body inside block.");
             
-            if (!ConsumeIf(TOKEN_RIGHT_BRACE)) return ParseError();
+            if (!ConsumeIf(TOKEN_RIGHT_BRACE)) return ParseError("Expect closing '}' after block.");
             
             return Ref<Expr>(new BlockExpr(args, body));
         }
@@ -187,7 +207,7 @@ namespace Finch
         {
             String keyword = Consume()->Text();
             Ref<Expr> arg = Operator();
-            if (arg.IsNull()) return ParseError();
+            if (arg.IsNull()) return ParseError("Expect argument after keyword.");
             
             keywords.push_back(keyword);
             args.push_back(arg);
@@ -203,6 +223,22 @@ namespace Finch
     
     Ref<Expr> FinchParser::ParseError()
     {
+        return Ref<Expr>();
+    }
+    
+    Ref<Expr> FinchParser::ParseError(const char * message)
+    {
+        std::cout << message;
+        
+        if (Current().IsNull())
+        {
+            std::cout << " (got null token)" << std::endl;
+        }
+        else
+        {
+            std::cout << " (got: " << *Current() << ")" << std::endl;
+        }
+        
         return Ref<Expr>();
     }
 }

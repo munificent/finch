@@ -62,7 +62,7 @@ namespace Finch
     
     Ref<Object> Evaluator::Visit(const NameExpr & expr)
     {
-        if (expr.Name() == ".") return mEnvironment.Self();
+        if (expr.Name() == "self") return mEnvironment.Self();
         
         //### bob: hack temp. always look up in global scope
         return NullToNil(mEnvironment.CurrentScope()->LookUp(expr.Name()));

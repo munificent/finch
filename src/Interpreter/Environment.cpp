@@ -12,6 +12,7 @@
 namespace Finch
 {
     Environment::Environment()
+    :   mRunning(true)
     {
         // build the global scope
         mGlobals = Ref<Scope>(new Scope()); 
@@ -80,6 +81,7 @@ namespace Finch
         mGlobals->Define("Environment", environment);
         
         DynamicObject* environmentObj = &static_cast<DynamicObject&>(*environment);
+        environmentObj->RegisterPrimitive("quit",           EnvironmentQuit);
         environmentObj->RegisterPrimitive("if:then:",       EnvironmentIfThen);
         environmentObj->RegisterPrimitive("if:then:else:",  EnvironmentIfThenElse);
         environmentObj->RegisterPrimitive("while:do:",      EnvironmentWhileDo);
