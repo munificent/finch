@@ -8,6 +8,7 @@
 #include "EnvironmentPrimitives.h"
 #include "NumberPrimitives.h"
 #include "ObjectPrimitives.h"
+#include "StringPrimitives.h"
 
 namespace Finch
 {
@@ -45,8 +46,8 @@ namespace Finch
         DynamicObject* numberObj = &static_cast<DynamicObject&>(*mNumber);
         numberObj->RegisterPrimitive("abs", NumberAbs);
         numberObj->RegisterPrimitive("neg", NumberNeg);
-        numberObj->RegisterPrimitive("+",   NumberPlus);
-        numberObj->RegisterPrimitive("-",   NumberMinus);
+        numberObj->RegisterPrimitive("+",   NumberAdd);
+        numberObj->RegisterPrimitive("-",   NumberSubtract);
         numberObj->RegisterPrimitive("*",   NumberMultiply);
         numberObj->RegisterPrimitive("/",   NumberDivide);
         numberObj->RegisterPrimitive("=",   NumberEquals);
@@ -59,6 +60,11 @@ namespace Finch
         // define String prototype
         mString = Object::NewObject(rootObject, "String");
         mGlobals->Define("String", mString);
+        
+        DynamicObject* stringObj = &static_cast<DynamicObject&>(*mString);
+        stringObj->RegisterPrimitive("+",       StringAdd);
+        stringObj->RegisterPrimitive("length",  StringLength);
+        stringObj->RegisterPrimitive("at:",     StringAt);
         
         // define nil
         mNil = Object::NewObject(rootObject, "Nil");

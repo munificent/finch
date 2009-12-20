@@ -4,13 +4,13 @@
 
 namespace Finch
 {
-    Ref<Object> NumberPlus(Ref<Object> thisRef, Environment & env,
+    Ref<Object> NumberAdd(Ref<Object> thisRef, Environment & env,
                            String message, const vector<Ref<Object> > & args)
     {
         return Object::NewNumber(env.Number(), thisRef->AsNumber() + args[0]->AsNumber());
     }
 
-    Ref<Object> NumberMinus(Ref<Object> thisRef, Environment & env,
+    Ref<Object> NumberSubtract(Ref<Object> thisRef, Environment & env,
                             String message, const vector<Ref<Object> > & args)
     {
         return Object::NewNumber(env.Number(), thisRef->AsNumber() - args[0]->AsNumber());

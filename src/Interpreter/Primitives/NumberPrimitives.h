@@ -14,10 +14,10 @@ namespace Finch
     
     // Primitive methods for numbers.
     
-    Ref<Object> NumberPlus(Ref<Object> thisRef, Environment & env,
+    Ref<Object> NumberAdd(Ref<Object> thisRef, Environment & env,
                            String message, const vector<Ref<Object> > & args);
     
-    Ref<Object> NumberMinus(Ref<Object> thisRef, Environment & env,
+    Ref<Object> NumberSubtract(Ref<Object> thisRef, Environment & env,
                            String message, const vector<Ref<Object> > & args);
     
     Ref<Object> NumberMultiply(Ref<Object> thisRef, Environment & env,
