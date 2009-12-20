@@ -20,6 +20,8 @@ namespace Finch
     
     Ref<Expr> FinchParser::Parse()
     {
+        // since expression includes sequence expressions, this will parse
+        // as many lines as we have
         return Expression();
     }
     
@@ -52,9 +54,10 @@ namespace Finch
         while (ConsumeIf(TOKEN_LINE))
         {
             // there may be a trailing line after the last expression in a
-            // block. if we eat the line and then see a closing brace, just
-            // stop here.
+            // block. if we eat the line and then see a closing brace or eof,
+            // just stop here.
             if (CurrentIs(TOKEN_RIGHT_BRACE)) break;
+            if (CurrentIs(TOKEN_EOF)) break;
             
             Ref<Expr> second = Variable();
             if (second.IsNull()) return ParseError("Expect expression after ';'.");

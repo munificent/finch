@@ -8,6 +8,7 @@
 #include "Expr.h"
 #include "FinchParser.h"
 #include "FileLineReader.h"
+#include "LineNormalizer.h"
 
 namespace Finch
 {
@@ -94,7 +95,6 @@ namespace Finch
     {
         String fileName = args[0]->AsString();
         
-        /*
         FileLineReader reader(fileName);
         
         if (reader.EndOfLines())
@@ -105,18 +105,19 @@ namespace Finch
             return Ref<Object>();
         }
         
-        FinchParser parser;
-        Evaluator   evaluator(env);
-        */
+        Lexer           lexer(&reader);
+        LineNormalizer  normalizer(&lexer);
+        FinchParser     parser(&normalizer);
+        Evaluator       evaluator(env);
+
         Ref<Object> result;
-        /*
-        Ref<Expr> expr = parser.Parse(reader);
+        Ref<Expr> expr = parser.Parse();
 
         if (!expr.IsNull())
         {
             result = evaluator.Evaluate(expr);
         }
-        */
+
         return result;
     }
 }

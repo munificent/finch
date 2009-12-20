@@ -90,11 +90,17 @@ namespace Finch
                     
                     mState = LEX_NEED_NEW_LINE;
                     break;
+                    
+                case LEX_DONE:
+                    token = Token::New(TOKEN_EOF);
+                    break;
             }
             
             // after processing the null, we're done with the line
             //### bob: what if we're in the middle of a string?
-            if ((mState != LEX_NEED_NEW_LINE) && (c == '\0'))
+            if ((mState != LEX_NEED_NEW_LINE) &&
+                (mState != LEX_DONE) &&
+                (c == '\0'))
             {
                 mState = LEX_AT_END_OF_LINE;
             }

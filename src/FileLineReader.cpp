@@ -29,8 +29,6 @@ namespace Finch
         String line;
         getline(mFile, line);
         
-        std::cout << "read " << line << std::endl;
-        
         return line;
     }
 }

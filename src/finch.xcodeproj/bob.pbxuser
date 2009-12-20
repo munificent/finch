@@ -8,6 +8,7 @@
 			8DD76F620486A84900D96B5E /* finch */,
 		);
 		breakpoints = (
+			C41E6C9910DDF0B400FC2876 /* EnvironmentPrimitives.cpp:116 */,
 		);
 		codeSenseManager = C4012A3410CA91B70088B77F /* Code sense */;
 		executables = (
@@ -922,9 +923,9 @@
 	};
 	C41E6B2D10DD85EE00FC2876 /* LineNormalizer.cpp */ = {
 		uiCtxt = {
-			sepNavIntBoundsRect = "{{0, 0}, {900, 1008}}";
+			sepNavIntBoundsRect = "{{0, 0}, {900, 1022}}";
 			sepNavSelRange = "{284, 0}";
-			sepNavVisRange = "{1608, 623}";
+			sepNavVisRange = "{0, 545}";
 			sepNavWindowFrame = "{{15, 0}, {836, 878}}";
 		};
 	};
@@ -1053,7 +1054,7 @@
 		fRef = C4CDF8B010D88DF3001C9D4A /* EnvironmentPrimitives.cpp */;
 		name = "EnvironmentPrimitives.cpp: 108";
 		rLen = 0;
-		rLoc = 3106;
+		rLoc = 3207;
 		rType = 0;
 		vrLen = 224;
 		vrLoc = 3181;
@@ -1063,7 +1064,7 @@
 		comments = "error: expected `;' before 'std'";
 		fRef = C4FC166910D4334800E6ABD6 /* FinchParser.cpp */;
 		rLen = 1;
-		rLoc = 230;
+		rLoc = 233;
 		rType = 1;
 	};
 	C41E6B7510DDDA1400FC2876 /* PBXTextBookmark */ = {
@@ -1251,7 +1252,7 @@
 		fRef = C4CDF8B010D88DF3001C9D4A /* EnvironmentPrimitives.cpp */;
 		name = "EnvironmentPrimitives.cpp: 108";
 		rLen = 0;
-		rLoc = 3106;
+		rLoc = 3207;
 		rType = 0;
 		vrLen = 224;
 		vrLoc = 3181;
@@ -1261,7 +1262,7 @@
 		fRef = C4FC166910D4334800E6ABD6 /* FinchParser.cpp */;
 		name = "FinchParser.cpp: 241";
 		rLen = 0;
-		rLoc = 6605;
+		rLoc = 6768;
 		rType = 0;
 		vrLen = 238;
 		vrLoc = 6585;
@@ -1271,7 +1272,7 @@
 		fRef = C4FC166910D4334800E6ABD6 /* FinchParser.cpp */;
 		name = "FinchParser.cpp: 235";
 		rLen = 0;
-		rLoc = 6605;
+		rLoc = 6768;
 		rType = 0;
 		vrLen = 258;
 		vrLoc = 6696;
@@ -1289,7 +1290,7 @@
 		fRef = C4FC166910D4334800E6ABD6 /* FinchParser.cpp */;
 		name = "FinchParser.cpp: 235";
 		rLen = 0;
-		rLoc = 6605;
+		rLoc = 6768;
 		rType = 0;
 		vrLen = 258;
 		vrLoc = 6696;
@@ -1419,7 +1420,7 @@
 		fRef = C4CDF8B010D88DF3001C9D4A /* EnvironmentPrimitives.cpp */;
 		name = "EnvironmentPrimitives.cpp: 119";
 		rLen = 0;
-		rLoc = 3373;
+		rLoc = 3458;
 		rType = 0;
 		vrLen = 1430;
 		vrLoc = 1975;
@@ -1529,7 +1530,7 @@
 		fRef = C4FC166910D4334800E6ABD6 /* FinchParser.cpp */;
 		name = "FinchParser.cpp: 195";
 		rLen = 0;
-		rLoc = 5588;
+		rLoc = 5751;
 		rType = 0;
 		vrLen = 1503;
 		vrLoc = 5371;
@@ -1589,7 +1590,7 @@
 		fRef = C4FC166B10D4334800E6ABD6 /* Lexer.cpp */;
 		name = "Lexer.cpp: 103";
 		rLen = 0;
-		rLoc = 3737;
+		rLoc = 3923;
 		rType = 0;
 		vrLen = 2053;
 		vrLoc = 0;
@@ -1599,7 +1600,7 @@
 		fRef = C4FC166910D4334800E6ABD6 /* FinchParser.cpp */;
 		name = "FinchParser.cpp: 75";
 		rLen = 0;
-		rLoc = 2470;
+		rLoc = 2633;
 		rType = 0;
 		vrLen = 1590;
 		vrLoc = 1018;
@@ -2039,7 +2040,7 @@
 		fRef = C4FC166910D4334800E6ABD6 /* FinchParser.cpp */;
 		name = "FinchParser.cpp: 182";
 		rLen = 0;
-		rLoc = 5490;
+		rLoc = 5653;
 		rType = 0;
 		vrLen = 1707;
 		vrLoc = 4704;
@@ -2049,7 +2050,7 @@
 		fRef = C4CDF8B010D88DF3001C9D4A /* EnvironmentPrimitives.cpp */;
 		name = "EnvironmentPrimitives.cpp: 119";
 		rLen = 0;
-		rLoc = 3373;
+		rLoc = 3458;
 		rType = 0;
 		vrLen = 1430;
 		vrLoc = 1975;
@@ -2069,7 +2070,7 @@
 		fRef = C4FC166910D4334800E6ABD6 /* FinchParser.cpp */;
 		name = "FinchParser.cpp: 32";
 		rLen = 0;
-		rLoc = 393;
+		rLoc = 504;
 		rType = 0;
 		vrLen = 1159;
 		vrLoc = 68;
@@ -2118,7 +2119,7 @@
 		isa = PBXTextBookmark;
 		fRef = C4FC166B10D4334800E6ABD6 /* Lexer.cpp */;
 		name = "Lexer.cpp: 1";
-		rLen = 6304;
+		rLen = 6490;
 		rLoc = 0;
 		rType = 0;
 		vrLen = 2030;
@@ -2329,7 +2330,7 @@
 		fRef = C4FC166B10D4334800E6ABD6 /* Lexer.cpp */;
 		name = "Lexer.cpp: 93";
 		rLen = 0;
-		rLoc = 3790;
+		rLoc = 3976;
 		rType = 0;
 		vrLen = 2030;
 		vrLoc = 0;
@@ -2349,7 +2350,7 @@
 		fRef = C4FC166B10D4334800E6ABD6 /* Lexer.cpp */;
 		name = "Lexer.cpp: 93";
 		rLen = 0;
-		rLoc = 3790;
+		rLoc = 3976;
 		rType = 0;
 		vrLen = 2030;
 		vrLoc = 0;
@@ -2369,7 +2370,7 @@
 		fRef = C4FC166B10D4334800E6ABD6 /* Lexer.cpp */;
 		name = "Lexer.cpp: 90";
 		rLen = 0;
-		rLoc = 3849;
+		rLoc = 4035;
 		rType = 0;
 		vrLen = 1473;
 		vrLoc = 2396;
@@ -2409,7 +2410,7 @@
 		fRef = C4FC166B10D4334800E6ABD6 /* Lexer.cpp */;
 		name = "Lexer.cpp: 97";
 		rLen = 0;
-		rLoc = 3822;
+		rLoc = 4008;
 		rType = 0;
 		vrLen = 2096;
 		vrLoc = 0;
@@ -2429,7 +2430,7 @@
 		fRef = C4FC166910D4334800E6ABD6 /* FinchParser.cpp */;
 		name = "FinchParser.cpp: 42";
 		rLen = 0;
-		rLoc = 889;
+		rLoc = 1000;
 		rType = 0;
 		vrLen = 1364;
 		vrLoc = 352;
@@ -2459,7 +2460,7 @@
 		fRef = C4FC166910D4334800E6ABD6 /* FinchParser.cpp */;
 		name = "FinchParser.cpp: 32";
 		rLen = 0;
-		rLoc = 393;
+		rLoc = 504;
 		rType = 0;
 		vrLen = 1259;
 		vrLoc = 352;
@@ -2539,7 +2540,7 @@
 		fRef = C4FC166B10D4334800E6ABD6 /* Lexer.cpp */;
 		name = "Lexer.cpp: 107";
 		rLen = 0;
-		rLoc = 4007;
+		rLoc = 4193;
 		rType = 0;
 		vrLen = 2096;
 		vrLoc = 0;
@@ -2559,7 +2560,7 @@
 		fRef = C4FC166B10D4334800E6ABD6 /* Lexer.cpp */;
 		name = "Lexer.cpp: 104";
 		rLen = 0;
-		rLoc = 3955;
+		rLoc = 4141;
 		rType = 0;
 		vrLen = 1481;
 		vrLoc = 2571;
@@ -2589,7 +2590,7 @@
 		fRef = C4FC166B10D4334800E6ABD6 /* Lexer.cpp */;
 		name = "Lexer.cpp: 108";
 		rLen = 0;
-		rLoc = 4007;
+		rLoc = 4193;
 		rType = 0;
 		vrLen = 1245;
 		vrLoc = 3301;
@@ -2619,7 +2620,7 @@
 		fRef = C4FC166910D4334800E6ABD6 /* FinchParser.cpp */;
 		name = "FinchParser.cpp: 32";
 		rLen = 0;
-		rLoc = 393;
+		rLoc = 504;
 		rType = 0;
 		vrLen = 1888;
 		vrLoc = 3222;
@@ -2649,7 +2650,7 @@
 		fRef = C4FC166910D4334800E6ABD6 /* FinchParser.cpp */;
 		name = "FinchParser.cpp: 32";
 		rLen = 0;
-		rLoc = 393;
+		rLoc = 504;
 		rType = 0;
 		vrLen = 1933;
 		vrLoc = 3222;
@@ -2659,7 +2660,7 @@
 		fRef = C4FC166B10D4334800E6ABD6 /* Lexer.cpp */;
 		name = "Lexer.cpp: 96";
 		rLen = 0;
-		rLoc = 3790;
+		rLoc = 3976;
 		rType = 0;
 		vrLen = 1679;
 		vrLoc = 2234;
@@ -2679,7 +2680,7 @@
 		fRef = C4FC166B10D4334800E6ABD6 /* Lexer.cpp */;
 		name = "Lexer.cpp: 95";
 		rLen = 0;
-		rLoc = 3726;
+		rLoc = 3912;
 		rType = 0;
 		vrLen = 2213;
 		vrLoc = 102;
@@ -2699,7 +2700,7 @@
 		fRef = C4FC166B10D4334800E6ABD6 /* Lexer.cpp */;
 		name = "Lexer.cpp: 95";
 		rLen = 0;
-		rLoc = 3726;
+		rLoc = 3912;
 		rType = 0;
 		vrLen = 1854;
 		vrLoc = 1829;
@@ -2729,7 +2730,7 @@
 		fRef = C4FC166910D4334800E6ABD6 /* FinchParser.cpp */;
 		name = "FinchParser.cpp: 197";
 		rLen = 0;
-		rLoc = 5689;
+		rLoc = 5852;
 		rType = 0;
 		vrLen = 1809;
 		vrLoc = 4756;
@@ -2739,7 +2740,7 @@
 		fRef = C4FC166B10D4334800E6ABD6 /* Lexer.cpp */;
 		name = "Lexer.cpp: 98";
 		rLen = 0;
-		rLoc = 3648;
+		rLoc = 3834;
 		rType = 0;
 		vrLen = 2053;
 		vrLoc = 0;
@@ -2749,7 +2750,7 @@
 		fRef = C4FC166910D4334800E6ABD6 /* FinchParser.cpp */;
 		name = "FinchParser.cpp: 37";
 		rLen = 0;
-		rLoc = 486;
+		rLoc = 597;
 		rType = 0;
 		vrLen = 1248;
 		vrLoc = 306;
@@ -2779,7 +2780,7 @@
 		fRef = C4FC166910D4334800E6ABD6 /* FinchParser.cpp */;
 		name = "FinchParser.cpp: 44";
 		rLen = 0;
-		rLoc = 698;
+		rLoc = 809;
 		rType = 0;
 		vrLen = 1207;
 		vrLoc = 306;
@@ -2859,7 +2860,7 @@
 		fRef = C4FC166B10D4334800E6ABD6 /* Lexer.cpp */;
 		name = "Lexer.cpp: 103";
 		rLen = 0;
-		rLoc = 3790;
+		rLoc = 3976;
 		rType = 0;
 		vrLen = 1567;
 		vrLoc = 2533;
@@ -2899,7 +2900,7 @@
 		fRef = C4FC166910D4334800E6ABD6 /* FinchParser.cpp */;
 		name = "FinchParser.cpp: 241";
 		rLen = 0;
-		rLoc = 6605;
+		rLoc = 6768;
 		rType = 0;
 		vrLen = 1803;
 		vrLoc = 5091;
@@ -2919,7 +2920,7 @@
 		fRef = C4FC166910D4334800E6ABD6 /* FinchParser.cpp */;
 		name = "FinchParser.cpp: 241";
 		rLen = 0;
-		rLoc = 6605;
+		rLoc = 6768;
 		rType = 0;
 		vrLen = 1525;
 		vrLoc = 5556;
@@ -2929,7 +2930,7 @@
 		fRef = C4FC166B10D4334800E6ABD6 /* Lexer.cpp */;
 		name = "Lexer.cpp: 102";
 		rLen = 0;
-		rLoc = 3726;
+		rLoc = 3912;
 		rType = 0;
 		vrLen = 1583;
 		vrLoc = 2554;
@@ -2949,7 +2950,7 @@
 		fRef = C4FC166910D4334800E6ABD6 /* FinchParser.cpp */;
 		name = "FinchParser.cpp: 202";
 		rLen = 0;
-		rLoc = 5473;
+		rLoc = 5636;
 		rType = 0;
 		vrLen = 2012;
 		vrLoc = 4397;
@@ -3019,7 +3020,7 @@
 		fRef = C4FC166B10D4334800E6ABD6 /* Lexer.cpp */;
 		name = "Lexer.cpp: 103";
 		rLen = 0;
-		rLoc = 3737;
+		rLoc = 3923;
 		rType = 0;
 		vrLen = 1585;
 		vrLoc = 2554;
@@ -3049,7 +3050,7 @@
 		fRef = C4FC166910D4334800E6ABD6 /* FinchParser.cpp */;
 		name = "FinchParser.cpp: 65";
 		rLen = 0;
-		rLoc = 1275;
+		rLoc = 1393;
 		rType = 0;
 		vrLen = 1549;
 		vrLoc = 576;
@@ -3199,7 +3200,7 @@
 		fRef = C4FC166910D4334800E6ABD6 /* FinchParser.cpp */;
 		name = "FinchParser.cpp: 195";
 		rLen = 0;
-		rLoc = 5588;
+		rLoc = 5751;
 		rType = 0;
 		vrLen = 1503;
 		vrLoc = 5371;
@@ -3219,7 +3220,7 @@
 		fRef = C4FC166B10D4334800E6ABD6 /* Lexer.cpp */;
 		name = "Lexer.cpp: 103";
 		rLen = 0;
-		rLoc = 3737;
+		rLoc = 3923;
 		rType = 0;
 		vrLen = 2053;
 		vrLoc = 0;
@@ -3311,6 +3312,23 @@
 		rType = 0;
 		vrLen = 435;
 		vrLoc = 439;
+	};
+	C41E6C9910DDF0B400FC2876 /* EnvironmentPrimitives.cpp:116 */ = {
+		isa = PBXFileBreakpoint;
+		actions = (
+		);
+		breakpointStyle = 0;
+		continueAfterActions = 0;
+		countType = 0;
+		delayBeforeContinue = 0;
+		fileReference = C4CDF8B010D88DF3001C9D4A /* EnvironmentPrimitives.cpp */;
+		functionName = "EnvironmentLoad(Ref<Object> thisRef, Environment & env, String message, const vector<Ref<Object> > & args)";
+		hitCount = 0;
+		ignoreCount = 0;
+		lineNumber = 116;
+		location = finch;
+		modificationTime = 282980656.871018;
+		state = 1;
 	};
 	C41F4A7210CC13830008390E /* PBXTextBookmark */ = {
 		isa = PBXTextBookmark;
@@ -3744,7 +3762,7 @@
 	C4A6F6CF10DC4D7A00854074 /* FileLineReader.cpp */ = {
 		uiCtxt = {
 			sepNavIntBoundsRect = "{{0, 0}, {747, 748}}";
-			sepNavSelRange = "{634, 0}";
+			sepNavSelRange = "{514, 0}";
 			sepNavVisRange = "{0, 664}";
 		};
 	};
@@ -3903,7 +3921,7 @@
 		fRef = C4CDF8B010D88DF3001C9D4A /* EnvironmentPrimitives.cpp */;
 		name = "EnvironmentPrimitives.cpp: 73";
 		rLen = 0;
-		rLoc = 2020;
+		rLoc = 2048;
 		rType = 0;
 		vrLen = 1704;
 		vrLoc = 1391;
@@ -3953,7 +3971,7 @@
 		fRef = C4FC166910D4334800E6ABD6 /* FinchParser.cpp */;
 		name = "FinchParser.cpp: 35";
 		rLen = 0;
-		rLoc = 1039;
+		rLoc = 1150;
 		rType = 0;
 		vrLen = 1109;
 		vrLoc = 136;
@@ -4233,7 +4251,7 @@
 		fRef = C4FC166910D4334800E6ABD6 /* FinchParser.cpp */;
 		name = "FinchParser.cpp: 98";
 		rLen = 0;
-		rLoc = 3116;
+		rLoc = 3279;
 		rType = 0;
 		vrLen = 1535;
 		vrLoc = 2546;
@@ -4273,7 +4291,7 @@
 		fRef = C4CDF8B010D88DF3001C9D4A /* EnvironmentPrimitives.cpp */;
 		name = "EnvironmentPrimitives.cpp: 101";
 		rLen = 0;
-		rLoc = 3106;
+		rLoc = 3207;
 		rType = 0;
 		vrLen = 1387;
 		vrLoc = 2001;
@@ -4533,7 +4551,7 @@
 		fRef = C4CDF8B010D88DF3001C9D4A /* EnvironmentPrimitives.cpp */;
 		name = "EnvironmentPrimitives.cpp: 23";
 		rLen = 0;
-		rLoc = 568;
+		rLoc = 596;
 		rType = 0;
 		vrLen = 1369;
 		vrLoc = 0;
@@ -4863,7 +4881,7 @@
 		fRef = C4FC166910D4334800E6ABD6 /* FinchParser.cpp */;
 		name = "FinchParser.cpp: 122";
 		rLen = 0;
-		rLoc = 3630;
+		rLoc = 3793;
 		rType = 0;
 		vrLen = 1588;
 		vrLoc = 2571;
@@ -4893,7 +4911,7 @@
 		fRef = C4FC166910D4334800E6ABD6 /* FinchParser.cpp */;
 		name = "FinchParser.cpp: 118";
 		rLen = 0;
-		rLoc = 3587;
+		rLoc = 3750;
 		rType = 0;
 		vrLen = 1531;
 		vrLoc = 2455;
@@ -4913,7 +4931,7 @@
 		fRef = C4FC166B10D4334800E6ABD6 /* Lexer.cpp */;
 		name = "Lexer.cpp: 105";
 		rLen = 0;
-		rLoc = 3790;
+		rLoc = 3976;
 		rType = 0;
 		vrLen = 1598;
 		vrLoc = 2504;
@@ -4933,7 +4951,7 @@
 		fRef = C4FC166910D4334800E6ABD6 /* FinchParser.cpp */;
 		name = "FinchParser.cpp: 118";
 		rLen = 0;
-		rLoc = 3587;
+		rLoc = 3750;
 		rType = 0;
 		vrLen = 1652;
 		vrLoc = 2762;
@@ -4953,7 +4971,7 @@
 		fRef = C4FC166910D4334800E6ABD6 /* FinchParser.cpp */;
 		name = "FinchParser.cpp: 108";
 		rLen = 0;
-		rLoc = 3278;
+		rLoc = 3441;
 		rType = 0;
 		vrLen = 1442;
 		vrLoc = 1982;
@@ -4983,7 +5001,7 @@
 		fRef = C4FC166910D4334800E6ABD6 /* FinchParser.cpp */;
 		name = "FinchParser.cpp: 121";
 		rLen = 0;
-		rLoc = 3630;
+		rLoc = 3793;
 		rType = 0;
 		vrLen = 1530;
 		vrLoc = 2213;
@@ -5013,7 +5031,7 @@
 		fRef = C4FC166B10D4334800E6ABD6 /* Lexer.cpp */;
 		name = "Lexer.cpp: 116";
 		rLen = 0;
-		rLoc = 3790;
+		rLoc = 3976;
 		rType = 0;
 		vrLen = 1387;
 		vrLoc = 3295;
@@ -5033,7 +5051,7 @@
 		fRef = C4FC166910D4334800E6ABD6 /* FinchParser.cpp */;
 		name = "FinchParser.cpp: 125";
 		rLen = 0;
-		rLoc = 3630;
+		rLoc = 3793;
 		rType = 0;
 		vrLen = 1625;
 		vrLoc = 2705;
@@ -5173,7 +5191,7 @@
 		fRef = C4FC166910D4334800E6ABD6 /* FinchParser.cpp */;
 		name = "FinchParser.cpp: 125";
 		rLen = 0;
-		rLoc = 3630;
+		rLoc = 3793;
 		rType = 0;
 		vrLen = 1625;
 		vrLoc = 2705;
@@ -5253,7 +5271,7 @@
 		fRef = C4FC166910D4334800E6ABD6 /* FinchParser.cpp */;
 		name = "FinchParser.cpp: 125";
 		rLen = 0;
-		rLoc = 3630;
+		rLoc = 3793;
 		rType = 0;
 		vrLen = 1651;
 		vrLoc = 2705;
@@ -5313,7 +5331,7 @@
 		fRef = C4FC166910D4334800E6ABD6 /* FinchParser.cpp */;
 		name = "FinchParser.cpp: 185";
 		rLen = 0;
-		rLoc = 5699;
+		rLoc = 5862;
 		rType = 0;
 		vrLen = 1714;
 		vrLoc = 4142;
@@ -5432,8 +5450,8 @@
 		isa = PBXTextBookmark;
 		fRef = C4CDF8B010D88DF3001C9D4A /* EnvironmentPrimitives.cpp */;
 		name = "EnvironmentPrimitives.cpp: 96";
-		rLen = 291;
-		rLoc = 3106;
+		rLen = 275;
+		rLoc = 3207;
 		rType = 0;
 		vrLen = 1128;
 		vrLoc = 2260;
@@ -5535,7 +5553,7 @@
 		rLen = 0;
 		rLoc = 203;
 		rType = 0;
-		vrLen = 683;
+		vrLen = 664;
 		vrLoc = 0;
 	};
 	C4A6F79910DC57FE00854074 /* PBXTextBookmark */ = {
@@ -5555,7 +5573,7 @@
 		rLen = 0;
 		rLoc = 164;
 		rType = 0;
-		vrLen = 1187;
+		vrLen = 664;
 		vrLoc = 0;
 	};
 	C4A6F79B10DC57FE00854074 /* PBXTextBookmark */ = {
@@ -5575,7 +5593,7 @@
 		rLen = 0;
 		rLoc = 93;
 		rType = 0;
-		vrLen = 1214;
+		vrLen = 664;
 		vrLoc = 0;
 	};
 	C4A6F79D10DC57FE00854074 /* PBXTextBookmark */ = {
@@ -5613,7 +5631,7 @@
 		fRef = C4CDF8B010D88DF3001C9D4A /* EnvironmentPrimitives.cpp */;
 		name = "EnvironmentPrimitives.cpp: 114";
 		rLen = 0;
-		rLoc = 3268;
+		rLoc = 3363;
 		rType = 0;
 		vrLen = 1404;
 		vrLoc = 1984;
@@ -5643,7 +5661,7 @@
 		fRef = C4CDF8B010D88DF3001C9D4A /* EnvironmentPrimitives.cpp */;
 		name = "EnvironmentPrimitives.cpp: 100";
 		rLen = 0;
-		rLoc = 2906;
+		rLoc = 2923;
 		rType = 0;
 		vrLen = 1402;
 		vrLoc = 0;
@@ -5763,7 +5781,7 @@
 		fRef = C4CDF8B010D88DF3001C9D4A /* EnvironmentPrimitives.cpp */;
 		name = "EnvironmentPrimitives.cpp: 73";
 		rLen = 0;
-		rLoc = 2020;
+		rLoc = 2048;
 		rType = 0;
 		vrLen = 1704;
 		vrLoc = 1391;
@@ -5813,7 +5831,7 @@
 		fRef = C4FC166910D4334800E6ABD6 /* FinchParser.cpp */;
 		name = "FinchParser.cpp: 35";
 		rLen = 0;
-		rLoc = 1039;
+		rLoc = 1150;
 		rType = 0;
 		vrLen = 1150;
 		vrLoc = 136;
@@ -5833,7 +5851,7 @@
 		fRef = C4FC166910D4334800E6ABD6 /* FinchParser.cpp */;
 		name = "FinchParser.cpp: 70";
 		rLen = 0;
-		rLoc = 2352;
+		rLoc = 2515;
 		rType = 0;
 		vrLen = 1590;
 		vrLoc = 1018;
@@ -5924,9 +5942,9 @@
 	};
 	C4CDF8B010D88DF3001C9D4A /* EnvironmentPrimitives.cpp */ = {
 		uiCtxt = {
-			sepNavIntBoundsRect = "{{0, 0}, {607, 1764}}";
-			sepNavSelRange = "{3106, 0}";
-			sepNavVisRange = "{3181, 224}";
+			sepNavIntBoundsRect = "{{0, 0}, {747, 1736}}";
+			sepNavSelRange = "{3400, 0}";
+			sepNavVisRange = "{2003, 1487}";
 		};
 	};
 	C4CDF8B110D88DF3001C9D4A /* BlockPrimitives.h */ = {
@@ -6359,9 +6377,9 @@
 	};
 	C4FC166910D4334800E6ABD6 /* FinchParser.cpp */ = {
 		uiCtxt = {
-			sepNavIntBoundsRect = "{{0, 0}, {761, 3374}}";
-			sepNavSelRange = "{5314, 0}";
-			sepNavVisRange = "{4352, 1945}";
+			sepNavIntBoundsRect = "{{0, 0}, {761, 3444}}";
+			sepNavSelRange = "{503, 0}";
+			sepNavVisRange = "{5482, 1503}";
 			sepNavWindowFrame = "{{15, 0}, {836, 878}}";
 		};
 	};
@@ -6374,9 +6392,9 @@
 	};
 	C4FC166B10D4334800E6ABD6 /* Lexer.cpp */ = {
 		uiCtxt = {
-			sepNavIntBoundsRect = "{{0, 0}, {747, 2912}}";
-			sepNavSelRange = "{2130, 0}";
-			sepNavVisRange = "{3892, 1128}";
+			sepNavIntBoundsRect = "{{0, 0}, {747, 2786}}";
+			sepNavSelRange = "{3544, 0}";
+			sepNavVisRange = "{2131, 1867}";
 		};
 	};
 	C4FC166C10D4334800E6ABD6 /* Lexer.h */ = {
@@ -6506,7 +6524,7 @@
 		fRef = C4FC166910D4334800E6ABD6 /* FinchParser.cpp */;
 		name = "FinchParser.cpp: 152";
 		rLen = 0;
-		rLoc = 4306;
+		rLoc = 4469;
 		rType = 0;
 		vrLen = 1198;
 		vrLoc = 0;
