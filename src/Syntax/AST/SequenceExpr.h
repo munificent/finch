@@ -10,6 +10,8 @@
 
 namespace Finch
 {
+    using std::ostream;
+    
     // AST node for a pair of sequential expressions: "a b . c d"
     class SequenceExpr : public Expr
         {
@@ -22,7 +24,7 @@ namespace Finch
             Ref<Expr> First()  const { return mFirst; }
             Ref<Expr> Second() const { return mSecond; }
             
-            virtual void Trace(std::ostream & stream) const
+            virtual void Trace(ostream & stream) const
             {
                 stream << mFirst << "; " << mSecond;
             }

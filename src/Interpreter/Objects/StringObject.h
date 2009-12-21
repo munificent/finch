@@ -10,6 +10,7 @@
 
 namespace Finch
 {
+    using std::ostream;
     using std::vector;
     
     // Object class for a string.
@@ -21,7 +22,7 @@ namespace Finch
             mValue(value)
         {}
         
-        virtual void Trace(std::ostream & stream) const
+        virtual void Trace(ostream & stream) const
         {
             stream << "\"" << mValue << "\"";
         }

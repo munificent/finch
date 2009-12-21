@@ -9,6 +9,7 @@
 
 namespace Finch
 {
+    using std::ostream;
     using std::vector;
     
     class Expr;
@@ -40,7 +41,7 @@ namespace Finch
         virtual BlockObject *   AsBlock()        { return NULL; }
         virtual DynamicObject * AsDynamic()      { return NULL; }
         
-        virtual void Trace(std::ostream & stream) const = 0;
+        virtual void Trace(ostream & stream) const = 0;
         
     protected:
         Object() : mPrototype(Ref<Object>()) {}
@@ -52,5 +53,5 @@ namespace Finch
         Ref<Object> mPrototype;
     };
     
-    std::ostream& operator<<(std::ostream& cout, const Object & object);
+    ostream & operator<<(ostream & cout, const Object & object);
 }

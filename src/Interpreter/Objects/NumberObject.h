@@ -10,6 +10,7 @@
 
 namespace Finch
 {
+    using std::ostream;
     using std::vector;
     
     // Object class for a number. All numbers in Finch are floating point.
@@ -21,11 +22,11 @@ namespace Finch
             mValue(value)
         {}
         
-        virtual void Trace(std::ostream & stream) const
+        virtual void Trace(ostream & stream) const
         {
             stream << mValue;
         }
-            
+        
         virtual double AsNumber() const { return mValue; }
         
     private:

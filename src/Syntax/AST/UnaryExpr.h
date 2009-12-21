@@ -10,6 +10,8 @@
 
 namespace Finch
 {
+    using std::ostream;
+    
     // AST node for an unary message send: "obj message"
     class UnaryExpr : public Expr
     {
@@ -22,7 +24,7 @@ namespace Finch
         Ref<Expr> Receiver() const { return mReceiver; }
         String    Message() const { return mMessage; }
         
-        virtual void Trace(std::ostream & stream) const
+        virtual void Trace(ostream & stream) const
         {
             stream << mReceiver << " " << mMessage;
         }

@@ -11,6 +11,7 @@
 
 namespace Finch
 {
+    using std::ostream;
     using std::vector;
     
     // AST node for a block: "{|param| obj message }"
@@ -25,7 +26,7 @@ namespace Finch
         vector<String>  Params() const { return mParams; }
         Ref<Expr>       Body() const { return mBody; }
         
-        virtual void Trace(std::ostream & stream) const
+        virtual void Trace(ostream & stream) const
         {
             stream << "{";
             

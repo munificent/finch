@@ -13,6 +13,7 @@
 
 namespace Finch
 {
+    using std::ostream;
     using std::map;
     using std::vector;
     
@@ -35,7 +36,7 @@ namespace Finch
             mName("object")
         {}
         
-        virtual void Trace(std::ostream & stream) const;
+        virtual void Trace(ostream & stream) const;
         
         virtual String AsString() const     { return mName; }
         virtual DynamicObject * AsDynamic() { return this; }

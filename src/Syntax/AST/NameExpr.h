@@ -9,6 +9,8 @@
 
 namespace Finch
 {
+    using std::ostream;
+    
     // AST node for a named object: "foo"
     class NameExpr : public Expr
     {
@@ -19,7 +21,7 @@ namespace Finch
         
         String Name() const { return mName; }
         
-        virtual void Trace(std::ostream & stream) const
+        virtual void Trace(ostream & stream) const
         {
             stream << mName;
         }

@@ -15,6 +15,8 @@
 
 namespace Finch
 {
+    using std::ostream;
+    
     class IExprVisitor;
     class Object;
     
@@ -30,5 +32,5 @@ namespace Finch
         virtual void Trace(std::ostream & stream) const = 0;
     };
     
-    std::ostream& operator<<(std::ostream& cout, const Expr & expr);
+    ostream & operator<<(ostream & cout, const Expr & expr);
 }

@@ -11,6 +11,7 @@
 
 namespace Finch
 {
+    using std::ostream;
     using std::vector;
     
     // AST node for a keyword message send: "obj do: thing with: other"
@@ -32,7 +33,7 @@ namespace Finch
         const vector<String> &     Keywords()  const { return mKeywords; }
         const vector<Ref<Expr> > & Arguments() const { return mArgs; }
         
-        virtual void Trace(std::ostream & stream) const
+        virtual void Trace(ostream & stream) const
         {
             stream << mReceiver;
             

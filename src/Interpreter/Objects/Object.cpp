@@ -7,6 +7,8 @@
 
 namespace Finch
 {
+    using std::ostream;
+    
     Ref<Object> Object::NewObject(Ref<Object> prototype, String name)
     {
         return Ref<Object>(new DynamicObject(prototype, name));
@@ -54,7 +56,7 @@ namespace Finch
         return Ref<Object>();
     }
     
-    std::ostream& operator<<(std::ostream& cout, const Object & object)
+    ostream & operator<<(ostream & cout, const Object & object)
     {
         object.Trace(cout);
         return cout;

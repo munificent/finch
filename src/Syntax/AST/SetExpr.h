@@ -10,6 +10,8 @@
 
 namespace Finch
 {
+    using std::ostream;
+    
     // AST node for variable assignment: "set foo bar"
     class SetExpr : public Expr
     {
@@ -22,7 +24,7 @@ namespace Finch
         String    Name()  const { return mName; }
         Ref<Expr> Value() const { return mValue; }
         
-        virtual void Trace(std::ostream & stream) const
+        virtual void Trace(ostream & stream) const
         {
             stream << "set " << mName << " " << mValue;
         }

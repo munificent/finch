@@ -4,7 +4,9 @@
 
 namespace Finch
 {
-    void DynamicObject::Trace(std::ostream & stream) const
+    using std::ostream;
+    
+    void DynamicObject::Trace(ostream & stream) const
     {
         stream << mName;
     }

@@ -2,7 +2,9 @@
 
 namespace Finch
 {
-    std::ostream& operator<<(std::ostream& cout, const Expr & expr)
+    using std::ostream;
+    
+    ostream & operator<<(ostream & cout, const Expr & expr)
     {
         expr.Trace(cout);
         return cout;

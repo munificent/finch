@@ -12,6 +12,7 @@
 
 namespace Finch
 {
+    using std::ostream;
     using std::vector;
     
     // Object class for a block: an invokable expression and the scope that
@@ -33,7 +34,7 @@ namespace Finch
         
         virtual BlockObject * AsBlock() { return this; }
         
-        virtual void Trace(std::ostream & stream) const
+        virtual void Trace(ostream & stream) const
         {
             stream << "block " << mBody;
         }

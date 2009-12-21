@@ -9,6 +9,8 @@
 
 namespace Finch
 {
+    using std::ostream;
+    
     // AST node for a string literal: "someSymbol"
     class StringExpr : public Expr
     {
@@ -19,7 +21,7 @@ namespace Finch
         
         String Value() const { return mValue; }
         
-        virtual void Trace(std::ostream & stream) const
+        virtual void Trace(ostream & stream) const
         {
             stream << '\"' << mValue << '\"';
         }

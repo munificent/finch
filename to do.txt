@@ -1,0 +1,55 @@
+C++ Finch proof-of-concept:
+
+The goal of the C++ version is to be a high-quality program that does
+a minimal but "complete" Finch interpreter. Many high-level features
+(bytecode compilation, coroutines, etc.) will be missing, but what's
+there should be solid.
+
+- Codebase
+  - A well-defined error-handling strategy
+    - Lexer/parser errors
+    - Interpreter runtime errors
+    - Assertions
+
+- Syntax
+  - Don't allow alphanumerics in operators
+
+- Clean up
+  - Unify Dictionary, Scope, and DynamicObject somehow
+  - Address and remove //### bob:
+  
+- Application
+  - run script from command-line
+  - makefile for Unix support
+  
+- Interpreter features
+  - Primitives
+    - More string operations
+    - Boolean operators
+    - for loops
+    - eval
+    - mod
+  - Move IO out of Ether into separate primitive
+  - String conversion
+    Any object should be able to handle a "to-string" message and
+    return a string. "write:" and other places that stringize an
+    object should go through that.
+  - Basic reflection
+    - does-not-understand?
+    - send-message?
+  - undef
+  
+- Help
+  A tutorial and a basic reference doc.
+
+- Documentation
+  - Comments for each class and non-private function.
+  - License
+  
+- Examples
+  A decent number of sample Finch programs that do interesting or fun
+  stuff.
+
+- Test suite
+  A series of Finch scripts that will exercise the language features
+  by verifying against expected output.
