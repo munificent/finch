@@ -14,7 +14,6 @@
 		C46588D210DE847F007C4C3E /* ObjectPrimitives.cpp in Sources */ = {isa = PBXBuildFile; fileRef = C46588D010DE847F007C4C3E /* ObjectPrimitives.cpp */; };
 		C465890810DE874E007C4C3E /* FileLineReader.cpp in Sources */ = {isa = PBXBuildFile; fileRef = C465890710DE874E007C4C3E /* FileLineReader.cpp */; };
 		C465890D10DE876C007C4C3E /* LineNormalizer.cpp in Sources */ = {isa = PBXBuildFile; fileRef = C465890A10DE876C007C4C3E /* LineNormalizer.cpp */; };
-		C465892510DE87AB007C4C3E /* Dict.cpp in Sources */ = {isa = PBXBuildFile; fileRef = C465892410DE87AB007C4C3E /* Dict.cpp */; };
 		C465893010DE8802007C4C3E /* TokenTests.cpp in Sources */ = {isa = PBXBuildFile; fileRef = C465892910DE8802007C4C3E /* TokenTests.cpp */; };
 		C465893110DE8802007C4C3E /* TestMain.cpp in Sources */ = {isa = PBXBuildFile; fileRef = C465892B10DE8802007C4C3E /* TestMain.cpp */; };
 		C465893210DE8802007C4C3E /* Test.cpp in Sources */ = {isa = PBXBuildFile; fileRef = C465892D10DE8802007C4C3E /* Test.cpp */; };
@@ -65,8 +64,7 @@
 		C465890A10DE876C007C4C3E /* LineNormalizer.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = LineNormalizer.cpp; path = Syntax/LineNormalizer.cpp; sourceTree = "<group>"; };
 		C465890B10DE876C007C4C3E /* ITokenSource.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = ITokenSource.h; path = Syntax/ITokenSource.h; sourceTree = "<group>"; };
 		C465890C10DE876C007C4C3E /* ILineReader.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = ILineReader.h; path = Syntax/ILineReader.h; sourceTree = "<group>"; };
-		C465892310DE87AB007C4C3E /* Dict.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = Dict.h; path = Base/Dict.h; sourceTree = "<group>"; };
-		C465892410DE87AB007C4C3E /* Dict.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = Dict.cpp; path = Base/Dict.cpp; sourceTree = "<group>"; };
+		C465892310DE87AB007C4C3E /* Dictionary.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = Dictionary.h; path = Base/Dictionary.h; sourceTree = "<group>"; };
 		C465892810DE8802007C4C3E /* TokenTests.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = TokenTests.h; path = Test/TokenTests.h; sourceTree = "<group>"; };
 		C465892910DE8802007C4C3E /* TokenTests.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = TokenTests.cpp; path = Test/TokenTests.cpp; sourceTree = "<group>"; };
 		C465892A10DE8802007C4C3E /* TestMain.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = TestMain.h; path = Test/TestMain.h; sourceTree = "<group>"; };
@@ -225,8 +223,7 @@
 		C4C514AE10CB77410045AA86 /* Base */ = {
 			isa = PBXGroup;
 			children = (
-				C465892310DE87AB007C4C3E /* Dict.h */,
-				C465892410DE87AB007C4C3E /* Dict.cpp */,
+				C465892310DE87AB007C4C3E /* Dictionary.h */,
 				C4FC167510D4336500E6ABD6 /* Macros.h */,
 				C4FC167610D4336500E6ABD6 /* Ref.cpp */,
 				C4FC167710D4336500E6ABD6 /* Ref.h */,
@@ -360,7 +357,6 @@
 				C46588D210DE847F007C4C3E /* ObjectPrimitives.cpp in Sources */,
 				C465890810DE874E007C4C3E /* FileLineReader.cpp in Sources */,
 				C465890D10DE876C007C4C3E /* LineNormalizer.cpp in Sources */,
-				C465892510DE87AB007C4C3E /* Dict.cpp in Sources */,
 				C465893010DE8802007C4C3E /* TokenTests.cpp in Sources */,
 				C465893110DE8802007C4C3E /* TestMain.cpp in Sources */,
 				C465893210DE8802007C4C3E /* Test.cpp in Sources */,

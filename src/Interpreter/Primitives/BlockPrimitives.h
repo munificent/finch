@@ -14,6 +14,6 @@ namespace Finch
     
     // Primitive methods for blocks.
     
-    Ref<Object> BlockValue(Ref<Object> thisRef, Environment & env,
+    Ref<Object> BlockCall(Ref<Object> thisRef, Environment & env,
                            String message, const vector<Ref<Object> > & args);
 }

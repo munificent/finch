@@ -13,38 +13,25 @@ namespace Finch
                                        String message, const vector<Ref<Object> > & args)
     {
         // see if it's a field access
-        map<String, Ref<Object> >::iterator found = mFields.find(message);
-        if (found != mFields.end())
-        {
-            return found->second;
-        }
+        Ref<Object> found = mFields.Find(message);
+        if (!found.IsNull()) return found;
         
         // see if it's a field assignment
         if ((args.size() == 1) && (message[message.size() - 1] == ':'))
         {
             String fieldAssign = message.substr(0, message.size() - 1);
 
-            //### bob: copy/pasted from Scope.cpp. need Dict class
-            found = mFields.lower_bound(fieldAssign);
+            Ref<Object> oldValue = mFields.Replace(fieldAssign, args[0]);
             
-            Ref<Object> oldValue;
-            
-            if ((found != mFields.end()) &&
-                !(mFields.key_comp()(fieldAssign, found->first)))
-            {
-                // found it at this scope, so get the old value then replace it
-                oldValue = found->second;
-                found->second = args[0];
-                
-                return oldValue;
-            }
+            // if we got an old one than the assignment succeeded
+            if (!oldValue.IsNull()) return oldValue;
         }
         
         // see if it's a method call
-        found = mMethods.find(message);
-        if (found != mMethods.end())
+        found = mMethods.Find(message);
+        if (!found.IsNull())
         {
-            BlockObject* block = found->second->AsBlock();
+            BlockObject* block = found->AsBlock();
             
             ASSERT_NOT_NULL(block);
             
@@ -76,10 +63,8 @@ namespace Finch
             return Ref<Object>();
         }
         
-        //### bob: should this fail if the field already exists?
-        
         // add the field
-        mFields[name] = value;
+        mFields.Insert(name, value);
         return value;
     }
     
@@ -98,10 +83,8 @@ namespace Finch
             return Ref<Object>();
         }
         
-        //### bob: should this fail if the method already exists?
-        
         // add the method
-        mMethods[name] = body;
+        mMethods.Insert(name, body);
         
         return Ref<Object>();        
     }

@@ -4,6 +4,7 @@
 #include <map>
 #include <vector>
 
+#include "Dictionary.h"
 #include "Expr.h"
 #include "Macros.h"
 #include "Object.h"
@@ -48,9 +49,9 @@ namespace Finch
         void RegisterPrimitive(String message, PrimitiveMethod method);
         
     private:
-        String                    mName; //### bob: hack temp
-        map<String, Ref<Object> > mFields;
-        map<String, Ref<Object> > mMethods;
+        String                     mName; //### bob: hack temp
+        Dictionary<String, Object> mFields;
+        Dictionary<String, Object> mMethods;
         map<String, PrimitiveMethod > mPrimitives;
     };    
 }

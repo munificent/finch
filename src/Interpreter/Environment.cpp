@@ -19,28 +19,33 @@ namespace Finch
         mGlobals = Ref<Scope>(new Scope()); 
         mCurrentScope = mGlobals;
         
-        Ref<Object> rootObject = Object::NewObject(Ref<Object>(), "Object");
-        mGlobals->Define("Object", rootObject);
-        DynamicObject* objectObj = &static_cast<DynamicObject&>(*rootObject);
+        // define Object prototype
+        Ref<Object> object = Object::NewObject(Ref<Object>(), "Object");
+        mGlobals->Define("Object", object);
+        DynamicObject* objectObj = &static_cast<DynamicObject&>(*object);
         objectObj->RegisterPrimitive("copy", ObjectCopy);
         objectObj->RegisterPrimitive("add-field:value:", ObjectAddFieldValue);
         objectObj->RegisterPrimitive("add-method:body:", ObjectAddMethodValue);
 
         // define Block prototype
-        mBlock = Object::NewObject(rootObject, "Block");
+        mBlock = Object::NewObject(object, "Block");
         mGlobals->Define("Block", mBlock);
         
         DynamicObject* blockObj = &static_cast<DynamicObject&>(*mBlock);
-        blockObj->RegisterPrimitive("value", BlockValue);
-        blockObj->RegisterPrimitive("value:", BlockValue);
-        blockObj->RegisterPrimitive("value:value:", BlockValue);
-        blockObj->RegisterPrimitive("value:value:value:", BlockValue);
-        blockObj->RegisterPrimitive("value:value:value:value:", BlockValue);
-        blockObj->RegisterPrimitive("value:value:value:value:value:", BlockValue);
-        blockObj->RegisterPrimitive("value:value:value:value:value:value:", BlockValue);
+        blockObj->RegisterPrimitive("call", BlockCall);
+        blockObj->RegisterPrimitive("call:", BlockCall);
+        blockObj->RegisterPrimitive("call::", BlockCall);
+        blockObj->RegisterPrimitive("call:::", BlockCall);
+        blockObj->RegisterPrimitive("call::::", BlockCall);
+        blockObj->RegisterPrimitive("call:::::", BlockCall);
+        blockObj->RegisterPrimitive("call::::::", BlockCall);
+        blockObj->RegisterPrimitive("call:::::::", BlockCall);
+        blockObj->RegisterPrimitive("call::::::::", BlockCall);
+        blockObj->RegisterPrimitive("call:::::::::", BlockCall);
+        blockObj->RegisterPrimitive("call::::::::::", BlockCall);
         
         // define Number prototype
-        mNumber = Object::NewObject(rootObject, "Number");
+        mNumber = Object::NewObject(object, "Number");
         mGlobals->Define("Number", mNumber);
         
         DynamicObject* numberObj = &static_cast<DynamicObject&>(*mNumber);
@@ -58,7 +63,7 @@ namespace Finch
         numberObj->RegisterPrimitive(">=",  NumberGreaterThanOrEqual);
         
         // define String prototype
-        mString = Object::NewObject(rootObject, "String");
+        mString = Object::NewObject(object, "String");
         mGlobals->Define("String", mString);
         
         DynamicObject* stringObj = &static_cast<DynamicObject&>(*mString);
@@ -67,18 +72,18 @@ namespace Finch
         stringObj->RegisterPrimitive("at:",     StringAt);
         
         // define nil
-        mNil = Object::NewObject(rootObject, "Nil");
+        mNil = Object::NewObject(object, "Nil");
         mGlobals->Define("Nil", mNil);
         
         // define true and false
-        mTrue = Object::NewObject(rootObject, "True");
+        mTrue = Object::NewObject(object, "True");
         mGlobals->Define("True", mTrue);
         
-        mFalse = Object::NewObject(rootObject, "False");
+        mFalse = Object::NewObject(object, "False");
         mGlobals->Define("False", mFalse);
         
         // define Environment
-        Ref<Object> environment = Object::NewObject(rootObject, "Environment");
+        Ref<Object> environment = Object::NewObject(object, "Environment");
         mGlobals->Define("Environment", environment);
         
         DynamicObject* environmentObj = &static_cast<DynamicObject&>(*environment);

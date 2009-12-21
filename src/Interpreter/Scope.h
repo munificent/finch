@@ -1,16 +1,14 @@
 #pragma once
 
 #include <iostream>
-#include <map>
 
+#include "Dictionary.h"
 #include "Macros.h"
 #include "Ref.h"
 #include "String.h"
 
 namespace Finch
 {
-    using std::map;
-    
     class Object;
     
     // A local variable scope. Basically a dictionary of name -> value pairs.
@@ -38,7 +36,7 @@ namespace Finch
         Ref<Scope> Parent() const { return mParent; }
         
     private:
-        Ref<Scope>                mParent;
-        map<String, Ref<Object> > mVariables;
+        Ref<Scope>                 mParent;
+        Dictionary<String, Object> mVariables;
     };
 }
