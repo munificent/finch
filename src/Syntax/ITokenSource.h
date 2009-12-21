@@ -6,10 +6,11 @@
 
 namespace Finch
 {
-    // Abstract interface for a class that provides a stream of tokens.
+    // Interface for a class that provides a stream of Tokens.
     class ITokenSource
     {
     public:
+        // Reads the next Token from the source.
         virtual Ref<Token> ReadToken() = 0;
 
         virtual ~ITokenSource() {}

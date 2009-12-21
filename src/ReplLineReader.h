@@ -13,13 +13,16 @@ namespace Finch
     class ReplLineReader : public ILineReader
     {
     public:
+        ReplLineReader()
+        :   mFirstLine(true)
+        {}
+        
         void Reset() { mFirstLine = true; }
         
-        virtual void Start();
         virtual bool EndOfLines() const;
         virtual String NextLine();
         
     private:
-        bool          mFirstLine;
+        bool mFirstLine;
     };
 }

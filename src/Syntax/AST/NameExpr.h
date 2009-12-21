@@ -19,8 +19,11 @@ namespace Finch
         
         String Name() const { return mName; }
         
-        virtual void Trace(std::ostream & stream) const;
-
+        virtual void Trace(std::ostream & stream) const
+        {
+            stream << mName;
+        }
+            
         EXPRESSION_VISITOR
         
     private:

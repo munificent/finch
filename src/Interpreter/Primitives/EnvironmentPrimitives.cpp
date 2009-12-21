@@ -111,7 +111,7 @@ namespace Finch
         Evaluator       evaluator(env);
 
         Ref<Object> result;
-        Ref<Expr> expr = parser.Parse();
+        Ref<Expr> expr = parser.ParseFile();
 
         if (!expr.IsNull())
         {

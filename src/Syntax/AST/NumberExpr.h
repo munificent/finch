@@ -19,7 +19,10 @@ namespace Finch
         
         double Value() const { return mValue; }
         
-        virtual void Trace(std::ostream & stream) const;
+        virtual void Trace(std::ostream & stream) const
+        {
+            stream << mValue;
+        }
         
         EXPRESSION_VISITOR
 

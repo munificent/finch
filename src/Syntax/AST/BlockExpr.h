@@ -25,8 +25,27 @@ namespace Finch
         vector<String>  Params() const { return mParams; }
         Ref<Expr>       Body() const { return mBody; }
         
-        virtual void Trace(std::ostream & stream) const;
-        
+        virtual void Trace(std::ostream & stream) const
+        {
+            stream << "{";
+            
+            if (mParams.size() > 0)
+            {
+                stream << "|";
+                
+                for (int i = 0; i < mParams.size(); i++)
+                {
+                    stream << mParams[i];
+                    
+                    if(i < mParams.size() - 1) stream << " ";
+                }            
+                
+                stream << "|";
+            }
+            
+            stream << " " << mBody << " }";
+        }
+            
         EXPRESSION_VISITOR
 
     private:

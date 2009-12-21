@@ -9,6 +9,7 @@ namespace Finch
 {
     class ILineReader;
     
+    // Parser for the Finch grammar.
     class FinchParser : private Parser
     {
     public:
@@ -16,7 +17,14 @@ namespace Finch
         :   Parser(tokens)
         {}
         
-        Ref<Expr> Parse();
+        // Parses a full file of source code. Will read as many lines as are
+        // available until the source is done.
+        // Returns a null reference if parsing failed.
+        Ref<Expr> ParseFile();
+        
+        // Parses a single line. Will stop once a complete terminated expression
+        // is reached.
+        // Returns a null reference if parsing failed.
         Ref<Expr> ParseLine();
 
     private:

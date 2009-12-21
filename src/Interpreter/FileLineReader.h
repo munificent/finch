@@ -17,7 +17,6 @@ namespace Finch
     public:
         FileLineReader(String fileName);
         
-        virtual void Start();
         virtual bool EndOfLines() const;
         virtual String NextLine();
         

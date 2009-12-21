@@ -11,10 +11,6 @@ namespace Finch
         mFile.open(fileName.c_str(), ios::in);
     }
 
-    void FileLineReader::Start()
-    {
-    }
-    
     bool FileLineReader::EndOfLines() const
     {
         if (!mFile) return true;

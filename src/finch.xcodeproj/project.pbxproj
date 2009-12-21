@@ -26,19 +26,9 @@
 		C4CDF8B510D88DF3001C9D4A /* EnvironmentPrimitives.cpp in Sources */ = {isa = PBXBuildFile; fileRef = C4CDF8B010D88DF3001C9D4A /* EnvironmentPrimitives.cpp */; };
 		C4CDF8B610D88DF3001C9D4A /* BlockPrimitives.cpp in Sources */ = {isa = PBXBuildFile; fileRef = C4CDF8B210D88DF3001C9D4A /* BlockPrimitives.cpp */; };
 		C4CDF8B910D88E1F001C9D4A /* Environment.cpp in Sources */ = {isa = PBXBuildFile; fileRef = C4CDF8B810D88E1F001C9D4A /* Environment.cpp */; };
-		C4CDF8BC10D88E43001C9D4A /* StringExpr.cpp in Sources */ = {isa = PBXBuildFile; fileRef = C4CDF8BB10D88E43001C9D4A /* StringExpr.cpp */; };
 		C4FC160310D4328300E6ABD6 /* Evaluator.cpp in Sources */ = {isa = PBXBuildFile; fileRef = C4FC15F710D4328300E6ABD6 /* Evaluator.cpp */; };
 		C4FC160610D4328300E6ABD6 /* Scope.cpp in Sources */ = {isa = PBXBuildFile; fileRef = C4FC15FD10D4328300E6ABD6 /* Scope.cpp */; };
-		C4FC165E10D4331C00E6ABD6 /* BlockExpr.cpp in Sources */ = {isa = PBXBuildFile; fileRef = C4FC164710D4331C00E6ABD6 /* BlockExpr.cpp */; };
-		C4FC165F10D4331C00E6ABD6 /* DefExpr.cpp in Sources */ = {isa = PBXBuildFile; fileRef = C4FC164910D4331C00E6ABD6 /* DefExpr.cpp */; };
 		C4FC166010D4331C00E6ABD6 /* Expr.cpp in Sources */ = {isa = PBXBuildFile; fileRef = C4FC164B10D4331C00E6ABD6 /* Expr.cpp */; };
-		C4FC166110D4331C00E6ABD6 /* KeywordExpr.cpp in Sources */ = {isa = PBXBuildFile; fileRef = C4FC164E10D4331C00E6ABD6 /* KeywordExpr.cpp */; };
-		C4FC166210D4331C00E6ABD6 /* NameExpr.cpp in Sources */ = {isa = PBXBuildFile; fileRef = C4FC165010D4331C00E6ABD6 /* NameExpr.cpp */; };
-		C4FC166310D4331C00E6ABD6 /* NumberExpr.cpp in Sources */ = {isa = PBXBuildFile; fileRef = C4FC165210D4331C00E6ABD6 /* NumberExpr.cpp */; };
-		C4FC166410D4331C00E6ABD6 /* OperatorExpr.cpp in Sources */ = {isa = PBXBuildFile; fileRef = C4FC165410D4331C00E6ABD6 /* OperatorExpr.cpp */; };
-		C4FC166510D4331C00E6ABD6 /* SequenceExpr.cpp in Sources */ = {isa = PBXBuildFile; fileRef = C4FC165610D4331C00E6ABD6 /* SequenceExpr.cpp */; };
-		C4FC166610D4331C00E6ABD6 /* SetExpr.cpp in Sources */ = {isa = PBXBuildFile; fileRef = C4FC165810D4331C00E6ABD6 /* SetExpr.cpp */; };
-		C4FC166810D4331C00E6ABD6 /* UnaryExpr.cpp in Sources */ = {isa = PBXBuildFile; fileRef = C4FC165C10D4331C00E6ABD6 /* UnaryExpr.cpp */; };
 		C4FC167110D4334800E6ABD6 /* FinchParser.cpp in Sources */ = {isa = PBXBuildFile; fileRef = C4FC166910D4334800E6ABD6 /* FinchParser.cpp */; };
 		C4FC167210D4334800E6ABD6 /* Lexer.cpp in Sources */ = {isa = PBXBuildFile; fileRef = C4FC166B10D4334800E6ABD6 /* Lexer.cpp */; };
 		C4FC167310D4334800E6ABD6 /* Parser.cpp in Sources */ = {isa = PBXBuildFile; fileRef = C4FC166D10D4334800E6ABD6 /* Parser.cpp */; };
@@ -103,31 +93,21 @@
 		C4CDF8B710D88E1F001C9D4A /* Environment.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = Environment.h; path = Interpreter/Environment.h; sourceTree = "<group>"; };
 		C4CDF8B810D88E1F001C9D4A /* Environment.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = Environment.cpp; path = Interpreter/Environment.cpp; sourceTree = "<group>"; };
 		C4CDF8BA10D88E43001C9D4A /* StringExpr.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = StringExpr.h; path = Syntax/AST/StringExpr.h; sourceTree = "<group>"; };
-		C4CDF8BB10D88E43001C9D4A /* StringExpr.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = StringExpr.cpp; path = Syntax/AST/StringExpr.cpp; sourceTree = "<group>"; };
 		C4FC15F710D4328300E6ABD6 /* Evaluator.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = Evaluator.cpp; path = Interpreter/Evaluator.cpp; sourceTree = "<group>"; };
 		C4FC15F810D4328300E6ABD6 /* Evaluator.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = Evaluator.h; path = Interpreter/Evaluator.h; sourceTree = "<group>"; };
 		C4FC15FD10D4328300E6ABD6 /* Scope.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = Scope.cpp; path = Interpreter/Scope.cpp; sourceTree = "<group>"; };
 		C4FC15FE10D4328300E6ABD6 /* Scope.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = Scope.h; path = Interpreter/Scope.h; sourceTree = "<group>"; };
-		C4FC164710D4331C00E6ABD6 /* BlockExpr.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = BlockExpr.cpp; path = Syntax/AST/BlockExpr.cpp; sourceTree = "<group>"; };
 		C4FC164810D4331C00E6ABD6 /* BlockExpr.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = BlockExpr.h; path = Syntax/AST/BlockExpr.h; sourceTree = "<group>"; };
-		C4FC164910D4331C00E6ABD6 /* DefExpr.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = DefExpr.cpp; path = Syntax/AST/DefExpr.cpp; sourceTree = "<group>"; };
 		C4FC164A10D4331C00E6ABD6 /* DefExpr.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = DefExpr.h; path = Syntax/AST/DefExpr.h; sourceTree = "<group>"; };
 		C4FC164B10D4331C00E6ABD6 /* Expr.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = Expr.cpp; path = Syntax/AST/Expr.cpp; sourceTree = "<group>"; };
 		C4FC164C10D4331C00E6ABD6 /* Expr.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = Expr.h; path = Syntax/AST/Expr.h; sourceTree = "<group>"; };
 		C4FC164D10D4331C00E6ABD6 /* IExprVisitor.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = IExprVisitor.h; path = Syntax/AST/IExprVisitor.h; sourceTree = "<group>"; };
-		C4FC164E10D4331C00E6ABD6 /* KeywordExpr.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = KeywordExpr.cpp; path = Syntax/AST/KeywordExpr.cpp; sourceTree = "<group>"; };
 		C4FC164F10D4331C00E6ABD6 /* KeywordExpr.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = KeywordExpr.h; path = Syntax/AST/KeywordExpr.h; sourceTree = "<group>"; };
-		C4FC165010D4331C00E6ABD6 /* NameExpr.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = NameExpr.cpp; path = Syntax/AST/NameExpr.cpp; sourceTree = "<group>"; };
 		C4FC165110D4331C00E6ABD6 /* NameExpr.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = NameExpr.h; path = Syntax/AST/NameExpr.h; sourceTree = "<group>"; };
-		C4FC165210D4331C00E6ABD6 /* NumberExpr.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = NumberExpr.cpp; path = Syntax/AST/NumberExpr.cpp; sourceTree = "<group>"; };
 		C4FC165310D4331C00E6ABD6 /* NumberExpr.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = NumberExpr.h; path = Syntax/AST/NumberExpr.h; sourceTree = "<group>"; };
-		C4FC165410D4331C00E6ABD6 /* OperatorExpr.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = OperatorExpr.cpp; path = Syntax/AST/OperatorExpr.cpp; sourceTree = "<group>"; };
 		C4FC165510D4331C00E6ABD6 /* OperatorExpr.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = OperatorExpr.h; path = Syntax/AST/OperatorExpr.h; sourceTree = "<group>"; };
-		C4FC165610D4331C00E6ABD6 /* SequenceExpr.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = SequenceExpr.cpp; path = Syntax/AST/SequenceExpr.cpp; sourceTree = "<group>"; };
 		C4FC165710D4331C00E6ABD6 /* SequenceExpr.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = SequenceExpr.h; path = Syntax/AST/SequenceExpr.h; sourceTree = "<group>"; };
-		C4FC165810D4331C00E6ABD6 /* SetExpr.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = SetExpr.cpp; path = Syntax/AST/SetExpr.cpp; sourceTree = "<group>"; };
 		C4FC165910D4331C00E6ABD6 /* SetExpr.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = SetExpr.h; path = Syntax/AST/SetExpr.h; sourceTree = "<group>"; };
-		C4FC165C10D4331C00E6ABD6 /* UnaryExpr.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = UnaryExpr.cpp; path = Syntax/AST/UnaryExpr.cpp; sourceTree = "<group>"; };
 		C4FC165D10D4331C00E6ABD6 /* UnaryExpr.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = UnaryExpr.h; path = Syntax/AST/UnaryExpr.h; sourceTree = "<group>"; };
 		C4FC166910D4334800E6ABD6 /* FinchParser.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = FinchParser.cpp; path = Syntax/FinchParser.cpp; sourceTree = "<group>"; };
 		C4FC166A10D4334800E6ABD6 /* FinchParser.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = FinchParser.h; path = Syntax/FinchParser.h; sourceTree = "<group>"; };
@@ -209,28 +189,18 @@
 			isa = PBXGroup;
 			children = (
 				C4FC164810D4331C00E6ABD6 /* BlockExpr.h */,
-				C4FC164710D4331C00E6ABD6 /* BlockExpr.cpp */,
 				C4FC164A10D4331C00E6ABD6 /* DefExpr.h */,
-				C4FC164910D4331C00E6ABD6 /* DefExpr.cpp */,
 				C4FC164C10D4331C00E6ABD6 /* Expr.h */,
 				C4FC164B10D4331C00E6ABD6 /* Expr.cpp */,
 				C4FC164D10D4331C00E6ABD6 /* IExprVisitor.h */,
 				C4FC164F10D4331C00E6ABD6 /* KeywordExpr.h */,
-				C4FC164E10D4331C00E6ABD6 /* KeywordExpr.cpp */,
 				C4FC165110D4331C00E6ABD6 /* NameExpr.h */,
-				C4FC165010D4331C00E6ABD6 /* NameExpr.cpp */,
 				C4FC165310D4331C00E6ABD6 /* NumberExpr.h */,
-				C4FC165210D4331C00E6ABD6 /* NumberExpr.cpp */,
 				C4FC165510D4331C00E6ABD6 /* OperatorExpr.h */,
-				C4FC165410D4331C00E6ABD6 /* OperatorExpr.cpp */,
 				C4FC165710D4331C00E6ABD6 /* SequenceExpr.h */,
-				C4FC165610D4331C00E6ABD6 /* SequenceExpr.cpp */,
 				C4FC165910D4331C00E6ABD6 /* SetExpr.h */,
-				C4FC165810D4331C00E6ABD6 /* SetExpr.cpp */,
 				C4CDF8BA10D88E43001C9D4A /* StringExpr.h */,
-				C4CDF8BB10D88E43001C9D4A /* StringExpr.cpp */,
 				C4FC165D10D4331C00E6ABD6 /* UnaryExpr.h */,
-				C4FC165C10D4331C00E6ABD6 /* UnaryExpr.cpp */,
 			);
 			name = AST;
 			sourceTree = "<group>";
@@ -372,16 +342,7 @@
 				C4012A4810CA948B0088B77F /* Repl.cpp in Sources */,
 				C4FC160310D4328300E6ABD6 /* Evaluator.cpp in Sources */,
 				C4FC160610D4328300E6ABD6 /* Scope.cpp in Sources */,
-				C4FC165E10D4331C00E6ABD6 /* BlockExpr.cpp in Sources */,
-				C4FC165F10D4331C00E6ABD6 /* DefExpr.cpp in Sources */,
 				C4FC166010D4331C00E6ABD6 /* Expr.cpp in Sources */,
-				C4FC166110D4331C00E6ABD6 /* KeywordExpr.cpp in Sources */,
-				C4FC166210D4331C00E6ABD6 /* NameExpr.cpp in Sources */,
-				C4FC166310D4331C00E6ABD6 /* NumberExpr.cpp in Sources */,
-				C4FC166410D4331C00E6ABD6 /* OperatorExpr.cpp in Sources */,
-				C4FC166510D4331C00E6ABD6 /* SequenceExpr.cpp in Sources */,
-				C4FC166610D4331C00E6ABD6 /* SetExpr.cpp in Sources */,
-				C4FC166810D4331C00E6ABD6 /* UnaryExpr.cpp in Sources */,
 				C4FC167110D4334800E6ABD6 /* FinchParser.cpp in Sources */,
 				C4FC167210D4334800E6ABD6 /* Lexer.cpp in Sources */,
 				C4FC167310D4334800E6ABD6 /* Parser.cpp in Sources */,
@@ -394,7 +355,6 @@
 				C4CDF8B510D88DF3001C9D4A /* EnvironmentPrimitives.cpp in Sources */,
 				C4CDF8B610D88DF3001C9D4A /* BlockPrimitives.cpp in Sources */,
 				C4CDF8B910D88E1F001C9D4A /* Environment.cpp in Sources */,
-				C4CDF8BC10D88E43001C9D4A /* StringExpr.cpp in Sources */,
 				C4A6F68810DC3B4400854074 /* ReplLineReader.cpp in Sources */,
 				C46588D110DE847F007C4C3E /* StringPrimitives.cpp in Sources */,
 				C46588D210DE847F007C4C3E /* ObjectPrimitives.cpp in Sources */,

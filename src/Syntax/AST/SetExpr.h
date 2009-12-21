@@ -22,8 +22,11 @@ namespace Finch
         String    Name()  const { return mName; }
         Ref<Expr> Value() const { return mValue; }
         
-        virtual void Trace(std::ostream & stream) const;
-        
+        virtual void Trace(std::ostream & stream) const
+        {
+            stream << "set " << mName << " " << mValue;
+        }
+            
         EXPRESSION_VISITOR
         
     private:

@@ -6,5 +6,5 @@ namespace Finch
     {
         expr.Trace(cout);
         return cout;
-    }        
+    }
 }

@@ -9,18 +9,25 @@ namespace Finch
     class ILineReader;
     class ITokenSource;
     
+    // Base class for a generic recursive descent parser.
     class Parser
     {
-    public:
+    protected:
         Parser(ITokenSource * tokens)
         :   mTokens(tokens)
         {}
-
-    protected:
-        Ref<Token> Current() { return mCurrent; }
-        bool       CurrentIs(TokenType type);
-        bool       ConsumeIf(TokenType type);
         
+        // Gets the Token the parser is currently looking at.
+        Ref<Token> Current() { return mCurrent; }
+        
+        // Returns true if the current Token is the given type.
+        bool CurrentIs(TokenType type);
+        
+        // Consumes the current Token and returns true if it is the given type,
+        // otherwise returns false.
+        bool ConsumeIf(TokenType type);
+        
+        // Consumes the current Token and advances the Parser.
         Ref<Token> Consume();
 
     private:

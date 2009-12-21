@@ -25,8 +25,11 @@ namespace Finch
         String    Operator() const { return mOperator; }
         Ref<Expr> Argument() const { return mArg; }
         
-        virtual void Trace(std::ostream & stream) const;
-        
+        virtual void Trace(std::ostream & stream) const
+        {
+            stream << mReceiver << " " << mOperator << " " << mArg;
+        }
+            
         EXPRESSION_VISITOR
 
     private:

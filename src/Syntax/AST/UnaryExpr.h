@@ -22,8 +22,11 @@ namespace Finch
         Ref<Expr> Receiver() const { return mReceiver; }
         String    Message() const { return mMessage; }
         
-        virtual void Trace(std::ostream & stream) const;
-        
+        virtual void Trace(std::ostream & stream) const
+        {
+            stream << mReceiver << " " << mMessage;
+        }
+            
         EXPRESSION_VISITOR
 
     private:

@@ -9,22 +9,26 @@ namespace Finch
 {
     class ILineReader;
     
+    // The Finch lexer. Reads a series of lines from an ILineReader and splits
+    // them into Tokens.
     class Lexer : public ITokenSource
     {
     public:
         Lexer(ILineReader * reader)
         :   mReader(reader),
-            mState(LEX_NOT_STARTED),
+            mState(LEX_NEED_LINE),
             mIndex(0),
             mTokenStart(0)
         {}
         
+        // Lexes and returns the next full Token read from the source. If the
+        // ILineReader is out of lines, this will return an EOF Token.
         virtual Ref<Token> ReadToken();
         
     private:
         enum State
         {
-            LEX_NOT_STARTED,
+            LEX_NEED_LINE,
             LEX_DEFAULT,
             LEX_IN_NUMBER,
             LEX_IN_NAME,
@@ -32,7 +36,6 @@ namespace Finch
             LEX_IN_STRING,
             LEX_IN_COMMENT,
             LEX_AT_END_OF_LINE,
-            LEX_NEED_NEW_LINE,
             LEX_DONE
         };
         

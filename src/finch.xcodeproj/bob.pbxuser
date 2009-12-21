@@ -302,7 +302,7 @@
 	};
 	C4012A4410CA94580088B77F /* Repl.h */ = {
 		uiCtxt = {
-			sepNavIntBoundsRect = "{{0, 0}, {747, 748}}";
+			sepNavIntBoundsRect = "{{0, 0}, {747, 725}}";
 			sepNavSelRange = "{34, 0}";
 			sepNavVisRange = "{0, 193}";
 		};
@@ -459,7 +459,7 @@
 		fRef = C4FC166E10D4334800E6ABD6 /* Parser.h */;
 		name = "Parser.h: 26";
 		rLen = 0;
-		rLoc = 455;
+		rLoc = 820;
 		rType = 0;
 		vrLen = 570;
 		vrLoc = 0;
@@ -479,7 +479,7 @@
 		fRef = C4FC167010D4334800E6ABD6 /* Token.h */;
 		name = "Token.h: 20";
 		rLen = 0;
-		rLoc = 318;
+		rLoc = 387;
 		rType = 0;
 		vrLen = 1192;
 		vrLoc = 35;
@@ -551,7 +551,7 @@
 		rLen = 0;
 		rLoc = 0;
 		rType = 0;
-		vrLen = 662;
+		vrLen = 570;
 		vrLoc = 0;
 	};
 	C41E6C5710DDE1D200FC2876 /* PBXTextBookmark */ = {
@@ -586,7 +586,7 @@
 		fRef = C4FC166C10D4334800E6ABD6 /* Lexer.h */;
 		name = "Lexer.h: 25";
 		rLen = 0;
-		rLoc = 451;
+		rLoc = 702;
 		rType = 0;
 		vrLen = 1372;
 		vrLoc = 115;
@@ -596,7 +596,7 @@
 		fRef = C4FC166A10D4334800E6ABD6 /* FinchParser.h */;
 		name = "FinchParser.h: 16";
 		rLen = 0;
-		rLoc = 262;
+		rLoc = 299;
 		rType = 0;
 		vrLen = 762;
 		vrLoc = 0;
@@ -606,7 +606,7 @@
 		fRef = C4CDF8B010D88DF3001C9D4A /* EnvironmentPrimitives.cpp */;
 		name = "EnvironmentPrimitives.cpp: 117";
 		rLen = 0;
-		rLoc = 3400;
+		rLoc = 3404;
 		rType = 0;
 		vrLen = 1487;
 		vrLoc = 2003;
@@ -616,7 +616,7 @@
 		fRef = C4FC166B10D4334800E6ABD6 /* Lexer.cpp */;
 		name = "Lexer.cpp: 96";
 		rLen = 0;
-		rLoc = 3544;
+		rLoc = 3374;
 		rType = 0;
 		vrLen = 1867;
 		vrLoc = 2131;
@@ -626,7 +626,7 @@
 		fRef = C4FC166910D4334800E6ABD6 /* FinchParser.cpp */;
 		name = "FinchParser.cpp: 60";
 		rLen = 0;
-		rLoc = 1482;
+		rLoc = 1486;
 		rType = 0;
 		vrLen = 1613;
 		vrLoc = 583;
@@ -646,7 +646,7 @@
 		fRef = C4CDF89D10D88DDF001C9D4A /* BlockObject.h */;
 		name = "BlockObject.h: 25";
 		rLen = 0;
-		rLoc = 551;
+		rLoc = 622;
 		rType = 0;
 		vrLen = 816;
 		vrLoc = 0;
@@ -676,7 +676,7 @@
 		fRef = C4CDF89D10D88DDF001C9D4A /* BlockObject.h */;
 		name = "BlockObject.h: 25";
 		rLen = 0;
-		rLoc = 551;
+		rLoc = 622;
 		rType = 0;
 		vrLen = 816;
 		vrLoc = 0;
@@ -726,7 +726,7 @@
 		fRef = C4CDF8A210D88DDF001C9D4A /* Object.cpp */;
 		name = "Object.cpp: 31";
 		rLen = 0;
-		rLoc = 892;
+		rLoc = 946;
 		rType = 0;
 		vrLen = 1789;
 		vrLoc = 45;
@@ -753,16 +753,16 @@
 	};
 	C46588CD10DE847F007C4C3E /* StringPrimitives.h */ = {
 		uiCtxt = {
-			sepNavIntBoundsRect = "{{0, 0}, {747, 748}}";
-			sepNavSelRange = "{551, 0}";
+			sepNavIntBoundsRect = "{{0, 0}, {747, 725}}";
+			sepNavSelRange = "{621, 0}";
 			sepNavVisRange = "{0, 674}";
 		};
 	};
 	C46588CE10DE847F007C4C3E /* StringPrimitives.cpp */ = {
 		uiCtxt = {
-			sepNavIntBoundsRect = "{{0, 0}, {642, 532}}";
-			sepNavSelRange = "{995, 0}";
-			sepNavVisRange = "{775, 413}";
+			sepNavIntBoundsRect = "{{0, 0}, {747, 725}}";
+			sepNavSelRange = "{1077, 0}";
+			sepNavVisRange = "{0, 1169}";
 		};
 	};
 	C46588CF10DE847F007C4C3E /* ObjectPrimitives.h */ = {
@@ -787,7 +787,7 @@
 		fRef = C4CDF8AC10D88DF3001C9D4A /* NumberPrimitives.cpp */;
 		name = "NumberPrimitives.cpp: 13";
 		rLen = 0;
-		rLoc = 378;
+		rLoc = 369;
 		rType = 0;
 		vrLen = 2168;
 		vrLoc = 56;
@@ -837,16 +837,23 @@
 		fRef = C46588CE10DE847F007C4C3E /* StringPrimitives.cpp */;
 		name = "StringPrimitives.cpp: 16";
 		rLen = 0;
-		rLoc = 422;
+		rLoc = 413;
 		rType = 0;
 		vrLen = 630;
 		vrLoc = 0;
 	};
 	C465890610DE874E007C4C3E /* FileLineReader.h */ = {
 		uiCtxt = {
-			sepNavIntBoundsRect = "{{0, 0}, {747, 748}}";
-			sepNavSelRange = "{0, 0}";
-			sepNavVisRange = "{0, 487}";
+			sepNavIntBoundsRect = "{{0, 0}, {747, 725}}";
+			sepNavSelRange = "{326, 0}";
+			sepNavVisRange = "{0, 457}";
+		};
+	};
+	C465890710DE874E007C4C3E /* FileLineReader.cpp */ = {
+		uiCtxt = {
+			sepNavIntBoundsRect = "{{0, 0}, {747, 725}}";
+			sepNavSelRange = "{205, 0}";
+			sepNavVisRange = "{0, 554}";
 		};
 	};
 	C465890910DE876C007C4C3E /* LineNormalizer.h */ = {
@@ -856,11 +863,18 @@
 			sepNavVisRange = "{267, 1640}";
 		};
 	};
+	C465890B10DE876C007C4C3E /* ITokenSource.h */ = {
+		uiCtxt = {
+			sepNavIntBoundsRect = "{{0, 0}, {747, 725}}";
+			sepNavSelRange = "{150, 0}";
+			sepNavVisRange = "{0, 331}";
+		};
+	};
 	C465890C10DE876C007C4C3E /* ILineReader.h */ = {
 		uiCtxt = {
-			sepNavIntBoundsRect = "{{0, 0}, {747, 748}}";
-			sepNavSelRange = "{0, 0}";
-			sepNavVisRange = "{0, 303}";
+			sepNavIntBoundsRect = "{{0, 0}, {747, 725}}";
+			sepNavSelRange = "{368, 0}";
+			sepNavVisRange = "{0, 503}";
 		};
 	};
 	C465890E10DE877D007C4C3E /* PBXTextBookmark */ = {
@@ -888,7 +902,7 @@
 		fRef = C46588CE10DE847F007C4C3E /* StringPrimitives.cpp */;
 		name = "StringPrimitives.cpp: 30";
 		rLen = 0;
-		rLoc = 1002;
+		rLoc = 984;
 		rType = 0;
 		vrLen = 1196;
 		vrLoc = 0;
@@ -945,7 +959,7 @@
 	};
 	C465892310DE87AB007C4C3E /* Dict.h */ = {
 		uiCtxt = {
-			sepNavIntBoundsRect = "{{0, 0}, {747, 748}}";
+			sepNavIntBoundsRect = "{{0, 0}, {747, 725}}";
 			sepNavSelRange = "{502, 0}";
 			sepNavVisRange = "{0, 502}";
 		};
@@ -1065,7 +1079,7 @@
 		fRef = C4CDF8B810D88E1F001C9D4A /* Environment.cpp */;
 		name = "EvalContext.cpp: 72";
 		rLen = 0;
-		rLoc = 3780;
+		rLoc = 3453;
 		rType = 0;
 		vrLen = 1793;
 		vrLoc = 1953;
@@ -1085,7 +1099,7 @@
 		fRef = C4CDF8B710D88E1F001C9D4A /* Environment.h */;
 		name = "Environment.h: 13";
 		rLen = 0;
-		rLoc = 500;
+		rLoc = 453;
 		rType = 0;
 		vrLen = 1289;
 		vrLoc = 0;
@@ -1149,23 +1163,23 @@
 		fRef = C4FC15F710D4328300E6ABD6 /* Evaluator.cpp */;
 		name = "Evaluator.cpp: 65";
 		rLen = 0;
-		rLoc = 1758;
+		rLoc = 1690;
 		rType = 0;
 		vrLen = 1727;
 		vrLoc = 1653;
 	};
 	C4A6F68610DC3B4400854074 /* ReplLineReader.h */ = {
 		uiCtxt = {
-			sepNavIntBoundsRect = "{{0, 0}, {537, 350}}";
-			sepNavSelRange = "{494, 0}";
-			sepNavVisRange = "{215, 286}";
+			sepNavIntBoundsRect = "{{0, 0}, {747, 725}}";
+			sepNavSelRange = "{352, 0}";
+			sepNavVisRange = "{0, 537}";
 		};
 	};
 	C4A6F68710DC3B4400854074 /* ReplLineReader.cpp */ = {
 		uiCtxt = {
-			sepNavIntBoundsRect = "{{0, 0}, {747, 748}}";
-			sepNavSelRange = "{49, 0}";
-			sepNavVisRange = "{0, 645}";
+			sepNavIntBoundsRect = "{{0, 0}, {747, 725}}";
+			sepNavSelRange = "{308, 0}";
+			sepNavVisRange = "{0, 568}";
 		};
 	};
 	C4A6F6E610DC57FE00854074 /* PBXTextBookmark */ = {
@@ -1183,7 +1197,7 @@
 		fRef = C4CDF8B710D88E1F001C9D4A /* Environment.h */;
 		name = "Environment.h: 47";
 		rLen = 0;
-		rLoc = 1573;
+		rLoc = 1712;
 		rType = 0;
 		vrLen = 1804;
 		vrLoc = 53;
@@ -1223,7 +1237,7 @@
 		fRef = C4A6F68710DC3B4400854074 /* ReplLineReader.cpp */;
 		name = "ReplLineReader.cpp: 24";
 		rLen = 0;
-		rLoc = 636;
+		rLoc = 559;
 		rType = 0;
 		vrLen = 421;
 		vrLoc = 0;
@@ -1244,8 +1258,8 @@
 	C4CDF89D10D88DDF001C9D4A /* BlockObject.h */ = {
 		uiCtxt = {
 			sepNavIntBoundsRect = "{{0, 0}, {747, 748}}";
-			sepNavSelRange = "{812, 0}";
-			sepNavVisRange = "{0, 976}";
+			sepNavSelRange = "{1136, 0}";
+			sepNavVisRange = "{0, 1150}";
 		};
 	};
 	C4CDF89E10D88DDF001C9D4A /* DynamicObject.cpp */ = {
@@ -1284,16 +1298,16 @@
 	};
 	C4CDF8A210D88DDF001C9D4A /* Object.cpp */ = {
 		uiCtxt = {
-			sepNavIntBoundsRect = "{{0, 0}, {747, 798}}";
-			sepNavSelRange = "{892, 0}";
-			sepNavVisRange = "{45, 1789}";
+			sepNavIntBoundsRect = "{{0, 0}, {747, 854}}";
+			sepNavSelRange = "{485, 17}";
+			sepNavVisRange = "{0, 1958}";
 		};
 	};
 	C4CDF8A310D88DDF001C9D4A /* Object.h */ = {
 		uiCtxt = {
-			sepNavIntBoundsRect = "{{0, 0}, {747, 770}}";
-			sepNavSelRange = "{346, 0}";
-			sepNavVisRange = "{0, 1733}";
+			sepNavIntBoundsRect = "{{0, 0}, {747, 784}}";
+			sepNavSelRange = "{674, 0}";
+			sepNavVisRange = "{0, 1684}";
 		};
 	};
 	C4CDF8A410D88DDF001C9D4A /* StringObject.cpp */ = {
@@ -1325,9 +1339,9 @@
 	};
 	C4CDF8AC10D88DF3001C9D4A /* NumberPrimitives.cpp */ = {
 		uiCtxt = {
-			sepNavIntBoundsRect = "{{0, 0}, {747, 1232}}";
-			sepNavSelRange = "{378, 0}";
-			sepNavVisRange = "{56, 2168}";
+			sepNavIntBoundsRect = "{{0, 0}, {586, 1218}}";
+			sepNavSelRange = "{286, 0}";
+			sepNavVisRange = "{244, 415}";
 		};
 	};
 	C4CDF8AF10D88DF3001C9D4A /* EnvironmentPrimitives.h */ = {
@@ -1346,7 +1360,7 @@
 	};
 	C4CDF8B110D88DF3001C9D4A /* BlockPrimitives.h */ = {
 		uiCtxt = {
-			sepNavIntBoundsRect = "{{0, 0}, {777, 748}}";
+			sepNavIntBoundsRect = "{{0, 0}, {747, 725}}";
 			sepNavSelRange = "{216, 0}";
 			sepNavVisRange = "{0, 364}";
 		};
@@ -1360,23 +1374,23 @@
 	};
 	C4CDF8B710D88E1F001C9D4A /* Environment.h */ = {
 		uiCtxt = {
-			sepNavIntBoundsRect = "{{0, 0}, {747, 868}}";
-			sepNavSelRange = "{1573, 0}";
-			sepNavVisRange = "{73, 1812}";
+			sepNavIntBoundsRect = "{{0, 0}, {747, 910}}";
+			sepNavSelRange = "{1468, 0}";
+			sepNavVisRange = "{129, 1840}";
 		};
 	};
 	C4CDF8B810D88E1F001C9D4A /* Environment.cpp */ = {
 		uiCtxt = {
-			sepNavIntBoundsRect = "{{0, 0}, {747, 1890}}";
-			sepNavSelRange = "{2978, 0}";
-			sepNavVisRange = "{1111, 2752}";
+			sepNavIntBoundsRect = "{{0, 0}, {747, 1932}}";
+			sepNavSelRange = "{505, 0}";
+			sepNavVisRange = "{3787, 1908}";
 		};
 	};
 	C4CDF8BA10D88E43001C9D4A /* StringExpr.h */ = {
 		uiCtxt = {
-			sepNavIntBoundsRect = "{{0, 0}, {747, 748}}";
-			sepNavSelRange = "{84, 0}";
-			sepNavVisRange = "{0, 524}";
+			sepNavIntBoundsRect = "{{0, 0}, {747, 725}}";
+			sepNavSelRange = "{433, 0}";
+			sepNavVisRange = "{0, 593}";
 		};
 	};
 	C4CDF8D110D88E5B001C9D4A /* PBXTextBookmark */ = {
@@ -1394,7 +1408,7 @@
 		fRef = C4FC166A10D4334800E6ABD6 /* FinchParser.h */;
 		name = "FinchParser.h: 25";
 		rLen = 52;
-		rLoc = 571;
+		rLoc = 959;
 		rType = 0;
 		vrLen = 599;
 		vrLoc = 0;
@@ -1531,58 +1545,58 @@
 	};
 	C4FC15F710D4328300E6ABD6 /* Evaluator.cpp */ = {
 		uiCtxt = {
-			sepNavIntBoundsRect = "{{0, 0}, {649, 1877}}";
-			sepNavSelRange = "{381, 0}";
-			sepNavVisRange = "{305, 336}";
+			sepNavIntBoundsRect = "{{0, 0}, {768, 1680}}";
+			sepNavSelRange = "{552, 0}";
+			sepNavVisRange = "{21, 1368}";
 		};
 	};
 	C4FC15F810D4328300E6ABD6 /* Evaluator.h */ = {
 		uiCtxt = {
-			sepNavIntBoundsRect = "{{0, 0}, {565, 616}}";
-			sepNavSelRange = "{402, 0}";
-			sepNavVisRange = "{197, 377}";
+			sepNavIntBoundsRect = "{{0, 0}, {747, 725}}";
+			sepNavSelRange = "{518, 0}";
+			sepNavVisRange = "{0, 1301}";
 		};
 	};
 	C4FC15FD10D4328300E6ABD6 /* Scope.cpp */ = {
 		uiCtxt = {
-			sepNavIntBoundsRect = "{{0, 0}, {777, 966}}";
+			sepNavIntBoundsRect = "{{0, 0}, {747, 980}}";
 			sepNavSelRange = "{0, 0}";
-			sepNavVisRange = "{0, 1608}";
+			sepNavVisRange = "{39, 1627}";
 		};
 	};
 	C4FC15FE10D4328300E6ABD6 /* Scope.h */ = {
 		uiCtxt = {
-			sepNavIntBoundsRect = "{{0, 0}, {747, 748}}";
-			sepNavSelRange = "{937, 0}";
+			sepNavIntBoundsRect = "{{0, 0}, {747, 725}}";
+			sepNavSelRange = "{376, 0}";
 			sepNavVisRange = "{0, 1210}";
-		};
-	};
-	C4FC164710D4331C00E6ABD6 /* BlockExpr.cpp */ = {
-		uiCtxt = {
-			sepNavIntBoundsRect = "{{0, 0}, {451, 407}}";
-			sepNavSelRange = "{390, 0}";
-			sepNavVisRange = "{343, 207}";
 		};
 	};
 	C4FC164810D4331C00E6ABD6 /* BlockExpr.h */ = {
 		uiCtxt = {
-			sepNavIntBoundsRect = "{{0, 0}, {451, 504}}";
-			sepNavSelRange = "{666, 0}";
-			sepNavVisRange = "{428, 308}";
+			sepNavIntBoundsRect = "{{0, 0}, {747, 770}}";
+			sepNavSelRange = "{170, 0}";
+			sepNavVisRange = "{0, 1209}";
 		};
 	};
 	C4FC164A10D4331C00E6ABD6 /* DefExpr.h */ = {
 		uiCtxt = {
-			sepNavIntBoundsRect = "{{0, 0}, {747, 748}}";
-			sepNavSelRange = "{477, 0}";
-			sepNavVisRange = "{0, 855}";
+			sepNavIntBoundsRect = "{{0, 0}, {747, 725}}";
+			sepNavSelRange = "{135, 0}";
+			sepNavVisRange = "{0, 934}";
+		};
+	};
+	C4FC164B10D4331C00E6ABD6 /* Expr.cpp */ = {
+		uiCtxt = {
+			sepNavIntBoundsRect = "{{0, 0}, {747, 725}}";
+			sepNavSelRange = "{163, 0}";
+			sepNavVisRange = "{0, 165}";
 		};
 	};
 	C4FC164C10D4331C00E6ABD6 /* Expr.h */ = {
 		uiCtxt = {
-			sepNavIntBoundsRect = "{{0, 0}, {502, 476}}";
-			sepNavSelRange = "{712, 70}";
-			sepNavVisRange = "{529, 404}";
+			sepNavIntBoundsRect = "{{0, 0}, {747, 725}}";
+			sepNavSelRange = "{464, 0}";
+			sepNavVisRange = "{0, 934}";
 		};
 	};
 	C4FC164D10D4331C00E6ABD6 /* IExprVisitor.h */ = {
@@ -1594,87 +1608,93 @@
 	};
 	C4FC164F10D4331C00E6ABD6 /* KeywordExpr.h */ = {
 		uiCtxt = {
-			sepNavIntBoundsRect = "{{0, 0}, {509, 770}}";
-			sepNavSelRange = "{102, 0}";
-			sepNavVisRange = "{0, 171}";
+			sepNavIntBoundsRect = "{{0, 0}, {747, 784}}";
+			sepNavSelRange = "{975, 0}";
+			sepNavVisRange = "{0, 1398}";
 		};
 	};
 	C4FC165010D4331C00E6ABD6 /* NameExpr.cpp */ = {
+		isa = PBXFileReference;
+		fileEncoding = 4;
+		lastKnownFileType = sourcecode.cpp.cpp;
+		name = NameExpr.cpp;
+		path = /Users/bob/Documents/dev/finch/src/Syntax/AST/NameExpr.cpp;
+		sourceTree = "<absolute>";
 		uiCtxt = {
-			sepNavIntBoundsRect = "{{0, 0}, {777, 748}}";
-			sepNavSelRange = "{154, 0}";
+			sepNavIntBoundsRect = "{{0, 0}, {747, 725}}";
+			sepNavSelRange = "{116, 37}";
 			sepNavVisRange = "{0, 154}";
 		};
 	};
 	C4FC165110D4331C00E6ABD6 /* NameExpr.h */ = {
 		uiCtxt = {
-			sepNavIntBoundsRect = "{{0, 0}, {451, 434}}";
-			sepNavSelRange = "{84, 0}";
-			sepNavVisRange = "{0, 180}";
+			sepNavIntBoundsRect = "{{0, 0}, {747, 725}}";
+			sepNavSelRange = "{415, 0}";
+			sepNavVisRange = "{0, 558}";
 		};
 	};
 	C4FC165310D4331C00E6ABD6 /* NumberExpr.h */ = {
 		uiCtxt = {
-			sepNavIntBoundsRect = "{{0, 0}, {451, 434}}";
-			sepNavSelRange = "{84, 0}";
-			sepNavVisRange = "{0, 187}";
+			sepNavIntBoundsRect = "{{0, 0}, {747, 725}}";
+			sepNavSelRange = "{431, 0}";
+			sepNavVisRange = "{0, 563}";
 		};
 	};
 	C4FC165510D4331C00E6ABD6 /* OperatorExpr.h */ = {
 		uiCtxt = {
-			sepNavIntBoundsRect = "{{0, 0}, {451, 658}}";
-			sepNavSelRange = "{102, 0}";
-			sepNavVisRange = "{0, 171}";
+			sepNavIntBoundsRect = "{{0, 0}, {747, 725}}";
+			sepNavSelRange = "{682, 0}";
+			sepNavVisRange = "{0, 1047}";
 		};
 	};
 	C4FC165710D4331C00E6ABD6 /* SequenceExpr.h */ = {
 		uiCtxt = {
-			sepNavIntBoundsRect = "{{0, 0}, {747, 748}}";
-			sepNavSelRange = "{84, 0}";
-			sepNavVisRange = "{0, 757}";
+			sepNavIntBoundsRect = "{{0, 0}, {747, 725}}";
+			sepNavSelRange = "{620, 0}";
+			sepNavVisRange = "{0, 841}";
 		};
 	};
 	C4FC165910D4331C00E6ABD6 /* SetExpr.h */ = {
 		uiCtxt = {
-			sepNavIntBoundsRect = "{{0, 0}, {747, 748}}";
-			sepNavSelRange = "{84, 0}";
-			sepNavVisRange = "{0, 724}";
+			sepNavIntBoundsRect = "{{0, 0}, {747, 725}}";
+			sepNavSelRange = "{542, 0}";
+			sepNavVisRange = "{0, 803}";
 		};
 	};
 	C4FC165D10D4331C00E6ABD6 /* UnaryExpr.h */ = {
 		uiCtxt = {
-			sepNavIntBoundsRect = "{{0, 0}, {747, 748}}";
-			sepNavSelRange = "{84, 0}";
-			sepNavVisRange = "{0, 779}";
+			sepNavIntBoundsRect = "{{0, 0}, {747, 725}}";
+			sepNavSelRange = "{577, 0}";
+			sepNavVisRange = "{0, 854}";
 		};
 	};
 	C4FC166910D4334800E6ABD6 /* FinchParser.cpp */ = {
 		uiCtxt = {
-			sepNavIntBoundsRect = "{{0, 0}, {761, 3458}}";
-			sepNavSelRange = "{1482, 0}";
-			sepNavVisRange = "{583, 1613}";
+			sepNavIntBoundsRect = "{{0, 0}, {747, 3598}}";
+			sepNavSelRange = "{388, 0}";
+			sepNavVisRange = "{0, 1157}";
 			sepNavWindowFrame = "{{15, 0}, {836, 878}}";
 		};
 	};
 	C4FC166A10D4334800E6ABD6 /* FinchParser.h */ = {
 		uiCtxt = {
-			sepNavIntBoundsRect = "{{0, 0}, {747, 748}}";
-			sepNavSelRange = "{262, 0}";
-			sepNavVisRange = "{0, 762}";
+			sepNavIntBoundsRect = "{{0, 0}, {747, 725}}";
+			sepNavSelRange = "{698, 0}";
+			sepNavVisRange = "{0, 1150}";
 		};
 	};
 	C4FC166B10D4334800E6ABD6 /* Lexer.cpp */ = {
 		uiCtxt = {
-			sepNavIntBoundsRect = "{{0, 0}, {900, 2744}}";
-			sepNavSelRange = "{160, 0}";
-			sepNavVisRange = "{2883, 756}";
+			sepNavIntBoundsRect = "{{0, 0}, {747, 3038}}";
+			sepNavSelRange = "{3660, 0}";
+			sepNavVisRange = "{5056, 1260}";
 		};
 	};
 	C4FC166C10D4334800E6ABD6 /* Lexer.h */ = {
 		uiCtxt = {
-			sepNavIntBoundsRect = "{{0, 0}, {747, 896}}";
-			sepNavSelRange = "{451, 0}";
-			sepNavVisRange = "{115, 1372}";
+			sepNavIntBoundsRect = "{{0, 0}, {747, 910}}";
+			sepNavSelRange = "{620, 0}";
+			sepNavVisRange = "{51, 1449}";
 		};
 	};
 	C4FC166D10D4334800E6ABD6 /* Parser.cpp */ = {
@@ -1686,9 +1706,9 @@
 	};
 	C4FC166E10D4334800E6ABD6 /* Parser.h */ = {
 		uiCtxt = {
-			sepNavIntBoundsRect = "{{0, 0}, {747, 748}}";
-			sepNavSelRange = "{455, 0}";
-			sepNavVisRange = "{0, 570}";
+			sepNavIntBoundsRect = "{{0, 0}, {747, 725}}";
+			sepNavSelRange = "{521, 0}";
+			sepNavVisRange = "{0, 935}";
 		};
 	};
 	C4FC166F10D4334800E6ABD6 /* Token.cpp */ = {
@@ -1700,9 +1720,9 @@
 	};
 	C4FC167010D4334800E6ABD6 /* Token.h */ = {
 		uiCtxt = {
-			sepNavIntBoundsRect = "{{0, 0}, {900, 812}}";
-			sepNavSelRange = "{821, 0}";
-			sepNavVisRange = "{543, 607}";
+			sepNavIntBoundsRect = "{{0, 0}, {747, 854}}";
+			sepNavSelRange = "{179, 0}";
+			sepNavVisRange = "{109, 1295}";
 		};
 	};
 	C4FC167710D4336500E6ABD6 /* Ref.h */ = {
@@ -1767,7 +1787,7 @@
 		fRef = C4FC167010D4334800E6ABD6 /* Token.h */;
 		name = "Token.h: 23";
 		rLen = 0;
-		rLoc = 338;
+		rLoc = 407;
 		rType = 0;
 		vrLen = 1142;
 		vrLoc = 0;
@@ -1787,7 +1807,7 @@
 		fRef = C4FC166B10D4334800E6ABD6 /* Lexer.cpp */;
 		name = "Lexer.cpp: 36";
 		rLen = 0;
-		rLoc = 1481;
+		rLoc = 1315;
 		rType = 0;
 		vrLen = 2053;
 		vrLoc = 0;
@@ -1797,7 +1817,7 @@
 		fRef = C4FC166910D4334800E6ABD6 /* FinchParser.cpp */;
 		name = "FinchParser.cpp: 152";
 		rLen = 0;
-		rLoc = 4469;
+		rLoc = 4473;
 		rType = 0;
 		vrLen = 1198;
 		vrLoc = 0;

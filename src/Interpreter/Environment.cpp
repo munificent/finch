@@ -78,11 +78,6 @@ namespace Finch
         mGlobals->Define("False", mFalse);
         
         // define Environment
-        //### bob: this should actually refer to this object itself. but first
-        // Environment will need to be a DynamicObject. note that this will
-        // also pretty much kill the ref-counter: Environment will have a
-        // circular reference to itself and will in turn reference everything
-        // else. :(
         Ref<Object> environment = Object::NewObject(rootObject, "Environment");
         mGlobals->Define("Environment", environment);
         

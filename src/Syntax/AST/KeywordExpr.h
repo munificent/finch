@@ -32,8 +32,16 @@ namespace Finch
         const vector<String> &     Keywords()  const { return mKeywords; }
         const vector<Ref<Expr> > & Arguments() const { return mArgs; }
         
-        virtual void Trace(std::ostream & stream) const;
-        
+        virtual void Trace(std::ostream & stream) const
+        {
+            stream << mReceiver;
+            
+            for (int i = 0; i < mKeywords.size(); i++)
+            {
+                stream << " " << mKeywords[i] << " " << mArgs[i];
+            }
+        }
+            
         EXPRESSION_VISITOR
 
     private:

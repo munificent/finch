@@ -18,7 +18,7 @@ namespace Finch
 {
     using std::vector;
     
-    Ref<Expr> FinchParser::Parse()
+    Ref<Expr> FinchParser::ParseFile()
     {
         // since expression includes sequence expressions, this will parse
         // as many lines as we have

@@ -12,13 +12,7 @@ namespace Finch
         
         while (token.IsNull())
         {
-            if (mState == LEX_NOT_STARTED)
-            {
-                mReader->Start();
-                mState = LEX_NEED_NEW_LINE;
-            }
-            
-            if (mState == LEX_NEED_NEW_LINE)
+            if (mState == LEX_NEED_LINE)
             {
                 StartLine();
             }
@@ -88,7 +82,7 @@ namespace Finch
                 case LEX_AT_END_OF_LINE:
                     token = Token::New(TOKEN_LINE);
                     
-                    mState = LEX_NEED_NEW_LINE;
+                    mState = LEX_NEED_LINE;
                     break;
                     
                 case LEX_DONE:
@@ -98,7 +92,7 @@ namespace Finch
             
             // after processing the null, we're done with the line
             //### bob: what if we're in the middle of a string?
-            if ((mState != LEX_NEED_NEW_LINE) &&
+            if ((mState != LEX_NEED_LINE) &&
                 (mState != LEX_DONE) &&
                 (c == '\0'))
             {

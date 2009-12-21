@@ -24,8 +24,11 @@ namespace Finch
         // May be a null reference if it has no initial value.
         Ref<Expr> Value() const { return mValue; }
         
-        virtual void Trace(std::ostream & stream) const;
-        
+        virtual void Trace(std::ostream & stream) const
+        {
+            stream << "def " << mName << " " << mValue;
+        }
+            
         EXPRESSION_VISITOR
         
     private:

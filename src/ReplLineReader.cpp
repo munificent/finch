@@ -8,11 +8,6 @@ namespace Finch
     using std::cout;
     using std::endl;
     
-    void ReplLineReader::Start()
-    {
-        mFirstLine = true;
-    }
-    
     bool ReplLineReader::EndOfLines() const
     {
         // we can always ask the user for more

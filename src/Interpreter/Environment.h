@@ -15,7 +15,6 @@ namespace Finch
     class BlockObject;
     class Expr;
     
-    //### bob: this should be a DynamicObject.
     // Represents the global runtime environment. Code is executed withing the
     // context of this object. It provides access to global variables as well
     // as tracking the current local scope and other contextual information.
@@ -31,6 +30,7 @@ namespace Finch
 
         Ref<Object> Self()          const { return mSelf; }
 
+        // Get the core built-in prototype objects.
         Ref<Object> Nil()           const { return mNil; }
         Ref<Object> Block()         const { return mBlock; }
         Ref<Object> Number()        const { return mNumber; }
@@ -38,8 +38,11 @@ namespace Finch
         Ref<Object> True()          const { return mTrue; }
         Ref<Object> False()         const { return mFalse; }
         
+        // Evaluates the given block within this environment.
         Ref<Object> EvaluateBlock(const BlockObject * block,
                                   const vector<Ref<Object> > & args);
+        
+        // Evaluates the given method within this environment.
         Ref<Object> EvaluateMethod(Ref<Object> self,
                                    const BlockObject * block,
                                    const vector<Ref<Object> > & args);
