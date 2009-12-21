@@ -1,5 +1,6 @@
 #include "Object.h"
 #include "BlockObject.h"
+#include "Environment.h"
 #include "DynamicObject.h"
 #include "NumberObject.h"
 #include "StringObject.h"
@@ -16,19 +17,23 @@ namespace Finch
         return Ref<Object>(new DynamicObject(prototype));
     }
     
-    Ref<Object> Object::NewNumber(Ref<Object> prototype, double value)
+    Ref<Object> Object::NewNumber(Environment & env, double value)
     {
-        return Ref<Object>(new NumberObject(prototype, value));
+        return Ref<Object>(new NumberObject(env.Number(), value));
     }
     
-    Ref<Object> Object::NewString(Ref<Object> prototype, String value)
+    Ref<Object> Object::NewString(Environment & env, String value)
     {
-        return Ref<Object>(new StringObject(prototype, value));
+        return Ref<Object>(new StringObject(env.String(), value));
     }
     
-    Ref<Object> Object::NewBlock(Ref<Object> prototype, vector<String> params, Ref<Expr> value)
+    Ref<Object> Object::NewBlock(Environment & env, vector<String> params,
+                                 Ref<Expr> value)
     {
-        return Ref<Object>(new BlockObject(prototype, params, value));
+        return Ref<Object>(new BlockObject(env.Block(), params, value,
+                                           // create a closure from the scope
+                                           // where the block is defined
+                                           env.CurrentScope()));
     }
     
     Ref<Object> Object::Receive(Ref<Object> thisRef, Environment & env,

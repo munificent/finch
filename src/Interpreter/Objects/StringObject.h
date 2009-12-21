@@ -12,6 +12,7 @@ namespace Finch
 {
     using std::vector;
     
+    // Object class for a string.
     class StringObject : public Object
     {
     public:
@@ -20,8 +21,11 @@ namespace Finch
             mValue(value)
         {}
         
-        virtual void Trace(std::ostream & stream) const;
-        
+        virtual void Trace(std::ostream & stream) const
+        {
+            stream << "\"" << mValue << "\"";
+        }
+            
         virtual String AsString() const { return mValue; }
         
     private:

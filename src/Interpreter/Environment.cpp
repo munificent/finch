@@ -99,7 +99,9 @@ namespace Finch
     Ref<Object> Environment::EvaluateBlock(const BlockObject * block,
                                            const vector<Ref<Object> > & args)
     {
-        mCurrentScope = Ref<Scope>(new Scope(mCurrentScope));
+        // create a scope for the block using its closure as the parent scope
+        Ref<Scope> oldScope = mCurrentScope;
+        mCurrentScope = Ref<Scope>(new Scope(block->Closure()));
         
         if (block->Params().size() != args.size())
         {
@@ -119,7 +121,7 @@ namespace Finch
         Evaluator evaluator(*this);
         Ref<Object> result = evaluator.Evaluate(block->Body());
 
-        mCurrentScope = mCurrentScope->Parent();
+        mCurrentScope = oldScope;
         
         return result;
     }

@@ -15,9 +15,12 @@ namespace Finch
     using std::map;
     using std::vector;
     
+    // Function pointer type for a primitive Finch method implemented in C++.
     typedef Ref<Object> (*PrimitiveMethod)(Ref<Object> thisRef, Environment & env,
                                            String message, const vector<Ref<Object> > & args);
 
+    // Object class for a "normal" full-featured object. Supports user-defined
+    // fields and methods as well as primitive methods.
     class DynamicObject : public Object
     {
     public:

@@ -10,13 +10,13 @@ namespace Finch
     Ref<Object> StringAdd(Ref<Object> thisRef, Environment & env,
                            String message, const vector<Ref<Object> > & args)
     {
-        return Object::NewString(env.String(), thisRef->AsString() + args[0]->AsString());
+        return Object::NewString(env, thisRef->AsString() + args[0]->AsString());
     }
     
     Ref<Object> StringLength(Ref<Object> thisRef, Environment & env,
                           String message, const vector<Ref<Object> > & args)
     {
-        return Object::NewNumber(env.Number(), thisRef->AsString().size());
+        return Object::NewNumber(env, thisRef->AsString().size());
     }
     
     Ref<Object> StringAt(Ref<Object> thisRef, Environment & env,
@@ -29,7 +29,7 @@ namespace Finch
         {
             String substring;
             substring.push_back(thisString[index]);
-            return Object::NewString(env.String(), substring);
+            return Object::NewString(env, substring);
         }
         
         // out of bounds

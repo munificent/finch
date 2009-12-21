@@ -17,15 +17,17 @@ namespace Finch
     class DynamicObject;
     class Environment;
     
+    // Base class for an object in Finch. All values in Finch inherit from this.
     class Object
     {
     public:
         // virtual constructors
         static Ref<Object> NewObject(Ref<Object> prototype, String name);
         static Ref<Object> NewObject(Ref<Object> prototype);
-        static Ref<Object> NewNumber(Ref<Object> prototype, double value);
-        static Ref<Object> NewString(Ref<Object> prototype, String value);
-        static Ref<Object> NewBlock(Ref<Object> prototype, vector<String> params, Ref<Expr> value);
+        static Ref<Object> NewNumber(Environment & env, double value);
+        static Ref<Object> NewString(Environment & env, String value);
+        static Ref<Object> NewBlock(Environment & env, vector<String> params,
+                                    Ref<Expr> value);
         
         virtual ~Object() {}
         

@@ -14,24 +14,33 @@ namespace Finch
 {
     using std::vector;
     
+    // Object class for a block: an invokable expression and the scope that
+    // encloses it.
     class BlockObject : public Object
     {
     public:
-        BlockObject(Ref<Object> prototype, vector<String> params, Ref<Expr> body)
+        BlockObject(Ref<Object> prototype, vector<String> params,
+                    Ref<Expr> body, Ref<Scope> closure)
         :   Object(prototype),
             mParams(params),
-            mBody(body)
+            mBody(body),
+            mClosure(closure)
         {}
         
         const vector<String> &  Params() const { return mParams; }
         Ref<Expr>               Body() const { return mBody; }
+        Ref<Scope>              Closure() const { return mClosure; }
         
         virtual BlockObject * AsBlock() { return this; }
         
-        virtual void Trace(std::ostream & stream) const;
-        
+        virtual void Trace(std::ostream & stream) const
+        {
+            stream << "block " << mBody;
+        }
+            
     private:
         vector<String>  mParams;
         Ref<Expr>       mBody;
+        Ref<Scope>      mClosure;
     };    
 }

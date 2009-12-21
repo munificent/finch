@@ -23,7 +23,7 @@ namespace Finch
     
     Ref<Object> Evaluator::Visit(const BlockExpr & expr)
     {
-        return Object::NewBlock(mEnvironment.Block(), expr.Params(), expr.Body());
+        return Object::NewBlock(mEnvironment, expr.Params(), expr.Body());
     }
     
     Ref<Object> Evaluator::Visit(const DefExpr & expr)
@@ -37,7 +37,6 @@ namespace Finch
             value = expr.Value()->Accept(*this);
         }
         
-        //### bob: hack temp. always define in global scope
         return mEnvironment.CurrentScope()->Define(expr.Name(), value);
     }
     
@@ -70,7 +69,7 @@ namespace Finch
 
     Ref<Object> Evaluator::Visit(const NumberExpr & expr)
     {
-        return Object::NewNumber(mEnvironment.Number(), expr.Value());
+        return Object::NewNumber(mEnvironment, expr.Value());
     }
     
     Ref<Object> Evaluator::Visit(const OperatorExpr & expr)
@@ -97,15 +96,12 @@ namespace Finch
     {
         Ref<Object> value = expr.Value()->Accept(*this);
         
-        //### bob: hack temp. always set in global scope
-        // should look up name to figure out which scope
-        // it's defined in and there
         return mEnvironment.CurrentScope()->Set(expr.Name(), value);
     }
     
     Ref<Object> Evaluator::Visit(const StringExpr & expr)
     {
-        return Object::NewString(mEnvironment.String(), expr.Value());
+        return Object::NewString(mEnvironment, expr.Value());
     }
     
     Ref<Object> Evaluator::Visit(const UnaryExpr & expr)
