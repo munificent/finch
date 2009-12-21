@@ -1,7 +1,7 @@
 #include <fstream>
 #include <iostream>
 
-#include "EnvironmentPrimitives.h"
+#include "EtherPrimitives.h"
 #include "BlockObject.h"
 #include "Environment.h"
 #include "Evaluator.h"
@@ -18,14 +18,14 @@ namespace Finch
     using std::ifstream;
     using std::ios;
     
-    Ref<Object> EnvironmentQuit(Ref<Object> thisRef, Environment & env,
+    Ref<Object> EtherQuit(Ref<Object> thisRef, Environment & env,
                                 String message, const vector<Ref<Object> > & args)
     {
         env.StopRunning();
         return Ref<Object>();
     }
     
-    Ref<Object> EnvironmentIfThen(Ref<Object> thisRef, Environment & env,
+    Ref<Object> EtherIfThen(Ref<Object> thisRef, Environment & env,
                           String message, const vector<Ref<Object> > & args)
     {
         vector<Ref<Object> > noArgs;
@@ -38,7 +38,7 @@ namespace Finch
         return Ref<Object>();
     }
     
-    Ref<Object> EnvironmentIfThenElse(Ref<Object> thisRef, Environment & env,
+    Ref<Object> EtherIfThenElse(Ref<Object> thisRef, Environment & env,
                               String message, const vector<Ref<Object> > & args)
     {
         vector<Ref<Object> > noArgs;
@@ -53,7 +53,7 @@ namespace Finch
         }
     }
     
-    Ref<Object> EnvironmentWhileDo(Ref<Object> thisRef, Environment & env,
+    Ref<Object> EtherWhileDo(Ref<Object> thisRef, Environment & env,
                                    String message, const vector<Ref<Object> > & args)
     {
         BlockObject * condition = args[0]->AsBlock();
@@ -72,7 +72,7 @@ namespace Finch
         return Ref<Object>();
     }
     
-    Ref<Object> EnvironmentWrite(Ref<Object> thisRef, Environment & env,
+    Ref<Object> EtherWrite(Ref<Object> thisRef, Environment & env,
                              String message, const vector<Ref<Object> > & args)
     {
         String text = args[0]->AsString();
@@ -81,7 +81,7 @@ namespace Finch
         return Ref<Object>();
     }
     
-    Ref<Object> EnvironmentWriteLine(Ref<Object> thisRef, Environment & env,
+    Ref<Object> EtherWriteLine(Ref<Object> thisRef, Environment & env,
                              String message, const vector<Ref<Object> > & args)
     {
         String text = args[0]->AsString();
@@ -90,7 +90,7 @@ namespace Finch
         return Ref<Object>();
     }
     
-    Ref<Object> EnvironmentLoad(Ref<Object> thisRef, Environment & env,
+    Ref<Object> EtherLoad(Ref<Object> thisRef, Environment & env,
                                  String message, const vector<Ref<Object> > & args)
     {
         String fileName = args[0]->AsString();

@@ -8,7 +8,7 @@
 			8DD76F620486A84900D96B5E /* finch */,
 		);
 		breakpoints = (
-			C41E6C9910DDF0B400FC2876 /* EnvironmentPrimitives.cpp:116 */,
+			C41E6C9910DDF0B400FC2876 /* EtherPrimitives.cpp:116 */,
 		);
 		codeSenseManager = C4012A3410CA91B70088B77F /* Code sense */;
 		executables = (
@@ -800,7 +800,7 @@
 		vrLen = 551;
 		vrLoc = 0;
 	};
-	C41E6C9910DDF0B400FC2876 /* EnvironmentPrimitives.cpp:116 */ = {
+	C41E6C9910DDF0B400FC2876 /* EtherPrimitives.cpp:116 */ = {
 		isa = PBXFileBreakpoint;
 		actions = (
 		);
@@ -808,7 +808,7 @@
 		continueAfterActions = 0;
 		countType = 0;
 		delayBeforeContinue = 0;
-		fileReference = C4CDF8B010D88DF3001C9D4A /* EnvironmentPrimitives.cpp */;
+		fileReference = C4CDF8B010D88DF3001C9D4A /* EtherPrimitives.cpp */;
 		functionName = "EnvironmentLoad(Ref<Object> thisRef, Environment & env, String message, const vector<Ref<Object> > & args)";
 		hitCount = 0;
 		ignoreCount = 0;
@@ -839,10 +839,10 @@
 	};
 	C41E6CA310DE807A00FC2876 /* PBXTextBookmark */ = {
 		isa = PBXTextBookmark;
-		fRef = C4CDF8B010D88DF3001C9D4A /* EnvironmentPrimitives.cpp */;
+		fRef = C4CDF8B010D88DF3001C9D4A /* EtherPrimitives.cpp */;
 		name = "EnvironmentPrimitives.cpp: 117";
 		rLen = 0;
-		rLoc = 3404;
+		rLoc = 3356;
 		rType = 0;
 		vrLen = 1487;
 		vrLoc = 2003;
@@ -952,7 +952,7 @@
 		fRef = C4CDF8B810D88E1F001C9D4A /* Environment.cpp */;
 		name = "Environment.cpp: 103";
 		rLen = 0;
-		rLoc = 4599;
+		rLoc = 4467;
 		rType = 0;
 		vrLen = 586;
 		vrLoc = 4600;
@@ -989,10 +989,10 @@
 	};
 	C45101D810DF330E0009E52E /* PBXTextBookmark */ = {
 		isa = PBXTextBookmark;
-		fRef = C4CDF8B010D88DF3001C9D4A /* EnvironmentPrimitives.cpp */;
+		fRef = C4CDF8B010D88DF3001C9D4A /* EtherPrimitives.cpp */;
 		name = "EnvironmentPrimitives.cpp: 114";
 		rLen = 0;
-		rLoc = 3362;
+		rLoc = 3314;
 		rType = 0;
 		vrLen = 256;
 		vrLoc = 3207;
@@ -1040,7 +1040,7 @@
 		fRef = C4CDF8B810D88E1F001C9D4A /* Environment.cpp */;
 		name = "Environment.cpp: 103";
 		rLen = 0;
-		rLoc = 4599;
+		rLoc = 4467;
 		rType = 0;
 		vrLen = 586;
 		vrLoc = 4600;
@@ -1077,10 +1077,10 @@
 	};
 	C45101E110DF330E0009E52E /* PBXTextBookmark */ = {
 		isa = PBXTextBookmark;
-		fRef = C4CDF8B010D88DF3001C9D4A /* EnvironmentPrimitives.cpp */;
+		fRef = C4CDF8B010D88DF3001C9D4A /* EtherPrimitives.cpp */;
 		name = "EnvironmentPrimitives.cpp: 114";
 		rLen = 0;
-		rLoc = 3362;
+		rLoc = 3314;
 		rType = 0;
 		vrLen = 256;
 		vrLoc = 3207;
@@ -1600,7 +1600,7 @@
 		fRef = C4CDF8B810D88E1F001C9D4A /* Environment.cpp */;
 		name = "Environment.cpp: 22";
 		rLen = 0;
-		rLoc = 536;
+		rLoc = 530;
 		rType = 0;
 		vrLen = 2066;
 		vrLoc = 3629;
@@ -1770,7 +1770,7 @@
 		fRef = C4CDF8B810D88E1F001C9D4A /* Environment.cpp */;
 		name = "Environment.cpp: 67";
 		rLen = 0;
-		rLoc = 3158;
+		rLoc = 3152;
 		rType = 0;
 		vrLen = 2352;
 		vrLoc = 3481;
@@ -1870,7 +1870,7 @@
 		fRef = C4CDF8B810D88E1F001C9D4A /* Environment.cpp */;
 		name = "Environment.cpp: 67";
 		rLen = 0;
-		rLoc = 3158;
+		rLoc = 3152;
 		rType = 0;
 		vrLen = 2352;
 		vrLoc = 3481;
@@ -1890,7 +1890,7 @@
 		fRef = C4CDF8B810D88E1F001C9D4A /* Environment.cpp */;
 		name = "Environment.cpp: 67";
 		rLen = 0;
-		rLoc = 3158;
+		rLoc = 3152;
 		rType = 0;
 		vrLen = 2352;
 		vrLoc = 3481;
@@ -1930,7 +1930,7 @@
 		fRef = C4CDF8B810D88E1F001C9D4A /* Environment.cpp */;
 		name = "Environment.cpp: 67";
 		rLen = 0;
-		rLoc = 3158;
+		rLoc = 3152;
 		rType = 0;
 		vrLen = 2352;
 		vrLoc = 3481;
@@ -1950,7 +1950,7 @@
 		fRef = C4CDF8B810D88E1F001C9D4A /* Environment.cpp */;
 		name = "Environment.cpp: 130";
 		rLen = 0;
-		rLoc = 5354;
+		rLoc = 5222;
 		rType = 0;
 		vrLen = 2236;
 		vrLoc = 3363;
@@ -1970,7 +1970,7 @@
 		fRef = C4CDF8B810D88E1F001C9D4A /* Environment.cpp */;
 		name = "Environment.cpp: 124";
 		rLen = 0;
-		rLoc = 5312;
+		rLoc = 5180;
 		rType = 0;
 		vrLen = 2407;
 		vrLoc = 3363;
@@ -2460,7 +2460,7 @@
 		fRef = C4CDF8B810D88E1F001C9D4A /* Environment.cpp */;
 		name = "Environment.cpp: 81";
 		rLen = 0;
-		rLoc = 3570;
+		rLoc = 3558;
 		rType = 0;
 		vrLen = 2194;
 		vrLoc = 0;
@@ -2480,7 +2480,7 @@
 		fRef = C4CDF8B810D88E1F001C9D4A /* Environment.cpp */;
 		name = "Environment.cpp: 22";
 		rLen = 0;
-		rLoc = 536;
+		rLoc = 530;
 		rType = 0;
 		vrLen = 1908;
 		vrLoc = 3787;
@@ -3300,7 +3300,7 @@
 		fRef = C4CDF8B810D88E1F001C9D4A /* Environment.cpp */;
 		name = "Environment.cpp: 86";
 		rLen = 0;
-		rLoc = 3628;
+		rLoc = 3610;
 		rType = 0;
 		vrLen = 2207;
 		vrLoc = 3182;
@@ -3506,7 +3506,7 @@
 		fRef = C4CDF8B810D88E1F001C9D4A /* Environment.cpp */;
 		name = "Environment.cpp: 67";
 		rLen = 0;
-		rLoc = 3158;
+		rLoc = 3152;
 		rType = 0;
 		vrLen = 2752;
 		vrLoc = 1111;
@@ -3650,7 +3650,7 @@
 	};
 	C473A8F510DA82F800695099 /* PBXTextBookmark */ = {
 		isa = PBXTextBookmark;
-		fRef = C4CDF8B010D88DF3001C9D4A /* EnvironmentPrimitives.cpp */;
+		fRef = C4CDF8B010D88DF3001C9D4A /* EtherPrimitives.cpp */;
 		name = "ConsolePrimitives.cpp: 1";
 		rLen = 0;
 		rLoc = 19;
@@ -3673,7 +3673,7 @@
 		fRef = C4CDF8B810D88E1F001C9D4A /* Environment.cpp */;
 		name = "EvalContext.cpp: 72";
 		rLen = 0;
-		rLoc = 3621;
+		rLoc = 3603;
 		rType = 0;
 		vrLen = 1793;
 		vrLoc = 1953;
@@ -3808,10 +3808,10 @@
 	};
 	C4A6F6F610DC57FE00854074 /* PBXTextBookmark */ = {
 		isa = PBXTextBookmark;
-		fRef = C4CDF8AF10D88DF3001C9D4A /* EnvironmentPrimitives.h */;
+		fRef = C4CDF8AF10D88DF3001C9D4A /* EtherPrimitives.h */;
 		name = "EnvironmentPrimitives.h: 28";
 		rLen = 0;
-		rLoc = 913;
+		rLoc = 883;
 		rType = 0;
 		vrLen = 1389;
 		vrLoc = 0;
@@ -3938,18 +3938,30 @@
 			sepNavVisRange = "{244, 415}";
 		};
 	};
-	C4CDF8AF10D88DF3001C9D4A /* EnvironmentPrimitives.h */ = {
+	C4CDF8AF10D88DF3001C9D4A /* EtherPrimitives.h */ = {
+		isa = PBXFileReference;
+		fileEncoding = 4;
+		lastKnownFileType = sourcecode.c.h;
+		name = EtherPrimitives.h;
+		path = /Users/bob/Documents/dev/finch/src/Interpreter/Primitives/EtherPrimitives.h;
+		sourceTree = "<absolute>";
 		uiCtxt = {
 			sepNavIntBoundsRect = "{{0, 0}, {747, 748}}";
-			sepNavSelRange = "{913, 0}";
-			sepNavVisRange = "{0, 1389}";
+			sepNavSelRange = "{866, 0}";
+			sepNavVisRange = "{0, 1341}";
 		};
 	};
-	C4CDF8B010D88DF3001C9D4A /* EnvironmentPrimitives.cpp */ = {
+	C4CDF8B010D88DF3001C9D4A /* EtherPrimitives.cpp */ = {
+		isa = PBXFileReference;
+		fileEncoding = 4;
+		lastKnownFileType = sourcecode.cpp.cpp;
+		name = EtherPrimitives.cpp;
+		path = /Users/bob/Documents/dev/finch/src/Interpreter/Primitives/EtherPrimitives.cpp;
+		sourceTree = "<absolute>";
 		uiCtxt = {
-			sepNavIntBoundsRect = "{{0, 0}, {593, 1834}}";
-			sepNavSelRange = "{3362, 0}";
-			sepNavVisRange = "{3207, 256}";
+			sepNavIntBoundsRect = "{{0, 0}, {747, 1736}}";
+			sepNavSelRange = "{141, 0}";
+			sepNavVisRange = "{0, 1401}";
 		};
 	};
 	C4CDF8B110D88DF3001C9D4A /* BlockPrimitives.h */ = {
@@ -3969,15 +3981,15 @@
 	C4CDF8B710D88E1F001C9D4A /* Environment.h */ = {
 		uiCtxt = {
 			sepNavIntBoundsRect = "{{0, 0}, {747, 910}}";
-			sepNavSelRange = "{1468, 0}";
-			sepNavVisRange = "{129, 1840}";
+			sepNavSelRange = "{777, 0}";
+			sepNavVisRange = "{130, 1902}";
 		};
 	};
 	C4CDF8B810D88E1F001C9D4A /* Environment.cpp */ = {
 		uiCtxt = {
-			sepNavIntBoundsRect = "{{0, 0}, {747, 2002}}";
-			sepNavSelRange = "{3628, 0}";
-			sepNavVisRange = "{3182, 2207}";
+			sepNavIntBoundsRect = "{{0, 0}, {558, 2346}}";
+			sepNavSelRange = "{148, 29}";
+			sepNavVisRange = "{25, 261}";
 		};
 	};
 	C4CDF8BA10D88E43001C9D4A /* StringExpr.h */ = {
@@ -4049,7 +4061,7 @@
 	};
 	C4CDF8EB10D88E5B001C9D4A /* PBXTextBookmark */ = {
 		isa = PBXTextBookmark;
-		fRef = C4CDF8AF10D88DF3001C9D4A /* EnvironmentPrimitives.h */;
+		fRef = C4CDF8AF10D88DF3001C9D4A /* EtherPrimitives.h */;
 		name = "ConsolePrimitives.h: 1";
 		rLen = 0;
 		rLoc = 0;

@@ -12,25 +12,25 @@ namespace Finch
 {
     using std::vector;
     
-    // Primitive methods for the global Environment object.
-    Ref<Object> EnvironmentQuit(Ref<Object> thisRef, Environment & env,
+    // Primitive methods for the global Ether object.
+    Ref<Object> EtherQuit(Ref<Object> thisRef, Environment & env,
                                   String message, const vector<Ref<Object> > & args);
     
     // Flow control
-    Ref<Object> EnvironmentIfThen(Ref<Object> thisRef, Environment & env,
+    Ref<Object> EtherIfThen(Ref<Object> thisRef, Environment & env,
                           String message, const vector<Ref<Object> > & args);
-    Ref<Object> EnvironmentIfThenElse(Ref<Object> thisRef, Environment & env,
+    Ref<Object> EtherIfThenElse(Ref<Object> thisRef, Environment & env,
                               String message, const vector<Ref<Object> > & args);
-    Ref<Object> EnvironmentWhileDo(Ref<Object> thisRef, Environment & env,
+    Ref<Object> EtherWhileDo(Ref<Object> thisRef, Environment & env,
                                    String message, const vector<Ref<Object> > & args);
     
     // Basic IO
-    Ref<Object> EnvironmentWrite(Ref<Object> thisRef, Environment & env,
+    Ref<Object> EtherWrite(Ref<Object> thisRef, Environment & env,
                              String message, const vector<Ref<Object> > & args);
     
-    Ref<Object> EnvironmentWriteLine(Ref<Object> thisRef, Environment & env,
+    Ref<Object> EtherWriteLine(Ref<Object> thisRef, Environment & env,
                              String message, const vector<Ref<Object> > & args);
 
-    Ref<Object> EnvironmentLoad(Ref<Object> thisRef, Environment & env,
+    Ref<Object> EtherLoad(Ref<Object> thisRef, Environment & env,
                                  String message, const vector<Ref<Object> > & args);
 }

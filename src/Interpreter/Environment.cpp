@@ -5,7 +5,7 @@
 #include "BlockObject.h"
 #include "DynamicObject.h"
 #include "BlockPrimitives.h"
-#include "EnvironmentPrimitives.h"
+#include "EtherPrimitives.h"
 #include "NumberPrimitives.h"
 #include "ObjectPrimitives.h"
 #include "StringPrimitives.h"
@@ -82,18 +82,18 @@ namespace Finch
         mFalse = Object::NewObject(object, "False");
         mGlobals->Define("False", mFalse);
         
-        // define Environment
-        Ref<Object> environment = Object::NewObject(object, "Environment");
-        mGlobals->Define("Environment", environment);
+        // define Ether
+        Ref<Object> ether = Object::NewObject(object, "Ether");
+        mGlobals->Define("Ether", ether);
         
-        DynamicObject* environmentObj = &static_cast<DynamicObject&>(*environment);
-        environmentObj->RegisterPrimitive("quit",           EnvironmentQuit);
-        environmentObj->RegisterPrimitive("if:then:",       EnvironmentIfThen);
-        environmentObj->RegisterPrimitive("if:then:else:",  EnvironmentIfThenElse);
-        environmentObj->RegisterPrimitive("while:do:",      EnvironmentWhileDo);
-        environmentObj->RegisterPrimitive("write:",         EnvironmentWrite);
-        environmentObj->RegisterPrimitive("write-line:",    EnvironmentWriteLine);
-        environmentObj->RegisterPrimitive("load:",          EnvironmentLoad);
+        DynamicObject* etherObj = &static_cast<DynamicObject&>(*ether);
+        etherObj->RegisterPrimitive("quit",           EtherQuit);
+        etherObj->RegisterPrimitive("if:then:",       EtherIfThen);
+        etherObj->RegisterPrimitive("if:then:else:",  EtherIfThenElse);
+        etherObj->RegisterPrimitive("while:do:",      EtherWhileDo);
+        etherObj->RegisterPrimitive("write:",         EtherWrite);
+        etherObj->RegisterPrimitive("write-line:",    EtherWriteLine);
+        etherObj->RegisterPrimitive("load:",          EtherLoad);
     }
     
     Ref<Object> Environment::EvaluateBlock(const BlockObject * block,
