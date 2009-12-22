@@ -1,6 +1,5 @@
 write-line: "Running Finch test suite."
 
-
 ' define a Test object the tests can use
 def Test Object copy
 
@@ -13,9 +12,7 @@ Test add-field: "failed" value: 0
 Test add-method: "suite:is:" body:
 {|name body|
     .suite: name
-    
     body call
-    
     .suite: ""
 }
 
@@ -27,6 +24,8 @@ Test add-method: "test:is:" body:
     .test-shown: False
     
     body call
+    
+    if: .failed = 0 then: { .show-header }
     
     write-line: "  " + (.tests - .failed) + " / " + .tests + " tests passed"
     
@@ -50,7 +49,7 @@ Test add-method: "is-true:" body:
     {
         .failed: .failed + 1
         .show-header
-        write-line: "  Test " + .tests to-string + " failed"
+        write-line: "  Test " + .tests to-string + " failed."
     }
 }
 

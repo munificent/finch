@@ -71,6 +71,7 @@ namespace Finch
             else if (mObj != NULL)
             {
                 // linked to itself, so it's the last reference
+                //### bob: commented out for testing!
                 delete mObj;
             }
             

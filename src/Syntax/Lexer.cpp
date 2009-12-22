@@ -33,6 +33,8 @@ namespace Finch
                     else if (c == ';')      token = SingleToken(TOKEN_LINE);
                     else if (c == '|')      token = SingleToken(TOKEN_PIPE);
                     
+                    else if (c == '-')      StartToken(LEX_IN_MINUS);
+                    
                     else if (IsDigit(c))    StartToken(LEX_IN_NUMBER);
                     else if (IsAlpha(c))    StartToken(LEX_IN_NAME);
                     else if (IsOperator(c)) StartToken(LEX_IN_OPERATOR);
@@ -41,6 +43,23 @@ namespace Finch
                     else if (c == '\'')     StartToken(LEX_IN_COMMENT);
 
                     else mIndex++; // ignore other characters
+                    break;
+                    
+                case LEX_IN_MINUS:
+                    if (IsDigit(c))
+                    {
+                        mState = LEX_IN_NUMBER;
+                    }
+                    else if (IsOperator(c))
+                    {
+                        mState = LEX_IN_OPERATOR;
+                    }
+                    else
+                    {
+                        token = EmitText(TOKEN_OPERATOR);
+                        mState = LEX_DEFAULT;
+                    }
+                    mIndex++;
                     break;
                     
                 case LEX_IN_NUMBER:
@@ -87,6 +106,10 @@ namespace Finch
                     
                 case LEX_DONE:
                     token = Token::New(TOKEN_EOF);
+                    break;
+                    
+                case LEX_NEED_LINE:
+                    // do nothing. we already handled this before the switch
                     break;
             }
             

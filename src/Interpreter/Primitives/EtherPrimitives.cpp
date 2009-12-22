@@ -1,14 +1,11 @@
 #include <fstream>
 #include <iostream>
 
-#include "EtherPrimitives.h"
 #include "BlockObject.h"
 #include "Environment.h"
-#include "Evaluator.h"
+#include "EtherPrimitives.h"
 #include "Expr.h"
-#include "FinchParser.h"
-#include "FileLineReader.h"
-#include "LineNormalizer.h"
+#include "Script.h"
 
 namespace Finch
 {
@@ -95,6 +92,9 @@ namespace Finch
     {
         String fileName = args[0]->AsString();
         
+        return Script::Run(fileName, env);
+        
+        /*
         FileLineReader reader(fileName);
         
         if (reader.EndOfLines())
@@ -117,7 +117,7 @@ namespace Finch
         {
             result = evaluator.Evaluate(expr);
         }
-
         return result;
+         */
     }
 }

@@ -73,7 +73,7 @@ namespace Finch
                 break;
                 
             case TOKEN_STRING:
-                cout << "string '" << token.Number() << "'";
+                cout << "string '" << token.Text() << "'";
                 break;
                 
             case TOKEN_NAME:

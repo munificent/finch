@@ -49,7 +49,7 @@ namespace Finch
         String               fullName;
         vector<Ref<Object> > args;
         
-        for (int i = 0; i < expr.Keywords().size(); i++)
+        for (unsigned int i = 0; i < expr.Keywords().size(); i++)
         {
             fullName.append(expr.Keywords()[i]);
             args.push_back(expr.Arguments()[i]->Accept(*this));

@@ -48,6 +48,8 @@ namespace Finch
         virtual String      Text()   const { return ""; }
         virtual double      Number() const { return 0; }
         
+        virtual ~Token() {}
+        
     protected:
         Token(TokenType type)
         :   mType(type)

@@ -76,7 +76,9 @@ namespace Finch
         stringObj->RegisterPrimitive("+",           StringAdd);
         stringObj->RegisterPrimitive("length",      StringLength);
         stringObj->RegisterPrimitive("at:",         StringAt);
-        
+        stringObj->RegisterPrimitive("=",           StringEquals);
+        stringObj->RegisterPrimitive("!=",          StringNotEquals);
+
         // define nil
         mNil = Object::NewObject(object, "Nil");
         mGlobals->Define("Nil", mNil);
@@ -122,7 +124,7 @@ namespace Finch
         }
         
         // bind the arguments
-        for (int i = 0; i < args.size(); i++)
+        for (unsigned int i = 0; i < args.size(); i++)
         {
             mCurrentScope->Define(block->Params()[i], args[i]);
         }

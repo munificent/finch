@@ -68,6 +68,8 @@ namespace Finch
             mNewLine = isLineToken;
         }
         
+        //std::cout << "norm " << *token << std::endl;
+        
         return token;
     }
 }

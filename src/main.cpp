@@ -1,13 +1,8 @@
 #include <iostream>
 
-#include "Environment.h"
-#include "Evaluator.h"
-#include "FinchParser.h"
-#include "FileLineReader.h"
-#include "Lexer.h"
-#include "LineNormalizer.h"
 #include "Ref.h"
 #include "Repl.h"
+#include "Script.h"
 
 using namespace Finch;
 
@@ -24,6 +19,8 @@ int main (int argc, char * const argv[])
         // one argument, load and execute the given script
         String fileName = argv[1];
         
+        Script::Run(fileName);
+        /*
         FileLineReader reader(fileName);
         
         if (reader.EndOfLines())
@@ -49,6 +46,7 @@ int main (int argc, char * const argv[])
         {
             evaluator.Evaluate(expr);
         }
+         */
     }
     
     return 0;

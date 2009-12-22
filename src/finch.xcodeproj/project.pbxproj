@@ -26,6 +26,7 @@
 		C4CDF8B310D88DF3001C9D4A /* NumberPrimitives.cpp in Sources */ = {isa = PBXBuildFile; fileRef = C4CDF8AC10D88DF3001C9D4A /* NumberPrimitives.cpp */; };
 		C4CDF8B610D88DF3001C9D4A /* BlockPrimitives.cpp in Sources */ = {isa = PBXBuildFile; fileRef = C4CDF8B210D88DF3001C9D4A /* BlockPrimitives.cpp */; };
 		C4CDF8B910D88E1F001C9D4A /* Environment.cpp in Sources */ = {isa = PBXBuildFile; fileRef = C4CDF8B810D88E1F001C9D4A /* Environment.cpp */; };
+		C4E0BAEC10E09F2800D04F42 /* Script.cpp in Sources */ = {isa = PBXBuildFile; fileRef = C4E0BAEB10E09F2800D04F42 /* Script.cpp */; };
 		C4FC160310D4328300E6ABD6 /* Evaluator.cpp in Sources */ = {isa = PBXBuildFile; fileRef = C4FC15F710D4328300E6ABD6 /* Evaluator.cpp */; };
 		C4FC160610D4328300E6ABD6 /* Scope.cpp in Sources */ = {isa = PBXBuildFile; fileRef = C4FC15FD10D4328300E6ABD6 /* Scope.cpp */; };
 		C4FC166010D4331C00E6ABD6 /* Expr.cpp in Sources */ = {isa = PBXBuildFile; fileRef = C4FC164B10D4331C00E6ABD6 /* Expr.cpp */; };
@@ -33,7 +34,6 @@
 		C4FC167210D4334800E6ABD6 /* Lexer.cpp in Sources */ = {isa = PBXBuildFile; fileRef = C4FC166B10D4334800E6ABD6 /* Lexer.cpp */; };
 		C4FC167310D4334800E6ABD6 /* Parser.cpp in Sources */ = {isa = PBXBuildFile; fileRef = C4FC166D10D4334800E6ABD6 /* Parser.cpp */; };
 		C4FC167410D4334800E6ABD6 /* Token.cpp in Sources */ = {isa = PBXBuildFile; fileRef = C4FC166F10D4334800E6ABD6 /* Token.cpp */; };
-		C4FC167A10D4336500E6ABD6 /* Ref.cpp in Sources */ = {isa = PBXBuildFile; fileRef = C4FC167610D4336500E6ABD6 /* Ref.cpp */; };
 		C4FC167B10D4336500E6ABD6 /* String.cpp in Sources */ = {isa = PBXBuildFile; fileRef = C4FC167810D4336500E6ABD6 /* String.cpp */; };
 /* End PBXBuildFile section */
 
@@ -94,6 +94,8 @@
 		C4CDF8B710D88E1F001C9D4A /* Environment.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = Environment.h; path = Interpreter/Environment.h; sourceTree = "<group>"; };
 		C4CDF8B810D88E1F001C9D4A /* Environment.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = Environment.cpp; path = Interpreter/Environment.cpp; sourceTree = "<group>"; };
 		C4CDF8BA10D88E43001C9D4A /* StringExpr.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = StringExpr.h; path = Syntax/AST/StringExpr.h; sourceTree = "<group>"; };
+		C4E0BAEA10E09F2800D04F42 /* Script.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Script.h; sourceTree = "<group>"; };
+		C4E0BAEB10E09F2800D04F42 /* Script.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = Script.cpp; sourceTree = "<group>"; };
 		C4FC15F710D4328300E6ABD6 /* Evaluator.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = Evaluator.cpp; path = Interpreter/Evaluator.cpp; sourceTree = "<group>"; };
 		C4FC15F810D4328300E6ABD6 /* Evaluator.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = Evaluator.h; path = Interpreter/Evaluator.h; sourceTree = "<group>"; };
 		C4FC15FD10D4328300E6ABD6 /* Scope.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = Scope.cpp; path = Interpreter/Scope.cpp; sourceTree = "<group>"; };
@@ -119,7 +121,6 @@
 		C4FC166F10D4334800E6ABD6 /* Token.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = Token.cpp; path = Syntax/Token.cpp; sourceTree = "<group>"; };
 		C4FC167010D4334800E6ABD6 /* Token.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = Token.h; path = Syntax/Token.h; sourceTree = "<group>"; };
 		C4FC167510D4336500E6ABD6 /* Macros.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = Macros.h; path = Base/Macros.h; sourceTree = "<group>"; };
-		C4FC167610D4336500E6ABD6 /* Ref.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = Ref.cpp; path = Base/Ref.cpp; sourceTree = "<group>"; };
 		C4FC167710D4336500E6ABD6 /* Ref.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = Ref.h; path = Base/Ref.h; sourceTree = "<group>"; };
 		C4FC167810D4336500E6ABD6 /* String.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = String.cpp; path = Base/String.cpp; sourceTree = "<group>"; };
 		C4FC167910D4336500E6ABD6 /* String.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = String.h; path = Base/String.h; sourceTree = "<group>"; };
@@ -150,6 +151,8 @@
 		08FB7795FE84155DC02AAC07 /* Source */ = {
 			isa = PBXGroup;
 			children = (
+				C4E0BAEA10E09F2800D04F42 /* Script.h */,
+				C4E0BAEB10E09F2800D04F42 /* Script.cpp */,
 				C4A6F68610DC3B4400854074 /* ReplLineReader.h */,
 				C4A6F68710DC3B4400854074 /* ReplLineReader.cpp */,
 				C4B9DB2F10CF3C19003C556D /* Interpreter */,
@@ -228,7 +231,6 @@
 			children = (
 				C465892310DE87AB007C4C3E /* Dictionary.h */,
 				C4FC167510D4336500E6ABD6 /* Macros.h */,
-				C4FC167610D4336500E6ABD6 /* Ref.cpp */,
 				C4FC167710D4336500E6ABD6 /* Ref.h */,
 				C4FC167810D4336500E6ABD6 /* String.cpp */,
 				C4FC167910D4336500E6ABD6 /* String.h */,
@@ -349,7 +351,6 @@
 				C4FC167210D4334800E6ABD6 /* Lexer.cpp in Sources */,
 				C4FC167310D4334800E6ABD6 /* Parser.cpp in Sources */,
 				C4FC167410D4334800E6ABD6 /* Token.cpp in Sources */,
-				C4FC167A10D4336500E6ABD6 /* Ref.cpp in Sources */,
 				C4FC167B10D4336500E6ABD6 /* String.cpp in Sources */,
 				C4CDF8A710D88DDF001C9D4A /* DynamicObject.cpp in Sources */,
 				C4CDF8A910D88DDF001C9D4A /* Object.cpp in Sources */,
@@ -367,6 +368,7 @@
 				C465893310DE8802007C4C3E /* RefTests.cpp in Sources */,
 				C45102D410DF37DC0009E52E /* EtherPrimitives.cpp in Sources */,
 				C4949EFC10E02508001A57BA /* BooleanPrimitives.cpp in Sources */,
+				C4E0BAEC10E09F2800D04F42 /* Script.cpp in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -386,9 +388,16 @@
 					"_GLIBCXX_DEBUG=1",
 					"_GLIBCXX_DEBUG_PEDANTIC=1",
 				);
+				GCC_TREAT_WARNINGS_AS_ERRORS = YES;
+				GCC_WARN_CHECK_SWITCH_STATEMENTS = NO;
+				GCC_WARN_EFFECTIVE_CPLUSPLUS_VIOLATIONS = NO;
+				GCC_WARN_INITIALIZER_NOT_FULLY_BRACKETED = NO;
+				GCC_WARN_PEDANTIC = YES;
+				GCC_WARN_SHADOW = NO;
 				INSTALL_PATH = /usr/local/bin;
 				PRODUCT_NAME = finch;
 				SYMROOT = ../build;
+				WARNING_CFLAGS = "-Wall";
 			};
 			name = Debug;
 		};
@@ -398,9 +407,16 @@
 				ALWAYS_SEARCH_USER_PATHS = NO;
 				DEBUG_INFORMATION_FORMAT = "dwarf-with-dsym";
 				GCC_MODEL_TUNING = G5;
+				GCC_TREAT_WARNINGS_AS_ERRORS = YES;
+				GCC_WARN_CHECK_SWITCH_STATEMENTS = NO;
+				GCC_WARN_EFFECTIVE_CPLUSPLUS_VIOLATIONS = NO;
+				GCC_WARN_INITIALIZER_NOT_FULLY_BRACKETED = NO;
+				GCC_WARN_PEDANTIC = YES;
+				GCC_WARN_SHADOW = NO;
 				INSTALL_PATH = /usr/local/bin;
 				PRODUCT_NAME = finch;
 				SYMROOT = ../build;
+				WARNING_CFLAGS = "-Wall";
 			};
 			name = Release;
 		};

@@ -22,4 +22,10 @@ namespace Finch
     
     Ref<Object> StringAt(Ref<Object> thisRef, Environment & env,
                              String message, const vector<Ref<Object> > & args);
+    
+    Ref<Object> StringEquals(Ref<Object> thisRef, Environment & env,
+                          String message, const vector<Ref<Object> > & args);
+    
+    Ref<Object> StringNotEquals(Ref<Object> thisRef, Environment & env,
+                             String message, const vector<Ref<Object> > & args);
 }

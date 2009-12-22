@@ -34,7 +34,7 @@ namespace Finch
             {
                 stream << "|";
                 
-                for (int i = 0; i < mParams.size(); i++)
+                for (unsigned int i = 0; i < mParams.size(); i++)
                 {
                     stream << mParams[i];
                     

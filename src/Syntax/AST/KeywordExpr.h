@@ -37,7 +37,7 @@ namespace Finch
         {
             stream << mReceiver;
             
-            for (int i = 0; i < mKeywords.size(); i++)
+            for (unsigned int i = 0; i < mKeywords.size(); i++)
             {
                 stream << " " << mKeywords[i] << " " << mArgs[i];
             }
