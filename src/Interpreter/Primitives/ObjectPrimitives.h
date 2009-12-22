@@ -14,6 +14,8 @@ namespace Finch
     
     // Primitive methods for dynamic (i.e. regular) objects.
     
+    Ref<Object> ObjectSelf(Ref<Object> thisRef, Environment & env,
+                           String message, const vector<Ref<Object> > & args);
     Ref<Object> ObjectCopy(Ref<Object> thisRef, Environment & env,
                            String message, const vector<Ref<Object> > & args);
     Ref<Object> ObjectAddFieldValue(Ref<Object> thisRef, Environment & env,

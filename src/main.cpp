@@ -1,29 +1,55 @@
 #include <iostream>
 
+#include "Environment.h"
+#include "Evaluator.h"
+#include "FinchParser.h"
+#include "FileLineReader.h"
+#include "Lexer.h"
+#include "LineNormalizer.h"
 #include "Ref.h"
 #include "Repl.h"
-
-//#define UNIT_TEST
-
-#ifdef UNIT_TEST
-    #include "TestMain.h"
-#endif
 
 using namespace Finch;
 
 int main (int argc, char * const argv[])
 {
-    
-#ifdef UNIT_TEST
-    
-    TestMain::Run();
-    
-#else
+    if (argc == 1)
+    {
+        // with no arguments (arg zero is app), run in interactive mode
+        Repl repl;    
+        repl.Run();
+    }
+    else if (argc == 2)
+    {
+        // one argument, load and execute the given script
+        String fileName = argv[1];
+        
+        FileLineReader reader(fileName);
+        
+        if (reader.EndOfLines())
+        {
+            // couldn't open
+            std::cout << "Couldn't open file \"" << fileName << "\"" << std::endl;
+            //### bob: what should this error code be?
+            return 0;
+        }
+        
+        Lexer           lexer(&reader);
+        LineNormalizer  normalizer(&lexer);
+        FinchParser     parser(&normalizer);
 
-    Repl repl;    
-    repl.Run();
-    
-#endif
+        Environment     env;
+        Evaluator       evaluator(env);
+        
+        Ref<Object> result;
+        Ref<Expr> expr = parser.ParseFile();
+        
+        //### bob: need to report parse error
+        if (!expr.IsNull())
+        {
+            evaluator.Evaluate(expr);
+        }
+    }
     
     return 0;
 }

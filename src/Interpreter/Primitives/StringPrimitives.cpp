@@ -10,7 +10,11 @@ namespace Finch
     Ref<Object> StringAdd(Ref<Object> thisRef, Environment & env,
                            String message, const vector<Ref<Object> > & args)
     {
-        return Object::NewString(env, thisRef->AsString() + args[0]->AsString());
+        // dynamically convert the object to a string
+        vector<Ref<Object> > noArgs;
+        Ref<Object> toString = args[0]->Receive(args[0], env, "to-string", noArgs);
+        
+        return Object::NewString(env, thisRef->AsString() + toString->AsString());
     }
     
     Ref<Object> StringLength(Ref<Object> thisRef, Environment & env,

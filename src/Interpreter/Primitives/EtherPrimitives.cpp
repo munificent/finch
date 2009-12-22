@@ -32,7 +32,7 @@ namespace Finch
         
         if (args[0] == env.True())
         {
-            return args[1]->Receive(args[1], env, "value", noArgs);
+            return args[1]->Receive(args[1], env, "call", noArgs);
         }
         
         return Ref<Object>();
@@ -45,11 +45,11 @@ namespace Finch
         
         if (args[0] == env.True())
         {
-            return args[1]->Receive(args[1], env, "value", noArgs);
+            return args[1]->Receive(args[1], env, "call", noArgs);
         }
         else
         {
-            return args[2]->Receive(args[2], env, "value", noArgs);
+            return args[2]->Receive(args[2], env, "call", noArgs);
         }
     }
     

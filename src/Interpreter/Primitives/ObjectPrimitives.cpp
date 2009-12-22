@@ -7,6 +7,12 @@
 
 namespace Finch
 {
+    Ref<Object> ObjectSelf(Ref<Object> thisRef, Environment & env,
+                           String message, const vector<Ref<Object> > & args)
+    {
+        return thisRef;
+    }
+    
     Ref<Object> ObjectCopy(Ref<Object> thisRef, Environment & env,
                            String message, const vector<Ref<Object> > & args)
     {

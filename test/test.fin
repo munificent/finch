@@ -1,0 +1,65 @@
+write-line: "Running Finch test suite."
+
+
+' define a Test object the tests can use
+def Test Object copy
+
+Test add-field: "suite" value: ""
+Test add-field: "test" value: ""
+Test add-field: "test-shown" value: False
+Test add-field: "tests" value: 0
+Test add-field: "failed" value: 0
+
+Test add-method: "suite:is:" body:
+{|name body|
+    .suite: name
+    
+    body call
+    
+    .suite: ""
+}
+
+Test add-method: "test:is:" body:
+{|name body|
+    .test: name
+    .tests: 0
+    .failed: 0
+    .test-shown: False
+    
+    body call
+    
+    write-line: "  " + (.tests - .failed) + " / " + .tests + " tests passed"
+    
+    .test: ""
+}
+
+Test add-method: "show-header" body:
+{
+    if: .test-shown not then:
+    {
+        write-line: .suite + " / " + .test
+        .test-shown: True
+    }
+}
+
+Test add-method: "is-true:" body:
+{|actual|
+    .tests: .tests + 1
+        
+    if: actual not then:
+    {
+        .failed: .failed + 1
+        .show-header
+        write-line: "  Test " + .tests to-string + " failed"
+    }
+}
+
+Test add-method: "that:equals:" body:
+{|actual expected|
+    .is-true: actual = expected
+}
+
+' run the test scripts
+'### bob: hack! path should be relative to this script's path!
+load: "../../test/arithmetic.fin"
+load: "../../test/literals.fin"

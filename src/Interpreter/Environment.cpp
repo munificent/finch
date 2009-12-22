@@ -4,6 +4,7 @@
 #include "Expr.h"
 #include "BlockObject.h"
 #include "DynamicObject.h"
+#include "BooleanPrimitives.h"
 #include "BlockPrimitives.h"
 #include "EtherPrimitives.h"
 #include "NumberPrimitives.h"
@@ -23,9 +24,14 @@ namespace Finch
         Ref<Object> object = Object::NewObject(Ref<Object>(), "Object");
         mGlobals->Define("Object", object);
         DynamicObject* objectObj = &static_cast<DynamicObject&>(*object);
-        objectObj->RegisterPrimitive("copy", ObjectCopy);
-        objectObj->RegisterPrimitive("add-field:value:", ObjectAddFieldValue);
-        objectObj->RegisterPrimitive("add-method:body:", ObjectAddMethodValue);
+        objectObj->RegisterPrimitive("copy",                ObjectCopy);
+        objectObj->RegisterPrimitive("to-string",           ObjectSelf);
+        objectObj->RegisterPrimitive("add-field:value:",    ObjectAddFieldValue);
+        objectObj->RegisterPrimitive("add-method:body:",    ObjectAddMethodValue);
+
+        // any non-true object is implicitly "false", so sending "not" to it
+        // returns true
+        objectObj->RegisterPrimitive("not", BooleanTrue);
 
         // define Block prototype
         mBlock = Object::NewObject(object, "Block");
@@ -67,9 +73,9 @@ namespace Finch
         mGlobals->Define("String", mString);
         
         DynamicObject* stringObj = &static_cast<DynamicObject&>(*mString);
-        stringObj->RegisterPrimitive("+",       StringAdd);
-        stringObj->RegisterPrimitive("length",  StringLength);
-        stringObj->RegisterPrimitive("at:",     StringAt);
+        stringObj->RegisterPrimitive("+",           StringAdd);
+        stringObj->RegisterPrimitive("length",      StringLength);
+        stringObj->RegisterPrimitive("at:",         StringAt);
         
         // define nil
         mNil = Object::NewObject(object, "Nil");
@@ -79,9 +85,12 @@ namespace Finch
         mTrue = Object::NewObject(object, "True");
         mGlobals->Define("True", mTrue);
         
-        mFalse = Object::NewObject(object, "False");
-        mGlobals->Define("False", mFalse);
+        DynamicObject* trueObj = &static_cast<DynamicObject&>(*mTrue);
+        trueObj->RegisterPrimitive("not", BooleanFalse);
         
+        mFalse = Object::NewObject(mNil, "False");
+        mGlobals->Define("False", mFalse);
+
         // define Ether
         Ref<Object> ether = Object::NewObject(object, "Ether");
         mGlobals->Define("Ether", ether);
