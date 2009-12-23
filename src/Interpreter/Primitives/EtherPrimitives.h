@@ -17,6 +17,8 @@ namespace Finch
                                   String message, const vector<Ref<Object> > & args);
     
     // Flow control
+    Ref<Object> EtherDo(Ref<Object> thisRef, Environment & env,
+                            String message, const vector<Ref<Object> > & args);
     Ref<Object> EtherIfThen(Ref<Object> thisRef, Environment & env,
                           String message, const vector<Ref<Object> > & args);
     Ref<Object> EtherIfThenElse(Ref<Object> thisRef, Environment & env,

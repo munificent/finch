@@ -28,8 +28,6 @@ namespace Finch
     
     Ref<Object> Evaluator::Visit(const DefExpr & expr)
     {
-        //### bob: what happens if you define a variable already defined in
-        // this scope?
         Ref<Object> value;
         
         if (!expr.Value().IsNull())
@@ -37,7 +35,32 @@ namespace Finch
             value = expr.Value()->Accept(*this);
         }
         
-        return mEnvironment.CurrentScope()->Define(expr.Name(), value);
+        Ref<Object> result;
+        
+        switch (Expr::GetNameScope(expr.Name()))
+        {
+            case NAMESCOPE_GLOBAL:
+                result = mEnvironment.Globals()->Define(expr.Name(), value);
+                break;
+                
+            case NAMESCOPE_OBJECT:
+                if (!mEnvironment.Self().IsNull())
+                {
+                    result = mEnvironment.Self()->ObjectScope()->Define(expr.Name(), value);
+                }
+                else
+                {
+                    //### bob: need runtime error-handling strategy
+                    std::cout << "Cannot assign an object variable outside of a method." << std::endl;
+                }
+                break;
+                
+            case NAMESCOPE_LOCAL:
+                result = mEnvironment.CurrentScope()->Define(expr.Name(), value);
+                break;
+        }
+        
+        return NullToNil(result);
     }
     
     Ref<Object> Evaluator::Visit(const KeywordExpr & expr)
@@ -63,8 +86,27 @@ namespace Finch
     {
         if (expr.Name() == "self") return mEnvironment.Self();
         
-        //### bob: hack temp. always look up in global scope
-        return NullToNil(mEnvironment.CurrentScope()->LookUp(expr.Name()));
+        Ref<Object> result;
+        
+        switch (Expr::GetNameScope(expr.Name()))
+        {
+            case NAMESCOPE_GLOBAL:
+                result = mEnvironment.Globals()->LookUp(expr.Name());
+                break;
+                
+            case NAMESCOPE_OBJECT:
+                if (!mEnvironment.Self().IsNull())
+                {
+                    result = mEnvironment.Self()->ObjectScope()->LookUp(expr.Name());
+                }
+                break;
+                
+            case NAMESCOPE_LOCAL:
+                result = mEnvironment.CurrentScope()->LookUp(expr.Name());
+                break;
+        }
+        
+        return NullToNil(result);
     }
 
     Ref<Object> Evaluator::Visit(const NumberExpr & expr)
@@ -96,7 +138,32 @@ namespace Finch
     {
         Ref<Object> value = expr.Value()->Accept(*this);
         
-        return mEnvironment.CurrentScope()->Set(expr.Name(), value);
+        Ref<Object> result;
+        
+        switch (Expr::GetNameScope(expr.Name()))
+        {
+            case NAMESCOPE_GLOBAL:
+                result = mEnvironment.Globals()->Set(expr.Name(), value);
+                break;
+                
+            case NAMESCOPE_OBJECT:
+                if (!mEnvironment.Self().IsNull())
+                {
+                    result = mEnvironment.Self()->ObjectScope()->Set(expr.Name(), value);
+                }
+                else
+                {
+                    //### bob: need runtime error-handling strategy
+                    std::cout << "Cannot assign an object variable outside of a method." << std::endl;
+                }
+                break;
+                
+            case NAMESCOPE_LOCAL:
+                result = mEnvironment.CurrentScope()->Set(expr.Name(), value);
+                break;
+        }
+        
+        return NullToNil(result);
     }
     
     Ref<Object> Evaluator::Visit(const StringExpr & expr)

@@ -41,6 +41,8 @@ namespace Finch
         virtual BlockObject *   AsBlock()        { return NULL; }
         virtual DynamicObject * AsDynamic()      { return NULL; }
         
+        virtual Ref<Scope> ObjectScope() const;
+        
         virtual void Trace(ostream & stream) const = 0;
         
     protected:

@@ -28,7 +28,6 @@ namespace Finch
         objectObj->RegisterPrimitive("!=",                  ObjectNotEquals);
         objectObj->RegisterPrimitive("copy",                ObjectCopy);
         objectObj->RegisterPrimitive("to-string",           ObjectSelf);
-        objectObj->RegisterPrimitive("add-field:value:",    ObjectAddFieldValue);
         objectObj->RegisterPrimitive("add-method:body:",    ObjectAddMethodValue);
 
         // any non-true object is implicitly "false", so sending "not" to it
@@ -101,6 +100,7 @@ namespace Finch
         
         DynamicObject* etherObj = &static_cast<DynamicObject&>(*ether);
         etherObj->RegisterPrimitive("quit",           EtherQuit);
+        etherObj->RegisterPrimitive("do:",       EtherDo);
         etherObj->RegisterPrimitive("if:then:",       EtherIfThen);
         etherObj->RegisterPrimitive("if:then:else:",  EtherIfThenElse);
         etherObj->RegisterPrimitive("while:do:",      EtherWhileDo);
@@ -112,7 +112,7 @@ namespace Finch
     Ref<Object> Environment::EvaluateBlock(const BlockObject * block,
                                            const vector<Ref<Object> > & args)
     {
-        // create a scope for the block using its closure as the parent scope
+        // create a new local scope for the block
         Ref<Scope> oldScope = mCurrentScope;
         mCurrentScope = Ref<Scope>(new Scope(block->Closure()));
         
@@ -120,7 +120,7 @@ namespace Finch
         {
             //### bob: need better error handling
             std::cout << "block expects " << block->Params().size()
-                 << " arguments, but got " << args.size() << "." << std::endl;
+            << " arguments, but got " << args.size() << "." << std::endl;
             
             return Ref<Object>();
         }
@@ -133,7 +133,7 @@ namespace Finch
         
         Evaluator evaluator(*this);
         Ref<Object> result = evaluator.Evaluate(block->Body());
-
+        
         mCurrentScope = oldScope;
         
         return result;
@@ -147,6 +147,11 @@ namespace Finch
         Ref<Object> previousSelf = mSelf;
         mSelf = self;
         
+        // get the object's method scope
+        DynamicObject* object = self->AsDynamic();
+        ASSERT_NOT_NULL(object);
+        
+        // evaluate the method body block
         Ref<Object> result = EvaluateBlock(block, args);
         
         mSelf = previousSelf;

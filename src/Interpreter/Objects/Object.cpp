@@ -3,6 +3,7 @@
 #include "Environment.h"
 #include "DynamicObject.h"
 #include "NumberObject.h"
+#include "Scope.h"
 #include "StringObject.h"
 
 namespace Finch
@@ -56,6 +57,11 @@ namespace Finch
         return Ref<Object>();
     }
     
+    Ref<Scope> Object::ObjectScope() const
+    {
+        return Ref<Scope>();
+    }
+
     ostream & operator<<(ostream & cout, const Object & object)
     {
         object.Trace(cout);

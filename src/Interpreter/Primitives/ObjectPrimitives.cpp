@@ -33,18 +33,6 @@ namespace Finch
         return Object::NewObject(thisRef);
     }
 
-    Ref<Object> ObjectAddFieldValue(Ref<Object> thisRef, Environment & env,
-                           String message, const vector<Ref<Object> > & args)
-    {
-        DynamicObject* object = thisRef->AsDynamic();
-        ASSERT_NOT_NULL(object);
-        
-        String      name  = args[0]->AsString();
-        Ref<Object> value = args[1];
-        
-        return object->AddField(name, value);
-    }
-
     Ref<Object> ObjectAddMethodValue(Ref<Object> thisRef, Environment & env,
                            String message, const vector<Ref<Object> > & args)
     {

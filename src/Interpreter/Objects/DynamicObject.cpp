@@ -13,24 +13,9 @@ namespace Finch
     
     Ref<Object> DynamicObject::Receive(Ref<Object> thisRef, Environment & env, 
                                        String message, const vector<Ref<Object> > & args)
-    {
-        // see if it's a field access
-        Ref<Object> found = mFields.Find(message);
-        if (!found.IsNull()) return found;
-        
-        // see if it's a field assignment
-        if ((args.size() == 1) && (message[message.size() - 1] == ':'))
-        {
-            String fieldAssign = message.substr(0, message.size() - 1);
-
-            Ref<Object> oldValue = mFields.Replace(fieldAssign, args[0]);
-            
-            // if we got an old one than the assignment succeeded
-            if (!oldValue.IsNull()) return oldValue;
-        }
-        
+    {        
         // see if it's a method call
-        found = mMethods.Find(message);
+        Ref<Object> found = mMethods.Find(message);
         if (!found.IsNull())
         {
             BlockObject* block = found->AsBlock();
@@ -54,20 +39,6 @@ namespace Finch
         }
         
         return Object::Receive(thisRef, env, message, args);
-    }
-    
-    Ref<Object> DynamicObject::AddField(String name, Ref<Object> value)
-    {
-        if (name.size() == 0)
-        {
-            //### bob: need better error handling
-            std::cout << "oops. need a name to add a field." << std::endl;
-            return Ref<Object>();
-        }
-        
-        // add the field
-        mFields.Insert(name, value);
-        return value;
     }
     
     Ref<Object> DynamicObject::AddMethod(String name, Ref<Object> body)
@@ -94,5 +65,17 @@ namespace Finch
     void DynamicObject::RegisterPrimitive(String message, PrimitiveMethod method)
     {
         mPrimitives[message] = method;
+    }
+
+    void DynamicObject::InitializeScope()
+    {
+        if (!Prototype().IsNull())
+        {
+            mScope = Ref<Scope>(new Scope(Prototype()->ObjectScope()));
+        }
+        else
+        {
+            mScope = Ref<Scope>(new Scope());
+        }
     }
 }

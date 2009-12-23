@@ -9,6 +9,7 @@
 #include "Macros.h"
 #include "Object.h"
 #include "Ref.h"
+#include "Scope.h"
 #include "String.h"
 
 namespace Finch
@@ -29,30 +30,38 @@ namespace Finch
         DynamicObject(Ref<Object> prototype, String name)
         :   Object(prototype),
             mName(name)
-        {}
+        {
+            InitializeScope();
+        }
         
         DynamicObject(Ref<Object> prototype)
         :   Object(prototype),
             mName("object")
-        {}
+        {
+            InitializeScope();
+        }
         
         virtual void Trace(ostream & stream) const;
         
         virtual String AsString() const     { return mName; }
         virtual DynamicObject * AsDynamic() { return this; }
-
+        
+        virtual Ref<Scope> ObjectScope() const { return mScope; }
+        
         virtual Ref<Object> Receive(Ref<Object> thisRef, Environment & env,
                                     String message, const vector<Ref<Object> > & args);
         
-        Ref<Object> AddField(String name, Ref<Object> value);
         Ref<Object> AddMethod(String name, Ref<Object> body);
         
         void RegisterPrimitive(String message, PrimitiveMethod method);
         
     private:
-        String                     mName; //### bob: hack temp
-        Dictionary<String, Object> mFields;
-        Dictionary<String, Object> mMethods;
-        map<String, PrimitiveMethod > mPrimitives;
+        void InitializeScope();
+        
+        String                          mName; //### bob: hack temp
+        Dictionary<String, Object>      mMethods;
+        map<String, PrimitiveMethod >   mPrimitives;
+        
+        Ref<Scope> mScope;
     };    
 }

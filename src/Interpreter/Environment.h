@@ -50,6 +50,7 @@ namespace Finch
         void StopRunning() { mRunning = false; }
         
     private:
+        
         bool mRunning;
         
         Ref<Scope> mGlobals;

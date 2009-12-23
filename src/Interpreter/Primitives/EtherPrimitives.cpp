@@ -22,6 +22,13 @@ namespace Finch
         return Ref<Object>();
     }
     
+    Ref<Object> EtherDo(Ref<Object> thisRef, Environment & env,
+                             String message, const vector<Ref<Object> > & args)
+    {
+        vector<Ref<Object> > noArgs;
+        return args[0]->Receive(args[0], env, "call", noArgs);
+    }
+    
     Ref<Object> EtherIfThen(Ref<Object> thisRef, Environment & env,
                           String message, const vector<Ref<Object> > & args)
     {
@@ -63,7 +70,7 @@ namespace Finch
         
         while (env.EvaluateBlock(condition, noArgs) == env.True())
         {
-            args[1]->Receive(args[1], env, "value", noArgs);
+            args[1]->Receive(args[1], env, "call", noArgs);
         }
         
         return Ref<Object>();
@@ -93,31 +100,5 @@ namespace Finch
         String fileName = args[0]->AsString();
         
         return Script::Run(fileName, env);
-        
-        /*
-        FileLineReader reader(fileName);
-        
-        if (reader.EndOfLines())
-        {
-            // couldn't open
-            cout << "Couldn't open file \"" << fileName << "\"" << endl;
-            //### bob: need error reporting
-            return Ref<Object>();
-        }
-        
-        Lexer           lexer(&reader);
-        LineNormalizer  normalizer(&lexer);
-        FinchParser     parser(&normalizer);
-        Evaluator       evaluator(env);
-
-        Ref<Object> result;
-        Ref<Expr> expr = parser.ParseFile();
-
-        if (!expr.IsNull())
-        {
-            result = evaluator.Evaluate(expr);
-        }
-        return result;
-         */
     }
 }
