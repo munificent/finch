@@ -155,7 +155,7 @@ namespace Finch
         }
         else if (CurrentIs(TOKEN_KEYWORD))
         {
-            // implicit Environment keyword message
+            // implicit receiver keyword message
             return KeywordMessage(Ref<Expr>(new NameExpr("Ether")));
         }
         else if (ConsumeIf(TOKEN_DOT))

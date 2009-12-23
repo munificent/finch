@@ -44,6 +44,11 @@ namespace Finch
             return mObj == other.mObj;
         }
         
+        bool operator !=(const Ref<T> & other) const
+        {
+            return mObj != other.mObj;
+        }
+        
         Ref<T>& operator =(const Ref<T> & other)
         {
             if (&other != this)

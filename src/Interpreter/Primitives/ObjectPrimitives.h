@@ -16,6 +16,10 @@ namespace Finch
     
     Ref<Object> ObjectSelf(Ref<Object> thisRef, Environment & env,
                            String message, const vector<Ref<Object> > & args);
+    Ref<Object> ObjectEquals(Ref<Object> thisRef, Environment & env,
+                           String message, const vector<Ref<Object> > & args);
+    Ref<Object> ObjectNotEquals(Ref<Object> thisRef, Environment & env,
+                           String message, const vector<Ref<Object> > & args);
     Ref<Object> ObjectCopy(Ref<Object> thisRef, Environment & env,
                            String message, const vector<Ref<Object> > & args);
     Ref<Object> ObjectAddFieldValue(Ref<Object> thisRef, Environment & env,

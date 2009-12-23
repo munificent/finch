@@ -24,6 +24,8 @@ namespace Finch
         Ref<Object> object = Object::NewObject(Ref<Object>(), "Object");
         mGlobals->Define("Object", object);
         DynamicObject* objectObj = &static_cast<DynamicObject&>(*object);
+        objectObj->RegisterPrimitive("=",                   ObjectEquals);
+        objectObj->RegisterPrimitive("!=",                  ObjectNotEquals);
         objectObj->RegisterPrimitive("copy",                ObjectCopy);
         objectObj->RegisterPrimitive("to-string",           ObjectSelf);
         objectObj->RegisterPrimitive("add-field:value:",    ObjectAddFieldValue);

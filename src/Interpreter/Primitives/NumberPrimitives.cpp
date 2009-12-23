@@ -25,8 +25,12 @@ namespace Finch
     Ref<Object> NumberDivide(Ref<Object> thisRef, Environment & env,
                              String message, const vector<Ref<Object> > & args)
     {
-        //### bob: need to check for div by zero
-        return Object::NewNumber(env, thisRef->AsNumber() / args[0]->AsNumber());
+        double dividend = args[0]->AsNumber();
+        
+        // check for divide by zero
+        if (dividend == 0) return env.Nil();
+
+        return Object::NewNumber(env, thisRef->AsNumber() / dividend);
     }    
 
     Ref<Object> NumberAbs(Ref<Object> thisRef, Environment & env,

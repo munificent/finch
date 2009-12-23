@@ -382,7 +382,7 @@
 										<key>_historyCapacity</key>
 										<integer>0</integer>
 										<key>bookmark</key>
-										<string>C4E0BC1110E13BDD00D04F42</string>
+										<string>C45D595010E1CB7B00D43B07</string>
 										<key>history</key>
 										<array>
 											<string>C493998110CDFD60003ECF01</string>
@@ -446,7 +446,7 @@
 											<string>C4E0BBF410E13B4000D04F42</string>
 											<string>C4E0BBF510E13B4000D04F42</string>
 											<string>C4E0BBF610E13B4000D04F42</string>
-											<string>C4E0BBF710E13B4000D04F42</string>
+											<string>C4E0BC1110E13BDD00D04F42</string>
 										</array>
 										<key>prevStack</key>
 										<array>
@@ -509,31 +509,9 @@
 											<string>C4949F0310E02513001A57BA</string>
 											<string>C4949F0A10E02570001A57BA</string>
 											<string>C4949F2410E029D6001A57BA</string>
-											<string>C4E0BB0510E12C3C00D04F42</string>
-											<string>C4E0BBF810E13B4000D04F42</string>
-											<string>C4E0BBF910E13B4000D04F42</string>
-											<string>C4E0BBFA10E13B4000D04F42</string>
-											<string>C4E0BBFB10E13B4000D04F42</string>
-											<string>C4E0BBFC10E13B4000D04F42</string>
 											<string>C4E0BBFD10E13B4000D04F42</string>
-											<string>C4E0BBFE10E13B4000D04F42</string>
-											<string>C4E0BBFF10E13B4000D04F42</string>
 											<string>C4E0BC0010E13B4000D04F42</string>
-											<string>C4E0BC0110E13B4000D04F42</string>
-											<string>C4E0BC0210E13B4000D04F42</string>
-											<string>C4E0BC0310E13B4000D04F42</string>
-											<string>C4E0BC0410E13B4000D04F42</string>
-											<string>C4E0BC0510E13B4000D04F42</string>
-											<string>C4E0BC0610E13B4000D04F42</string>
 											<string>C4E0BC0710E13B4000D04F42</string>
-											<string>C4E0BC0810E13B4000D04F42</string>
-											<string>C4E0BC0910E13B4000D04F42</string>
-											<string>C4E0BC0A10E13B4000D04F42</string>
-											<string>C4E0BC0B10E13B4000D04F42</string>
-											<string>C4E0BC0C10E13B4000D04F42</string>
-											<string>C4E0BC0D10E13B4000D04F42</string>
-											<string>C4E0BC0E10E13B4000D04F42</string>
-											<string>C4E0BC0F10E13B4000D04F42</string>
 										</array>
 									</dict>
 									<key>SplitCount</key>
@@ -591,9 +569,9 @@
 			</array>
 			<key>TableOfContents</key>
 			<array>
-				<string>C4E0BAF210E09F4F00D04F42</string>
+				<string>C45D595110E1CB7B00D43B07</string>
 				<string>1CE0B1FE06471DED0097A5F4</string>
-				<string>C4E0BAF310E09F4F00D04F42</string>
+				<string>C45D595210E1CB7B00D43B07</string>
 				<string>1CE0B20306471E060097A5F4</string>
 				<string>1CE0B20506471E060097A5F4</string>
 			</array>
@@ -712,7 +690,7 @@
 	<key>StatusbarIsVisible</key>
 	<true/>
 	<key>TimeStamp</key>
-	<real>283196381.39541602</real>
+	<real>283233146.19960397</real>
 	<key>ToolbarDisplayMode</key>
 	<integer>2</integer>
 	<key>ToolbarIsVisible</key>
@@ -727,13 +705,8 @@
 	<integer>5</integer>
 	<key>WindowOrderList</key>
 	<array>
-		<string>C4E0BB0210E12C3B00D04F42</string>
-		<string>C4E0BAFC10E09F4F00D04F42</string>
-		<string>C4E0BAFD10E09F4F00D04F42</string>
-		<string>C41F4A7B10CC13830008390E</string>
 		<string>1CD10A99069EF8BA00B06720</string>
 		<string>/Users/bob/Documents/dev/finch/src/finch.xcodeproj</string>
-		<string>1C78EAAD065D492600B07095</string>
 	</array>
 	<key>WindowString</key>
 	<string>6 31 1065 847 0 0 1440 878 </string>
@@ -935,13 +908,13 @@
 			<key>TableOfContents</key>
 			<array>
 				<string>1CD10A99069EF8BA00B06720</string>
-				<string>C4E0BAF510E09F4F00D04F42</string>
+				<string>C45D595310E1CB7B00D43B07</string>
 				<string>1C162984064C10D400B95A72</string>
-				<string>C4E0BAF610E09F4F00D04F42</string>
-				<string>C4E0BAF710E09F4F00D04F42</string>
-				<string>C4E0BAF810E09F4F00D04F42</string>
-				<string>C4E0BAF910E09F4F00D04F42</string>
-				<string>C4E0BAFA10E09F4F00D04F42</string>
+				<string>C45D595410E1CB7B00D43B07</string>
+				<string>C45D595510E1CB7B00D43B07</string>
+				<string>C45D595610E1CB7B00D43B07</string>
+				<string>C45D595710E1CB7B00D43B07</string>
+				<string>C45D595810E1CB7B00D43B07</string>
 			</array>
 			<key>ToolbarConfiguration</key>
 			<string>xcode.toolbar.config.debugV3</string>

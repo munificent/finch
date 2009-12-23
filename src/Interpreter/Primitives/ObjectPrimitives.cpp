@@ -13,6 +13,20 @@ namespace Finch
         return thisRef;
     }
     
+    Ref<Object> ObjectEquals(Ref<Object> thisRef, Environment & env,
+                           String message, const vector<Ref<Object> > & args)
+    {
+        // by default, objects compare using reference equality
+        return (thisRef == args[0]) ? env.True() : env.False();
+    }
+    
+    Ref<Object> ObjectNotEquals(Ref<Object> thisRef, Environment & env,
+                             String message, const vector<Ref<Object> > & args)
+    {
+        // by default, objects compare using reference equality
+        return (thisRef != args[0]) ? env.True() : env.False();
+    }
+    
     Ref<Object> ObjectCopy(Ref<Object> thisRef, Environment & env,
                            String message, const vector<Ref<Object> > & args)
     {
