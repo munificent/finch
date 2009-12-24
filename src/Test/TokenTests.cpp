@@ -1,6 +1,8 @@
 #include "TokenTests.h"
 #include "Token.h"
 
+#ifdef UNIT_TESTS
+
 namespace Finch
 {
     void TokenTests::Run()
@@ -11,3 +13,5 @@ namespace Finch
         EXPECT_EQUAL("name", token->Text());
     }
 }
+
+#endif

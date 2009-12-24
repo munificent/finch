@@ -24,11 +24,11 @@ namespace Finch
         Ref<Object> object = Object::NewObject(Ref<Object>(), "Object");
         mGlobals->Define("Object", object);
         DynamicObject* objectObj = &static_cast<DynamicObject&>(*object);
-        objectObj->RegisterPrimitive("=",                   ObjectEquals);
-        objectObj->RegisterPrimitive("!=",                  ObjectNotEquals);
-        objectObj->RegisterPrimitive("copy",                ObjectCopy);
-        objectObj->RegisterPrimitive("to-string",           ObjectSelf);
-        objectObj->RegisterPrimitive("add-method:body:",    ObjectAddMethodValue);
+        objectObj->RegisterPrimitive("=",               ObjectEquals);
+        objectObj->RegisterPrimitive("!=",              ObjectNotEquals);
+        objectObj->RegisterPrimitive("copy",            ObjectCopy);
+        objectObj->RegisterPrimitive("toString",        ObjectSelf);
+        objectObj->RegisterPrimitive("addMethod:body:", ObjectAddMethodValue);
 
         // any non-true object is implicitly "false", so sending "not" to it
         // returns true
@@ -105,7 +105,7 @@ namespace Finch
         etherObj->RegisterPrimitive("if:then:else:",  EtherIfThenElse);
         etherObj->RegisterPrimitive("while:do:",      EtherWhileDo);
         etherObj->RegisterPrimitive("write:",         EtherWrite);
-        etherObj->RegisterPrimitive("write-line:",    EtherWriteLine);
+        etherObj->RegisterPrimitive("writeLine:",     EtherWriteLine);
         etherObj->RegisterPrimitive("load:",          EtherLoad);
     }
     

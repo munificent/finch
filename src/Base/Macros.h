@@ -2,14 +2,24 @@
 
 #include <iostream>
 
-#define ASSERT_NOT_NULL(value)                      \
-    ASSERT(value != NULL, "Expression " #value " cannot be null.")
-
 #define ASSERT(condition, message)                      \
     if (!(condition)) {                                 \
         std::cout << "ASSERTION FAILED " << __FILE__    \
                   << ":" << __LINE__ << " - "           \
                   << message << std::endl;              \
+        abort();                                        \
+    }
+
+#define ASSERT_NOT_NULL(value)                          \
+    ASSERT(value != NULL, "Expression " #value " cannot be null.")
+
+#define ASSERT_INDEX(index, max)                        \
+    if (((index) < 0) || ((index) >= max)) {            \
+        std::cout << "ASSERTION FAILED " << __FILE__    \
+                  << ":" << __LINE__ << " - "           \
+                  << "Index " << index                  \
+                  << " was out of range [0, " << max    \
+                  << ")." << std::endl;                 \
         abort();                                        \
     }
 
@@ -20,4 +30,4 @@
 #define NO_COPY(className)                          \
     private:                                        \
         className(const className &);               \
-        className& operator=(const className &);
+        className& operator=(const className &)

@@ -13,6 +13,6 @@ namespace Finch
         void Run();
         
     private:
-        NO_COPY(Repl)
+        NO_COPY(Repl);
     };
 }

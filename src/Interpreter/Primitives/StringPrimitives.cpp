@@ -12,7 +12,7 @@ namespace Finch
     {
         // dynamically convert the object to a string
         vector<Ref<Object> > noArgs;
-        Ref<Object> toString = args[0]->Receive(args[0], env, "to-string", noArgs);
+        Ref<Object> toString = args[0]->Receive(args[0], env, "toString", noArgs);
         
         return Object::NewString(env, thisRef->AsString() + toString->AsString());
     }
@@ -45,7 +45,7 @@ namespace Finch
     {
         // dynamically convert the object to a string
         vector<Ref<Object> > noArgs;
-        Ref<Object> toString = args[0]->Receive(args[0], env, "to-string", noArgs);
+        Ref<Object> toString = args[0]->Receive(args[0], env, "toString", noArgs);
         
         return (thisRef->AsString() == toString->AsString()) ? env.True() : env.False();
     }
@@ -55,7 +55,7 @@ namespace Finch
     {
         // dynamically convert the object to a string
         vector<Ref<Object> > noArgs;
-        Ref<Object> toString = args[0]->Receive(args[0], env, "to-string", noArgs);
+        Ref<Object> toString = args[0]->Receive(args[0], env, "toString", noArgs);
         
         return (thisRef->AsString() != toString->AsString()) ? env.True() : env.False();
     }

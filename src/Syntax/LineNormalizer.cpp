@@ -42,8 +42,9 @@ namespace Finch
                 case TOKEN_KEYWORD:
                 case TOKEN_OPERATOR:
                 case TOKEN_PIPE:
+                case TOKEN_LEFT_ARROW:
                 case TOKEN_DEF:
-                case TOKEN_SET:
+                case TOKEN_UNDEF:
                 // discard newlines after open group
                 case TOKEN_LEFT_PAREN:
                 case TOKEN_LEFT_BRACKET:

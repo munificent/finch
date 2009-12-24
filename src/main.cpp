@@ -4,10 +4,23 @@
 #include "Repl.h"
 #include "Script.h"
 
+//#define UNIT_TESTS
+
+#ifdef UNIT_TESTS
+
+#include "TestMain.h"
+
+#endif
+
 using namespace Finch;
 
 int main (int argc, char * const argv[])
 {
+    #ifdef UNIT_TESTS
+    TestMain::Run();
+    return 0;
+    #endif
+    
     if (argc == 1)
     {
         // with no arguments (arg zero is app), run in interactive mode

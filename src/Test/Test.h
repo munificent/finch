@@ -4,6 +4,8 @@
 
 #include "String.h"
 
+#ifdef UNIT_TESTS
+
 #define EXPECT(condition, message) \
 _Expect(__FILE__, __LINE__, condition, message)
 
@@ -44,3 +46,5 @@ namespace Finch
     };
 
 }
+
+#endif

@@ -4,38 +4,60 @@ Test suite: "Scope" is:
     {
         do:
         {
-            def a "local"
+            def a <- "local"
             Test that: a equals: "local"
         }
         
         Test that: a equals: Nil
     }
 
+    Test test: "Nested Local" is:
+    {
+        def a <- "local"
+        
+        do: { Test that: a equals: "local" }
+
+        Test that: a equals: "local"
+    }
+
+    Test test: "Shadowed Local" is:
+    {
+        def a <- "outer"
+        
+        do:
+        {
+            def a <- "inner"
+            Test that: a equals: "inner"
+        }
+
+        Test that: a equals: "outer"
+    }
+    
     Test test: "Object" is:
     {
-        def foo Object clone
+        def foo <- Object clone
         
-        foo add-method: "create-var" body:
+        foo addMethod: "createVar" body:
         {
-            def _someVar "obj var"
+            def _someVar <- "obj var"
         }
         
-        foo add-method: "test-var" body:
+        foo addMethod: "testVar" body:
         {
             Test that: _someVar equals: "obj var"
         }
         
         Test that: _someVar equals: Nil
-        foo create-var
+        foo createVar
         Test that: _someVar equals: Nil
-        foo test-var
+        foo testVar
     }
     
     Test test: "Global" is:
     {
         do:
         {
-            def SomeGlobal "global"
+            def SomeGlobal <- "global"
             Test that: SomeGlobal equals: "global"
         }
         

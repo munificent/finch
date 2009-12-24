@@ -2,6 +2,7 @@
 
 #include "Macros.h"
 #include "Lexer.h"
+#include "Queue.h"
 #include "Ref.h"
 
 namespace Finch
@@ -18,22 +19,29 @@ namespace Finch
         {}
         
         // Gets the Token the parser is currently looking at.
-        Ref<Token> Current() { return mCurrent; }
+        Ref<Token> Current() { return mRead[0]; }
         
         // Returns true if the current Token is the given type.
-        bool CurrentIs(TokenType type);
+        bool LookAhead(TokenType type);
+        
+        // Returns true if the current and next Tokens is the given types (in
+        // order).
+        bool LookAhead(TokenType current, TokenType next);
         
         // Consumes the current Token and returns true if it is the given type,
         // otherwise returns false.
-        bool ConsumeIf(TokenType type);
+        bool Match(TokenType type);
         
         // Consumes the current Token and advances the Parser.
         Ref<Token> Consume();
 
     private:
-        ITokenSource * mTokens;
-        Ref<Token>     mCurrent;
+        void FillLookAhead(int count);
         
-        NO_COPY(Parser)
+        ITokenSource * mTokens;
+        
+        Queue<Ref<Token>, 2> mRead;
+        
+        NO_COPY(Parser);
     };
 }

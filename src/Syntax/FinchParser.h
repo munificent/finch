@@ -41,6 +41,6 @@ namespace Finch
         Ref<Expr> ParseError();
         Ref<Expr> ParseError(const char * message);
         
-        NO_COPY(FinchParser)
+        NO_COPY(FinchParser);
     };
 }

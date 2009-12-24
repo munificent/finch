@@ -62,6 +62,6 @@ namespace Finch
         int           mIndex;
         int           mTokenStart;
         
-        NO_COPY(Lexer)
+        NO_COPY(Lexer);
     };
 }

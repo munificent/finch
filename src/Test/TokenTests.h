@@ -1,5 +1,7 @@
 #pragma once
 
+#ifdef UNIT_TESTS
+
 #include "Test.h"
 
 namespace Finch
@@ -11,3 +13,5 @@ namespace Finch
     };
 
 }
+
+#endif

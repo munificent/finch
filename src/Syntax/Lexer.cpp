@@ -204,8 +204,9 @@ namespace Finch
         String name = text;
         
         // see if it's a reserved word
-        if (name == "def") return Token::New(TOKEN_DEF);
-        if (name == "set") return Token::New(TOKEN_SET);
+        if (name == "def")   return Token::New(TOKEN_DEF);
+        if (name == "undef") return Token::New(TOKEN_UNDEF);
+        if (name == "<-")    return Token::New(TOKEN_LEFT_ARROW);
         
         return Token::New(type, name);
     }

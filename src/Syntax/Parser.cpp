@@ -6,16 +6,24 @@
 
 namespace Finch
 {
-    bool Parser::CurrentIs(TokenType type)
+    bool Parser::LookAhead(TokenType type)
     {
-        if (mCurrent.IsNull()) mCurrent = mTokens->ReadToken();
+        FillLookAhead(1);
         
-        return mCurrent->Type() == type;
+        return mRead[0]->Type() == type;
     }
     
-    bool Parser::ConsumeIf(TokenType type)
+    bool Parser::LookAhead(TokenType current, TokenType next)
     {
-        if (CurrentIs(type))
+        FillLookAhead(2);
+
+        return (mRead[0]->Type() == current) &&
+               (mRead[1]->Type() == next);
+    }
+
+    bool Parser::Match(TokenType type)
+    {
+        if (LookAhead(type))
         {
             Consume();
             return true;
@@ -28,11 +36,16 @@ namespace Finch
     
     Ref<Token> Parser::Consume()
     {
-        if (mCurrent.IsNull()) mCurrent = mTokens->ReadToken();
+        FillLookAhead(1);
         
-        Ref<Token> read = mCurrent;
-        mCurrent.Clear();
-        
-        return read;
+        return mRead.Dequeue();
+    }
+    
+    void Parser::FillLookAhead(int count)
+    {
+        while (mRead.Count() < count)
+        {
+            mRead.Enqueue(mTokens->ReadToken());
+        }
     }
 }

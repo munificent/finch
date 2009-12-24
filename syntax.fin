@@ -22,31 +22,22 @@ if: 1 < 2 then: { obj message }
 ' early return
 return resultObject
 
-' define field (basically creates set and get messages)
-someObj add-field: `fieldName
-someObj add-field: `fieldName value: 1234
-
 ' define method
-someObj add-method: `message-name body: { self do-something }
-someObj add-method: `+some-op body: {|rhs| self do-something }
-someObj add-method: `key:word:method: body: {|a b c| self do-something }
+someObj addMethod: `messageName body: { self do-something }
+someObj addMethod: `+some-op body: {|rhs| self do-something }
+someObj addMethod: `key:word:method: body: {|a b c| self do-something }
 
-' set prototype
-someObj prototype: thePrototype
-
-' set field
-someObj fieldName: 123 ' not the same as defining a field
-
-' get field
-someObj slotName
-
-' local variables
+' variables
 def temp 123 ' defines a new local at this scope
 
 set temp 123 ' sets the value of 'temp' at whatever scope it was
              ' previously defined. use this to change variables
              ' defined in outer scopes
-             
+
+foo <- 234 ' set
+def foo <- 345
+undef foo
+
 undef temp ' remove a previously defined variable at this scope
 ' note this is different from setting temp to Nil
 ' when you unset a variable, you unshadow that name
@@ -71,6 +62,9 @@ undef temp ' remove a previously defined variable at this scope
 
 ' global variables
 def SomeGlobal ' case distinguishes global from local
+
+' object variables
+def _someObjVar ' leading underscore means obj
 
 ' self
 ' within the body of a method, you can access the object that owns

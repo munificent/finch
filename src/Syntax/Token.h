@@ -21,7 +21,8 @@ namespace Finch
         TOKEN_PIPE,
         
         TOKEN_DEF,
-        TOKEN_SET,
+        TOKEN_UNDEF,
+        TOKEN_LEFT_ARROW,
         
         TOKEN_NUMBER,
         TOKEN_STRING,

@@ -60,6 +60,6 @@ namespace Finch
         State          mState;
         bool           mNewLine;
         
-        NO_COPY(LineNormalizer)
+        NO_COPY(LineNormalizer);
     };
 }

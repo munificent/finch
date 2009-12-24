@@ -31,7 +31,7 @@ namespace Finch
         Ref<Expr> expr = Variable();
         
         // eat any trailing line
-        ConsumeIf(TOKEN_LINE);
+        Match(TOKEN_LINE);
         
         return expr;
     }
@@ -41,7 +41,7 @@ namespace Finch
         Ref<Expr> expr = Sequence();
         
         // eat any trailing line
-        ConsumeIf(TOKEN_LINE);
+        Match(TOKEN_LINE);
         
         return expr;
     }
@@ -51,13 +51,13 @@ namespace Finch
         Ref<Expr> expression = Variable();
         if (expression.IsNull()) return ParseError();
         
-        while (ConsumeIf(TOKEN_LINE))
+        while (Match(TOKEN_LINE))
         {
             // there may be a trailing line after the last expression in a
             // block. if we eat the line and then see a closing brace or eof,
             // just stop here.
-            if (CurrentIs(TOKEN_RIGHT_BRACE)) break;
-            if (CurrentIs(TOKEN_EOF)) break;
+            if (LookAhead(TOKEN_RIGHT_BRACE)) break;
+            if (LookAhead(TOKEN_EOF)) break;
             
             Ref<Expr> second = Variable();
             if (second.IsNull()) return ParseError("Expect expression after ';'.");
@@ -70,29 +70,38 @@ namespace Finch
     
     Ref<Expr> FinchParser::Variable()
     {
-        if (ConsumeIf(TOKEN_DEF))
+        if (LookAhead(TOKEN_NAME, TOKEN_LEFT_ARROW))
         {
-            if (!CurrentIs(TOKEN_NAME)) return ParseError();
-            
             String name = Consume()->Text();
             
-            // get the initial value
-            Ref<Expr> value = Keyword();
-            if (value.IsNull()) return ParseError();
-            
-            return Ref<Expr>(new DefExpr(name, value));
-        }
-        else if (ConsumeIf(TOKEN_SET))
-        {
-            if (!CurrentIs(TOKEN_NAME)) return ParseError();
-            
-            String name = Consume()->Text();
+            Consume(); // the arrow
             
             // get the initial value
             Ref<Expr> value = Keyword();
             if (value.IsNull()) return ParseError();
             
             return Ref<Expr>(new SetExpr(name, value));
+        }
+        else if (Match(TOKEN_DEF))
+        {
+            if (!LookAhead(TOKEN_NAME)) return ParseError();
+            
+            String name = Consume()->Text();
+            
+            // get the initial value
+            Ref<Expr> value;
+            if (Match(TOKEN_LEFT_ARROW))
+            {
+                value = Keyword();
+                if (value.IsNull()) return ParseError();
+            }
+            else
+            {
+                // default to nil
+                value = Ref<Expr>(new NameExpr("Nil"));
+            }
+            
+            return Ref<Expr>(new DefExpr(name, value));
         }
         else return Keyword();
     }
@@ -113,7 +122,7 @@ namespace Finch
         Ref<Expr> object = Unary();
         if (object.IsNull()) return ParseError();
         
-        while (CurrentIs(TOKEN_OPERATOR))
+        while (LookAhead(TOKEN_OPERATOR))
         {
             String op = Consume()->Text();
             Ref<Expr> arg = Unary();
@@ -130,7 +139,7 @@ namespace Finch
         Ref<Expr> object = Primary();
         if (object.IsNull()) return ParseError();
         
-        while (CurrentIs(TOKEN_NAME))
+        while (LookAhead(TOKEN_NAME))
         {
             String message = Consume()->Text();
             object = Ref<Expr>(new UnaryExpr(object, message));
@@ -141,49 +150,49 @@ namespace Finch
     
     Ref<Expr> FinchParser::Primary()
     {
-        if (CurrentIs(TOKEN_NAME))
+        if (LookAhead(TOKEN_NAME))
         {
             return Ref<Expr>(new NameExpr(Consume()->Text()));
         }
-        else if (CurrentIs(TOKEN_NUMBER))
+        else if (LookAhead(TOKEN_NUMBER))
         {
             return Ref<Expr>(new NumberExpr(Consume()->Number()));
         }
-        else if (CurrentIs(TOKEN_STRING))
+        else if (LookAhead(TOKEN_STRING))
         {
             return Ref<Expr>(new StringExpr(Consume()->Text()));
         }
-        else if (CurrentIs(TOKEN_KEYWORD))
+        else if (LookAhead(TOKEN_KEYWORD))
         {
             // implicit receiver keyword message
             return KeywordMessage(Ref<Expr>(new NameExpr("Ether")));
         }
-        else if (ConsumeIf(TOKEN_DOT))
+        else if (Match(TOKEN_DOT))
         {
             return Ref<Expr>(new NameExpr("self"));
         }
-        else if (ConsumeIf(TOKEN_LEFT_PAREN))
+        else if (Match(TOKEN_LEFT_PAREN))
         {
             Ref<Expr> expression = Expression();
             if (expression.IsNull()) return ParseError("Expect expression after '('.");
             
-            if (!ConsumeIf(TOKEN_RIGHT_PAREN)) return ParseError("Expect closing ')'.");
+            if (!Match(TOKEN_RIGHT_PAREN)) return ParseError("Expect closing ')'.");
             
             return expression;
         }
-        if (ConsumeIf(TOKEN_LEFT_BRACE))
+        if (Match(TOKEN_LEFT_BRACE))
         {
             vector<String> args;
             
             // see if there are args
-            if (ConsumeIf(TOKEN_PIPE))
+            if (Match(TOKEN_PIPE))
             {
-                while (CurrentIs(TOKEN_NAME))
+                while (LookAhead(TOKEN_NAME))
                 {
                     args.push_back(Consume()->Text());
                 }
                 
-                if (!ConsumeIf(TOKEN_PIPE)) return ParseError("Expect closing '|' after block arguments.");
+                if (!Match(TOKEN_PIPE)) return ParseError("Expect closing '|' after block arguments.");
                 
                 // if there were no named args, but there were pipes (||),
                 // use an automatic "it" arg
@@ -193,7 +202,7 @@ namespace Finch
             Ref<Expr> body = Expression();
             if (body.IsNull()) return ParseError("Expect expression body inside block.");
             
-            if (!ConsumeIf(TOKEN_RIGHT_BRACE)) return ParseError("Expect closing '}' after block.");
+            if (!Match(TOKEN_RIGHT_BRACE)) return ParseError("Expect closing '}' after block.");
             
             return Ref<Expr>(new BlockExpr(args, body));
         }
@@ -206,7 +215,7 @@ namespace Finch
         vector<String>      keywords;
         vector<Ref<Expr> >  args;
         
-        while (CurrentIs(TOKEN_KEYWORD))
+        while (LookAhead(TOKEN_KEYWORD))
         {
             String keyword = Consume()->Text();
             Ref<Expr> arg = Operator();

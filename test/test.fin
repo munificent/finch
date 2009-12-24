@@ -1,68 +1,68 @@
-write-line: "Running Finch test suite."
+writeLine: "Running Finch test suite."
 
 ' define a Test object the tests can use
-def Test Object copy
+def Test <- Object copy
 
 '### bob: having to make an init method just to set the object
 '         variables is kind of dumb
-Test add-method: "init" body:
+Test addMethod: "init" body:
 {
-    def _suite      ""
-    def _test       ""
-    def _testShown  False
-    def _tests      0
-    def _failed     0
+    def _suite      <- ""
+    def _test       <- ""
+    def _testShown  <- False
+    def _tests      <- 0
+    def _failed     <- 0
 }
 
 Test init
 
-Test add-method: "suite:is:" body:
+Test addMethod: "suite:is:" body:
 {|name body|
-    set _suite name
+    _suite <- name
     body call
-    set _suite ""
+    _suite <- ""
 }
 
-Test add-method: "test:is:" body:
+Test addMethod: "test:is:" body:
 {|name body|
-    set _test       name
-    set _tests      0
-    set _failed     0
-    set _testShown  False
+    _test       <- name
+    _tests      <- 0
+    _failed     <- 0
+    _testShown  <- False
     
     body call
     
-    if: _failed = 0 then: { .show-header }
+    if: _failed = 0 then: { .showHeader }
     
-    write-line: "  " + (_tests - _failed) + " / " + _tests + " tests passed"
+    writeLine: "  " + (_tests - _failed) + " / " + _tests + " tests passed"
     
-    set _test ""
+    _test <- ""
 }
 
-Test add-method: "show-header" body:
+Test addMethod: "showHeader" body:
 {
     if: _testShown not then:
     {
-        write-line: _suite + " / " + _test
-        set _testShown True
+        writeLine: _suite + " / " + _test
+        _testShown <- True
     }
 }
 
-Test add-method: "is-true:" body:
+Test addMethod: "isTrue:" body:
 {|actual|
-    set _tests _tests + 1
+    _tests <- _tests + 1
         
     if: actual not then:
     {
-        set _failed _failed + 1
-        .show-header
-        write-line: "  Test " + _tests to-string + " failed."
+        _failed <- _failed + 1
+        .showHeader
+        writeLine: "  Test " + _tests toString + " failed."
     }
 }
 
-Test add-method: "that:equals:" body:
+Test addMethod: "that:equals:" body:
 {|actual expected|
-    .is-true: actual = expected
+    .isTrue: actual = expected
 }
 
 ' run the test scripts
