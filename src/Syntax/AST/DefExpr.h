@@ -12,7 +12,7 @@ namespace Finch
 {
     using std::ostream;
     
-    // AST node for variable declaration: "def foo bar"
+    // AST node for variable declaration: "def foo <- bar"
     class DefExpr : public Expr
     {
     public:
@@ -28,7 +28,7 @@ namespace Finch
         
         virtual void Trace(ostream & stream) const
         {
-            stream << "def " << mName << " " << mValue;
+            stream << "def " << mName << " <- " << mValue;
         }
             
         EXPRESSION_VISITOR

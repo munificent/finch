@@ -71,6 +71,21 @@ namespace Finch
             return oldValue;
         }
         
+        // Removes the value with the given key. Returns true if the key was
+        // found and removed.
+        bool Remove(TKey key)
+        {
+            typename map<TKey, Ref<TValue> >::iterator found = mMap.find(key);
+
+            if (found != mMap.end())
+            {
+                mMap.erase(found);
+                return true;
+            }
+            
+            return false;
+        }
+        
         // Removes all items from the Dictionary.
         void Clear()
         {

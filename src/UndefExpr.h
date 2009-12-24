@@ -12,30 +12,25 @@ namespace Finch
 {
     using std::ostream;
     
-    // AST node for variable assignment: "foo <- bar"
-    class SetExpr : public Expr
+    // AST node for variable eradication: "undef foo"
+    class UndefExpr : public Expr
     {
     public:
-        SetExpr(String name, Ref<Expr> value)
-        :   mName(name),
-            mValue(value)
+        UndefExpr(String name)
+        :   mName(name)
         {}
         
         String    Name()  const { return mName; }
-        Ref<Expr> Value() const { return mValue; }
         
         virtual void Trace(ostream & stream) const
         {
-            stream << mName << " <- " << mValue;
+            stream << "undef " << mName;
         }
-            
+        
         EXPRESSION_VISITOR
         
     private:
         // the name of the variable
         String mName;
-        
-        // the value
-        Ref<Expr> mValue;
     };
 }

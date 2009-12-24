@@ -13,6 +13,7 @@
 #include "SetExpr.h"
 #include "StringExpr.h"
 #include "UnaryExpr.h"
+#include "UndefExpr.h"
 
 namespace Finch
 {
@@ -102,6 +103,14 @@ namespace Finch
             }
             
             return Ref<Expr>(new DefExpr(name, value));
+        }
+        else if (Match(TOKEN_UNDEF))
+        {
+            if (!LookAhead(TOKEN_NAME)) return ParseError();
+            
+            String name = Consume()->Text();
+            
+            return Ref<Expr>(new UndefExpr(name));
         }
         else return Keyword();
     }
