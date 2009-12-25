@@ -7,6 +7,7 @@ namespace Finch
     using std::cin;
     using std::cout;
     using std::endl;
+    using std::string;
     
     bool ReplLineReader::EndOfLines() const
     {
@@ -26,9 +27,9 @@ namespace Finch
             cout << ".. ";
         }
         
-        String line;
+        string line;
         getline(cin, line);
         
-        return line;
+        return String(line.c_str());
     }
 }

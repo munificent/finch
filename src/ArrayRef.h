@@ -8,22 +8,22 @@ namespace Finch
 {
     // Referenced-linked smart pointer.
     template <class T>
-    class Ref
+    class ArrayRef
     {
     public:
-        Ref()
+        ArrayRef()
         :   mObj(NULL),
             mPrev(this),
             mNext(this)
         {}
-            
-        explicit Ref(T * obj)
+        
+        explicit ArrayRef(T obj[])
         :   mObj(obj),
             mPrev(this),
             mNext(this)
         {}
         
-        Ref(const Ref & other)
+        ArrayRef(const ArrayRef & other)
         :   mObj(NULL),
             mPrev(this),
             mNext(this)
@@ -34,22 +34,31 @@ namespace Finch
             }
         }
         
-        ~Ref() { Clear(); }
-
-        T & operator *() const { return *mObj; }
-        T * operator ->() const { return mObj; }
+        ~ArrayRef() { Clear(); }
         
-        bool operator ==(const Ref<T> & other) const
+        const T & operator[] (int index) const
+        {
+            ASSERT_NOT_NULL(mObj);
+            return mObj[index];
+        }
+        
+        T & operator[] (int index)
+        {
+            ASSERT_NOT_NULL(mObj);
+            return mObj[index];
+        }
+        
+        bool operator ==(const ArrayRef<T> & other) const
         {
             return mObj == other.mObj;
         }
         
-        bool operator !=(const Ref<T> & other) const
+        bool operator !=(const ArrayRef<T> & other) const
         {
             return mObj != other.mObj;
         }
         
-        Ref<T>& operator =(const Ref<T> & other)
+        ArrayRef<T>& operator =(const ArrayRef<T> & other)
         {
             if (&other != this)
             {
@@ -59,6 +68,8 @@ namespace Finch
             
             return *this;
         }
+        
+        T* Elements() const { return mObj; }
         
         bool IsNull() const { return mObj == NULL; }
         
@@ -76,15 +87,15 @@ namespace Finch
             else if (mObj != NULL)
             {
                 // linked to itself, so it's the last reference
-                delete mObj;
+                delete [] mObj;
             }
             
             mObj = NULL;
         }
         
     private:
-
-        void Link(const Ref<T> & other)
+        
+        void Link(const ArrayRef<T> & other)
         {
             // don't bother to share null
             if (other.mObj != NULL)
@@ -102,22 +113,7 @@ namespace Finch
         
         T * mObj;
         
-        mutable const Ref<T> * mPrev;
-        mutable const Ref<T> * mNext;
+        mutable const ArrayRef<T> * mPrev;
+        mutable const ArrayRef<T> * mNext;
     };
-    
-    template <class T>
-    std::ostream& operator<<(std::ostream& cout, const Ref<T> & ref)
-    {
-        if (ref.IsNull())
-        {
-            cout << "(null reference)";
-        }
-        else
-        {
-            cout << *ref;
-        }
-        
-        return cout;
-    }
 }

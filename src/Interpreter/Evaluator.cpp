@@ -75,7 +75,7 @@ namespace Finch
         
         for (unsigned int i = 0; i < expr.Keywords().size(); i++)
         {
-            fullName.append(expr.Keywords()[i]);
+            fullName += expr.Keywords()[i];
             args.push_back(expr.Arguments()[i]->Accept(*this));
         }
         

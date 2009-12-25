@@ -38,7 +38,7 @@ namespace Finch
         // - anythingElse       = local
         static NameScope GetNameScope(String name)
         {
-            ASSERT(name.size() > 0, "Cannot determine the scope of an empty name.");
+            ASSERT(name.Length() > 0, "Cannot determine the scope of an empty name.");
             
             char initial = name[0];
             

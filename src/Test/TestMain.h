@@ -1,7 +1,5 @@
 #pragma once
 
-#ifdef UNIT_TESTS
-
 namespace Finch
 {
     class TestMain
@@ -10,5 +8,3 @@ namespace Finch
         static void Run();
     };
 }
-
-#endif

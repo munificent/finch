@@ -32,9 +32,9 @@ namespace Finch
         virtual double AsNumber() const { return mValue; }
         virtual String AsString() const
         {
-            std::stringstream result;
+            stringstream result;
             result << mValue;
-            return result.str();
+            return String(result.str().c_str());
         }
         
     private:

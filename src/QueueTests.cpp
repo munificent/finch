@@ -1,8 +1,6 @@
 #include "QueueTests.h"
 #include "Queue.h"
 
-#ifdef UNIT_TESTS
-
 namespace Finch
 {
     void QueueTests::Run()
@@ -115,5 +113,3 @@ namespace Finch
         EXPECT_EQUAL(8, queue[2]);
     }
 }
-
-#endif

@@ -1,14 +1,16 @@
 #include "FileLineReader.h"
 
 #include <iostream>
+#include <string>
 
 namespace Finch
 {
     using std::ios;
+    using std::string;
     
     FileLineReader::FileLineReader(String fileName)
     {
-        mFile.open(fileName.c_str(), ios::in);
+        mFile.open(fileName.CString(), ios::in);
     }
 
     bool FileLineReader::EndOfLines() const
@@ -22,9 +24,9 @@ namespace Finch
     {
         ASSERT(mFile, "Cannot call NextLine() on a missing file.");
         
-        String line;
+        string line;
         getline(mFile, line);
         
-        return line;
+        return String(line.c_str());
     }
 }

@@ -17,7 +17,7 @@ namespace Finch
                 StartLine();
             }
             
-            char c = mLine.c_str()[mIndex];
+            char c = mLine[mIndex];
             
             switch (mState)
             {
@@ -41,7 +41,7 @@ namespace Finch
                     else if (c == '\"')     StartToken(LEX_IN_STRING, true);
 
                     else if (c == '\'')     StartToken(LEX_IN_COMMENT);
-
+                    else if (c == '\0')     ;// do nothing, just don't advance past it
                     else mIndex++; // ignore other characters
                     break;
                     
@@ -86,7 +86,10 @@ namespace Finch
                     
                 case LEX_IN_COMMENT:
                     // just advance
-                    mIndex++;
+                    if (c != '\0')
+                    {
+                        mIndex++;
+                    }
                     break;
                     
                 case LEX_IN_STRING:

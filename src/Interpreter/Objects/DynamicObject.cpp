@@ -44,7 +44,7 @@ namespace Finch
     Ref<Object> DynamicObject::AddMethod(String name, Ref<Object> body)
     {
         //### bob: need better error handling
-        if (name.size() == 0)
+        if (name.Length() == 0)
         {
             std::cout << "oops. need a name to add a method." << std::endl;
             return Ref<Object>();

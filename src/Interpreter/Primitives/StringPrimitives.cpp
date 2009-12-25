@@ -20,19 +20,18 @@ namespace Finch
     Ref<Object> StringLength(Ref<Object> thisRef, Environment & env,
                           String message, const vector<Ref<Object> > & args)
     {
-        return Object::NewNumber(env, thisRef->AsString().size());
+        return Object::NewNumber(env, thisRef->AsString().Length());
     }
     
     Ref<Object> StringAt(Ref<Object> thisRef, Environment & env,
                           String message, const vector<Ref<Object> > & args)
     {
-        String          thisString = thisRef->AsString();
-        unsigned int    index      = static_cast<unsigned int>(args[0]->AsNumber());
+        String thisString = thisRef->AsString();
+        int    index      = static_cast<int>(args[0]->AsNumber());
         
-        if (index < thisString.size())
+        if ((index >= 0) && (index < thisString.Length()))
         {
-            String substring;
-            substring.push_back(thisString[index]);
+            String substring = String(thisString[index]);
             return Object::NewString(env, substring);
         }
         

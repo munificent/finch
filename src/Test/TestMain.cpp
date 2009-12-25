@@ -1,9 +1,8 @@
 #include <iostream>
 
-#ifdef UNIT_TESTS
-
 #include "QueueTests.h"
 #include "RefTests.h"
+#include "StringTests.h"
 #include "TestMain.h"
 #include "TokenTests.h"
 
@@ -14,10 +13,9 @@ namespace Finch
         std::cout << "running unit tests" << std::endl;
         
         QueueTests::Run();
-        TokenTests::Run();
         RefTests::Run();
+        StringTests::Run();
+        TokenTests::Run();
     }
 
 }
-
-#endif

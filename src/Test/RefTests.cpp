@@ -1,8 +1,6 @@
 #include "RefTests.h"
 #include "Ref.h"
 
-#ifdef UNIT_TESTS
-
 namespace Finch
 {
     class DestructorTester
@@ -79,5 +77,3 @@ namespace Finch
         }
     }
 }
-
-#endif

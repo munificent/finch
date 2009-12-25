@@ -28,6 +28,7 @@
 		C4CDF8B910D88E1F001C9D4A /* Environment.cpp in Sources */ = {isa = PBXBuildFile; fileRef = C4CDF8B810D88E1F001C9D4A /* Environment.cpp */; };
 		C4E0BAEC10E09F2800D04F42 /* Script.cpp in Sources */ = {isa = PBXBuildFile; fileRef = C4E0BAEB10E09F2800D04F42 /* Script.cpp */; };
 		C4F2C97510E3158D00416919 /* QueueTests.cpp in Sources */ = {isa = PBXBuildFile; fileRef = C4F2C97410E3158D00416919 /* QueueTests.cpp */; };
+		C4F2CBEF10E47DFE00416919 /* StringTests.cpp in Sources */ = {isa = PBXBuildFile; fileRef = C4F2CBEE10E47DFE00416919 /* StringTests.cpp */; };
 		C4FC160310D4328300E6ABD6 /* Evaluator.cpp in Sources */ = {isa = PBXBuildFile; fileRef = C4FC15F710D4328300E6ABD6 /* Evaluator.cpp */; };
 		C4FC160610D4328300E6ABD6 /* Scope.cpp in Sources */ = {isa = PBXBuildFile; fileRef = C4FC15FD10D4328300E6ABD6 /* Scope.cpp */; };
 		C4FC166010D4331C00E6ABD6 /* Expr.cpp in Sources */ = {isa = PBXBuildFile; fileRef = C4FC164B10D4331C00E6ABD6 /* Expr.cpp */; };
@@ -101,6 +102,9 @@
 		C4F2C97310E3158D00416919 /* QueueTests.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = QueueTests.h; sourceTree = "<group>"; };
 		C4F2C97410E3158D00416919 /* QueueTests.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = QueueTests.cpp; sourceTree = "<group>"; };
 		C4F2CACF10E32C1000416919 /* UndefExpr.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = UndefExpr.h; sourceTree = "<group>"; };
+		C4F2CB0610E381C100416919 /* ArrayRef.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ArrayRef.h; sourceTree = "<group>"; };
+		C4F2CBED10E47DFE00416919 /* StringTests.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = StringTests.h; sourceTree = "<group>"; };
+		C4F2CBEE10E47DFE00416919 /* StringTests.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = StringTests.cpp; sourceTree = "<group>"; };
 		C4FC15F710D4328300E6ABD6 /* Evaluator.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = Evaluator.cpp; path = Interpreter/Evaluator.cpp; sourceTree = "<group>"; };
 		C4FC15F810D4328300E6ABD6 /* Evaluator.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = Evaluator.h; path = Interpreter/Evaluator.h; sourceTree = "<group>"; };
 		C4FC15FD10D4328300E6ABD6 /* Scope.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = Scope.cpp; path = Interpreter/Scope.cpp; sourceTree = "<group>"; };
@@ -192,6 +196,8 @@
 				C465892F10DE8802007C4C3E /* RefTests.cpp */,
 				C4F2C97310E3158D00416919 /* QueueTests.h */,
 				C4F2C97410E3158D00416919 /* QueueTests.cpp */,
+				C4F2CBED10E47DFE00416919 /* StringTests.h */,
+				C4F2CBEE10E47DFE00416919 /* StringTests.cpp */,
 			);
 			name = Test;
 			sourceTree = "<group>";
@@ -240,9 +246,10 @@
 				C465892310DE87AB007C4C3E /* Dictionary.h */,
 				C4FC167510D4336500E6ABD6 /* Macros.h */,
 				C4FC167710D4336500E6ABD6 /* Ref.h */,
-				C4FC167810D4336500E6ABD6 /* String.cpp */,
 				C4FC167910D4336500E6ABD6 /* String.h */,
+				C4FC167810D4336500E6ABD6 /* String.cpp */,
 				C4F2C97210E2CF6400416919 /* Queue.h */,
+				C4F2CB0610E381C100416919 /* ArrayRef.h */,
 			);
 			name = Base;
 			sourceTree = "<group>";
@@ -379,6 +386,7 @@
 				C4949EFC10E02508001A57BA /* BooleanPrimitives.cpp in Sources */,
 				C4E0BAEC10E09F2800D04F42 /* Script.cpp in Sources */,
 				C4F2C97510E3158D00416919 /* QueueTests.cpp in Sources */,
+				C4F2CBEF10E47DFE00416919 /* StringTests.cpp in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -399,6 +407,7 @@
 					"_GLIBCXX_DEBUG_PEDANTIC=1",
 				);
 				GCC_TREAT_WARNINGS_AS_ERRORS = YES;
+				GCC_VERSION = "";
 				GCC_WARN_CHECK_SWITCH_STATEMENTS = NO;
 				GCC_WARN_EFFECTIVE_CPLUSPLUS_VIOLATIONS = NO;
 				GCC_WARN_INITIALIZER_NOT_FULLY_BRACKETED = NO;
@@ -418,6 +427,7 @@
 				DEBUG_INFORMATION_FORMAT = "dwarf-with-dsym";
 				GCC_MODEL_TUNING = G5;
 				GCC_TREAT_WARNINGS_AS_ERRORS = YES;
+				GCC_VERSION = "";
 				GCC_WARN_CHECK_SWITCH_STATEMENTS = NO;
 				GCC_WARN_EFFECTIVE_CPLUSPLUS_VIOLATIONS = NO;
 				GCC_WARN_INITIALIZER_NOT_FULLY_BRACKETED = NO;

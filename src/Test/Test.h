@@ -4,8 +4,6 @@
 
 #include "String.h"
 
-#ifdef UNIT_TESTS
-
 #define EXPECT(condition, message) \
 _Expect(__FILE__, __LINE__, condition, message)
 
@@ -17,14 +15,19 @@ namespace Finch
     // Base class for test classes.
     class Test
     {
+    public:
+        static void ShowResults();
+        
     protected:
         static inline void _Expect(const char * file, int line,
                                    bool condition, const char * message)
         {
+            sTests++;
             if (!condition)
             {
                 std::cout << "FAIL " << file << ":" << line << " - "
                      << message << std::endl;
+                sFailed++;
             }
         }
 
@@ -33,18 +36,19 @@ namespace Finch
                                         const char* actualExpression,
                                         const Left & expected, const Right & actual)
         {
+            sTests++;
             if (expected != actual)
             {
                 std::cout << "FAIL " << file << ":" << line << " - "
                 << "Expected " << actualExpression << " to be "
                 << expected << ", but was " << actual << "." << std::endl;
+                sFailed++;
             }
         }
         
     private:
-        static const int MESSAGE_LENGTH = 256;
+        static int sTests;
+        static int sFailed;
     };
 
 }
-
-#endif
