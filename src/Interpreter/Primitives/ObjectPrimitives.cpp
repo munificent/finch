@@ -32,11 +32,33 @@ namespace Finch
     {
         return Object::NewObject(thisRef);
     }
-
+    
+    Ref<Object> ObjectCopyWith(Ref<Object> thisRef, Environment & env,
+                           String message, const vector<Ref<Object> > & args)
+    {
+        // create the object
+        Ref<Object> copy = Object::NewObject(thisRef);
+        
+        // run the initialization block
+        BlockObject * block = args[0]->AsBlock();
+        if (block == NULL)
+        {
+            std::cout << "error: arg to copyWith: should be block!" << std::endl;
+            
+            //### bob: need runtime error handling strategy
+            return Ref<Object>();
+        }
+        
+        vector<Ref<Object> > noArgs;
+        env.EvaluateMethod(copy, block, noArgs);
+        
+        return copy;
+    }
+    
     Ref<Object> ObjectAddMethodValue(Ref<Object> thisRef, Environment & env,
                            String message, const vector<Ref<Object> > & args)
     {
-        DynamicObject* object = thisRef->AsDynamic();
+        DynamicObject * object = thisRef->AsDynamic();
         ASSERT_NOT_NULL(object);
         
         String      name  = args[0]->AsString();

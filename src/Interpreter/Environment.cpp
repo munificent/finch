@@ -27,6 +27,7 @@ namespace Finch
         objectObj->RegisterPrimitive("=",               ObjectEquals);
         objectObj->RegisterPrimitive("!=",              ObjectNotEquals);
         objectObj->RegisterPrimitive("copy",            ObjectCopy);
+        objectObj->RegisterPrimitive("copyWith:",       ObjectCopyWith);
         objectObj->RegisterPrimitive("toString",        ObjectSelf);
         objectObj->RegisterPrimitive("addMethod:body:", ObjectAddMethodValue);
 
@@ -146,10 +147,6 @@ namespace Finch
         // swap out the current self object
         Ref<Object> previousSelf = mSelf;
         mSelf = self;
-        
-        // get the object's method scope
-        DynamicObject* object = self->AsDynamic();
-        ASSERT_NOT_NULL(object);
         
         // evaluate the method body block
         Ref<Object> result = EvaluateBlock(block, args);

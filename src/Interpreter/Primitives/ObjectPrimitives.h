@@ -22,6 +22,8 @@ namespace Finch
                            String message, const vector<Ref<Object> > & args);
     Ref<Object> ObjectCopy(Ref<Object> thisRef, Environment & env,
                            String message, const vector<Ref<Object> > & args);
+    Ref<Object> ObjectCopyWith(Ref<Object> thisRef, Environment & env,
+                           String message, const vector<Ref<Object> > & args);
     Ref<Object> ObjectAddMethodValue(Ref<Object> thisRef, Environment & env,
                            String message, const vector<Ref<Object> > & args);
 }

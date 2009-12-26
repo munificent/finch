@@ -1,69 +1,63 @@
 writeLine: "Running Finch test suite."
 
 ' define a Test object the tests can use
-def Test <- Object copy
-
-'### bob: having to make an init method just to set the object
-'         variables is kind of dumb
-Test addMethod: "init" body:
+def Test <- Object copyWith:
 {
     def _suite      <- ""
     def _test       <- ""
     def _testShown  <- False
     def _tests      <- 0
     def _failed     <- 0
-}
-
-Test init
-
-Test addMethod: "suite:is:" body:
-{|name body|
-    _suite <- name
-    body call
-    _suite <- ""
-}
-
-Test addMethod: "test:is:" body:
-{|name body|
-    _test       <- name
-    _tests      <- 0
-    _failed     <- 0
-    _testShown  <- False
     
-    body call
-    
-    def header <- "--- "
-    if: _failed > 0 then: { header <- "XXX " }
-    
-    writeLine: header + _suite + " / " + _test + " " + (_tests - _failed) + " / " + _tests + " tests passed"
-    
-    _test <- ""
-}
-
-Test addMethod: "showHeader" body:
-{
-    if: _testShown not then:
-    {
-        writeLine: _suite + " / " + _test
-        _testShown <- True
+    .addMethod: "suite:is:" body:
+    {|name body|
+        _suite <- name
+        body call
+        _suite <- ""
     }
-}
 
-Test addMethod: "isTrue:" body:
-{|actual|
-    _tests <- _tests + 1
-        
-    if: actual not then:
-    {
-        _failed <- _failed + 1
-        .showHeader
-        writeLine: "  Test " + _tests toString + " failed."
+    .addMethod: "test:is:" body:
+    {|name body|
+        _test       <- name
+        _tests      <- 0
+        _failed     <- 0
+        _testShown  <- False
+
+        body call
+
+        def header <- "--- "
+        if: _failed > 0 then: { header <- "XXX " }
+
+        writeLine: header + _suite + " / " + _test + " " + (_tests - _failed) + " / " + _tests + " tests passed"
+
+        _test <- ""
     }
-}
 
-Test addMethod: "that:equals:" body:
-{|actual expected|
-    .isTrue: actual = expected
+    .addMethod: "showHeader" body:
+    {
+        if: _testShown not then:
+        {
+            writeLine: _suite + " / " + _test
+            _testShown <- True
+        }
+    }
+
+    .addMethod: "isTrue:" body:
+    {|actual|
+        _tests <- _tests + 1
+
+        if: actual not then:
+        {
+            _failed <- _failed + 1
+            .showHeader
+            writeLine: "  Test " + _tests toString + " failed."
+        }
+    }
+
+    .addMethod: "that:equals:" body:
+    {|actual expected|
+        .isTrue: actual = expected
+    }
 }
 
 ' run the test scripts
