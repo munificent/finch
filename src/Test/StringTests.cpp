@@ -24,19 +24,19 @@ namespace Finch
     
     void StringTests::TestLength()
     {
-        String a = String("");
+        String a = "";
         EXPECT_EQUAL(0, a.Length());
 
-        String b = String("a");
+        String b = "b";
         EXPECT_EQUAL(1, b.Length());
         
-        String c = String("some string");
+        String c = "some string";
         EXPECT_EQUAL(11, c.Length());
     }
     
     void StringTests::TestSubscript()
     {
-        String a = String("abcd");
+        String a = "abcd";
         EXPECT_EQUAL('a', a[0]);
         EXPECT_EQUAL('b', a[1]);
         EXPECT_EQUAL('c', a[2]);
@@ -46,8 +46,8 @@ namespace Finch
     void StringTests::TestAddition()
     {
         {
-            String a = String("left");
-            String b = String("right");
+            String a = "left";
+            String b = "right";
             
             String c = a + b;
             EXPECT_EQUAL("leftright", c);
@@ -56,7 +56,7 @@ namespace Finch
         // left is null
         {
             String a;
-            String b = String("right");
+            String b = "right";
             
             String c = a + b;
             EXPECT_EQUAL("right", c);
@@ -64,7 +64,7 @@ namespace Finch
 
         // right is null
         {
-            String a = String("left");
+            String a = "left";
             String b;
             
             String c = a + b;
@@ -83,7 +83,7 @@ namespace Finch
     
     void StringTests::TestAssignment()
     {
-        String a = String("abc");
+        String a = "abc";
         String b = a;
         
         EXPECT_EQUAL("abc", b);
@@ -91,7 +91,7 @@ namespace Finch
     
     void StringTests::TestCompoundAssignment()
     {
-        String a = String("abc");
+        String a = "abc";
         a += String("def");
         
         EXPECT_EQUAL("abcdef", a);
@@ -99,9 +99,9 @@ namespace Finch
     
     void StringTests::TestComparison()
     {
-        String a1 = String("abc");
-        String a2 = String("abc");
-        String b  = String("abd");
+        String a1 = "abc";
+        String a2 = "abc";
+        String b  = "abd";
 
         EXPECT_EQUAL(false, a1 <  a2);
         EXPECT_EQUAL(true,  a1 <= a2);

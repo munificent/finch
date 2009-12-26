@@ -2,21 +2,21 @@
 
 #include <iostream>
 
-#include "ArrayRef.h"
+#include "Ref.h"
 
 namespace Finch
 {
     using std::ostream;
     
     //### bob: to do:
-    // - instead of ArrayRef, have String store a Ref to a HeapString object
-    //   which owns the character array, but also caches length and hash code?
     // - interning support
     
     // Reference-counted heap-allocated immutable string class.
     class String
     {
     public:
+        // Creates a new string using the given C-style format string and a
+        // number of arguments to be formatted.
         static String Format(const String & format, ...);
         
         String() {}
@@ -26,7 +26,7 @@ namespace Finch
         String(char c);
 
         String(const String & other)
-        :   mChars(other.mChars)
+        :   mData(other.mData)
         {}
         
         bool operator <(const String & other) const;
@@ -47,13 +47,25 @@ namespace Finch
         int Length() const;
         
     private:
+        struct StringData
+        {
+            StringData(char * text)
+            :   chars(text)
+            {
+                length = strlen(text);
+            }
+            
+            int    length;
+            char * chars;
+        };
+        
         String(const String & left, const String & right);
         
         static const int FormattedStringMax = 512;
         
         static const char * sEmptyString;
         
-        ArrayRef<char> mChars;
+        Ref<StringData> mData;
     };
     
     bool operator ==(const char * left, const String & right);

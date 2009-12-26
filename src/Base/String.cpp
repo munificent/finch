@@ -29,7 +29,7 @@ namespace Finch
         char* heap = new char[length + 1];
         strcpy(heap, chars);
         
-        mChars = ArrayRef<char>(heap);
+        mData = Ref<StringData>(new StringData(heap));
     }
     
     String::String(char c)
@@ -43,7 +43,7 @@ namespace Finch
         char* heap = new char[length + 1];
         strcpy(heap, chars);
         
-        mChars = ArrayRef<char>(heap);
+        mData = Ref<StringData>(new StringData(heap));
     }
     
     bool String::operator <(const String & other) const
@@ -69,7 +69,7 @@ namespace Finch
     bool String::operator ==(const String & other) const
     {
         if (this == &other) return true;
-        if (mChars == other.mChars) return true;
+        if (mData == other.mData) return true;
         
         return strcmp(CString(), other.CString()) == 0;
     }
@@ -83,9 +83,8 @@ namespace Finch
     {
         ASSERT_INDEX(index, Length() + 1); // allow accessing the terminator
 
-        if (mChars.IsNull()) return sEmptyString[0];
-        
-        return mChars[index];
+        if (mData.IsNull()) return sEmptyString[0];
+        return mData->chars[index];
     }
     
     String String::operator +(const String & other) const
@@ -101,16 +100,16 @@ namespace Finch
 
     const char* String::CString() const
     {
-        if (mChars.IsNull()) return sEmptyString;
+        if (mData.IsNull()) return sEmptyString;
         
-        return mChars.Elements();
+        return mData->chars;
     }
 
     int String::Length() const
     {
-        if (mChars.IsNull()) return 0;
+        if (mData.IsNull()) return 0;
         
-        return strlen(mChars.Elements());
+        return mData->length;
     }
 
     String::String(const String & left, const String & right)
@@ -123,7 +122,7 @@ namespace Finch
         strcpy(heap, left.CString());
         strcpy(&heap[left.Length()], right.CString());
         
-        mChars = ArrayRef<char>(heap);
+        mData = Ref<StringData>(new StringData(heap));
     }
     
     bool operator ==(const char * left, const String & right)

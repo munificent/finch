@@ -2,9 +2,9 @@
 
 #include <iostream>
 
-#include "Macros.h"
 #include "Expr.h"
 #include "IExprVisitor.h"
+#include "Macros.h"
 #include "Ref.h"
 #include "String.h"
 
