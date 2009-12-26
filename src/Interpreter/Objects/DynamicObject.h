@@ -18,6 +18,8 @@ namespace Finch
     using std::map;
     using std::vector;
     
+    class Environment;
+    
     // Function pointer type for a primitive Finch method implemented in C++.
     typedef Ref<Object> (*PrimitiveMethod)(Ref<Object> thisRef, Environment & env,
                                            String message, const vector<Ref<Object> > & args);
@@ -51,7 +53,7 @@ namespace Finch
         virtual Ref<Object> Receive(Ref<Object> thisRef, Environment & env,
                                     String message, const vector<Ref<Object> > & args);
         
-        Ref<Object> AddMethod(String name, Ref<Object> body);
+        Ref<Object> AddMethod(Environment & env, String name, Ref<Object> body);
         
         void RegisterPrimitive(String message, PrimitiveMethod method);
         

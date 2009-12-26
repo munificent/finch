@@ -62,9 +62,11 @@ namespace Finch
     {
         BlockObject * condition = args[0]->AsBlock();
         
-        // do nothing if the condition isn't a block
-        //### bob: report error here?
-        if (condition == NULL) return env.Nil();
+        if (condition == NULL)
+        {
+            env.RuntimeError("First argument to while:do: must be a block.");
+            return Ref<Object>();
+        }
         
         vector<Ref<Object> > noArgs;
         

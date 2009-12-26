@@ -1,4 +1,5 @@
 #include <stdio.h>
+#include <stdarg.h>
 
 #include "Macros.h"
 #include "String.h"
@@ -6,6 +7,20 @@
 namespace Finch
 {
     const char * String::sEmptyString = "";
+    
+    String String::Format(const String & format, ...)
+    {
+        char result[FormattedStringMax];
+        
+        va_list args;
+        va_start (args, format);
+        
+        vsprintf(result, format.CString(), args);
+
+        va_end (args);
+        
+        return String(result);
+    }
     
     String::String(const char* chars)
     {

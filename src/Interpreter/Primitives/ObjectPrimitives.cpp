@@ -43,9 +43,7 @@ namespace Finch
         BlockObject * block = args[0]->AsBlock();
         if (block == NULL)
         {
-            std::cout << "error: arg to copyWith: should be block!" << std::endl;
-            
-            //### bob: need runtime error handling strategy
+            env.RuntimeError("copyWith: must be passed a block argument.");
             return Ref<Object>();
         }
         
@@ -64,6 +62,6 @@ namespace Finch
         String      name  = args[0]->AsString();
         Ref<Object> value = args[1];
         
-        return object->AddMethod(name, value);
+        return object->AddMethod(env, name, value);
     }
 }

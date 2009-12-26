@@ -26,7 +26,7 @@ namespace Finch
         LineNormalizer normalizer(&lexer);
         FinchParser    parser(&normalizer);
                 
-        cout << "finch 0.0.0d" << endl;
+        cout << "Finch 0.0.0d" << endl;
         cout << "------------" << endl;
         
         while (env.Running())
@@ -42,7 +42,11 @@ namespace Finch
                 
                 if (!result.IsNull())
                 {
-                    cout << *result << endl;
+                    // don't bother printing nil results
+                    if (result != env.Nil())
+                    {
+                        cout << *result << endl;
+                    }
                 }
                 else
                 {

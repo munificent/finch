@@ -7,6 +7,7 @@
 #include "Object.h"
 #include "Ref.h"
 #include "Scope.h"
+#include "String.h"
 
 namespace Finch
 {
@@ -23,6 +24,8 @@ namespace Finch
     public:
         Environment();
         
+        void RuntimeError(const String & message);
+        
         bool Running() const { return mRunning; }
         
         Ref<Scope>  Globals()       const { return mGlobals; }
@@ -34,7 +37,7 @@ namespace Finch
         Ref<Object> Nil()           const { return mNil; }
         Ref<Object> Block()         const { return mBlock; }
         Ref<Object> Number()        const { return mNumber; }
-        Ref<Object> String()        const { return mString; }
+        Ref<Object> StringProto()   const { return mString; }
         Ref<Object> True()          const { return mTrue; }
         Ref<Object> False()         const { return mFalse; }
         

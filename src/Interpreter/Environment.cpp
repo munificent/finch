@@ -1,5 +1,6 @@
-#include "Environment.h"
+#include <iostream>
 
+#include "Environment.h"
 #include "Evaluator.h"
 #include "Expr.h"
 #include "BlockObject.h"
@@ -13,6 +14,9 @@
 
 namespace Finch
 {
+    using std::cout;
+    using std::endl;
+    
     Environment::Environment()
     :   mRunning(true)
     {
@@ -110,6 +114,13 @@ namespace Finch
         etherObj->RegisterPrimitive("load:",          EtherLoad);
     }
     
+    void Environment::RuntimeError(const String & message)
+    {
+        //### bob: ideally, this should be programmatically configurable from
+        // within Finch
+        cout << "Runtime error: " << message << endl;
+    }
+
     Ref<Object> Environment::EvaluateBlock(const BlockObject * block,
                                            const vector<Ref<Object> > & args)
     {
@@ -119,10 +130,8 @@ namespace Finch
         
         if (block->Params().size() != args.size())
         {
-            //### bob: need better error handling
-            std::cout << "block expects " << block->Params().size()
-            << " arguments, but got " << args.size() << "." << std::endl;
-            
+            RuntimeError(String::Format("Block expects %d arguments, but was passed %d.",
+                                            block->Params().size(), args.size()));
             return Ref<Object>();
         }
         

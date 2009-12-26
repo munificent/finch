@@ -27,7 +27,7 @@ namespace Finch
     
     Ref<Object> Object::NewString(Environment & env, String value)
     {
-        return Ref<Object>(new StringObject(env.String(), value));
+        return Ref<Object>(new StringObject(env.StringProto(), value));
     }
     
     Ref<Object> Object::NewBlock(Environment & env, vector<String> params,

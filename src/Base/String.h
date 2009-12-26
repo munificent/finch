@@ -17,6 +17,8 @@ namespace Finch
     class String
     {
     public:
+        static String Format(const String & format, ...);
+        
         String() {}
         
         String(const char* chars);
@@ -46,6 +48,8 @@ namespace Finch
         
     private:
         String(const String & left, const String & right);
+        
+        static const int FormattedStringMax = 512;
         
         static const char * sEmptyString;
         

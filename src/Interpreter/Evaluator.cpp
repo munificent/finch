@@ -51,8 +51,7 @@ namespace Finch
                 }
                 else
                 {
-                    //### bob: need runtime error-handling strategy
-                    std::cout << "Cannot assign an object variable outside of a method." << std::endl;
+                    mEnvironment.RuntimeError("Cannot define an object variable outside of a method.");
                 }
                 break;
                 
@@ -154,8 +153,7 @@ namespace Finch
                 }
                 else
                 {
-                    //### bob: need runtime error-handling strategy
-                    std::cout << "Cannot assign an object variable outside of a method." << std::endl;
+                    mEnvironment.RuntimeError("Cannot set an object variable outside of a method.");
                 }
                 break;
                 
@@ -194,8 +192,7 @@ namespace Finch
                 }
                 else
                 {
-                    //### bob: need runtime error-handling strategy
-                    std::cout << "Cannot undefine an object variable outside of a method." << std::endl;
+                    mEnvironment.RuntimeError("Cannot undefine an object variable outside of a method.");
                 }
                 break;
                 

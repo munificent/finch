@@ -41,18 +41,17 @@ namespace Finch
         return Object::Receive(thisRef, env, message, args);
     }
     
-    Ref<Object> DynamicObject::AddMethod(String name, Ref<Object> body)
+    Ref<Object> DynamicObject::AddMethod(Environment & env, String name, Ref<Object> body)
     {
-        //### bob: need better error handling
         if (name.Length() == 0)
         {
-            std::cout << "oops. need a name to add a method." << std::endl;
+            env.RuntimeError("Cannot create a method with an empty name.");
             return Ref<Object>();
         }
         
         if (body->AsBlock() == NULL)
         {
-            std::cout << "oops. 'body:' argument must be a block." << std::endl;
+            env.RuntimeError("Body of method must be a block.");
             return Ref<Object>();
         }
         
