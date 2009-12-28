@@ -36,19 +36,17 @@ namespace Finch
             LEX_IN_OPERATOR,
             LEX_IN_STRING,
             LEX_IN_COMMENT,
-            LEX_AT_END_OF_LINE,
             LEX_DONE
         };
         
         void StartLine();
         
-        Ref<Token> SingleToken(TokenType type);
-        void       StartToken(State state, bool skipFirstChar = false);
-        Ref<Token> TextToken(bool condition, bool isKeyword, TokenType type);
+        void Consume();
         
-        Ref<Token> EmitNumber(TokenType type);
-        Ref<Token> EmitText(TokenType type);
-
+        Ref<Token> SingleToken(TokenType type);
+        void StartToken(State state);
+        void ChangeToken(State state);
+        
         bool IsAlpha(char c) const;
         bool IsDigit(char c) const;
         bool IsOperator(char c) const;

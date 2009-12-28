@@ -1,5 +1,6 @@
 #include <iostream>
 
+#include "LexerTests.h"
 #include "QueueTests.h"
 #include "RefTests.h"
 #include "StringTests.h"
@@ -10,12 +11,15 @@ namespace Finch
 {
     void TestMain::Run()
     {
-        std::cout << "running unit tests" << std::endl;
+        std::cout << "Running unit tests:" << std::endl;
         
+        LexerTests::Run();
         QueueTests::Run();
         RefTests::Run();
         StringTests::Run();
         TokenTests::Run();
+
+        std::cout << "Finished unit tests." << std::endl;
     }
 
 }

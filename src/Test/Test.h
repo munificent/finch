@@ -25,7 +25,7 @@ namespace Finch
             sTests++;
             if (!condition)
             {
-                std::cout << "FAIL " << file << ":" << line << " - "
+                std::cout << "FAIL " << sTests << " " << file << ":" << line << " - "
                      << message << std::endl;
                 sFailed++;
             }
@@ -39,7 +39,7 @@ namespace Finch
             sTests++;
             if (expected != actual)
             {
-                std::cout << "FAIL " << file << ":" << line << " - "
+                std::cout << "FAIL " << sTests << " " << file << ":" << line << " - "
                 << "Expected " << actualExpression << " to be "
                 << expected << ", but was " << actual << "." << std::endl;
                 sFailed++;

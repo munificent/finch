@@ -21,6 +21,7 @@
 		C465893110DE8802007C4C3E /* TestMain.cpp in Sources */ = {isa = PBXBuildFile; fileRef = C465892B10DE8802007C4C3E /* TestMain.cpp */; };
 		C465893210DE8802007C4C3E /* Test.cpp in Sources */ = {isa = PBXBuildFile; fileRef = C465892D10DE8802007C4C3E /* Test.cpp */; };
 		C465893310DE8802007C4C3E /* RefTests.cpp in Sources */ = {isa = PBXBuildFile; fileRef = C465892F10DE8802007C4C3E /* RefTests.cpp */; };
+		C489986210E865D100838D42 /* LexerTests.cpp in Sources */ = {isa = PBXBuildFile; fileRef = C489986110E865D100838D42 /* LexerTests.cpp */; };
 		C4949EFC10E02508001A57BA /* BooleanPrimitives.cpp in Sources */ = {isa = PBXBuildFile; fileRef = C4949EFB10E02508001A57BA /* BooleanPrimitives.cpp */; };
 		C4A6F68810DC3B4400854074 /* ReplLineReader.cpp in Sources */ = {isa = PBXBuildFile; fileRef = C4A6F68710DC3B4400854074 /* ReplLineReader.cpp */; };
 		C4CDF8A710D88DDF001C9D4A /* DynamicObject.cpp in Sources */ = {isa = PBXBuildFile; fileRef = C4CDF89E10D88DDF001C9D4A /* DynamicObject.cpp */; };
@@ -84,6 +85,8 @@
 		C465892D10DE8802007C4C3E /* Test.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = Test.cpp; path = Test/Test.cpp; sourceTree = "<group>"; };
 		C465892E10DE8802007C4C3E /* RefTests.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = RefTests.h; path = Test/RefTests.h; sourceTree = "<group>"; };
 		C465892F10DE8802007C4C3E /* RefTests.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = RefTests.cpp; path = Test/RefTests.cpp; sourceTree = "<group>"; };
+		C489986010E865D100838D42 /* LexerTests.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = LexerTests.h; sourceTree = "<group>"; };
+		C489986110E865D100838D42 /* LexerTests.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = LexerTests.cpp; sourceTree = "<group>"; };
 		C4949EFA10E02508001A57BA /* BooleanPrimitives.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = BooleanPrimitives.h; path = Interpreter/Primitives/BooleanPrimitives.h; sourceTree = "<group>"; };
 		C4949EFB10E02508001A57BA /* BooleanPrimitives.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = BooleanPrimitives.cpp; path = Interpreter/Primitives/BooleanPrimitives.cpp; sourceTree = "<group>"; };
 		C4A6F68610DC3B4400854074 /* ReplLineReader.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ReplLineReader.h; sourceTree = "<group>"; };
@@ -185,6 +188,8 @@
 		C4012A9F10CA99260088B77F /* Test */ = {
 			isa = PBXGroup;
 			children = (
+				C489986010E865D100838D42 /* LexerTests.h */,
+				C489986110E865D100838D42 /* LexerTests.cpp */,
 				C424166010E5B70E001E7103 /* QueueTests.h */,
 				C424166110E5B70E001E7103 /* QueueTests.cpp */,
 				C465892E10DE8802007C4C3E /* RefTests.h */,
@@ -385,6 +390,7 @@
 				C4E0BAEC10E09F2800D04F42 /* Script.cpp in Sources */,
 				C424166210E5B70E001E7103 /* StringTests.cpp in Sources */,
 				C424166310E5B70E001E7103 /* QueueTests.cpp in Sources */,
+				C489986210E865D100838D42 /* LexerTests.cpp in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
