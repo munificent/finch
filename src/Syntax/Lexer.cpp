@@ -44,7 +44,6 @@ namespace Finch
                         case '|': token = SingleToken(TOKEN_PIPE); break;
                             
                         case '-': StartToken(LEX_IN_MINUS); break;
-                            
                         case '"': StartToken(LEX_IN_STRING); break;
                             
                         case '\'':
@@ -85,13 +84,8 @@ namespace Finch
                     if (IsDigit(c)) Consume();
                     else
                     {
-                        // pull out the token text
-                        char text[256];
-                        strncpy(text, &mLine[mTokenStart], mIndex - mTokenStart);
-                        text[mIndex - mTokenStart] = '\0';
-                        
-                        double number = atof(text);
-                        
+                        String text = mLine.Substring(mTokenStart, mIndex - mTokenStart);
+                        double number = atof(text.CString());
                         token = Token::New(TOKEN_NUMBER, number);
                         
                         mState = LEX_DEFAULT;
@@ -104,25 +98,14 @@ namespace Finch
                     {
                         Consume();
                         
-                        // pull out the token text
-                        char text[256];
-                        strncpy(text, &mLine[mTokenStart], mIndex - mTokenStart);
-                        text[mIndex - mTokenStart] = '\0';
-                        
-                        String name = text;
-                        
+                        String name = mLine.Substring(mTokenStart, mIndex - mTokenStart);
                         token = Token::New(TOKEN_KEYWORD, name);
 
                         mState = LEX_DEFAULT;
                     }
                     else
                     {
-                        // pull out the token text
-                        char text[256];
-                        strncpy(text, &mLine[mTokenStart], mIndex - mTokenStart);
-                        text[mIndex - mTokenStart] = '\0';
-                        
-                        String name = text;
+                        String name = mLine.Substring(mTokenStart, mIndex - mTokenStart);
                         
                         // see if it's a reserved word
                         if (name == "def")        token = Token::New(TOKEN_DEF);
@@ -138,12 +121,7 @@ namespace Finch
                     else if (IsAlpha(c)) mState = LEX_IN_NAME;
                     else
                     {
-                        // pull out the token text
-                        char text[256];
-                        strncpy(text, &mLine[mTokenStart], mIndex - mTokenStart);
-                        text[mIndex - mTokenStart] = '\0';
-                        
-                        String name = text;
+                        String name = mLine.Substring(mTokenStart, mIndex - mTokenStart);
                         
                         // see if it's a reserved word
                         if (name == "<-") token = Token::New(TOKEN_LEFT_ARROW);
@@ -158,11 +136,8 @@ namespace Finch
                     {
                         Consume();
                         
-                        char text[256];
                         // skip the surrounding quotes
-                        strncpy(text, &mLine[mTokenStart + 1], mIndex - mTokenStart - 2);
-                        text[mIndex - mTokenStart - 2] = '\0';
-                        
+                        String text = mLine.Substring(mTokenStart + 1, mIndex - mTokenStart - 2);
                         token = Token::New(TOKEN_STRING, text);
                         
                         mState = LEX_DEFAULT;

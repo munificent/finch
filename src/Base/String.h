@@ -46,20 +46,26 @@ namespace Finch
 
         int Length() const;
         
+        String Substring(int startIndex) const;
+        String Substring(int startIndex, int count) const;
+        
     private:
         struct StringData
         {
-            StringData(char * text)
+            StringData(const char * text)
             :   chars(text)
             {
                 length = strlen(text);
             }
             
             int    length;
-            char * chars;
+            const char * chars;
         };
         
         String(const String & left, const String & right);
+        String(const char * text, bool isOnHeap);
+        
+        void Init(const char * text, bool isOnHeap);
         
         static const int FormattedStringMax = 512;
         

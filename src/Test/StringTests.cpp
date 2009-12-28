@@ -6,12 +6,14 @@ namespace Finch
     void StringTests::Run()
     {
         TestEmpty();
+        TestFromChar();
         TestLength();
         TestSubscript();
         TestAddition();
         TestAssignment();
         TestCompoundAssignment();
         TestComparison();
+        TestSubstring();
     }
     
     void StringTests::TestEmpty()
@@ -20,6 +22,12 @@ namespace Finch
         
         EXPECT_EQUAL(0, a.Length());
         EXPECT_EQUAL('\0', *a.CString());
+    }
+    
+    void StringTests::TestFromChar()
+    {
+        String a = 'b';
+        EXPECT_EQUAL("b", a);
     }
     
     void StringTests::TestLength()
@@ -116,5 +124,38 @@ namespace Finch
         EXPECT_EQUAL(false, a1 >= b);
         EXPECT_EQUAL(false, a1 == b);
         EXPECT_EQUAL(true, a1 != b);
+    }
+    
+    void StringTests::TestSubstring()
+    {
+        String a = "abcdef";
+        
+        // starting index
+        EXPECT_EQUAL("abcdef", a.Substring(0));
+        EXPECT_EQUAL("cdef", a.Substring(2));
+        
+        // start from end
+        EXPECT_EQUAL("ef", a.Substring(-2));
+
+        // start and count
+        EXPECT_EQUAL("abcdef", a.Substring(0, 6));
+        EXPECT_EQUAL("cdef", a.Substring(2, 4));
+        EXPECT_EQUAL("cde", a.Substring(2, 3));
+        EXPECT_EQUAL("f", a.Substring(5, 1));
+        EXPECT_EQUAL("", a.Substring(0, 0));
+
+        // start from end and count
+        EXPECT_EQUAL("ab", a.Substring(-6, 2));
+        EXPECT_EQUAL("cdef", a.Substring(-4, 4));
+        EXPECT_EQUAL("f", a.Substring(-1, 1));
+
+        // start and distance from end
+        EXPECT_EQUAL("abcde", a.Substring(0, -1));
+        EXPECT_EQUAL("ab", a.Substring(0, -4));
+        EXPECT_EQUAL("", a.Substring(2, -4));
+        
+        // start frome end and distance from end
+        EXPECT_EQUAL("abcde", a.Substring(-6, -1));
+        EXPECT_EQUAL("bcd", a.Substring(-5, -2));
     }
 }

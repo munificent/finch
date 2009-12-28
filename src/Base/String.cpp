@@ -24,12 +24,7 @@ namespace Finch
     
     String::String(const char* chars)
     {
-        // hoist it onto the heap
-        int length = strlen(chars);
-        char* heap = new char[length + 1];
-        strcpy(heap, chars);
-        
-        mData = Ref<StringData>(new StringData(heap));
+        Init(chars, false);
     }
     
     String::String(char c)
@@ -38,12 +33,7 @@ namespace Finch
         chars[0] = c;
         chars[1] = '\0';
         
-        // hoist it onto the heap
-        int length = strlen(chars);
-        char* heap = new char[length + 1];
-        strcpy(heap, chars);
-        
-        mData = Ref<StringData>(new StringData(heap));
+        Init(chars, false);
     }
     
     bool String::operator <(const String & other) const
@@ -112,6 +102,46 @@ namespace Finch
         return mData->length;
     }
 
+    String String::Substring(int startIndex) const
+    {
+        if (startIndex < 0)
+        {
+            // count from end
+            startIndex = Length() + startIndex;
+        }
+        
+        ASSERT_INDEX(startIndex, Length());
+        
+        int length = Length() - startIndex;
+        char* heap = new char[length + 1];
+        strcpy(heap, CString() + startIndex);
+        
+        return String(heap, true);
+    }
+    
+    String String::Substring(int startIndex, int count) const
+    {
+        if (startIndex < 0)
+        {
+            // count from end
+            startIndex = Length() + startIndex;
+        }
+        
+        if (count < 0)
+        {
+            count = Length() + count - startIndex;
+        }
+        
+        ASSERT_INDEX(startIndex, Length());
+        ASSERT(startIndex + count <= Length(), "Range must not go past end of string.");
+        
+        char* heap = new char[count + 1];
+        strncpy(heap, CString() + startIndex, count);
+        heap[count] = '\0';
+        
+        return String(heap, true);
+    }
+
     String::String(const String & left, const String & right)
     {
         // make a new buffer on the heap
@@ -122,9 +152,31 @@ namespace Finch
         strcpy(heap, left.CString());
         strcpy(&heap[left.Length()], right.CString());
         
-        mData = Ref<StringData>(new StringData(heap));
+        Init(heap, true);
     }
     
+    String::String(const char * text, bool isOnHeap)
+    {
+        Init(text, isOnHeap);
+    }
+        
+    void String::Init(const char * text, bool isOnHeap)
+    {
+        if (isOnHeap)
+        {
+            mData = Ref<StringData>(new StringData(text));
+        }
+        else
+        {
+            // hoist it onto the heap
+            int length = strlen(text);
+            char * heap = new char[length + 1];
+            strcpy(heap, text);
+            
+            mData = Ref<StringData>(new StringData(heap));
+        }
+    }
+
     bool operator ==(const char * left, const String & right)
     {
         return strcmp(left, right.CString()) == 0;

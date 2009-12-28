@@ -5,7 +5,7 @@
 #include "Script.h"
 #include "String.h"
 
-#define UNIT_TESTS
+//#define UNIT_TESTS
 
 #ifdef UNIT_TESTS
 
