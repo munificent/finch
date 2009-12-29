@@ -35,6 +35,7 @@ namespace Finch
             LEX_IN_NAME,
             LEX_IN_OPERATOR,
             LEX_IN_STRING,
+            LEX_IN_STRING_ESCAPE,
             LEX_IN_COMMENT,
             LEX_DONE
         };
@@ -44,14 +45,14 @@ namespace Finch
         void Consume();
         
         Ref<Token> SingleToken(TokenType type);
-        void StartToken(State state);
-        void ChangeToken(State state);
-        
+        void StartState(State state);
+        void ChangeState(State state);
+
+        void EscapeCharacter(char c);
+
         bool IsAlpha(char c) const;
         bool IsDigit(char c) const;
         bool IsOperator(char c) const;
-        bool IsSpace(char c) const;
-        bool IsNull(char c) const;
         
         ILineReader * mReader;
         State         mState;
@@ -59,6 +60,8 @@ namespace Finch
         String        mLine;
         int           mIndex;
         int           mTokenStart;
+        
+        String        mEscapedString;
         
         NO_COPY(Lexer);
     };

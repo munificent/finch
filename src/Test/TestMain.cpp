@@ -19,7 +19,6 @@ namespace Finch
         StringTests::Run();
         TokenTests::Run();
 
-        std::cout << "Finished unit tests." << std::endl;
+        Test::ShowResults();
     }
-
 }

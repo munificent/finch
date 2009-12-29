@@ -43,8 +43,11 @@ namespace Finch
                         case ';': token = SingleToken(TOKEN_LINE); break;
                         case '|': token = SingleToken(TOKEN_PIPE); break;
                             
-                        case '-': StartToken(LEX_IN_MINUS); break;
-                        case '"': StartToken(LEX_IN_STRING); break;
+                        case '-': StartState(LEX_IN_MINUS); break;
+                        case '"':
+                            mEscapedString = "";
+                            StartState(LEX_IN_STRING);
+                            break;
                             
                         case '\'':
                             mState = LEX_IN_COMMENT;
@@ -58,9 +61,9 @@ namespace Finch
                         case ' ': Consume(); break;
                             
                         default:
-                            if (IsDigit(c))         StartToken(LEX_IN_NUMBER);
-                            else if (IsAlpha(c))    StartToken(LEX_IN_NAME);
-                            else if (IsOperator(c)) StartToken(LEX_IN_OPERATOR);
+                            if (IsDigit(c))         StartState(LEX_IN_NUMBER);
+                            else if (IsAlpha(c))    StartState(LEX_IN_NAME);
+                            else if (IsOperator(c)) StartState(LEX_IN_OPERATOR);
                             else
                             {
                                 //### bob: need lexer error handling here
@@ -71,8 +74,8 @@ namespace Finch
                     break;
                     
                 case LEX_IN_MINUS:
-                    if (IsDigit(c))         ChangeToken(LEX_IN_NUMBER);
-                    else if (IsOperator(c)) ChangeToken(LEX_IN_OPERATOR);
+                    if (IsDigit(c))         ChangeState(LEX_IN_NUMBER);
+                    else if (IsOperator(c)) ChangeState(LEX_IN_OPERATOR);
                     else
                     {
                         token = Token::New(TOKEN_OPERATOR, "-");
@@ -132,17 +135,47 @@ namespace Finch
                     break;
                     
                 case LEX_IN_STRING:
-                    if (c == '"')
+                    switch (c)
                     {
-                        Consume();
-                        
-                        // skip the surrounding quotes
-                        String text = mLine.Substring(mTokenStart + 1, mIndex - mTokenStart - 2);
-                        token = Token::New(TOKEN_STRING, text);
-                        
-                        mState = LEX_DEFAULT;
+                        case '"':
+                            token = Token::New(TOKEN_STRING, mEscapedString);
+                            ChangeState(LEX_DEFAULT);
+                            break;
+                            
+                        case '\\':
+                            ChangeState(LEX_IN_STRING_ESCAPE);
+                            break;
+                            
+                        default:
+                            // allow other characters in string
+                            mEscapedString += c;
+                            Consume();
+                            break;
                     }
-                    else Consume();
+                    break;
+                    
+                case LEX_IN_STRING_ESCAPE:
+                    switch (c)
+                    {
+                        case '"':  EscapeCharacter('"'); break;
+                        case 'n':  EscapeCharacter('\n'); break;
+                        case '\\': EscapeCharacter('\\'); break;
+                                                        
+                        case '\0':
+                            //### bob: need error-handling
+                            std::cout << "Unterminated string" << std::endl;
+                            token = Token::New(TOKEN_LINE);
+                            mState = LEX_NEED_LINE;
+                            break;
+                            
+                        default:
+                            //### bob: need error-handling
+                            // unrecognized escape sequence
+                            std::cout << "Unrecognized escape code " << c << std::endl;
+                            mState = LEX_IN_STRING;
+                            Consume();
+                            break;
+                    }
                     break;
                     
                 case LEX_IN_COMMENT:
@@ -188,17 +221,23 @@ namespace Finch
         return Token::New(type);
     }
     
-    void Lexer::StartToken(State state)
+    void Lexer::StartState(State state)
     {
         mState = state;
         mTokenStart = mIndex;
         Consume();
     }
 
-    void Lexer::ChangeToken(State state)
+    void Lexer::ChangeState(State state)
     {
         Consume();
         mState = state;
+    }
+    
+    void Lexer::EscapeCharacter(char c)
+    {
+        mEscapedString += c;
+        ChangeState(LEX_IN_STRING);
     }
     
     bool Lexer::IsAlpha(char c) const
@@ -217,15 +256,5 @@ namespace Finch
     {
         return (c != '\0') &&
                (strchr("-+=\\/<>?~!@#$%^&*", c) != NULL);
-    }
-
-    bool Lexer::IsSpace(char c) const
-    {
-        return c == ' ';
-    }
-    
-    bool Lexer::IsNull(char c) const
-    {
-        return c == '\0';
     }
 }

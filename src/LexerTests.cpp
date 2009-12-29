@@ -76,9 +76,11 @@ namespace Finch
                 TOKEN_STRING,
                 TOKEN_LINE, TOKEN_EOF);
         
-        EXPECT_EQUAL("",      LexOne("\"\"")->Text());
-        EXPECT_EQUAL("a",     LexOne("\"a\"")->Text());
-        EXPECT_EQUAL("foo",   LexOne("\"foo\"")->Text());
+        EXPECT_EQUAL("",        LexOne("\"\"")->Text());
+        EXPECT_EQUAL("a",       LexOne("\"a\"")->Text());
+        EXPECT_EQUAL("foo",     LexOne("\"foo\"")->Text());
+        EXPECT_EQUAL("fo\\o",   LexOne("\"fo\\\\o\"")->Text());
+        EXPECT_EQUAL("\"\n\\",  LexOne("\"\\\"\\n\\\\\"")->Text());
 
         // test identifiers
         TestLex("_a foo BarBang &foo fo9o!",
