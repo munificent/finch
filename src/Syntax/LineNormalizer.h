@@ -42,7 +42,7 @@ namespace Finch
     public:
         LineNormalizer(ITokenSource * tokens)
         :   mTokens(tokens),
-            mState(NORMALIZE_DEFAULT),
+            mState(NORMALIZE_DISCARD), // strip all leading newlines
             mNewLine(true)
         {}
         

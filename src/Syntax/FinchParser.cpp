@@ -215,7 +215,7 @@ namespace Finch
             
             return Ref<Expr>(new BlockExpr(args, body));
         }
-        else return ParseError();
+        else return ParseError("Couldn't parse primary expression.");
     }
     
     // Parses just the message send part of a keyword message: "foo: a bar: b"

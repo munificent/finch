@@ -47,6 +47,11 @@ namespace Finch
         {
             result = evaluator.Evaluate(expr);
         }
+        else
+        {
+            //### bob: need better error-handling
+            std::cout << "parse error loading " << fileName << std::endl;
+        }
         
         return result;
     }
