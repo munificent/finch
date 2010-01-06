@@ -1,0 +1,49 @@
+what does inheritance/composition do?
+1. inherit named slots. when a derived class in c++ inherits from a
+  base, it gets all of base's member variables (but has its own
+   instances of them.)
+   this is less meaningful in a dynamic language. if derived
+   inherits from base and call's base's "init" method which creates
+   any needed members, you get the same effect.
+2. give preferential access to superclass behavior to subclass (i.e.
+   "protected".) less important in a dynamic language.
+3. share methods across types. two kinds of methods: necessary and
+   convenient. a necessary method *must* be a method because it
+   accesses private state. a convenient method could be a stand-
+   alone function that simply takes an object as an arg and is
+   implemented in terms of the object's public methods. (i.e. an
+   extension method.
+
+an object is:
+state
+- completely encapsulated, object controls how it is exposed
+methods
+- can access state
+traits
+- can access methods and other traits
+- must be explicitly mixed in (you must declare which traits an
+  object uses)
+prototype
+- the object this one is based on
+- object inherits methods from its prototype
+- traits are also inherited
+
+note: if we allow traits to access state, there's no difference
+between them and methods
+
+objects needed for List
+
+List
+- global object
+- used to construct new lists: "List new"
+
+_emptyList
+- owned by List
+- prototypical list object
+- has "next" method { _next }
+- has @list = ListT trait
+
+ListT
+- global list traits object
+- has "count" method (which calls "next")
+- has other methods

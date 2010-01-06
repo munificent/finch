@@ -1,0 +1,84 @@
+writeLine: "defining list"
+
+def List <- Object copyWith:
+{
+    def _emptyList <- Object copy
+    
+    .addMethod: "of:" body:
+    {|item|
+        List copyWith:
+        {
+            def _item <- item
+            def _next <- _emptyList
+        }
+    }
+    
+    .addMethod: "of::" body:
+    {|item1 item2|
+        List copyWith:
+        {
+            def _item <- item1
+            def _next <- List of: item2
+        }
+    }
+    
+    .addMethod: "of:::" body:
+    {|item1 item2 item3|
+        List copyWith:
+        {
+            def _item <- item1
+            def _next <- List of: item2 : item3
+        }
+    }
+    
+    .addMethod: "item" body: { _item }
+    .addMethod: "next" body: { _next }
+    
+    .addMethod: "item:" body: {|item| _item <- item }
+    .addMethod: "next:" body: {|next| _next <- next }
+
+    '### bob: this could be a method on any object with "next"
+    .addMethod: "count" body:
+    {
+        def i <- 0
+        .each: {|item| i <- i + 1 }
+        i
+    }
+    
+    .addMethod: "each:" body:
+    {|block|
+        block call: .item
+        '### bob: tco would be good here
+        .next each: block 
+    }
+    
+    .addMethod: "last" body:
+    {
+        def last
+        .each: {|item| last <- item }
+        last
+    }
+    
+    .addMethod: "++" body:
+    {|right|
+        writeLine: "append " + right + " to " + .last item
+        .last next: (List of: right)
+    }
+}
+
+' test
+def list <- List of: "a" : "b" : "c"
+
+writeLine: "count = " + list count
+
+write: "each  ="
+list each: {|item| write: " " + item }
+writeLine: ""
+
+writeLine: "last  = " + list last
+
+list ++ "d"
+write: "each  ="
+list each: {|item| write: " " + item }
+writeLine: ""
+
