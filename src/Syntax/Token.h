@@ -4,7 +4,10 @@
 
 #include "Macros.h"
 #include "Ref.h"
+/*
 #include "String.h"
+*/
+#include "InternString.h"
 
 namespace Finch
 {
@@ -42,12 +45,14 @@ namespace Finch
     public:
         // virtual constructors
         static Ref<Token> New(TokenType type);
-        static Ref<Token> New(TokenType type, const String & text);
+/*        static Ref<Token> New(TokenType type, const String & text); */
+        static Ref<Token> New(TokenType type, InternString text);
         static Ref<Token> New(TokenType type, double number);
         
-        TokenType           Type()   const { return mType; }
-        virtual String      Text()   const { return ""; }
-        virtual double      Number() const { return 0; }
+        TokenType            Type()   const { return mType; }
+/*        virtual String      Text()   const { return ""; } */
+        virtual InternString Text()   const { return InternString(); }
+        virtual double       Number() const { return 0; }
         
         virtual ~Token() {}
         

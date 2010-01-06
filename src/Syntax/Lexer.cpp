@@ -3,6 +3,7 @@
 
 #include "Lexer.h"
 #include "ILineReader.h"
+#include "InternStringPool.h"
 
 namespace Finch
 {
@@ -39,9 +40,13 @@ namespace Finch
                         case '{': token = SingleToken(TOKEN_LEFT_BRACE); break;
                         case '}': token = SingleToken(TOKEN_RIGHT_BRACE); break;
                         case '.': token = SingleToken(TOKEN_DOT); break;
-                        case ':': token = SingleToken(TOKEN_KEYWORD); break;
                         case ';': token = SingleToken(TOKEN_LINE); break;
                         case '|': token = SingleToken(TOKEN_PIPE); break;
+                            
+                        case ':':
+                            token = Token::New(TOKEN_KEYWORD, mPool.Intern(":"));
+                            Consume();
+                            break;
                             
                         case '-': StartState(LEX_IN_MINUS); break;
                         case '"':
@@ -78,7 +83,7 @@ namespace Finch
                     else if (IsOperator(c)) ChangeState(LEX_IN_OPERATOR);
                     else
                     {
-                        token = Token::New(TOKEN_OPERATOR, "-");
+                        token = Token::New(TOKEN_OPERATOR, mPool.Intern("-"));
                         mState = LEX_DEFAULT;
                     }
                     break;
@@ -102,7 +107,7 @@ namespace Finch
                         Consume();
                         
                         String name = mLine.Substring(mTokenStart, mIndex - mTokenStart);
-                        token = Token::New(TOKEN_KEYWORD, name);
+                        token = Token::New(TOKEN_KEYWORD, mPool.Intern(name.CString()));
 
                         mState = LEX_DEFAULT;
                     }
@@ -113,7 +118,7 @@ namespace Finch
                         // see if it's a reserved word
                         if (name == "def")        token = Token::New(TOKEN_DEF);
                         else if (name == "undef") token = Token::New(TOKEN_UNDEF);
-                        else token = Token::New(TOKEN_NAME, name);
+                        else token = Token::New(TOKEN_NAME, mPool.Intern(name.CString()));
                         
                         mState = LEX_DEFAULT;
                     }
@@ -128,7 +133,7 @@ namespace Finch
                         
                         // see if it's a reserved word
                         if (name == "<-") token = Token::New(TOKEN_LEFT_ARROW);
-                        else token = Token::New(TOKEN_OPERATOR, name);
+                        else token = Token::New(TOKEN_OPERATOR, mPool.Intern(name.CString()));
                         
                         mState = LEX_DEFAULT;
                     }
@@ -138,7 +143,7 @@ namespace Finch
                     switch (c)
                     {
                         case '"':
-                            token = Token::New(TOKEN_STRING, mEscapedString);
+                            token = Token::New(TOKEN_STRING, mPool.Intern(mEscapedString.CString()));
                             ChangeState(LEX_DEFAULT);
                             break;
                             

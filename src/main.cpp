@@ -5,7 +5,7 @@
 #include "Script.h"
 #include "String.h"
 
-//#define UNIT_TESTS
+#define UNIT_TESTS
 
 #ifdef UNIT_TESTS
 
@@ -18,8 +18,8 @@ using namespace Finch;
 int main (int argc, char * const argv[])
 {
     #ifdef UNIT_TESTS
-    TestMain::Run();
-    return 0;
+    if (TestMain::Run())
+    {
     #endif
     
     if (argc == 1)
@@ -35,5 +35,13 @@ int main (int argc, char * const argv[])
         Script::Run(fileName);
     }
     
+    #ifdef UNIT_TESTS
+    }
+    else
+    {
+        std::cout << "Tests failed, aborting." << std::endl;
+    }
+    #endif
+        
     return 0;
 }

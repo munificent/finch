@@ -21,10 +21,7 @@ namespace Finch
         {
             typename map<TKey, Ref<TValue> >::iterator found = mMap.find(key);
             
-            if (found != mMap.end())
-            {
-                return found->second;
-            }
+            if (found != mMap.end()) return found->second;
             
             return Ref<TValue>();
         }

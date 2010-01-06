@@ -5,7 +5,7 @@
 #include "Macros.h"
 #include "Expr.h"
 #include "IExprVisitor.h"
-#include "String.h"
+#include "InternString.h"
 
 namespace Finch
 {
@@ -15,11 +15,11 @@ namespace Finch
     class StringExpr : public Expr
     {
     public:
-        StringExpr(String value)
+        StringExpr(InternString value)
         :   mValue(value)
         {}
         
-        String Value() const { return mValue; }
+        InternString Value() const { return mValue; }
         
         virtual void Trace(ostream & stream) const
         {
@@ -29,6 +29,6 @@ namespace Finch
         EXPRESSION_VISITOR
         
     private:
-        String mValue;
+        InternString mValue;
     };
 }

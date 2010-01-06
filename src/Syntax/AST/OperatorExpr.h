@@ -17,15 +17,15 @@ namespace Finch
     class OperatorExpr : public Expr
     {
     public:
-        OperatorExpr(Ref<Expr> receiver, String op, Ref<Expr> arg)
+        OperatorExpr(Ref<Expr> receiver, InternString op, Ref<Expr> arg)
         :   mReceiver(receiver),
             mOperator(op),
             mArg(arg)
         {}
         
-        Ref<Expr> Receiver() const { return mReceiver; }
-        String    Operator() const { return mOperator; }
-        Ref<Expr> Argument() const { return mArg; }
+        Ref<Expr>       Receiver() const { return mReceiver; }
+        InternString    Operator() const { return mOperator; }
+        Ref<Expr>       Argument() const { return mArg; }
         
         virtual void Trace(ostream & stream) const
         {
@@ -39,7 +39,7 @@ namespace Finch
         Ref<Expr> mReceiver;
         
         // the name of the operator
-        String mOperator;
+        InternString mOperator;
         
         // the argument being passed
         Ref<Expr> mArg;

@@ -48,6 +48,8 @@ namespace Finch
         
         virtual Ref<Token> ReadToken();
         
+        virtual InternStringPool & StringPool() const { return mTokens->StringPool(); }
+        
     private:
         enum State
         {

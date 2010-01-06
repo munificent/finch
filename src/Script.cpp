@@ -5,6 +5,7 @@
 #include "Environment.h"
 #include "FileLineReader.h"
 #include "FinchParser.h"
+#include "InternStringPool.h"
 #include "LineNormalizer.h"
 #include "Object.h"
 #include "Scope.h"
@@ -34,9 +35,10 @@ namespace Finch
             return result;
         }
         
-        Lexer           lexer(&reader);
-        LineNormalizer  normalizer(&lexer);
-        FinchParser     parser(&normalizer);
+        InternStringPool    pool;
+        Lexer               lexer(&reader, pool);
+        LineNormalizer      normalizer(&lexer);
+        FinchParser         parser(&normalizer);
         
         Evaluator       evaluator(env);
         

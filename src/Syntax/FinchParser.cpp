@@ -5,6 +5,7 @@
 #include "BlockExpr.h"
 #include "DefExpr.h"
 #include "ILineReader.h"
+#include "InternStringPool.h"
 #include "KeywordExpr.h"
 #include "NameExpr.h"
 #include "NumberExpr.h"
@@ -73,7 +74,7 @@ namespace Finch
     {
         if (LookAhead(TOKEN_NAME, TOKEN_LEFT_ARROW))
         {
-            String name = Consume()->Text();
+            InternString name = Consume()->Text();
             
             Consume(); // the arrow
             
@@ -87,7 +88,7 @@ namespace Finch
         {
             if (!LookAhead(TOKEN_NAME)) return ParseError();
             
-            String name = Consume()->Text();
+            InternString name = Consume()->Text();
             
             // get the initial value
             Ref<Expr> value;
@@ -99,7 +100,7 @@ namespace Finch
             else
             {
                 // default to nil
-                value = Ref<Expr>(new NameExpr("Nil"));
+                value = Ref<Expr>(new NameExpr(StringPool().Intern("Nil")));
             }
             
             return Ref<Expr>(new DefExpr(name, value));
@@ -108,7 +109,7 @@ namespace Finch
         {
             if (!LookAhead(TOKEN_NAME)) return ParseError();
             
-            String name = Consume()->Text();
+            InternString name = Consume()->Text();
             
             return Ref<Expr>(new UndefExpr(name));
         }
@@ -133,7 +134,7 @@ namespace Finch
         
         while (LookAhead(TOKEN_OPERATOR))
         {
-            String op = Consume()->Text();
+            InternString op = Consume()->Text();
             Ref<Expr> arg = Unary();
             if (arg.IsNull()) return ParseError("Expect expression after operator.");
 
@@ -150,7 +151,7 @@ namespace Finch
         
         while (LookAhead(TOKEN_NAME))
         {
-            String message = Consume()->Text();
+            InternString message = Consume()->Text();
             object = Ref<Expr>(new UnaryExpr(object, message));
         }
         
@@ -174,11 +175,11 @@ namespace Finch
         else if (LookAhead(TOKEN_KEYWORD))
         {
             // implicit receiver keyword message
-            return KeywordMessage(Ref<Expr>(new NameExpr("Ether")));
+            return KeywordMessage(Ref<Expr>(new NameExpr(StringPool().Intern("Ether"))));
         }
         else if (Match(TOKEN_DOT))
         {
-            return Ref<Expr>(new NameExpr("self"));
+            return Ref<Expr>(new NameExpr(StringPool().Intern("self")));
         }
         else if (Match(TOKEN_LEFT_PAREN))
         {
@@ -191,7 +192,7 @@ namespace Finch
         }
         if (Match(TOKEN_LEFT_BRACE))
         {
-            vector<String> args;
+            vector<InternString> args;
             
             // see if there are args
             if (Match(TOKEN_PIPE))
@@ -205,7 +206,7 @@ namespace Finch
                 
                 // if there were no named args, but there were pipes (||),
                 // use an automatic "it" arg
-                if (args.size() == 0) args.push_back("it");
+                if (args.size() == 0) args.push_back(StringPool().Intern("it"));
             }
             
             Ref<Expr> body = Expression();
@@ -221,12 +222,12 @@ namespace Finch
     // Parses just the message send part of a keyword message: "foo: a bar: b"
     Ref<Expr> FinchParser::KeywordMessage(Ref<Expr> object)
     {
-        vector<String>      keywords;
-        vector<Ref<Expr> >  args;
+        vector<InternString>    keywords;
+        vector<Ref<Expr> >      args;
         
         while (LookAhead(TOKEN_KEYWORD))
         {
-            String keyword = Consume()->Text();
+            InternString keyword = Consume()->Text();
             Ref<Expr> arg = Operator();
             if (arg.IsNull()) return ParseError("Expect argument after keyword.");
             

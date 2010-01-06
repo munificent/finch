@@ -6,7 +6,7 @@
 #include "IExprVisitor.h"
 #include "Macros.h"
 #include "Ref.h"
-#include "String.h"
+#include "InternString.h"
 
 namespace Finch
 {
@@ -16,11 +16,11 @@ namespace Finch
     class UndefExpr : public Expr
     {
     public:
-        UndefExpr(String name)
+        UndefExpr(InternString name)
         :   mName(name)
         {}
         
-        String    Name()  const { return mName; }
+        InternString    Name()  const { return mName; }
         
         virtual void Trace(ostream & stream) const
         {
@@ -31,6 +31,6 @@ namespace Finch
         
     private:
         // the name of the variable
-        String mName;
+        InternString mName;
     };
 }

@@ -21,7 +21,7 @@ namespace Finch
         
         String() {}
         
-        String(const char* chars);
+        String(const char * chars);
 
         String(char c);
 
@@ -42,7 +42,7 @@ namespace Finch
         String operator +(const String & other) const;
         String & operator +=(const String & other);
         
-        const char* CString() const;
+        const char * CString() const;
 
         int Length() const;
         

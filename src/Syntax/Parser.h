@@ -35,6 +35,9 @@ namespace Finch
         // Consumes the current Token and advances the Parser.
         Ref<Token> Consume();
 
+    protected:
+        InternStringPool & StringPool() const { return mTokens->StringPool(); }
+        
     private:
         void FillLookAhead(int count);
         

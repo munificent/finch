@@ -16,13 +16,13 @@ namespace Finch
     class SetExpr : public Expr
     {
     public:
-        SetExpr(String name, Ref<Expr> value)
+        SetExpr(InternString name, Ref<Expr> value)
         :   mName(name),
             mValue(value)
         {}
         
-        String    Name()  const { return mName; }
-        Ref<Expr> Value() const { return mValue; }
+        InternString    Name()  const { return mName; }
+        Ref<Expr>       Value() const { return mValue; }
         
         virtual void Trace(ostream & stream) const
         {
@@ -33,7 +33,7 @@ namespace Finch
         
     private:
         // the name of the variable
-        String mName;
+        InternString mName;
         
         // the value
         Ref<Expr> mValue;

@@ -6,7 +6,7 @@
 #include "Expr.h"
 #include "IExprVisitor.h"
 #include "Ref.h"
-#include "String.h"
+#include "InternString.h"
 
 namespace Finch
 {
@@ -16,12 +16,12 @@ namespace Finch
     class DefExpr : public Expr
     {
     public:
-        DefExpr(String name, Ref<Expr> value)
+        DefExpr(InternString name, Ref<Expr> value)
         :   mName(name),
             mValue(value)
         {}
         
-        String    Name()  const { return mName; }
+        InternString Name()  const { return mName; }
         
         // May be a null reference if it has no initial value.
         Ref<Expr> Value() const { return mValue; }
@@ -35,7 +35,7 @@ namespace Finch
         
     private:
         // the name of the variable
-        String mName;
+        InternString mName;
         
         // the initial value or a null reference for an uninitialized variable
         Ref<Expr> mValue;

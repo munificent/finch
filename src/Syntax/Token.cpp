@@ -24,17 +24,19 @@ namespace Finch
         friend class Token;
         
     public:
-        virtual String Text() const { return mText; }
+/*        virtual String Text() const { return mText; } */
+        virtual InternString Text() const { return mText; }
         
     private:
-        StringToken(TokenType type, const String & text)
+/*        StringToken(TokenType type, const String & text) */
+        StringToken(TokenType type, InternString text)
         :   Token(type),
-        mText(text)
+            mText(text)
         {}
         
         TokenType   mType;
-        String      mText;
-        double      mNumber;
+/*        String      mText;*/
+        InternString mText;
     };
     
     // virtual constructors
@@ -43,7 +45,13 @@ namespace Finch
         return Ref<Token>(new Token(type));
     }
     
+    /*
     Ref<Token> Token::New(TokenType type, const String & text)
+    {
+        return Ref<Token>(new StringToken(type, text));
+    }
+    */
+    Ref<Token> Token::New(TokenType type, InternString text)
     {
         return Ref<Token>(new StringToken(type, text));
     }

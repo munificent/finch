@@ -3,6 +3,7 @@
 
 #include "Evaluator.h"
 #include "Environment.h"
+#include "InternStringPool.h"
 #include "Scope.h"
 #include "String.h"
 #include "Repl.h"
@@ -21,10 +22,11 @@ namespace Finch
         Environment env;
         Evaluator   evaluator(env);
         
-        ReplLineReader reader;
-        Lexer          lexer(&reader);
-        LineNormalizer normalizer(&lexer);
-        FinchParser    parser(&normalizer);
+        ReplLineReader      reader;
+        InternStringPool    pool;
+        Lexer               lexer(&reader, pool);
+        LineNormalizer      normalizer(&lexer);
+        FinchParser         parser(&normalizer);
                 
         cout << "Finch 0.0.0d" << endl;
         cout << "------------" << endl;

@@ -4,26 +4,33 @@
 #include "Ref.h"
 #include "Token.h"
 #include "ITokenSource.h"
+#include "String.h"
 
 namespace Finch
 {
     class ILineReader;
+    class InternStringPool;
     
     // The Finch lexer. Reads a series of lines from an ILineReader and splits
     // them into Tokens.
     class Lexer : public ITokenSource
     {
     public:
-        Lexer(ILineReader * reader)
+        Lexer(ILineReader * reader, InternStringPool & pool)
         :   mReader(reader),
+            mPool(pool),
             mState(LEX_NEED_LINE),
             mIndex(0),
             mTokenStart(0)
-        {}
+        {
+            ASSERT_NOT_NULL(reader);
+        }
         
         // Lexes and returns the next full Token read from the source. If the
         // ILineReader is out of lines, this will return an EOF Token.
         virtual Ref<Token> ReadToken();
+        
+        virtual InternStringPool & StringPool() const { return mPool; }
         
     private:
         enum State
@@ -54,7 +61,9 @@ namespace Finch
         bool IsDigit(char c) const;
         bool IsOperator(char c) const;
         
-        ILineReader * mReader;
+        ILineReader *       mReader;
+        InternStringPool &  mPool;
+        
         State         mState;
         
         String        mLine;

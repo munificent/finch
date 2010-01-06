@@ -10,6 +10,9 @@ _Expect(__FILE__, __LINE__, condition, message)
 #define EXPECT_EQUAL(expected, actual) \
 _ExpectEqual(__FILE__, __LINE__, #actual, expected, actual)
 
+#define EXPECT_NOT_EQUAL(expected, actual) \
+_ExpectNotEqual(__FILE__, __LINE__, #actual, expected, actual)
+
 namespace Finch
 {
     // Base class for test classes.
@@ -17,6 +20,8 @@ namespace Finch
     {
     public:
         static void ShowResults();
+        
+        static bool AllPassed() { return sFailed == 0; }
         
     protected:
         static inline void _Expect(const char * file, int line,
@@ -37,7 +42,7 @@ namespace Finch
                                         const Left & expected, const Right & actual)
         {
             sTests++;
-            if (expected != actual)
+            if (!(expected == actual))
             {
                 std::cout << "FAIL " << sTests << " " << file << ":" << line << " - "
                 << "Expected " << actualExpression << " to be "
@@ -46,6 +51,20 @@ namespace Finch
             }
         }
         
+        template <typename Left, typename Right>
+        static inline void _ExpectNotEqual(const char* file, int line,
+                                        const char* actualExpression,
+                                        const Left & expected, const Right & actual)
+        {
+            sTests++;
+            if (!(expected != actual))
+            {
+                std::cout << "FAIL " << sTests << " " << file << ":" << line << " - "
+                << "Expected " << actualExpression << " to not be "
+                << expected << ", but was." << std::endl;
+                sFailed++;
+            }
+        }
     private:
         static int sTests;
         static int sFailed;

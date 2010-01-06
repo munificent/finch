@@ -6,8 +6,8 @@
 #include "Macros.h"
 #include "Expr.h"
 #include "IExprVisitor.h"
+#include "InternString.h"
 #include "Ref.h"
-#include "String.h"
 
 namespace Finch
 {
@@ -18,13 +18,13 @@ namespace Finch
     class BlockExpr : public Expr
     {
     public:
-        BlockExpr(vector<String> params, Ref<Expr> body)
+        BlockExpr(vector<InternString> params, Ref<Expr> body)
         :   mParams(params),
             mBody(body)
         {}
         
-        vector<String>  Params() const { return mParams; }
-        Ref<Expr>       Body() const { return mBody; }
+        vector<InternString>    Params() const { return mParams; }
+        Ref<Expr>               Body() const { return mBody; }
         
         virtual void Trace(ostream & stream) const
         {
@@ -50,7 +50,7 @@ namespace Finch
         EXPRESSION_VISITOR
 
     private:
-        vector<String> mParams;
-        Ref<Expr>      mBody;
+        vector<InternString>    mParams;
+        Ref<Expr>               mBody;
     };
 }

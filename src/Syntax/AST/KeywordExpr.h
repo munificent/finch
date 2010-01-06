@@ -18,7 +18,7 @@ namespace Finch
     class KeywordExpr : public Expr
     {
     public:
-        KeywordExpr(Ref<Expr> receiver, vector<String> keywords,
+        KeywordExpr(Ref<Expr> receiver, vector<InternString> keywords,
                     vector<Ref<Expr> > args)
         :   mReceiver(receiver),
             mKeywords(keywords),
@@ -28,10 +28,10 @@ namespace Finch
                    "Must have same number of keywords and arguments.");
         }
         
-        Ref<Expr>                  Receiver()  const { return mReceiver; }
+        Ref<Expr>                       Receiver()  const { return mReceiver; }
         
-        const vector<String> &     Keywords()  const { return mKeywords; }
-        const vector<Ref<Expr> > & Arguments() const { return mArgs; }
+        const vector<InternString> &    Keywords()  const { return mKeywords; }
+        const vector<Ref<Expr> > &      Arguments() const { return mArgs; }
         
         virtual void Trace(ostream & stream) const
         {
@@ -50,7 +50,7 @@ namespace Finch
         Ref<Expr> mReceiver;
         
         // the names of the keywords
-        vector<String> mKeywords;
+        vector<InternString> mKeywords;
         
         // the arguments being passed
         vector<Ref<Expr> > mArgs;

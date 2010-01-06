@@ -1,6 +1,7 @@
 #include <stdarg.h>
 
 #include "ILineReader.h"
+#include "InternStringPool.h"
 #include "LexerTests.h"
 #include "Lexer.h"
 
@@ -112,12 +113,25 @@ namespace Finch
                 TOKEN_OPERATOR,
                 TOKEN_LINE, TOKEN_EOF);
 
+        // test keywords
         TestLex("foo: barBangBaz: :",
                 TOKEN_KEYWORD,
                 TOKEN_KEYWORD,
                 TOKEN_KEYWORD,
                 TOKEN_LINE, TOKEN_EOF);
         
+        TestLex("foo: 1 : \"2\" : 3",
+                TOKEN_KEYWORD,
+                TOKEN_NUMBER,
+                TOKEN_KEYWORD,
+                TOKEN_STRING,
+                TOKEN_KEYWORD,
+                TOKEN_NUMBER,
+                TOKEN_LINE, TOKEN_EOF);
+                
+        EXPECT_EQUAL("foo:", LexOne("foo:")->Text());
+        EXPECT_EQUAL(":",    LexOne(":")->Text());
+
         // test combinations
         TestLex("foo[123]+(*\"huh\"def)",
                 TOKEN_NAME,
@@ -144,7 +158,8 @@ namespace Finch
     Ref<Token> LexerTests::LexOne(const char * text)
     {
         FixedLineReader reader(text);
-        Lexer lexer(&reader);
+        InternStringPool pool;
+        Lexer lexer(&reader, pool);
         
         return lexer.ReadToken();
     }
@@ -152,7 +167,8 @@ namespace Finch
     void LexerTests::TestLex(const char * text, ...)
     {
         FixedLineReader reader(text);
-        Lexer lexer(&reader);
+        InternStringPool pool;
+        Lexer lexer(&reader, pool);
         
         va_list args;
         va_start(args, text);

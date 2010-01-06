@@ -1,5 +1,6 @@
 #include <iostream>
 
+#include "InternStringPoolTests.h"
 #include "LexerTests.h"
 #include "QueueTests.h"
 #include "RefTests.h"
@@ -10,10 +11,11 @@
 
 namespace Finch
 {
-    void TestMain::Run()
+    bool TestMain::Run()
     {
         std::cout << "Running unit tests:" << std::endl;
         
+        InternStringPoolTests::Run();
         LexerTests::Run();
         QueueTests::Run();
         RefTests::Run();
@@ -22,5 +24,7 @@ namespace Finch
         TokenTests::Run();
 
         Test::ShowResults();
+        
+        return Test::AllPassed();
     }
 }

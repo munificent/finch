@@ -15,11 +15,11 @@ namespace Finch
     class NameExpr : public Expr
     {
     public:
-        NameExpr(String name)
+        NameExpr(InternString name)
         :   mName(name)
         {}
         
-        String Name() const { return mName; }
+        InternString Name() const { return mName; }
         
         virtual void Trace(ostream & stream) const
         {
@@ -29,6 +29,6 @@ namespace Finch
         EXPRESSION_VISITOR
         
     private:
-        String  mName;
+        InternString mName;
     };
 }

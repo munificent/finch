@@ -6,6 +6,8 @@
 
 namespace Finch
 {
+    class InternStringPool;
+    
     // Interface for a class that provides a stream of Tokens.
     class ITokenSource
     {
@@ -13,6 +15,9 @@ namespace Finch
         // Reads the next Token from the source.
         virtual Ref<Token> ReadToken() = 0;
 
+        // Gets the string pool used to house strings used in the tokens.
+        virtual InternStringPool & StringPool() const = 0;
+        
         virtual ~ITokenSource() {}
     };
 }

@@ -5,6 +5,6 @@ namespace Finch
     class TestMain
     {
     public:
-        static void Run();
+        static bool Run();
     };
 }

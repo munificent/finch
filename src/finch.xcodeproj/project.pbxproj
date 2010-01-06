@@ -22,6 +22,9 @@
 		C465893110DE8802007C4C3E /* TestMain.cpp in Sources */ = {isa = PBXBuildFile; fileRef = C465892B10DE8802007C4C3E /* TestMain.cpp */; };
 		C465893210DE8802007C4C3E /* Test.cpp in Sources */ = {isa = PBXBuildFile; fileRef = C465892D10DE8802007C4C3E /* Test.cpp */; };
 		C465893310DE8802007C4C3E /* RefTests.cpp in Sources */ = {isa = PBXBuildFile; fileRef = C465892F10DE8802007C4C3E /* RefTests.cpp */; };
+		C4718AC510F2F36A00A8303D /* InternString.cpp in Sources */ = {isa = PBXBuildFile; fileRef = C4718AC410F2F36A00A8303D /* InternString.cpp */; };
+		C4718ACA10F2F4E100A8303D /* InternStringPool.cpp in Sources */ = {isa = PBXBuildFile; fileRef = C4718AC910F2F4E100A8303D /* InternStringPool.cpp */; };
+		C4718AD610F2F7E700A8303D /* InternStringPoolTests.cpp in Sources */ = {isa = PBXBuildFile; fileRef = C4718AD510F2F7E700A8303D /* InternStringPoolTests.cpp */; };
 		C489986210E865D100838D42 /* LexerTests.cpp in Sources */ = {isa = PBXBuildFile; fileRef = C489986110E865D100838D42 /* LexerTests.cpp */; };
 		C4949EFC10E02508001A57BA /* BooleanPrimitives.cpp in Sources */ = {isa = PBXBuildFile; fileRef = C4949EFB10E02508001A57BA /* BooleanPrimitives.cpp */; };
 		C4A6F68810DC3B4400854074 /* ReplLineReader.cpp in Sources */ = {isa = PBXBuildFile; fileRef = C4A6F68710DC3B4400854074 /* ReplLineReader.cpp */; };
@@ -89,6 +92,12 @@
 		C465892D10DE8802007C4C3E /* Test.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = Test.cpp; path = Test/Test.cpp; sourceTree = "<group>"; };
 		C465892E10DE8802007C4C3E /* RefTests.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = RefTests.h; path = Test/RefTests.h; sourceTree = "<group>"; };
 		C465892F10DE8802007C4C3E /* RefTests.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = RefTests.cpp; path = Test/RefTests.cpp; sourceTree = "<group>"; };
+		C4718AC310F2F36A00A8303D /* InternString.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = InternString.h; sourceTree = "<group>"; };
+		C4718AC410F2F36A00A8303D /* InternString.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = InternString.cpp; sourceTree = "<group>"; };
+		C4718AC810F2F4E100A8303D /* InternStringPool.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = InternStringPool.h; sourceTree = "<group>"; };
+		C4718AC910F2F4E100A8303D /* InternStringPool.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = InternStringPool.cpp; sourceTree = "<group>"; };
+		C4718AD410F2F7E700A8303D /* InternStringPoolTests.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = InternStringPoolTests.h; sourceTree = "<group>"; };
+		C4718AD510F2F7E700A8303D /* InternStringPoolTests.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = InternStringPoolTests.cpp; sourceTree = "<group>"; };
 		C489986010E865D100838D42 /* LexerTests.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = LexerTests.h; sourceTree = "<group>"; };
 		C489986110E865D100838D42 /* LexerTests.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = LexerTests.cpp; sourceTree = "<group>"; };
 		C4949EFA10E02508001A57BA /* BooleanPrimitives.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = BooleanPrimitives.h; path = Interpreter/Primitives/BooleanPrimitives.h; sourceTree = "<group>"; };
@@ -212,6 +221,8 @@
 				C465892910DE8802007C4C3E /* TokenTests.cpp */,
 				C4D45F9810EC5E0400BD2A81 /* StackTests.h */,
 				C4D45F9910EC5E0400BD2A81 /* StackTests.cpp */,
+				C4718AD410F2F7E700A8303D /* InternStringPoolTests.h */,
+				C4718AD510F2F7E700A8303D /* InternStringPoolTests.cpp */,
 			);
 			name = Test;
 			sourceTree = "<group>";
@@ -273,6 +284,10 @@
 				C4FC167910D4336500E6ABD6 /* String.h */,
 				C4FC167810D4336500E6ABD6 /* String.cpp */,
 				C4D45F9B10EC5E1200BD2A81 /* Stack.h */,
+				C4718AC310F2F36A00A8303D /* InternString.h */,
+				C4718AC410F2F36A00A8303D /* InternString.cpp */,
+				C4718AC810F2F4E100A8303D /* InternStringPool.h */,
+				C4718AC910F2F4E100A8303D /* InternStringPool.cpp */,
 			);
 			name = Base;
 			sourceTree = "<group>";
@@ -413,6 +428,9 @@
 				C489986210E865D100838D42 /* LexerTests.cpp in Sources */,
 				C422D6B610E9048300980E01 /* Compiler.cpp in Sources */,
 				C4D45F9A10EC5E0400BD2A81 /* StackTests.cpp in Sources */,
+				C4718AC510F2F36A00A8303D /* InternString.cpp in Sources */,
+				C4718ACA10F2F4E100A8303D /* InternStringPool.cpp in Sources */,
+				C4718AD610F2F7E700A8303D /* InternStringPoolTests.cpp in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
