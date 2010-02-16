@@ -22,9 +22,9 @@ namespace Finch
         Evaluator   evaluator(env);
         
         ReplLineReader reader;
-        Lexer          lexer(&reader);
-        LineNormalizer normalizer(&lexer);
-        FinchParser    parser(&normalizer);
+        Lexer          lexer(reader);
+        LineNormalizer normalizer(lexer);
+        FinchParser    parser(normalizer);
                 
         cout << "Finch 0.0.0d" << endl;
         cout << "------------" << endl;

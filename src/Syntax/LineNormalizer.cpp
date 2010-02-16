@@ -11,30 +11,20 @@ namespace Finch
         
         while (token.IsNull())
         {
-            token = mTokens->ReadToken();
-            
-            bool isLineToken = token->Type() == TOKEN_LINE;
+            token = mTokens.ReadToken();
             
             switch (token->Type())
             {
                 case TOKEN_LINE:
-                    switch (mState)
+                    if (mEatNewlines)
                     {
-                        case NORMALIZE_DEFAULT:
-                            // discard newlines after first one
-                            mState = NORMALIZE_DISCARD;
-                            break;
-                            
-                        case NORMALIZE_DISCARD:
-                            // discard any lines
-                            token.Clear();
-                            break;
-                            
-                        case NORMALIZE_DISCARD_ONE:
-                            // discard one line
-                            token.Clear();
-                            mState = NORMALIZE_DEFAULT;
-                            break;
+                        // discard any lines
+                        token.Clear();
+                    }
+                    else
+                    {
+                        // discard newlines after first one
+                        mEatNewlines = true;
                     }
                     break;
 
@@ -49,24 +39,13 @@ namespace Finch
                 case TOKEN_LEFT_PAREN:
                 case TOKEN_LEFT_BRACKET:
                 case TOKEN_LEFT_BRACE:
-                    mState = NORMALIZE_DISCARD;
-                    break;
-                    
-                // discard one newline after close brace on its own line
-                case TOKEN_RIGHT_BRACE:
-                    if (mNewLine)
-                    {
-                        mState = NORMALIZE_DISCARD_ONE;
-                    }
+                    mEatNewlines = true;
                     break;
                     
                 default:
-                    mState = NORMALIZE_DEFAULT;
+                    mEatNewlines = false;
                     break;
             }
-            
-            // keep track of what the previous token was
-            mNewLine = isLineToken;
         }
         
         //std::cout << "norm " << *token << std::endl;

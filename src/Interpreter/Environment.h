@@ -42,12 +42,12 @@ namespace Finch
         Ref<Object> False()         const { return mFalse; }
         
         // Evaluates the given block within this environment.
-        Ref<Object> EvaluateBlock(const BlockObject * block,
+        Ref<Object> EvaluateBlock(const BlockObject & block,
                                   const vector<Ref<Object> > & args);
         
         // Evaluates the given method within this environment.
         Ref<Object> EvaluateMethod(Ref<Object> self,
-                                   const BlockObject * block,
+                                   const BlockObject & block,
                                    const vector<Ref<Object> > & args);
         
         void StopRunning() { mRunning = false; }

@@ -45,7 +45,7 @@ namespace Finch
     {
         while (mRead.Count() < count)
         {
-            mRead.Enqueue(mTokens->ReadToken());
+            mRead.Enqueue(mTokens.ReadToken());
         }
     }
 }

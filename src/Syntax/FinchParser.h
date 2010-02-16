@@ -13,7 +13,7 @@ namespace Finch
     class FinchParser : private Parser
     {
     public:
-        FinchParser(ITokenSource * tokens)
+        FinchParser(ITokenSource & tokens)
         :   Parser(tokens)
         {}
         

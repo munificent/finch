@@ -34,9 +34,9 @@ namespace Finch
             return result;
         }
         
-        Lexer           lexer(&reader);
-        LineNormalizer  normalizer(&lexer);
-        FinchParser     parser(&normalizer);
+        Lexer           lexer(reader);
+        LineNormalizer  normalizer(lexer);
+        FinchParser     parser(normalizer);
         
         Evaluator       evaluator(env);
         

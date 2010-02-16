@@ -14,51 +14,48 @@ namespace Finch
     //   discarded. This collapses duplicate newlines to a single one.
     //
     // - Any newlines after a token that cannot end an expression are discarded.
-    //   Any newlines after a keyword, operator, "|", "def", or "set" will
-    //   be ignored.
+    //   Any newlines after a keyword, operator, "<-", "|", "def", or "undef"
+    //   will be ignored.
     //
     // - Any newlines after an opening group are discarded. This means newlines
     //   following a "(", "[", or "{" will be ignored.
     //
-    // - Exactly one newline, if present, following a "}" on its own line will
-    //   be discarded. This allows a single keyword expression to span multiple
-    //   lines:
+    // Note that because newlines are significant, it's important to pay
+    // attention to how they appear in expressions that use multiple blocks.
+    // The following:
     //
-    //   if: 1 < 2 then:
-    //   {
-    //       write: "true"
-    //   }
-    //   else: ' this rule causes the newline here to be discarded
-    //   {
-    //       write: "false"
+    //   if: False {
+    //      write: "true"
+    //   } else: {
+    //      write: "false"
     //   }
     //
-    //   The "on its own line" ensures that single-line blocks work as expected:
+    // will correctly print "false". However, this will not:
     //
-    //   if: foo then: { write: "foo" } ' newline will not be discarded here
-    //   if: bar then: { write: "bar" }
+    //   if: False
+    //   {
+    //      write: "true"
+    //   }
+    //   else:
+    //   {
+    //      write: "false"
+    //   }
+    //
+    // The newline after the "}" ends the "if:" expression, and the following
+    // "else:" is considered the beginning of a new expression.
     class LineNormalizer : public ITokenSource
     {
     public:
-        LineNormalizer(ITokenSource * tokens)
+        LineNormalizer(ITokenSource & tokens)
         :   mTokens(tokens),
-            mState(NORMALIZE_DISCARD), // strip all leading newlines
-            mNewLine(true)
+            mEatNewlines(true) // strip all leading newlines
         {}
         
         virtual Ref<Token> ReadToken();
         
     private:
-        enum State
-        {
-            NORMALIZE_DEFAULT,
-            NORMALIZE_DISCARD,
-            NORMALIZE_DISCARD_ONE
-        };
-        
-        ITokenSource * mTokens;
-        State          mState;
-        bool           mNewLine;
+        ITokenSource & mTokens;
+        bool           mEatNewlines;
         
         NO_COPY(LineNormalizer);
     };

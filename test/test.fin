@@ -1,23 +1,22 @@
 writeLine: "Running Finch test suite."
 
 ' define a Test object the tests can use
-def Test <- Object copyWith:
-{
+def Test <- Object copyWith: {
     def _suite      <- ""
     def _test       <- ""
     def _testShown  <- False
     def _tests      <- 0
     def _failed     <- 0
     
-    .addMethod: "suite:is:" body:
-    {|name body|
+    .addMethod: "suite:is:" body: {
+        |name body|
         _suite <- name
         body call
         _suite <- ""
     }
 
-    .addMethod: "test:is:" body:
-    {|name body|
+    .addMethod: "test:is:" body: {
+        |name body|
         _test       <- name
         _tests      <- 0
         _failed     <- 0
@@ -33,29 +32,26 @@ def Test <- Object copyWith:
         _test <- ""
     }
 
-    .addMethod: "showHeader" body:
-    {
-        if: _testShown not then:
-        {
+    .addMethod: "showHeader" body: {
+        if: _testShown not then: {
             writeLine: _suite + " / " + _test
             _testShown <- True
         }
     }
 
-    .addMethod: "isTrue:" body:
-    {|actual|
+    .addMethod: "isTrue:" body: {
+        |actual|
         _tests <- _tests + 1
 
-        if: actual not then:
-        {
+        if: actual not then: {
             _failed <- _failed + 1
             .showHeader
             writeLine: "  Test " + _tests toString + " failed."
         }
     }
 
-    .addMethod: "that:equals:" body:
-    {|actual expected|
+    .addMethod: "that:equals:" body: {
+        |actual expected|
         .isTrue: actual = expected
     }
 }

@@ -14,7 +14,7 @@ namespace Finch
     class Lexer : public ITokenSource
     {
     public:
-        Lexer(ILineReader * reader)
+        Lexer(ILineReader & reader)
         :   mReader(reader),
             mState(LEX_NEED_LINE),
             mIndex(0),
@@ -54,7 +54,7 @@ namespace Finch
         bool IsDigit(char c) const;
         bool IsOperator(char c) const;
         
-        ILineReader * mReader;
+        ILineReader & mReader;
         State         mState;
         
         String        mLine;

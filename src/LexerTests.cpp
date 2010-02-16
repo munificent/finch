@@ -144,7 +144,7 @@ namespace Finch
     Ref<Token> LexerTests::LexOne(const char * text)
     {
         FixedLineReader reader(text);
-        Lexer lexer(&reader);
+        Lexer lexer(reader);
         
         return lexer.ReadToken();
     }
@@ -152,7 +152,7 @@ namespace Finch
     void LexerTests::TestLex(const char * text, ...)
     {
         FixedLineReader reader(text);
-        Lexer lexer(&reader);
+        Lexer lexer(reader);
         
         va_list args;
         va_start(args, text);

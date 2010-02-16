@@ -70,7 +70,7 @@ namespace Finch
         
         vector<Ref<Object> > noArgs;
         
-        while (env.EvaluateBlock(condition, noArgs) == env.True())
+        while (env.EvaluateBlock(*condition, noArgs) == env.True())
         {
             args[1]->Receive(args[1], env, "call", noArgs);
         }

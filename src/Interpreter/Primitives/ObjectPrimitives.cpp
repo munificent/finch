@@ -48,7 +48,7 @@ namespace Finch
         }
         
         vector<Ref<Object> > noArgs;
-        env.EvaluateMethod(copy, block, noArgs);
+        env.EvaluateMethod(copy, *block, noArgs);
         
         return copy;
     }

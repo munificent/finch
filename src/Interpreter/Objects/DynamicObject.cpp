@@ -22,7 +22,7 @@ namespace Finch
             
             ASSERT_NOT_NULL(block);
             
-            Ref<Object> result = env.EvaluateMethod(thisRef, block, args);
+            Ref<Object> result = env.EvaluateMethod(thisRef, *block, args);
             
             return result;
         }

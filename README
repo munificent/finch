@@ -1,0 +1,25 @@
+Finch is two things simultaneously: a small C++ program for me to
+brush up on my low-level skills, and an interpreter for a simple
+dynamic prototype-based language. I'm going to guess that you care
+more about the latter, though the former may help explain some design
+choices in the code (i.e. why I seem to be reinventing so many 
+wheels).
+
+Finch the language is heavily inspired by the Self programming
+language. It's basically my attempt to take self and do two things to
+it:
+
+1. Make its syntax more familiar to someone coming from a typical
+   curly and semicolon programming background.
+
+2. Make it text friendly unlike most Smalltalk-derived languages.
+
+In other words, Finch is a Smalltalk for the rest of us.
+
+
+--- A Taste ---------------------------------------------------------
+
+To give you a flavor of what the language looks like, here's some
+samples:
+
+    writeLine: "Hello, world!"

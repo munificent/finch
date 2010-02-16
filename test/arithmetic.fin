@@ -1,27 +1,22 @@
-Test suite: "Arithmetic" is:
-{
-    Test test: "Addition" is:
-    {
+Test suite: "Arithmetic" is: {
+    Test test: "Addition" is: {
         Test that: 1 + 2    equals: 3
         Test that: 0 + 1000 equals: 1000
         Test that: -3 + 3   equals: 0
     }
     
-    Test test: "Subtraction" is:
-    {
+    Test test: "Subtraction" is: {
         Test that: 2 - 1    equals: 1
         Test that: 0 - 1000 equals: -1000
         Test that: -3 - 3   equals: -6
     }
     
-    Test test: "Multiplication" is:
-    {
+    Test test: "Multiplication" is: {
         Test that: 2 * 3    equals: 6
         Test that: 0 * 1000 equals: 0
     }
     
-    Test test: "Division" is:
-    {
+    Test test: "Division" is: {
         Test that: 6 / 3    equals: 2
         Test that: 5 / 0    equals: Nil
     }

@@ -121,28 +121,28 @@ namespace Finch
         cout << "Runtime error: " << message << endl;
     }
 
-    Ref<Object> Environment::EvaluateBlock(const BlockObject * block,
+    Ref<Object> Environment::EvaluateBlock(const BlockObject & block,
                                            const vector<Ref<Object> > & args)
     {
         // create a new local scope for the block
         Ref<Scope> oldScope = mCurrentScope;
-        mCurrentScope = Ref<Scope>(new Scope(block->Closure()));
+        mCurrentScope = Ref<Scope>(new Scope(block.Closure()));
         
-        if (block->Params().size() != args.size())
+        if (block.Params().size() != args.size())
         {
             RuntimeError(String::Format("Block expects %d arguments, but was passed %d.",
-                                            block->Params().size(), args.size()));
+                                            block.Params().size(), args.size()));
             return Ref<Object>();
         }
         
         // bind the arguments
         for (unsigned int i = 0; i < args.size(); i++)
         {
-            mCurrentScope->Define(block->Params()[i], args[i]);
+            mCurrentScope->Define(block.Params()[i], args[i]);
         }
         
         Evaluator evaluator(*this);
-        Ref<Object> result = evaluator.Evaluate(block->Body());
+        Ref<Object> result = evaluator.Evaluate(block.Body());
         
         mCurrentScope = oldScope;
         
@@ -150,7 +150,7 @@ namespace Finch
     }
     
     Ref<Object> Environment::EvaluateMethod(Ref<Object> self,
-                                            const BlockObject * block,
+                                            const BlockObject & block,
                                             const vector<Ref<Object> > & args)
     {
         // swap out the current self object

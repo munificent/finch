@@ -9,9 +9,9 @@ namespace Finch
     Ref<Object> BlockCall(Ref<Object> thisRef, Environment & env,
                            String message, const vector<Ref<Object> > & args)
     {
-        BlockObject* block = thisRef->AsBlock();
+        BlockObject * block = thisRef->AsBlock();
         ASSERT_NOT_NULL(block);
         
-        return env.EvaluateBlock(block, args);
+        return env.EvaluateBlock(*block, args);
     }
 }

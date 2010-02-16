@@ -14,7 +14,7 @@ namespace Finch
     class Parser
     {
     protected:
-        Parser(ITokenSource * tokens)
+        Parser(ITokenSource & tokens)
         :   mTokens(tokens)
         {}
         
@@ -38,7 +38,7 @@ namespace Finch
     private:
         void FillLookAhead(int count);
         
-        ITokenSource * mTokens;
+        ITokenSource & mTokens;
         
         Queue<Ref<Token>, 2> mRead;
         

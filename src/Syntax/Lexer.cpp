@@ -17,13 +17,13 @@ namespace Finch
             switch (mState)
             {
                 case LEX_NEED_LINE:
-                    if (mReader->EndOfLines())
+                    if (mReader.EndOfLines())
                     {
                         mState = LEX_DONE;
                     }
                     else
                     {
-                        mLine = mReader->NextLine();
+                        mLine = mReader.NextLine();
                         mIndex = 0;
                         mState = LEX_DEFAULT;
                     }
@@ -203,13 +203,13 @@ namespace Finch
     
     void Lexer::StartLine()
     {
-        if (mReader->EndOfLines())
+        if (mReader.EndOfLines())
         {
             mState = LEX_DONE;
         }
         else
         {
-            mLine = mReader->NextLine();
+            mLine = mReader.NextLine();
             mIndex = 0;
             mState = LEX_DEFAULT;
         }

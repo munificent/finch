@@ -9,7 +9,7 @@ obj + arg
 ' keyword message
 obj do: arg with: other
 
-' implicit Environment receiver
+' implicit Ether receiver
 if: 1 < 2 then: { obj message }
 + foo
 
