@@ -40,7 +40,8 @@ namespace Finch
     class Token
     {
     public:
-        // virtual constructors
+        // Factory methods to construct tokens of different types with
+        // different data.
         static Ref<Token> New(TokenType type);
         static Ref<Token> New(TokenType type, const String & text);
         static Ref<Token> New(TokenType type, double number);

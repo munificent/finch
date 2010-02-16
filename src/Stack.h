@@ -26,6 +26,7 @@ namespace Finch
         // Gets the maximum number of items the stack can hold.
         int Capacity() const { return Size; }
         
+        // Pushes the given item onto the top of the stack.
         void Push(const T & item)
         {
             ASSERT(mCount < Capacity(), "Cannot push onto a full stack.");
@@ -33,6 +34,7 @@ namespace Finch
             mItems[mCount++] = item;
         }
         
+        // Pops the top item off the stack.
         T Pop()
         {
             ASSERT(mCount > 0, "Cannot pop an empty stack.");

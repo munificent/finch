@@ -40,6 +40,7 @@ namespace Finch
         
         ITokenSource & mTokens;
         
+        // The 2 here is the maximum number of lookahead tokens.
         Queue<Ref<Token>, 2> mRead;
         
         NO_COPY(Parser);

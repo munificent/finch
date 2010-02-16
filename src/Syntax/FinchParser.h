@@ -28,6 +28,7 @@ namespace Finch
         Ref<Expr> ParseLine();
 
     private:
+        // The grammar productions, from lowest to highest precedence.
         Ref<Expr> Expression();
         Ref<Expr> Sequence();
         Ref<Expr> Variable();
