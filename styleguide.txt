@@ -1,0 +1,43 @@
+Headers
+-------
+- The first line of a header should be "#pragma once".
+- Then #include any system headers, sorted alphabetically.
+- Then #include any Finch headers, sorted alphabetically.
+- Only #include headers that are needed by the header itself. Prefer
+  forward declarations when possible.
+
+Type Names
+----------
+There are two logical "kinds" of types we care about: value types and
+reference types. Value types are primitive types, or types that act
+like primitive types. They are:
+  1) Small in size
+  2) Copyable
+  3) Not polymorphic
+  
+All other types are reference types. Value types are named using
+camelCase, to make them appear similar to primitive types like "int".
+Reference types are named using PascalCase.
+
+Arguments
+---------
+- Pass value types by value unless the called function needs to
+  modify the caller's view of it.
+- Pass reference types by const reference if:
+  1) the function will not modify it
+  2) the function will not store it
+  3) the function cannot accept NULL
+- Pass reference types by reference if:
+  1) the function will modify it
+  2) the function will not store it
+  3) the function cannot accept NULL
+- Pass reference types by const pointer if:
+  1) the function will not modify it
+  2) the function will not store it
+  3) the function can accept NULL
+- Pass reference types by pointer if:
+  1) the function will modify it
+  2) the function will not store it
+  3) the function can accept NULL
+- Pass reference types by ref<T> if:
+  1) the function will store the reference
