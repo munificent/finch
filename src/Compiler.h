@@ -11,23 +11,29 @@
 namespace Finch
 {
     //### bob: wip
-    /*
     // Compiles Finch ASTs to bytecode for execution by the interpreter.
-    class Compiler : private IExprVisitor
+    class Compiler : private IExprVisitor2
     {
     public:
+        static Ref<CodeBlock> Compile(const Expr & expr);
+        
     private:
-        virtual Ref<Object> Visit(const BlockExpr & expr);
-        virtual Ref<Object> Visit(const DefExpr & expr);
-        virtual Ref<Object> Visit(const KeywordExpr & expr);
-        virtual Ref<Object> Visit(const NameExpr & expr);
-        virtual Ref<Object> Visit(const NumberExpr & expr);
-        virtual Ref<Object> Visit(const OperatorExpr & expr);
-        virtual Ref<Object> Visit(const SequenceExpr & expr);
-        virtual Ref<Object> Visit(const SetExpr & expr);
-        virtual Ref<Object> Visit(const StringExpr & expr);
-        virtual Ref<Object> Visit(const UnaryExpr & expr);
-        virtual Ref<Object> Visit(const UndefExpr & expr);
+        Compiler(Ref<CodeBlock> code);
+        
+        virtual ~Compiler() {}
+        
+        virtual void Visit(const BlockExpr & expr);
+        virtual void Visit(const DefExpr & expr);
+        virtual void Visit(const KeywordExpr & expr);
+        virtual void Visit(const NameExpr & expr);
+        virtual void Visit(const NumberExpr & expr);
+        virtual void Visit(const OperatorExpr & expr);
+        virtual void Visit(const SequenceExpr & expr);
+        virtual void Visit(const SetExpr & expr);
+        virtual void Visit(const StringExpr & expr);
+        virtual void Visit(const UnaryExpr & expr);
+        virtual void Visit(const UndefExpr & expr);
+        
+        Ref<CodeBlock> mCode;
     };
-    */
 }

@@ -12,12 +12,17 @@
         {                                                        \
             return visitor.Visit(*this);                         \
         }                                                        \
+        virtual void Accept(IExprVisitor2 & visitor) const       \
+        {                                                        \
+            visitor.Visit(*this);                                \
+        }
 
 namespace Finch
 {
     using std::ostream;
     
     class IExprVisitor;
+    class IExprVisitor2;
     class Object;
     
     enum NameScope
@@ -52,6 +57,7 @@ namespace Finch
         //### bob: coupling ast to interpreter (object) here is gross.
         // wish you could do template virtual methods. :(
         virtual Ref<Object> Accept(IExprVisitor & visitor) const = 0;
+        virtual void Accept(IExprVisitor2 & visitor) const = 0;
         
         virtual void Trace(std::ostream & stream) const = 0;
     };

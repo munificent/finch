@@ -32,6 +32,8 @@
 		C4CDF8B910D88E1F001C9D4A /* Environment.cpp in Sources */ = {isa = PBXBuildFile; fileRef = C4CDF8B810D88E1F001C9D4A /* Environment.cpp */; };
 		C4D45F9A10EC5E0400BD2A81 /* StackTests.cpp in Sources */ = {isa = PBXBuildFile; fileRef = C4D45F9910EC5E0400BD2A81 /* StackTests.cpp */; };
 		C4E0BAEC10E09F2800D04F42 /* Script.cpp in Sources */ = {isa = PBXBuildFile; fileRef = C4E0BAEB10E09F2800D04F42 /* Script.cpp */; };
+		C4E770CE112AD58F000957EF /* CodeBlock.cpp in Sources */ = {isa = PBXBuildFile; fileRef = C4E770CD112AD58F000957EF /* CodeBlock.cpp */; };
+		C4E770D6112AD9AA000957EF /* Interpreter.cpp in Sources */ = {isa = PBXBuildFile; fileRef = C4E770D5112AD9AA000957EF /* Interpreter.cpp */; };
 		C4FC160310D4328300E6ABD6 /* Evaluator.cpp in Sources */ = {isa = PBXBuildFile; fileRef = C4FC15F710D4328300E6ABD6 /* Evaluator.cpp */; };
 		C4FC160610D4328300E6ABD6 /* Scope.cpp in Sources */ = {isa = PBXBuildFile; fileRef = C4FC15FD10D4328300E6ABD6 /* Scope.cpp */; };
 		C4FC166010D4331C00E6ABD6 /* Expr.cpp in Sources */ = {isa = PBXBuildFile; fileRef = C4FC164B10D4331C00E6ABD6 /* Expr.cpp */; };
@@ -114,6 +116,10 @@
 		C4D45F9B10EC5E1200BD2A81 /* Stack.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Stack.h; sourceTree = "<group>"; };
 		C4E0BAEA10E09F2800D04F42 /* Script.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Script.h; sourceTree = "<group>"; };
 		C4E0BAEB10E09F2800D04F42 /* Script.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = Script.cpp; sourceTree = "<group>"; };
+		C4E770CC112AD58F000957EF /* CodeBlock.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CodeBlock.h; sourceTree = "<group>"; };
+		C4E770CD112AD58F000957EF /* CodeBlock.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = CodeBlock.cpp; sourceTree = "<group>"; };
+		C4E770D4112AD9AA000957EF /* Interpreter.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Interpreter.h; sourceTree = "<group>"; };
+		C4E770D5112AD9AA000957EF /* Interpreter.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = Interpreter.cpp; sourceTree = "<group>"; };
 		C4FC15F710D4328300E6ABD6 /* Evaluator.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = Evaluator.cpp; path = Interpreter/Evaluator.cpp; sourceTree = "<group>"; };
 		C4FC15F810D4328300E6ABD6 /* Evaluator.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = Evaluator.h; path = Interpreter/Evaluator.h; sourceTree = "<group>"; };
 		C4FC15FD10D4328300E6ABD6 /* Scope.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = Scope.cpp; path = Interpreter/Scope.cpp; sourceTree = "<group>"; };
@@ -242,6 +248,10 @@
 			children = (
 				C422D6B410E9048300980E01 /* Compiler.h */,
 				C422D6B510E9048300980E01 /* Compiler.cpp */,
+				C4E770CC112AD58F000957EF /* CodeBlock.h */,
+				C4E770CD112AD58F000957EF /* CodeBlock.cpp */,
+				C4E770D4112AD9AA000957EF /* Interpreter.h */,
+				C4E770D5112AD9AA000957EF /* Interpreter.cpp */,
 			);
 			name = Compiler;
 			sourceTree = "<group>";
@@ -413,6 +423,8 @@
 				C489986210E865D100838D42 /* LexerTests.cpp in Sources */,
 				C422D6B610E9048300980E01 /* Compiler.cpp in Sources */,
 				C4D45F9A10EC5E0400BD2A81 /* StackTests.cpp in Sources */,
+				C4E770CE112AD58F000957EF /* CodeBlock.cpp in Sources */,
+				C4E770D6112AD9AA000957EF /* Interpreter.cpp in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

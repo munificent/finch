@@ -10,7 +10,8 @@ there should be solid.
     - Lexer/parser errors
     - Interpreter runtime errors
     - Assertions
-
+  - Rename Ref and String to ref and string
+  
 - Syntax
   - Don't allow alphanumerics in operators
 
@@ -30,16 +31,24 @@ there should be solid.
     - for loops
     - eval
     - mod
+    - A full suite of arithmetic operators
   - Move IO out of Ether into separate primitive
   - String conversion
-    Any object should be able to handle a "to-string" message and
+    Any object should be able to handle a "toString" message and
     return a string. "write:" and other places that stringize an
     object should go through that.
   - Basic reflection
     - does-not-understand?
     - send-message?
-  - undef
+  + undef
+  - Bytecode compiler so we aren't abusing the C callstack
   
+- Hosting
+  - Finch should require a host object when being instantiated. This
+    object will handle things like memory allocation, and unknown
+    global objects (so that Finch can talk to the outside world). This
+    way, it can be easily embedded in an existing app.
+
 - Help
   A tutorial and a basic reference doc.
 
