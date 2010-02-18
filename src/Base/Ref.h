@@ -23,7 +23,7 @@ namespace Finch
             mNext(this)
         {}
         
-        Ref(const Ref & other)
+        Ref(const Ref<T> & other)
         :   mObj(NULL),
             mPrev(this),
             mNext(this)

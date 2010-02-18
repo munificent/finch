@@ -10,7 +10,20 @@ namespace Finch
     {
         OP_NOTHING,
         OP_NUMBER_LITERAL,
-        OP_POP
+        OP_STRING_LITERAL,
+        OP_POP,
+        
+        OP_MESSAGE_0,
+        OP_MESSAGE_1,
+        OP_MESSAGE_2,
+        OP_MESSAGE_3,
+        OP_MESSAGE_4,
+        OP_MESSAGE_5,
+        OP_MESSAGE_6,
+        OP_MESSAGE_7,
+        OP_MESSAGE_8,
+        OP_MESSAGE_9,
+        OP_MESSAGE_10
     };
     
     struct Instruction
@@ -22,8 +35,8 @@ namespace Finch
         OpCode op;
         union
         {
-            bool   boolean;
             double number;
+            int    stringID;
         } arg;
     };
     
@@ -40,8 +53,8 @@ namespace Finch
         const Instruction & operator[](int i) const { return mInstructions[i]; }
 
         void Write(OpCode op);
-        void Write(OpCode op, bool boolean);
         void Write(OpCode op, double number);
+        void Write(OpCode op, int stringID);
         
     private:
         Instruction * mInstructions;

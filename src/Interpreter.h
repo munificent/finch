@@ -17,11 +17,11 @@ namespace Finch
     class Interpreter
     {
     public:
-        void Execute(Environment & environment, const CodeBlock & code);
+        Ref<Object> Execute(Environment & environment, const CodeBlock & code);
         
     private:
         static const int STACK_SIZE = 1024;
         
-        Stack<Ref<Object>, STACK_SIZE > mStack; 
+        Stack<Ref<Object>, STACK_SIZE> mStack; 
     };
 }

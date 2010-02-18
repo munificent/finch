@@ -2,23 +2,26 @@
 
 #include <iostream>
 
-#include "Macros.h"
+#include "CodeBlock.h"
 #include "Expr.h"
+#include "Macros.h"
 #include "IExprVisitor.h"
 #include "Object.h"
 #include "Ref.h"
 
 namespace Finch
 {
+    class Environment;
+    
     //### bob: wip
     // Compiles Finch ASTs to bytecode for execution by the interpreter.
     class Compiler : private IExprVisitor2
     {
     public:
-        static Ref<CodeBlock> Compile(const Expr & expr);
+        static Ref<CodeBlock> Compile(Environment & environment, const Expr & expr);
         
     private:
-        Compiler(Ref<CodeBlock> code);
+        Compiler(Environment & environment, Ref<CodeBlock> code);
         
         virtual ~Compiler() {}
         
@@ -34,6 +37,7 @@ namespace Finch
         virtual void Visit(const UnaryExpr & expr);
         virtual void Visit(const UndefExpr & expr);
         
+        Environment &  mEnvironment;
         Ref<CodeBlock> mCode;
     };
 }

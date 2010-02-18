@@ -1,9 +1,9 @@
 #include <iostream>
 
 #include "BlockExpr.h"
-#include "CodeBlock.h"
 #include "Compiler.h"
 #include "DefExpr.h"
+#include "Environment.h"
 #include "KeywordExpr.h"
 #include "NameExpr.h"
 #include "NumberExpr.h"
@@ -16,17 +16,18 @@
 
 namespace Finch
 {
-    Compiler::Compiler(Ref<CodeBlock> code)
-    :   mCode(code)
+    Compiler::Compiler(Environment & environment, Ref<CodeBlock> code)
+    :   mEnvironment(environment),
+        mCode(code)
     {
     }
     
-    Ref<CodeBlock> Compiler::Compile(const Expr & expr)
+    Ref<CodeBlock> Compiler::Compile(Environment & environment, const Expr & expr)
     {
          //### bob: hack hard-coded size
         Ref<CodeBlock> code = Ref<CodeBlock>(new CodeBlock(256));
         
-        Compiler compiler = Compiler(code);
+        Compiler compiler = Compiler(environment, code);
         expr.Accept(compiler);
         
         return code;
@@ -48,9 +49,25 @@ namespace Finch
     
     void Compiler::Visit(const KeywordExpr & expr)
     {
-        // push name
-        // push args
-        // write call
+        expr.Receiver()->Accept(*this);
+        
+        // compile the arguments
+        for (unsigned int i = 0; i < expr.Keywords().size(); i++)
+        {
+            expr.Arguments()[i]->Accept(*this);
+        }
+        
+        // get the keyword's full name
+        String fullName;
+        for (unsigned int i = 0; i < expr.Keywords().size(); i++)
+        {
+            fullName += expr.Keywords()[i];
+        }
+        
+        int id = mEnvironment.Strings().Add(fullName);
+        OpCode op = static_cast<OpCode>(OP_MESSAGE_0 + expr.Keywords().size());
+        
+        mCode->Write(op, id);
     }
     
     void Compiler::Visit(const NameExpr & expr)
@@ -66,9 +83,11 @@ namespace Finch
     
     void Compiler::Visit(const OperatorExpr & expr)
     {
-        // push name
-        // push args
-        // write call
+        expr.Receiver()->Accept(*this);
+        expr.Argument()->Accept(*this);
+        
+        int id = mEnvironment.Strings().Add(expr.Operator());
+        mCode->Write(OP_MESSAGE_1, id);
     }
     
     void Compiler::Visit(const SequenceExpr & expr)
@@ -89,14 +108,16 @@ namespace Finch
     void Compiler::Visit(const StringExpr & expr)
     {
         // push string
-        //### bob: probably need to intern it and push id
+        int id = mEnvironment.Strings().Add(expr.Value());
+        mCode->Write(OP_STRING_LITERAL, id);
     }
     
     void Compiler::Visit(const UnaryExpr & expr)
     {
-        // push name
-        // push args
-        // write call
+        expr.Receiver()->Accept(*this);
+        
+        int id = mEnvironment.Strings().Add(expr.Message());
+        mCode->Write(OP_MESSAGE_0, id);
     }
     
     void Compiler::Visit(const UndefExpr & expr)

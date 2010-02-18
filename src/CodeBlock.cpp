@@ -24,21 +24,21 @@ namespace Finch
         mSize++;
     }
     
-    void CodeBlock::Write(OpCode op, bool boolean)
-    {
-        ASSERT(mSize < mCapacity, "Code block is full.");
-        
-        mInstructions[mSize].op = op;
-        mInstructions[mSize].arg.boolean = boolean;
-        mSize++;
-    }
-    
     void CodeBlock::Write(OpCode op, double number)
     {
         ASSERT(mSize < mCapacity, "Code block is full.");
         
         mInstructions[mSize].op = op;
         mInstructions[mSize].arg.number = number;
+        mSize++;
+    }
+    
+    void CodeBlock::Write(OpCode op, int stringID)
+    {
+        ASSERT(mSize < mCapacity, "Code block is full.");
+        
+        mInstructions[mSize].op = op;
+        mInstructions[mSize].arg.stringID = stringID;
         mSize++;
     }
 }

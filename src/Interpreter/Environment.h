@@ -8,6 +8,7 @@
 #include "Ref.h"
 #include "Scope.h"
 #include "String.h"
+#include "StringTable.h"
 
 namespace Finch
 {
@@ -27,6 +28,8 @@ namespace Finch
         void RuntimeError(const String & message);
         
         bool Running() const { return mRunning; }
+        
+        StringTable & Strings() { return mStrings; }
         
         Ref<Scope>  Globals()       const { return mGlobals; }
         Ref<Scope>  CurrentScope()  const { return mCurrentScope; }
@@ -55,6 +58,8 @@ namespace Finch
     private:
         
         bool mRunning;
+        
+        StringTable mStrings;
         
         Ref<Scope> mGlobals;
         Ref<Scope> mCurrentScope;
