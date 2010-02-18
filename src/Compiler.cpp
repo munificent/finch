@@ -72,8 +72,8 @@ namespace Finch
     
     void Compiler::Visit(const NameExpr & expr)
     {
-        // push name
-        // write lookup
+        // determine what kind of scope the name is
+        // write lookup opcode with name
     }
     
     void Compiler::Visit(const NumberExpr & expr)
@@ -92,9 +92,12 @@ namespace Finch
     
     void Compiler::Visit(const SequenceExpr & expr)
     {
-        // compile first
-        // compile second
-        //### bob: what about return value of first expr?
+        expr.First()->Accept(*this);
+        
+        // discard the first expression's return value
+        mCode->Write(OP_POP);
+        
+        expr.Second()->Accept(*this);
     }
     
     void Compiler::Visit(const SetExpr & expr)
