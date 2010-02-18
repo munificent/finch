@@ -35,9 +35,10 @@ namespace Finch
     
     void Compiler::Visit(const BlockExpr & expr)
     {
-        // compile block to bytecode
-        // put it somewhere identifiable
-        // push its id onto the stack
+        Ref<Object> block = Object::NewBlock(mEnvironment, expr.Params(), expr.Body());
+
+        int id = mEnvironment.Blocks().Add(block);
+        mCode->Write(OP_BLOCK_LITERAL, id);
     }
     
     void Compiler::Visit(const DefExpr & expr)

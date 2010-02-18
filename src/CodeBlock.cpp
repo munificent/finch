@@ -33,12 +33,12 @@ namespace Finch
         mSize++;
     }
     
-    void CodeBlock::Write(OpCode op, int stringID)
+    void CodeBlock::Write(OpCode op, int id)
     {
         ASSERT(mSize < mCapacity, "Code block is full.");
         
         mInstructions[mSize].op = op;
-        mInstructions[mSize].arg.stringID = stringID;
+        mInstructions[mSize].arg.id = id;
         mSize++;
     }
 }

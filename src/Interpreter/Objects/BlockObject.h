@@ -29,6 +29,8 @@ namespace Finch
         {}
         
         const vector<String> &  Params() const { return mParams; }
+        //### bob: this should be a CodeBlock. if we want to support metaprogramming,
+        // then we'll want to keep both the expr and the compiled codeblock for it.
         Ref<Expr>               Body() const { return mBody; }
         Ref<Scope>              Closure() const { return mClosure; }
         

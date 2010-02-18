@@ -1,13 +1,9 @@
 #pragma once
 
-#include <iostream>
-
 #include "String.h"
 
 namespace Finch
 {
-    using std::ostream;
-    
     //### bob: the implementation of this just a temp prototype.
     class StringTable
     {

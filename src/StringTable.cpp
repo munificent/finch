@@ -1,12 +1,3 @@
-/*
- *  StringTable.cpp
- *  finch
- *
- *  Created by Robert Nystrom on 2/17/10.
- *  Copyright 2010 __MyCompanyName__. All rights reserved.
- *
- */
-
 #include "StringTable.h"
 
 namespace Finch

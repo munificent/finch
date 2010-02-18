@@ -24,8 +24,15 @@ namespace Finch
                     
                 case OP_STRING_LITERAL:
                     {
-                        String string = environment.Strings().Find(instruction.arg.stringID);
+                        String string = environment.Strings().Find(instruction.arg.id);
                         mStack.Push(Object::NewString(environment, string));
+                    }
+                    break;
+                    
+                case OP_BLOCK_LITERAL:
+                    {
+                        Ref<Object> block = environment.Blocks().Find(instruction.arg.id);
+                        mStack.Push(block);
                     }
                     break;
                     
@@ -57,7 +64,7 @@ namespace Finch
                         reverse(args.begin(), args.end());
                         
                         // send the message
-                        String string = environment.Strings().Find(instruction.arg.stringID);
+                        String string = environment.Strings().Find(instruction.arg.id);
                         Ref<Object> receiver = mStack.Pop();
                         Ref<Object> result = receiver->Receive(receiver, environment, string, args);
                         mStack.Push(result);

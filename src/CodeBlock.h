@@ -11,6 +11,7 @@ namespace Finch
         OP_NOTHING,
         OP_NUMBER_LITERAL,
         OP_STRING_LITERAL,
+        OP_BLOCK_LITERAL,
         OP_POP,
         
         OP_MESSAGE_0,
@@ -36,7 +37,7 @@ namespace Finch
         union
         {
             double number;
-            int    stringID;
+            int    id;
         } arg;
     };
     
@@ -54,7 +55,7 @@ namespace Finch
 
         void Write(OpCode op);
         void Write(OpCode op, double number);
-        void Write(OpCode op, int stringID);
+        void Write(OpCode op, int id);
         
     private:
         Instruction * mInstructions;

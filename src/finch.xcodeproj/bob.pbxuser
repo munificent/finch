@@ -1007,7 +1007,7 @@
 		fRef = C422D6B510E9048300980E01 /* Compiler.cpp */;
 		name = "Compiler.cpp: 77";
 		rLen = 0;
-		rLoc = 2702;
+		rLoc = 2819;
 		rType = 0;
 		vrLen = 1158;
 		vrLoc = 883;
@@ -1118,9 +1118,9 @@
 	};
 	C422D6B510E9048300980E01 /* Compiler.cpp */ = {
 		uiCtxt = {
-			sepNavIntBoundsRect = "{{0, 0}, {747, 1820}}";
-			sepNavSelRange = "{44, 0}";
-			sepNavVisRange = "{0, 1278}";
+			sepNavIntBoundsRect = "{{0, 0}, {747, 1834}}";
+			sepNavSelRange = "{821, 0}";
+			sepNavVisRange = "{209, 1396}";
 		};
 	};
 	C422D6C010E916A500980E01 /* PBXTextBookmark */ = {
@@ -2197,7 +2197,7 @@
 	};
 	C4CDF8B710D88E1F001C9D4A /* Environment.h */ = {
 		uiCtxt = {
-			sepNavIntBoundsRect = "{{0, 0}, {747, 1036}}";
+			sepNavIntBoundsRect = "{{0, 0}, {747, 1008}}";
 			sepNavSelRange = "{170, 0}";
 			sepNavVisRange = "{174, 1871}";
 		};
@@ -2488,7 +2488,7 @@
 	C4E770D4112AD9AA000957EF /* Interpreter.h */ = {
 		uiCtxt = {
 			sepNavIntBoundsRect = "{{0, 0}, {747, 748}}";
-			sepNavSelRange = "{208, 0}";
+			sepNavSelRange = "{178, 0}";
 			sepNavVisRange = "{0, 484}";
 		};
 	};

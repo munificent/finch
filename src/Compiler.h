@@ -39,5 +39,7 @@ namespace Finch
         
         Environment &  mEnvironment;
         Ref<CodeBlock> mCode;
+        
+        NO_COPY(Compiler);
     };
 }

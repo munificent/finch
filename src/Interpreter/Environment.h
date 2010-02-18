@@ -3,6 +3,7 @@
 #include <iostream>
 #include <vector>
 
+#include "BlockTable.h"
 #include "Macros.h"
 #include "Object.h"
 #include "Ref.h"
@@ -29,6 +30,7 @@ namespace Finch
         
         bool Running() const { return mRunning; }
         
+        BlockTable &  Blocks()  { return mBlocks; }
         StringTable & Strings() { return mStrings; }
         
         Ref<Scope>  Globals()       const { return mGlobals; }
@@ -59,6 +61,7 @@ namespace Finch
         
         bool mRunning;
         
+        BlockTable  mBlocks;
         StringTable mStrings;
         
         Ref<Scope> mGlobals;
@@ -70,5 +73,7 @@ namespace Finch
         Ref<Object> mString;
         Ref<Object> mTrue;
         Ref<Object> mFalse;
+        
+        NO_COPY(Environment);
     };
 }

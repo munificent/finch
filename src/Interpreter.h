@@ -12,16 +12,19 @@ namespace Finch
     class CodeBlock;
     class Environment;
     
-    //### bob: wip
     // Finch bytecode interpreter.
     class Interpreter
     {
     public:
+        Interpreter() {}
+        
         Ref<Object> Execute(Environment & environment, const CodeBlock & code);
         
     private:
         static const int STACK_SIZE = 1024;
         
         Stack<Ref<Object>, STACK_SIZE> mStack; 
+        
+        NO_COPY(Interpreter);
     };
 }
