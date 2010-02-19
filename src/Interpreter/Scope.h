@@ -21,9 +21,8 @@ namespace Finch
         {}
         
         // Defines a variable at this scope and assigns it the given value.
-        // Returns the variable's previous value. If the variable already
-        // exists, it will be overwritten.
-        Ref<Object> Define(String name, Ref<Object> value);
+        // If the variable already exists, it will be overwritten.
+        void Define(String name, Ref<Object> value);
         
         // Walks the scope chain to find where the given variable is defined
         // and removes it from that scope. If no variable with that name is

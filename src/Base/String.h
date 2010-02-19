@@ -8,9 +8,6 @@ namespace Finch
 {
     using std::ostream;
     
-    //### bob: to do:
-    // - interning support
-    
     // Reference-counted heap-allocated immutable string class.
     class String
     {

@@ -40,6 +40,62 @@ namespace Finch
                     mStack.Pop();
                     break;
                     
+                case OP_SET_GLOBAL:
+                    {
+                        Ref<Object> value = mStack.Pop();
+                        //### bob: if we get strings fully interned (i.e. no dupes in
+                        // string table), then the global name scope doesn't need the
+                        // actual string at all, just the id in the string table
+                        String name = environment.Strings().Find(instruction.arg.id);
+                        environment.Globals()->Define(name, value);                        
+                        
+                        // return the assigned value
+                        mStack.Push(value);
+                    }
+                    break;
+                    
+                case OP_SET_OBJECT:
+                    {
+                        Ref<Object> value = mStack.Pop();
+                        String name = environment.Strings().Find(instruction.arg.id);
+                        if (!environment.Self().IsNull())
+                        {
+                            environment.Self()->ObjectScope()->Define(name, value);
+                        }
+                        
+                        // return the assigned value
+                        mStack.Push(value);
+                    }
+                    break;
+                    
+                case OP_LOAD_GLOBAL:
+                    {
+                        String name = environment.Strings().Find(instruction.arg.id);
+                        mStack.Push(environment.Globals()->LookUp(name));
+                    }
+                    break;
+                    
+                case OP_LOAD_OBJECT:
+                    {
+                        String name = environment.Strings().Find(instruction.arg.id);
+                        if (!environment.Self().IsNull())
+                        {
+                            mStack.Push(environment.Self()->ObjectScope()->LookUp(name));
+                        }
+                        else
+                        {
+                            mStack.Push(Ref<Object>());
+                        }
+                    }
+                    break;
+                    
+                case OP_LOAD_LOCAL:
+                    {
+                        String name = environment.Strings().Find(instruction.arg.id);
+                        mStack.Push(environment.CurrentScope()->LookUp(name));
+                    }
+                    break;
+                    
                 case OP_MESSAGE_0:
                 case OP_MESSAGE_1:
                 case OP_MESSAGE_2:

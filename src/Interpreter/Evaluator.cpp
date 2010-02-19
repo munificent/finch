@@ -36,18 +36,16 @@ namespace Finch
             value = expr.Value()->Accept(*this);
         }
         
-        Ref<Object> result;
-        
         switch (Expr::GetNameScope(expr.Name()))
         {
             case NAMESCOPE_GLOBAL:
-                result = mEnvironment.Globals()->Define(expr.Name(), value);
+                mEnvironment.Globals()->Define(expr.Name(), value);
                 break;
                 
             case NAMESCOPE_OBJECT:
                 if (!mEnvironment.Self().IsNull())
                 {
-                    result = mEnvironment.Self()->ObjectScope()->Define(expr.Name(), value);
+                    mEnvironment.Self()->ObjectScope()->Define(expr.Name(), value);
                 }
                 else
                 {
@@ -56,11 +54,11 @@ namespace Finch
                 break;
                 
             case NAMESCOPE_LOCAL:
-                result = mEnvironment.CurrentScope()->Define(expr.Name(), value);
+                mEnvironment.CurrentScope()->Define(expr.Name(), value);
                 break;
         }
         
-        return NullToNil(result);
+        return NullToNil(value);
     }
     
     Ref<Object> Evaluator::Visit(const KeywordExpr & expr)

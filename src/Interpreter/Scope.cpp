@@ -3,9 +3,9 @@
 
 namespace Finch
 {
-    Ref<Object> Scope::Define(String name, Ref<Object> value)
+    void Scope::Define(String name, Ref<Object> value)
     {
-        return mVariables.Insert(name, value);
+        mVariables.Insert(name, value);
     }
     
     void Scope::Undefine(String name)

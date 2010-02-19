@@ -43,9 +43,22 @@ namespace Finch
     
     void Compiler::Visit(const DefExpr & expr)
     {
-        // push name
-        // push value
-        // write def opcode
+        expr.Value()->Accept(*this);
+        
+        //int id = mEnvironment.Strings().Add(expr.Name());
+        switch (Expr::GetNameScope(expr.Name()))
+        {
+            case NAMESCOPE_GLOBAL:
+            case NAMESCOPE_OBJECT:
+                //### bob: error! def is only needed for locals. globals and
+                // objects just use set
+                //### bob: need error-handling here
+                break;
+                
+            case NAMESCOPE_LOCAL:
+                //### bob: implement me
+                break;
+        }
     }
     
     void Compiler::Visit(const KeywordExpr & expr)
@@ -73,8 +86,21 @@ namespace Finch
     
     void Compiler::Visit(const NameExpr & expr)
     {
-        // determine what kind of scope the name is
-        // write lookup opcode with name
+        int id = mEnvironment.Strings().Add(expr.Name());
+        switch (Expr::GetNameScope(expr.Name()))
+        {
+            case NAMESCOPE_GLOBAL:
+                mCode->Write(OP_LOAD_GLOBAL, id);
+                break;
+                
+            case NAMESCOPE_OBJECT:
+                mCode->Write(OP_LOAD_OBJECT, id);
+                break;
+                
+            case NAMESCOPE_LOCAL:
+                mCode->Write(OP_LOAD_LOCAL, id);
+                break;
+        }
     }
     
     void Compiler::Visit(const NumberExpr & expr)
@@ -103,10 +129,23 @@ namespace Finch
     
     void Compiler::Visit(const SetExpr & expr)
     {
-        // push name
-        // push value
-        // write set
-        //### bob: should use different opcodes for different scopes
+        expr.Value()->Accept(*this);
+        
+        int id = mEnvironment.Strings().Add(expr.Name());
+        switch (Expr::GetNameScope(expr.Name()))
+        {
+            case NAMESCOPE_GLOBAL:
+                mCode->Write(OP_SET_GLOBAL, id);
+                break;
+                
+            case NAMESCOPE_OBJECT:
+                mCode->Write(OP_SET_OBJECT, id);
+                break;
+                
+            case NAMESCOPE_LOCAL:
+                //### bob: implement me
+                break;
+        }
     }
     
     void Compiler::Visit(const StringExpr & expr)
