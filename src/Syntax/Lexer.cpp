@@ -109,11 +109,7 @@ namespace Finch
                     else
                     {
                         String name = mLine.Substring(mTokenStart, mIndex - mTokenStart);
-                        
-                        // see if it's a reserved word
-                        if (name == "def")        token = Token::New(TOKEN_DEF);
-                        else if (name == "undef") token = Token::New(TOKEN_UNDEF);
-                        else token = Token::New(TOKEN_NAME, name);
+                        token = Token::New(TOKEN_NAME, name);
                         
                         mState = LEX_DEFAULT;
                     }
@@ -126,8 +122,9 @@ namespace Finch
                     {
                         String name = mLine.Substring(mTokenStart, mIndex - mTokenStart);
                         
-                        // see if it's a reserved word
-                        if (name == "<-") token = Token::New(TOKEN_LEFT_ARROW);
+                        // see if it's a reserved operator
+                        if (name == "<-") token = Token::New(TOKEN_ARROW);
+                        else if (name == "<--") token = Token::New(TOKEN_LONG_ARROW);
                         else token = Token::New(TOKEN_OPERATOR, name);
                         
                         mState = LEX_DEFAULT;

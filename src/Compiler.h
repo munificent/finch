@@ -35,7 +35,6 @@ namespace Finch
         virtual void Visit(const SetExpr & expr);
         virtual void Visit(const StringExpr & expr);
         virtual void Visit(const UnaryExpr & expr);
-        virtual void Visit(const UndefExpr & expr);
         
         Environment &  mEnvironment;
         Ref<CodeBlock> mCode;

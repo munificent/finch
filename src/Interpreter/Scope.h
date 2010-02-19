@@ -25,11 +25,6 @@ namespace Finch
         void Define(String name, Ref<Object> value);
         
         // Walks the scope chain to find where the given variable is defined
-        // and removes it from that scope. If no variable with that name is
-        // found, does nothing.
-        void Undefine(String name);
-        
-        // Walks the scope chain to find where the given variable is defined
         // and assigns it the given value. If no variable with that name is
         // found, does nothing. Returns the variable's previous value.
         Ref<Object> Set(String name, Ref<Object> value);

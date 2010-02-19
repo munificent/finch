@@ -8,15 +8,6 @@ namespace Finch
         mVariables.Insert(name, value);
     }
     
-    void Scope::Undefine(String name)
-    {
-        if (!mVariables.Remove(name) && !mParent.IsNull())
-        {
-            // wasn't found, so defer to parent scope
-            mParent->Undefine(name);
-        }
-    }
-    
     Ref<Object> Scope::Set(String name, Ref<Object> value)
     {
         Ref<Object> oldValue = mVariables.Replace(name, value);

@@ -13,7 +13,6 @@
 #include "SetExpr.h"
 #include "StringExpr.h"
 #include "UnaryExpr.h"
-#include "UndefExpr.h"
 
 namespace Finch
 {
@@ -174,34 +173,7 @@ namespace Finch
         
         return NullToNil(receiver->Receive(receiver, mEnvironment, expr.Message(), vector<Ref<Object> >()));
     }
-    
-    Ref<Object> Evaluator::Visit(const UndefExpr & expr)
-    {
-        switch (Expr::GetNameScope(expr.Name()))
-        {
-            case NAMESCOPE_GLOBAL:
-                mEnvironment.Globals()->Undefine(expr.Name());
-                break;
-                
-            case NAMESCOPE_OBJECT:
-                if (!mEnvironment.Self().IsNull())
-                {
-                    mEnvironment.Self()->ObjectScope()->Undefine(expr.Name());
-                }
-                else
-                {
-                    mEnvironment.RuntimeError("Cannot undefine an object variable outside of a method.");
-                }
-                break;
-                
-            case NAMESCOPE_LOCAL:
-                mEnvironment.CurrentScope()->Undefine(expr.Name());
-                break;
-        }
         
-        return NullToNil(Ref<Object>());
-    }
-    
     Ref<Object> Evaluator::NullToNil(Ref<Object> result) const
     {
         if (result.IsNull()) return mEnvironment.Nil();

@@ -36,7 +36,6 @@ namespace Finch
         virtual Ref<Object> Visit(const SetExpr & expr);
         virtual Ref<Object> Visit(const StringExpr & expr);
         virtual Ref<Object> Visit(const UnaryExpr & expr);
-        virtual Ref<Object> Visit(const UndefExpr & expr);
         
         Ref<Object> NullToNil(Ref<Object> result) const;
         

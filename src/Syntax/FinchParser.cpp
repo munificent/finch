@@ -13,7 +13,6 @@
 #include "SetExpr.h"
 #include "StringExpr.h"
 #include "UnaryExpr.h"
-#include "UndefExpr.h"
 
 namespace Finch
 {
@@ -71,7 +70,19 @@ namespace Finch
     
     Ref<Expr> FinchParser::Variable()
     {
-        if (LookAhead(TOKEN_NAME, TOKEN_LEFT_ARROW))
+        if (LookAhead(TOKEN_NAME, TOKEN_ARROW))
+        {
+            String name = Consume()->Text();
+            
+            Consume(); // the arrow
+            
+            // get the initial value
+            Ref<Expr> value = Keyword();
+            if (value.IsNull()) return ParseError();
+            
+            return Ref<Expr>(new DefExpr(name, value));
+        }
+        else if (LookAhead(TOKEN_NAME, TOKEN_LONG_ARROW))
         {
             String name = Consume()->Text();
             
@@ -82,35 +93,6 @@ namespace Finch
             if (value.IsNull()) return ParseError();
             
             return Ref<Expr>(new SetExpr(name, value));
-        }
-        else if (Match(TOKEN_DEF))
-        {
-            if (!LookAhead(TOKEN_NAME)) return ParseError();
-            
-            String name = Consume()->Text();
-            
-            // get the initial value
-            Ref<Expr> value;
-            if (Match(TOKEN_LEFT_ARROW))
-            {
-                value = Keyword();
-                if (value.IsNull()) return ParseError();
-            }
-            else
-            {
-                // default to nil
-                value = Ref<Expr>(new NameExpr("Nil"));
-            }
-            
-            return Ref<Expr>(new DefExpr(name, value));
-        }
-        else if (Match(TOKEN_UNDEF))
-        {
-            if (!LookAhead(TOKEN_NAME)) return ParseError();
-            
-            String name = Consume()->Text();
-            
-            return Ref<Expr>(new UndefExpr(name));
         }
         else return Keyword();
     }

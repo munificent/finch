@@ -1,49 +1,32 @@
 Test suite: "Variables" is: {
     Test test: "Define" is: {
-        def a <- "something"
+        a <- "something"
         Test that: a equals: "something"
     }
     
-    '### bob: what should have if you define the same variable name
-    '         in the same scope twice?
-    
-    Test test: "Undefine" is: {
-        def a <- "something"
-        Test that: a equals: "something"
-        undef a
-        Test that: a equals: Nil
-        a <- "else"
-        Test that: a equals: Nil
-    }
-    
-    Test test: "Undefine Unshadows" is: {
-        def a <- "outer"
-        
-        do: {
-            def a <- "inner"
-            Test that: a equals: "inner"
-            undef a
-            ' should see parent scoped a now
-            Test that: a equals: "outer"
-        }
-    }
-    
-    Test test: "Assignment" is: {
-        def a <- "before"
+    Test test: "Redefinition" is: {
+        a <- "before"
         Test that: a equals: "before"
         a <- "after"
         Test that: a equals: "after"
     }
+        
+    Test test: "Assignment" is: {
+        a <- "before"
+        Test that: a equals: "before"
+        a <-- "after"
+        Test that: a equals: "after"
+    }
     
     Test test: "Assign Undefined" is: {
-        a <- "something"
+        a <-- "something"
         ' since a wasn't defined, should do nothing
         Test that: a equals: Nil
     }
 
     Test test: "Local Scope" is: {
         do: {
-            def a <- "local"
+            a <- "local"
             Test that: a equals: "local"
         }
         
@@ -51,7 +34,7 @@ Test suite: "Variables" is: {
     }
 
     Test test: "Nested Local Scope" is: {
-        def a <- "local"
+        a <- "local"
         
         do: { Test that: a equals: "local" }
 
@@ -59,10 +42,10 @@ Test suite: "Variables" is: {
     }
 
     Test test: "Shadowed Local Scope" is: {
-        def a <- "outer"
+        a <- "outer"
         
         do: {
-            def a <- "inner"
+            a <- "inner"
             Test that: a equals: "inner"
         }
 
@@ -70,10 +53,10 @@ Test suite: "Variables" is: {
     }
     
     Test test: "Object Scope" is: {
-        def foo <- Object clone
+        foo <- Object clone
         
         foo addMethod: "createVar" body: {
-            def _someVar <- "obj var"
+            _someVar <- "obj var"
         }
         
         foo addMethod: "testVar" body: {
@@ -88,7 +71,7 @@ Test suite: "Variables" is: {
     
     Test test: "Global Scope" is: {
         do: {
-            def SomeGlobal <- "global"
+            SomeGlobal <- "global"
             Test that: SomeGlobal equals: "global"
         }
         

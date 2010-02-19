@@ -12,7 +12,6 @@
 #include "SetExpr.h"
 #include "StringExpr.h"
 #include "UnaryExpr.h"
-#include "UndefExpr.h"
 
 namespace Finch
 {
@@ -161,11 +160,5 @@ namespace Finch
         
         int id = mEnvironment.Strings().Add(expr.Message());
         mCode->Write(OP_MESSAGE_0, id);
-    }
-    
-    void Compiler::Visit(const UndefExpr & expr)
-    {
-        // push name
-        // write undef
     }
 }

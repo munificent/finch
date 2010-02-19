@@ -71,7 +71,6 @@
 		C424166010E5B70E001E7103 /* QueueTests.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = QueueTests.h; path = Test/QueueTests.h; sourceTree = "<group>"; };
 		C424166110E5B70E001E7103 /* QueueTests.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = QueueTests.cpp; path = Test/QueueTests.cpp; sourceTree = "<group>"; };
 		C424166410E5B71D001E7103 /* Queue.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = Queue.h; path = Base/Queue.h; sourceTree = "<group>"; };
-		C424166510E5B74A001E7103 /* UndefExpr.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = UndefExpr.h; path = Syntax/AST/UndefExpr.h; sourceTree = "<group>"; };
 		C45102D210DF37DC0009E52E /* EtherPrimitives.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = EtherPrimitives.h; path = Interpreter/Primitives/EtherPrimitives.h; sourceTree = "<group>"; };
 		C45102D310DF37DC0009E52E /* EtherPrimitives.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = EtherPrimitives.cpp; path = Interpreter/Primitives/EtherPrimitives.cpp; sourceTree = "<group>"; };
 		C46588CD10DE847F007C4C3E /* StringPrimitives.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = StringPrimitives.h; path = Interpreter/Primitives/StringPrimitives.h; sourceTree = "<group>"; };
@@ -244,7 +243,6 @@
 				C4FC165910D4331C00E6ABD6 /* SetExpr.h */,
 				C4CDF8BA10D88E43001C9D4A /* StringExpr.h */,
 				C4FC165D10D4331C00E6ABD6 /* UnaryExpr.h */,
-				C424166510E5B74A001E7103 /* UndefExpr.h */,
 			);
 			name = AST;
 			sourceTree = "<group>";

@@ -20,9 +20,8 @@ namespace Finch
         TOKEN_DOT,
         TOKEN_PIPE,
         
-        TOKEN_DEF,
-        TOKEN_UNDEF,
-        TOKEN_LEFT_ARROW,
+        TOKEN_ARROW,
+        TOKEN_LONG_ARROW,
         
         TOKEN_NUMBER,
         TOKEN_STRING,

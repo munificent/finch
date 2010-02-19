@@ -50,10 +50,9 @@ namespace Finch
                 TOKEN_LINE, TOKEN_EOF);
         
         // test the reserved words
-        TestLex("def undef <-",
-            TOKEN_DEF,
-            TOKEN_UNDEF,
-            TOKEN_LEFT_ARROW,
+        TestLex("<- <--",
+            TOKEN_ARROW,
+            TOKEN_LONG_ARROW,
             TOKEN_LINE, TOKEN_EOF);
         
         // test numbers
@@ -119,7 +118,7 @@ namespace Finch
                 TOKEN_LINE, TOKEN_EOF);
         
         // test combinations
-        TestLex("foo[123]+(*\"huh\"def)",
+        TestLex("foo[123]+(*\"huh\")",
                 TOKEN_NAME,
                 TOKEN_LEFT_BRACKET,
                 TOKEN_NUMBER,
@@ -128,7 +127,6 @@ namespace Finch
                 TOKEN_LEFT_PAREN,
                 TOKEN_OPERATOR,
                 TOKEN_STRING,
-                TOKEN_DEF,
                 TOKEN_RIGHT_PAREN,
                 TOKEN_LINE, TOKEN_EOF);
         

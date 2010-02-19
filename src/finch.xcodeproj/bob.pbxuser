@@ -618,7 +618,7 @@
 		fRef = C422D6B510E9048300980E01 /* Compiler.cpp */;
 		name = "Compiler.cpp: 77";
 		rLen = 0;
-		rLoc = 4142;
+		rLoc = 4119;
 		rType = 0;
 		vrLen = 1158;
 		vrLoc = 883;
@@ -628,7 +628,7 @@
 		fRef = C422D6B510E9048300980E01 /* Compiler.cpp */;
 		name = "Compiler.cpp: 132";
 		rLen = 0;
-		rLoc = 3587;
+		rLoc = 3564;
 		rType = 0;
 		vrLen = 1396;
 		vrLoc = 3234;
@@ -638,7 +638,7 @@
 		fRef = C422D6B510E9048300980E01 /* Compiler.cpp */;
 		name = "Compiler.cpp: 57";
 		rLen = 0;
-		rLoc = 1568;
+		rLoc = 1545;
 		rType = 0;
 		vrLen = 1647;
 		vrLoc = 822;
@@ -658,7 +658,7 @@
 		fRef = C4FC167010D4334800E6ABD6 /* Token.h */;
 		name = "Token.h: 49";
 		rLen = 0;
-		rLoc = 1096;
+		rLoc = 1077;
 		rType = 0;
 		vrLen = 1428;
 		vrLoc = 111;
@@ -668,7 +668,7 @@
 		fRef = C4FC167010D4334800E6ABD6 /* Token.h */;
 		name = "Token.h: 49";
 		rLen = 0;
-		rLoc = 1096;
+		rLoc = 1077;
 		rType = 0;
 		vrLen = 1427;
 		vrLoc = 111;
@@ -773,16 +773,16 @@
 	};
 	C422D6B410E9048300980E01 /* Compiler.h */ = {
 		uiCtxt = {
-			sepNavIntBoundsRect = "{{0, 0}, {747, 748}}";
-			sepNavSelRange = "{1243, 27}";
-			sepNavVisRange = "{0, 1278}";
+			sepNavIntBoundsRect = "{{0, 0}, {747, 724}}";
+			sepNavSelRange = "{1106, 0}";
+			sepNavVisRange = "{0, 1226}";
 		};
 	};
 	C422D6B510E9048300980E01 /* Compiler.cpp */ = {
 		uiCtxt = {
-			sepNavIntBoundsRect = "{{0, 0}, {747, 2366}}";
-			sepNavSelRange = "{1568, 0}";
-			sepNavVisRange = "{822, 1647}";
+			sepNavIntBoundsRect = "{{0, 0}, {747, 2240}}";
+			sepNavSelRange = "{3726, 0}";
+			sepNavVisRange = "{3102, 1397}";
 		};
 	};
 	C422D6C010E916A500980E01 /* PBXTextBookmark */ = {
@@ -841,8 +841,14 @@
 		};
 	};
 	C424166510E5B74A001E7103 /* UndefExpr.h */ = {
+		isa = PBXFileReference;
+		fileEncoding = 4;
+		lastKnownFileType = sourcecode.c.h;
+		name = UndefExpr.h;
+		path = /Users/bob/Documents/dev/finch/src/Syntax/AST/UndefExpr.h;
+		sourceTree = "<absolute>";
 		uiCtxt = {
-			sepNavIntBoundsRect = "{{0, 0}, {747, 748}}";
+			sepNavIntBoundsRect = "{{0, 0}, {747, 724}}";
 			sepNavSelRange = "{136, 0}";
 			sepNavVisRange = "{0, 660}";
 		};
@@ -1094,8 +1100,8 @@
 	C465890A10DE876C007C4C3E /* LineNormalizer.cpp */ = {
 		uiCtxt = {
 			sepNavIntBoundsRect = "{{0, 0}, {747, 770}}";
-			sepNavSelRange = "{283, 0}";
-			sepNavVisRange = "{37, 1462}";
+			sepNavSelRange = "{1003, 0}";
+			sepNavVisRange = "{0, 1439}";
 		};
 	};
 	C465890B10DE876C007C4C3E /* ITokenSource.h */ = {
@@ -1444,9 +1450,9 @@
 	};
 	C489986110E865D100838D42 /* LexerTests.cpp */ = {
 		uiCtxt = {
-			sepNavIntBoundsRect = "{{0, 0}, {484, 2338}}";
-			sepNavSelRange = "{4350, 0}";
-			sepNavVisRange = "{4274, 131}";
+			sepNavIntBoundsRect = "{{0, 0}, {747, 2366}}";
+			sepNavSelRange = "{1243, 0}";
+			sepNavVisRange = "{545, 1616}";
 		};
 	};
 	C489994C10E890BF00838D42 /* PBXTextBookmark */ = {
@@ -1622,7 +1628,7 @@
 		fRef = C489986110E865D100838D42 /* LexerTests.cpp */;
 		name = "LexerTests.cpp: 155";
 		rLen = 0;
-		rLoc = 4396;
+		rLoc = 4337;
 		rType = 0;
 		vrLen = 1377;
 		vrLoc = 3356;
@@ -1853,7 +1859,7 @@
 		fRef = C4FC164D10D4331C00E6ABD6 /* IExprVisitor.h */;
 		name = "ExprVisitor.h: 37";
 		rLen = 0;
-		rLoc = 1743;
+		rLoc = 1659;
 		rType = 0;
 		vrLen = 1075;
 		vrLoc = 0;
@@ -2030,7 +2036,7 @@
 		rLen = 0;
 		rLoc = 0;
 		rType = 0;
-		vrLen = 1886;
+		vrLen = 1093;
 		vrLoc = 406;
 	};
 	C4E0BC0010E13B4000D04F42 /* PBXTextBookmark */ = {
@@ -2186,7 +2192,7 @@
 		fRef = C4FC167010D4334800E6ABD6 /* Token.h */;
 		name = "Token.h: 49";
 		rLen = 0;
-		rLoc = 1096;
+		rLoc = 1077;
 		rType = 0;
 		vrLen = 1359;
 		vrLoc = 180;
@@ -2196,7 +2202,7 @@
 		fRef = C4FC164D10D4331C00E6ABD6 /* IExprVisitor.h */;
 		name = "IExprVisitor.h: 45";
 		rLen = 0;
-		rLoc = 1237;
+		rLoc = 1153;
 		rType = 0;
 		vrLen = 1826;
 		vrLoc = 55;
@@ -2574,7 +2580,7 @@
 		fRef = C4FC166F10D4334800E6ABD6 /* Token.cpp */;
 		name = "Token.cpp: 69";
 		rLen = 0;
-		rLoc = 1978;
+		rLoc = 1862;
 		rType = 0;
 		vrLen = 1972;
 		vrLoc = 915;
@@ -2644,7 +2650,7 @@
 		fRef = C4FC166910D4334800E6ABD6 /* FinchParser.cpp */;
 		name = "FinchParser.cpp: 249";
 		rLen = 0;
-		rLoc = 7148;
+		rLoc = 6647;
 		rType = 0;
 		vrLen = 1589;
 		vrLoc = 616;
@@ -2654,7 +2660,7 @@
 		fRef = C422D6B410E9048300980E01 /* Compiler.h */;
 		name = "Compiler.h: 43";
 		rLen = 27;
-		rLoc = 1243;
+		rLoc = 1191;
 		rType = 0;
 		vrLen = 1278;
 		vrLoc = 0;
@@ -2714,7 +2720,7 @@
 		fRef = C4FC15FE10D4328300E6ABD6 /* Scope.h */;
 		name = "Scope.h: 34";
 		rLen = 39;
-		rLoc = 989;
+		rLoc = 759;
 		rType = 0;
 		vrLen = 1369;
 		vrLoc = 0;
@@ -2734,7 +2740,7 @@
 		fRef = C4FC15F710D4328300E6ABD6 /* Evaluator.cpp */;
 		name = "Evaluator.cpp: 54";
 		rLen = 0;
-		rLoc = 1403;
+		rLoc = 1380;
 		rType = 0;
 		vrLen = 1638;
 		vrLoc = 509;
@@ -2754,7 +2760,7 @@
 		fRef = C422D6B510E9048300980E01 /* Compiler.cpp */;
 		name = "Compiler.cpp: 102";
 		rLen = 0;
-		rLoc = 2854;
+		rLoc = 2831;
 		rType = 0;
 		vrLen = 1499;
 		vrLoc = 1859;
@@ -2854,7 +2860,7 @@
 		fRef = C422D6B510E9048300980E01 /* Compiler.cpp */;
 		name = "Compiler.cpp: 100";
 		rLen = 0;
-		rLoc = 4520;
+		rLoc = 4497;
 		rType = 0;
 		vrLen = 1135;
 		vrLoc = 1156;
@@ -3024,7 +3030,7 @@
 		fRef = C422D6B510E9048300980E01 /* Compiler.cpp */;
 		name = "Compiler.cpp: 20";
 		rLen = 12;
-		rLoc = 424;
+		rLoc = 401;
 		rType = 0;
 		vrLen = 1245;
 		vrLoc = 0;
@@ -3044,7 +3050,7 @@
 		fRef = C422D6B510E9048300980E01 /* Compiler.cpp */;
 		name = "Compiler.cpp: 20";
 		rLen = 25;
-		rLoc = 368;
+		rLoc = 345;
 		rType = 0;
 		vrLen = 1194;
 		vrLoc = 67;
@@ -3064,7 +3070,7 @@
 		fRef = C422D6B510E9048300980E01 /* Compiler.cpp */;
 		name = "Compiler.cpp: 20";
 		rLen = 25;
-		rLoc = 368;
+		rLoc = 345;
 		rType = 0;
 		vrLen = 1135;
 		vrLoc = 1283;
@@ -3094,7 +3100,7 @@
 		fRef = C422D6B510E9048300980E01 /* Compiler.cpp */;
 		name = "Compiler.cpp: 95";
 		rLen = 17;
-		rLoc = 4275;
+		rLoc = 4252;
 		rType = 0;
 		vrLen = 1196;
 		vrLoc = 1261;
@@ -3114,7 +3120,7 @@
 		fRef = C422D6B510E9048300980E01 /* Compiler.cpp */;
 		name = "Compiler.cpp: 92";
 		rLen = 0;
-		rLoc = 4171;
+		rLoc = 4148;
 		rType = 0;
 		vrLen = 1196;
 		vrLoc = 1261;
@@ -3134,7 +3140,7 @@
 		fRef = C422D6B510E9048300980E01 /* Compiler.cpp */;
 		name = "Compiler.cpp: 71";
 		rLen = 0;
-		rLoc = 3276;
+		rLoc = 3253;
 		rType = 0;
 		vrLen = 1263;
 		vrLoc = 258;
@@ -3154,7 +3160,7 @@
 		fRef = C422D6B510E9048300980E01 /* Compiler.cpp */;
 		name = "Compiler.cpp: 71";
 		rLen = 0;
-		rLoc = 3276;
+		rLoc = 3253;
 		rType = 0;
 		vrLen = 1189;
 		vrLoc = 845;
@@ -3164,7 +3170,7 @@
 		fRef = C4FC15F710D4328300E6ABD6 /* Evaluator.cpp */;
 		name = "Evaluator.cpp: 92";
 		rLen = 0;
-		rLoc = 2472;
+		rLoc = 2449;
 		rType = 0;
 		vrLen = 1777;
 		vrLoc = 1296;
@@ -3174,7 +3180,7 @@
 		fRef = C422D6B510E9048300980E01 /* Compiler.cpp */;
 		name = "Compiler.cpp: 75";
 		rLen = 10;
-		rLoc = 3257;
+		rLoc = 3234;
 		rType = 0;
 		vrLen = 1120;
 		vrLoc = 845;
@@ -3194,7 +3200,7 @@
 		fRef = C422D6B510E9048300980E01 /* Compiler.cpp */;
 		name = "Compiler.cpp: 75";
 		rLen = 12;
-		rLoc = 3257;
+		rLoc = 3234;
 		rType = 0;
 		vrLen = 1336;
 		vrLoc = 1342;
@@ -3244,7 +3250,7 @@
 		fRef = C422D6B510E9048300980E01 /* Compiler.cpp */;
 		name = "Compiler.cpp: 76";
 		rLen = 0;
-		rLoc = 3281;
+		rLoc = 3258;
 		rType = 0;
 		vrLen = 1262;
 		vrLoc = 978;
@@ -3264,7 +3270,7 @@
 		fRef = C4FC15F710D4328300E6ABD6 /* Evaluator.cpp */;
 		name = "Evaluator.cpp: 68";
 		rLen = 431;
-		rLoc = 1679;
+		rLoc = 1656;
 		rType = 0;
 		vrLen = 1759;
 		vrLoc = 1314;
@@ -3274,7 +3280,7 @@
 		fRef = C422D6B510E9048300980E01 /* Compiler.cpp */;
 		name = "Compiler.cpp: 70";
 		rLen = 0;
-		rLoc = 2351;
+		rLoc = 2328;
 		rType = 0;
 		vrLen = 1312;
 		vrLoc = 1016;
@@ -3294,7 +3300,7 @@
 		fRef = C422D6B510E9048300980E01 /* Compiler.cpp */;
 		name = "Compiler.cpp: 69";
 		rLen = 0;
-		rLoc = 2337;
+		rLoc = 2314;
 		rType = 0;
 		vrLen = 1312;
 		vrLoc = 1016;
@@ -3314,7 +3320,7 @@
 		fRef = C422D6B510E9048300980E01 /* Compiler.cpp */;
 		name = "Compiler.cpp: 70";
 		rLen = 0;
-		rLoc = 2315;
+		rLoc = 2292;
 		rType = 0;
 		vrLen = 1329;
 		vrLoc = 1886;
@@ -3374,7 +3380,7 @@
 		fRef = C422D6B510E9048300980E01 /* Compiler.cpp */;
 		name = "Compiler.cpp: 52";
 		rLen = 0;
-		rLoc = 1743;
+		rLoc = 1720;
 		rType = 0;
 		vrLen = 1348;
 		vrLoc = 716;
@@ -3404,7 +3410,7 @@
 		fRef = C4FC15F710D4328300E6ABD6 /* Evaluator.cpp */;
 		name = "Evaluator.cpp: 71";
 		rLen = 432;
-		rLoc = 1799;
+		rLoc = 1776;
 		rType = 0;
 		vrLen = 1759;
 		vrLoc = 1314;
@@ -3424,7 +3430,7 @@
 		fRef = C422D6B510E9048300980E01 /* Compiler.cpp */;
 		name = "Compiler.cpp: 45";
 		rLen = 0;
-		rLoc = 1170;
+		rLoc = 1147;
 		rType = 0;
 		vrLen = 1348;
 		vrLoc = 716;
@@ -3444,7 +3450,7 @@
 		fRef = C422D6B510E9048300980E01 /* Compiler.cpp */;
 		name = "Compiler.cpp: 24";
 		rLen = 0;
-		rLoc = 482;
+		rLoc = 459;
 		rType = 0;
 		vrLen = 1346;
 		vrLoc = 89;
@@ -3634,7 +3640,7 @@
 		fRef = C422D6B510E9048300980E01 /* Compiler.cpp */;
 		name = "Compiler.cpp: 35";
 		rLen = 0;
-		rLoc = 821;
+		rLoc = 798;
 		rType = 0;
 		vrLen = 1396;
 		vrLoc = 209;
@@ -3804,7 +3810,7 @@
 		fRef = C422D6B410E9048300980E01 /* Compiler.h */;
 		name = "Compiler.h: 43";
 		rLen = 27;
-		rLoc = 1243;
+		rLoc = 1191;
 		rType = 0;
 		vrLen = 1278;
 		vrLoc = 0;
@@ -3834,7 +3840,7 @@
 		fRef = C422D6B510E9048300980E01 /* Compiler.cpp */;
 		name = "Compiler.cpp: 38";
 		rLen = 0;
-		rLoc = 964;
+		rLoc = 941;
 		rType = 0;
 		vrLen = 1440;
 		vrLoc = 209;
@@ -3844,7 +3850,7 @@
 		fRef = C4FC15F710D4328300E6ABD6 /* Evaluator.cpp */;
 		name = "Evaluator.cpp: 78";
 		rLen = 0;
-		rLoc = 2064;
+		rLoc = 2041;
 		rType = 0;
 		vrLen = 1513;
 		vrLoc = 161;
@@ -3854,7 +3860,7 @@
 		fRef = C422D6B510E9048300980E01 /* Compiler.cpp */;
 		name = "Compiler.cpp: 41";
 		rLen = 16;
-		rLoc = 1038;
+		rLoc = 1015;
 		rType = 0;
 		vrLen = 1313;
 		vrLoc = 0;
@@ -3944,7 +3950,7 @@
 		fRef = C422D6B510E9048300980E01 /* Compiler.cpp */;
 		name = "Compiler.cpp: 77";
 		rLen = 0;
-		rLoc = 2894;
+		rLoc = 2871;
 		rType = 0;
 		vrLen = 1346;
 		vrLoc = 2024;
@@ -3964,7 +3970,7 @@
 		fRef = C422D6B510E9048300980E01 /* Compiler.cpp */;
 		name = "Compiler.cpp: 77";
 		rLen = 0;
-		rLoc = 2894;
+		rLoc = 2871;
 		rType = 0;
 		vrLen = 1510;
 		vrLoc = 1207;
@@ -3984,7 +3990,7 @@
 		fRef = C422D6B510E9048300980E01 /* Compiler.cpp */;
 		name = "Compiler.cpp: 77";
 		rLen = 0;
-		rLoc = 2894;
+		rLoc = 2871;
 		rType = 0;
 		vrLen = 1459;
 		vrLoc = 1258;
@@ -3994,7 +4000,7 @@
 		fRef = C4FC15F710D4328300E6ABD6 /* Evaluator.cpp */;
 		name = "Evaluator.cpp: 41";
 		rLen = 749;
-		rLoc = 812;
+		rLoc = 789;
 		rType = 0;
 		vrLen = 1569;
 		vrLoc = 329;
@@ -4004,7 +4010,7 @@
 		fRef = C422D6B510E9048300980E01 /* Compiler.cpp */;
 		name = "Compiler.cpp: 45";
 		rLen = 0;
-		rLoc = 1170;
+		rLoc = 1147;
 		rType = 0;
 		vrLen = 1603;
 		vrLoc = 488;
@@ -4024,7 +4030,7 @@
 		fRef = C422D6B510E9048300980E01 /* Compiler.cpp */;
 		name = "Compiler.cpp: 63";
 		rLen = 0;
-		rLoc = 1676;
+		rLoc = 1653;
 		rType = 0;
 		vrLen = 1493;
 		vrLoc = 781;
@@ -4104,7 +4110,7 @@
 		fRef = C4FC15F710D4328300E6ABD6 /* Evaluator.cpp */;
 		name = "Evaluator.cpp: 44";
 		rLen = 68;
-		rLoc = 906;
+		rLoc = 883;
 		rType = 0;
 		vrLen = 1569;
 		vrLoc = 329;
@@ -4124,7 +4130,7 @@
 		fRef = C4FC15F710D4328300E6ABD6 /* Evaluator.cpp */;
 		name = "Evaluator.cpp: 94";
 		rLen = 6;
-		rLoc = 2557;
+		rLoc = 2534;
 		rType = 0;
 		vrLen = 1652;
 		vrLoc = 1668;
@@ -4184,7 +4190,7 @@
 		fRef = C422D6B510E9048300980E01 /* Compiler.cpp */;
 		name = "Compiler.cpp: 63";
 		rLen = 0;
-		rLoc = 1676;
+		rLoc = 1653;
 		rType = 0;
 		vrLen = 1554;
 		vrLoc = 750;
@@ -4204,7 +4210,7 @@
 		fRef = C4FC15F710D4328300E6ABD6 /* Evaluator.cpp */;
 		name = "Evaluator.cpp: 93";
 		rLen = 0;
-		rLoc = 2507;
+		rLoc = 2484;
 		rType = 0;
 		vrLen = 1652;
 		vrLoc = 1668;
@@ -4214,7 +4220,7 @@
 		fRef = C422D6B410E9048300980E01 /* Compiler.h */;
 		name = "Compiler.h: 43";
 		rLen = 27;
-		rLoc = 1243;
+		rLoc = 1191;
 		rType = 0;
 		vrLen = 1278;
 		vrLoc = 0;
@@ -4224,7 +4230,7 @@
 		fRef = C422D6B510E9048300980E01 /* Compiler.cpp */;
 		name = "Compiler.cpp: 135";
 		rLen = 0;
-		rLoc = 3587;
+		rLoc = 3564;
 		rType = 0;
 		vrLen = 1521;
 		vrLoc = 618;
@@ -4244,7 +4250,7 @@
 		fRef = C4FC15F710D4328300E6ABD6 /* Evaluator.cpp */;
 		name = "Evaluator.cpp: 93";
 		rLen = 0;
-		rLoc = 2507;
+		rLoc = 2484;
 		rType = 0;
 		vrLen = 1652;
 		vrLoc = 1668;
@@ -4264,7 +4270,7 @@
 		fRef = C4FC15F710D4328300E6ABD6 /* Evaluator.cpp */;
 		name = "Evaluator.cpp: 100";
 		rLen = 15;
-		rLoc = 2770;
+		rLoc = 2747;
 		rType = 0;
 		vrLen = 1652;
 		vrLoc = 1668;
@@ -4284,7 +4290,7 @@
 		fRef = C422D6B510E9048300980E01 /* Compiler.cpp */;
 		name = "Compiler.cpp: 147";
 		rLen = 0;
-		rLoc = 4031;
+		rLoc = 4008;
 		rType = 0;
 		vrLen = 1501;
 		vrLoc = 2530;
@@ -4294,7 +4300,7 @@
 		fRef = C4FC15F710D4328300E6ABD6 /* Evaluator.cpp */;
 		name = "Evaluator.cpp: 91";
 		rLen = 0;
-		rLoc = 2442;
+		rLoc = 2419;
 		rType = 0;
 		vrLen = 1652;
 		vrLoc = 1668;
@@ -4344,7 +4350,7 @@
 		fRef = C4FC166F10D4334800E6ABD6 /* Token.cpp */;
 		name = "Token.cpp: 69";
 		rLen = 0;
-		rLoc = 1978;
+		rLoc = 1862;
 		rType = 0;
 		vrLen = 1972;
 		vrLoc = 915;
@@ -4354,7 +4360,7 @@
 		fRef = C4FC15F710D4328300E6ABD6 /* Evaluator.cpp */;
 		name = "Evaluator.cpp: 91";
 		rLen = 0;
-		rLoc = 2442;
+		rLoc = 2419;
 		rType = 0;
 		vrLen = 1507;
 		vrLoc = 161;
@@ -4394,7 +4400,7 @@
 		fRef = C4FC15F710D4328300E6ABD6 /* Evaluator.cpp */;
 		name = "Evaluator.cpp: 91";
 		rLen = 0;
-		rLoc = 2442;
+		rLoc = 2419;
 		rType = 0;
 		vrLen = 1616;
 		vrLoc = 441;
@@ -4404,7 +4410,7 @@
 		fRef = C422D6B510E9048300980E01 /* Compiler.cpp */;
 		name = "Compiler.cpp: 120";
 		rLen = 0;
-		rLoc = 3286;
+		rLoc = 3263;
 		rType = 0;
 		vrLen = 1529;
 		vrLoc = 471;
@@ -4464,7 +4470,7 @@
 		fRef = C422D6B510E9048300980E01 /* Compiler.cpp */;
 		name = "Compiler.cpp: 120";
 		rLen = 0;
-		rLoc = 3286;
+		rLoc = 3263;
 		rType = 0;
 		vrLen = 1390;
 		vrLoc = 3240;
@@ -4504,7 +4510,7 @@
 		fRef = C4FC166910D4334800E6ABD6 /* FinchParser.cpp */;
 		name = "FinchParser.cpp: 249";
 		rLen = 0;
-		rLoc = 7148;
+		rLoc = 6647;
 		rType = 0;
 		vrLen = 1589;
 		vrLoc = 616;
@@ -4514,7 +4520,7 @@
 		fRef = C422D6B410E9048300980E01 /* Compiler.h */;
 		name = "Compiler.h: 43";
 		rLen = 27;
-		rLoc = 1243;
+		rLoc = 1191;
 		rType = 0;
 		vrLen = 1278;
 		vrLoc = 0;
@@ -4524,7 +4530,7 @@
 		fRef = C422D6B510E9048300980E01 /* Compiler.cpp */;
 		name = "Compiler.cpp: 102";
 		rLen = 0;
-		rLoc = 2854;
+		rLoc = 2831;
 		rType = 0;
 		vrLen = 1565;
 		vrLoc = 1793;
@@ -4564,7 +4570,7 @@
 		fRef = C4FC15F710D4328300E6ABD6 /* Evaluator.cpp */;
 		name = "Evaluator.cpp: 105";
 		rLen = 75;
-		rLoc = 2900;
+		rLoc = 2877;
 		rType = 0;
 		vrLen = 1669;
 		vrLoc = 1972;
@@ -4584,7 +4590,7 @@
 		fRef = C4FC15F710D4328300E6ABD6 /* Evaluator.cpp */;
 		name = "Evaluator.cpp: 99";
 		rLen = 0;
-		rLoc = 2721;
+		rLoc = 2698;
 		rType = 0;
 		vrLen = 1666;
 		vrLoc = 509;
@@ -4594,9 +4600,9 @@
 		fRef = C4FC15FD10D4328300E6ABD6 /* Scope.cpp */;
 		name = "Scope.cpp: 19";
 		rLen = 0;
-		rLoc = 394;
+		rLoc = 169;
 		rType = 0;
-		vrLen = 1095;
+		vrLen = 1081;
 		vrLoc = 0;
 	};
 	C4F6E439112ECFDE00FD591F /* PBXTextBookmark */ = {
@@ -4624,9 +4630,9 @@
 		fRef = C4FC15FD10D4328300E6ABD6 /* Scope.cpp */;
 		name = "Scope.cpp: 19";
 		rLen = 0;
-		rLoc = 394;
+		rLoc = 169;
 		rType = 0;
-		vrLen = 1095;
+		vrLen = 1081;
 		vrLoc = 0;
 	};
 	C4F6E43C112ECFDE00FD591F /* PBXTextBookmark */ = {
@@ -4644,9 +4650,9 @@
 		fRef = C4FC15FD10D4328300E6ABD6 /* Scope.cpp */;
 		name = "Scope.cpp: 19";
 		rLen = 0;
-		rLoc = 394;
+		rLoc = 169;
 		rType = 0;
-		vrLen = 1095;
+		vrLen = 1081;
 		vrLoc = 0;
 	};
 	C4F6E43E112ECFDE00FD591F /* PBXTextBookmark */ = {
@@ -4674,7 +4680,7 @@
 		fRef = C4FC15F710D4328300E6ABD6 /* Evaluator.cpp */;
 		name = "Evaluator.cpp: 38";
 		rLen = 0;
-		rLoc = 803;
+		rLoc = 780;
 		rType = 0;
 		vrLen = 1723;
 		vrLoc = 509;
@@ -4714,7 +4720,7 @@
 		fRef = C4FC15FE10D4328300E6ABD6 /* Scope.h */;
 		name = "Scope.h: 34";
 		rLen = 39;
-		rLoc = 989;
+		rLoc = 759;
 		rType = 0;
 		vrLen = 1369;
 		vrLoc = 0;
@@ -4734,7 +4740,7 @@
 		fRef = C4FC15F710D4328300E6ABD6 /* Evaluator.cpp */;
 		name = "Evaluator.cpp: 54";
 		rLen = 0;
-		rLoc = 1403;
+		rLoc = 1380;
 		rType = 0;
 		vrLen = 1638;
 		vrLoc = 509;
@@ -4754,23 +4760,24 @@
 		fRef = C422D6B510E9048300980E01 /* Compiler.cpp */;
 		name = "Compiler.cpp: 132";
 		rLen = 0;
-		rLoc = 3587;
+		rLoc = 3564;
 		rType = 0;
 		vrLen = 1356;
 		vrLoc = 3274;
 	};
 	C4FC15F710D4328300E6ABD6 /* Evaluator.cpp */ = {
 		uiCtxt = {
-			sepNavIntBoundsRect = "{{0, 0}, {747, 3010}}";
-			sepNavSelRange = "{1403, 0}";
-			sepNavVisRange = "{509, 1638}";
+			sepNavIntBoundsRect = "{{0, 0}, {768, 2478}}";
+			sepNavSelRange = "{5198, 0}";
+			sepNavVisRange = "{3814, 1553}";
+			sepNavWindowFrame = "{{15, 0}, {836, 878}}";
 		};
 	};
 	C4FC15F810D4328300E6ABD6 /* Evaluator.h */ = {
 		uiCtxt = {
-			sepNavIntBoundsRect = "{{0, 0}, {747, 748}}";
-			sepNavSelRange = "{468, 0}";
-			sepNavVisRange = "{0, 1360}";
+			sepNavIntBoundsRect = "{{0, 0}, {747, 724}}";
+			sepNavSelRange = "{1182, 0}";
+			sepNavVisRange = "{0, 1301}";
 		};
 	};
 	C4FC15FD10D4328300E6ABD6 /* Scope.cpp */ = {
@@ -4782,9 +4789,9 @@
 	};
 	C4FC15FE10D4328300E6ABD6 /* Scope.h */ = {
 		uiCtxt = {
-			sepNavIntBoundsRect = "{{0, 0}, {747, 748}}";
-			sepNavSelRange = "{989, 39}";
-			sepNavVisRange = "{0, 1369}";
+			sepNavIntBoundsRect = "{{0, 0}, {747, 724}}";
+			sepNavSelRange = "{575, 0}";
+			sepNavVisRange = "{0, 1139}";
 		};
 	};
 	C4FC164810D4331C00E6ABD6 /* BlockExpr.h */ = {
@@ -4812,14 +4819,14 @@
 		uiCtxt = {
 			sepNavIntBoundsRect = "{{0, 0}, {747, 924}}";
 			sepNavSelRange = "{1896, 0}";
-			sepNavVisRange = "{0, 1634}";
+			sepNavVisRange = "{448, 1629}";
 		};
 	};
 	C4FC164D10D4331C00E6ABD6 /* IExprVisitor.h */ = {
 		uiCtxt = {
-			sepNavIntBoundsRect = "{{0, 0}, {747, 826}}";
-			sepNavSelRange = "{1237, 0}";
-			sepNavVisRange = "{55, 1826}";
+			sepNavIntBoundsRect = "{{0, 0}, {747, 784}}";
+			sepNavSelRange = "{1733, 0}";
+			sepNavVisRange = "{35, 1706}";
 		};
 	};
 	C4FC164F10D4331C00E6ABD6 /* KeywordExpr.h */ = {
@@ -4873,9 +4880,9 @@
 	};
 	C4FC166910D4334800E6ABD6 /* FinchParser.cpp */ = {
 		uiCtxt = {
-			sepNavIntBoundsRect = "{{0, 0}, {747, 3710}}";
-			sepNavSelRange = "{7148, 0}";
-			sepNavVisRange = "{616, 1589}";
+			sepNavIntBoundsRect = "{{0, 0}, {747, 3598}}";
+			sepNavSelRange = "{2572, 0}";
+			sepNavVisRange = "{1860, 1510}";
 			sepNavWindowFrame = "{{15, 0}, {836, 878}}";
 		};
 	};
@@ -4888,16 +4895,16 @@
 	};
 	C4FC166B10D4334800E6ABD6 /* Lexer.cpp */ = {
 		uiCtxt = {
-			sepNavIntBoundsRect = "{{0, 0}, {747, 3514}}";
-			sepNavSelRange = "{395, 0}";
-			sepNavVisRange = "{313, 2451}";
+			sepNavIntBoundsRect = "{{0, 0}, {747, 3150}}";
+			sepNavSelRange = "{5055, 0}";
+			sepNavVisRange = "{3837, 2170}";
 		};
 	};
 	C4FC166C10D4334800E6ABD6 /* Lexer.h */ = {
 		uiCtxt = {
 			sepNavIntBoundsRect = "{{0, 0}, {747, 966}}";
 			sepNavSelRange = "{1001, 0}";
-			sepNavVisRange = "{285, 1323}";
+			sepNavVisRange = "{285, 1314}";
 		};
 	};
 	C4FC166D10D4334800E6ABD6 /* Parser.cpp */ = {
@@ -4917,16 +4924,16 @@
 	};
 	C4FC166F10D4334800E6ABD6 /* Token.cpp */ = {
 		uiCtxt = {
-			sepNavIntBoundsRect = "{{0, 0}, {747, 1372}}";
-			sepNavSelRange = "{1978, 0}";
-			sepNavVisRange = "{915, 1972}";
+			sepNavIntBoundsRect = "{{0, 0}, {747, 1358}}";
+			sepNavSelRange = "{1862, 0}";
+			sepNavVisRange = "{920, 1903}";
 		};
 	};
 	C4FC167010D4334800E6ABD6 /* Token.h */ = {
 		uiCtxt = {
-			sepNavIntBoundsRect = "{{0, 0}, {747, 910}}";
-			sepNavSelRange = "{1096, 0}";
-			sepNavVisRange = "{111, 1427}";
+			sepNavIntBoundsRect = "{{0, 0}, {747, 896}}";
+			sepNavSelRange = "{416, 0}";
+			sepNavVisRange = "{111, 1337}";
 		};
 	};
 	C4FC167510D4336500E6ABD6 /* Macros.h */ = {
@@ -4963,7 +4970,7 @@
 		fRef = C4FC15F710D4328300E6ABD6 /* Evaluator.cpp */;
 		name = "Evaluator.cpp: 118";
 		rLen = 0;
-		rLoc = 548;
+		rLoc = 525;
 		rType = 0;
 		vrLen = 1643;
 		vrLoc = 1689;
@@ -5013,7 +5020,7 @@
 		fRef = C4FC166910D4334800E6ABD6 /* FinchParser.cpp */;
 		name = "FinchParser.cpp: 152";
 		rLen = 0;
-		rLoc = 4932;
+		rLoc = 4431;
 		rType = 0;
 		vrLen = 1198;
 		vrLoc = 0;
@@ -5023,7 +5030,7 @@
 		fRef = C4FC15FE10D4328300E6ABD6 /* Scope.h */;
 		name = "Scope.h: 37";
 		rLen = 0;
-		rLoc = 1247;
+		rLoc = 1017;
 		rType = 0;
 		vrLen = 1130;
 		vrLoc = 0;
