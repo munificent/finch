@@ -28,7 +28,7 @@ namespace Finch
     Ref<Expr> FinchParser::ParseLine()
     {
         // skip past Sequence() otherwise we'll keep reading lines forever
-        Ref<Expr> expr = Variable();
+        Ref<Expr> expr = Assignment();
         
         // eat any trailing line
         Match(TOKEN_LINE);
@@ -48,7 +48,7 @@ namespace Finch
     
     Ref<Expr> FinchParser::Sequence()
     {
-        Ref<Expr> expression = Variable();
+        Ref<Expr> expression = Assignment();
         if (expression.IsNull()) return ParseError();
         
         while (Match(TOKEN_LINE))
@@ -56,10 +56,12 @@ namespace Finch
             // there may be a trailing line after the last expression in a
             // block. if we eat the line and then see a closing brace or eof,
             // just stop here.
+            if (LookAhead(TOKEN_RIGHT_PAREN)) break;
+            if (LookAhead(TOKEN_RIGHT_BRACKET)) break;
             if (LookAhead(TOKEN_RIGHT_BRACE)) break;
             if (LookAhead(TOKEN_EOF)) break;
             
-            Ref<Expr> second = Variable();
+            Ref<Expr> second = Assignment();
             if (second.IsNull()) return ParseError("Expect expression after ';'.");
             
             expression = Ref<Expr>(new SequenceExpr(expression, second));
@@ -68,7 +70,7 @@ namespace Finch
         return expression;
     }
     
-    Ref<Expr> FinchParser::Variable()
+    Ref<Expr> FinchParser::Assignment()
     {
         if (LookAhead(TOKEN_NAME, TOKEN_ARROW))
         {

@@ -15,6 +15,8 @@ namespace Finch
     using std::ostream;
     using std::vector;
     
+    class CodeBlock;
+    
     // Object class for a block: an invokable expression and the scope that
     // encloses it.
     class BlockObject : public Object
@@ -25,14 +27,22 @@ namespace Finch
         :   Object(prototype),
             mParams(params),
             mBody(body),
-            mClosure(closure)
+            mClosure(closure),
+            mCode(NULL)
         {}
         
+        ~BlockObject();
+        
         const vector<String> &  Params() const { return mParams; }
-        //### bob: this should be a CodeBlock. if we want to support metaprogramming,
-        // then we'll want to keep both the expr and the compiled codeblock for it.
+
+        //### bob: if we don't want to support metaprogramming (i.e. getting
+        // the ast from a block and playing with it at runtime), this can go
+        // away
         Ref<Expr>               Body() const { return mBody; }
+        
         Ref<Scope>              Closure() const { return mClosure; }
+        
+        const CodeBlock & GetCode(Environment & environment) const; 
         
         virtual BlockObject * AsBlock() { return this; }
         
@@ -45,5 +55,8 @@ namespace Finch
         vector<String>  mParams;
         Ref<Expr>       mBody;
         Ref<Scope>      mClosure;
-    };    
+        
+        // mutable so that it can be lazy initialized in GetCode()
+        mutable CodeBlock * mCode;
+    };
 }

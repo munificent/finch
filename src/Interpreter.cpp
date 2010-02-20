@@ -4,7 +4,7 @@
 
 namespace Finch
 {
-    Ref<Object> Interpreter::Execute(Environment & environment, const CodeBlock & code)
+    Ref<Object> Interpreter::Execute(const CodeBlock & code)
     {
         int address = 0;
         
@@ -19,19 +19,19 @@ namespace Finch
                     break;
                     
                 case OP_NUMBER_LITERAL:
-                    mStack.Push(Object::NewNumber(environment, instruction.arg.number));
+                    mStack.Push(Object::NewNumber(mEnvironment, instruction.arg.number));
                     break;
                     
                 case OP_STRING_LITERAL:
                     {
-                        String string = environment.Strings().Find(instruction.arg.id);
-                        mStack.Push(Object::NewString(environment, string));
+                        String string = mEnvironment.Strings().Find(instruction.arg.id);
+                        mStack.Push(Object::NewString(mEnvironment, string));
                     }
                     break;
                     
                 case OP_BLOCK_LITERAL:
                     {
-                        Ref<Object> block = environment.Blocks().Find(instruction.arg.id);
+                        Ref<Object> block = mEnvironment.Blocks().Find(instruction.arg.id);
                         mStack.Push(block);
                     }
                     break;
@@ -40,27 +40,27 @@ namespace Finch
                     mStack.Pop();
                     break;
                     
-                case OP_SET_GLOBAL:
+                case OP_DEF_GLOBAL:
                     {
                         Ref<Object> value = mStack.Pop();
                         //### bob: if we get strings fully interned (i.e. no dupes in
                         // string table), then the global name scope doesn't need the
                         // actual string at all, just the id in the string table
-                        String name = environment.Strings().Find(instruction.arg.id);
-                        environment.Globals()->Define(name, value);                        
+                        String name = mEnvironment.Strings().Find(instruction.arg.id);
+                        mEnvironment.Globals()->Define(name, value);                        
                         
                         // return the assigned value
                         mStack.Push(value);
                     }
                     break;
                     
-                case OP_SET_OBJECT:
+                case OP_DEF_OBJECT:
                     {
                         Ref<Object> value = mStack.Pop();
-                        String name = environment.Strings().Find(instruction.arg.id);
-                        if (!environment.Self().IsNull())
+                        String name = mEnvironment.Strings().Find(instruction.arg.id);
+                        if (!mEnvironment.Self().IsNull())
                         {
-                            environment.Self()->ObjectScope()->Define(name, value);
+                            mEnvironment.Self()->ObjectScope()->Define(name, value);
                         }
                         
                         // return the assigned value
@@ -70,17 +70,17 @@ namespace Finch
                     
                 case OP_LOAD_GLOBAL:
                     {
-                        String name = environment.Strings().Find(instruction.arg.id);
-                        mStack.Push(environment.Globals()->LookUp(name));
+                        String name = mEnvironment.Strings().Find(instruction.arg.id);
+                        mStack.Push(mEnvironment.Globals()->LookUp(name));
                     }
                     break;
                     
                 case OP_LOAD_OBJECT:
                     {
-                        String name = environment.Strings().Find(instruction.arg.id);
-                        if (!environment.Self().IsNull())
+                        String name = mEnvironment.Strings().Find(instruction.arg.id);
+                        if (!mEnvironment.Self().IsNull())
                         {
-                            mStack.Push(environment.Self()->ObjectScope()->LookUp(name));
+                            mStack.Push(mEnvironment.Self()->ObjectScope()->LookUp(name));
                         }
                         else
                         {
@@ -91,8 +91,8 @@ namespace Finch
                     
                 case OP_LOAD_LOCAL:
                     {
-                        String name = environment.Strings().Find(instruction.arg.id);
-                        mStack.Push(environment.CurrentScope()->LookUp(name));
+                        String name = mEnvironment.Strings().Find(instruction.arg.id);
+                        mStack.Push(mEnvironment.CurrentScope()->LookUp(name));
                     }
                     break;
                     
@@ -120,9 +120,9 @@ namespace Finch
                         reverse(args.begin(), args.end());
                         
                         // send the message
-                        String string = environment.Strings().Find(instruction.arg.id);
+                        String string = mEnvironment.Strings().Find(instruction.arg.id);
                         Ref<Object> receiver = mStack.Pop();
-                        Ref<Object> result = receiver->Receive(receiver, environment, string, args);
+                        Ref<Object> result = receiver->Receive(receiver, mEnvironment, string, args);
                         mStack.Push(result);
                     }
                     break;

@@ -28,7 +28,7 @@ namespace Finch
         
         virtual void Trace(ostream & stream) const
         {
-            stream << "def " << mName << " <- " << mValue;
+            stream << mName << " <- " << mValue;
         }
             
         EXPRESSION_VISITOR

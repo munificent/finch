@@ -31,7 +31,7 @@ namespace Finch
         // The grammar productions, from lowest to highest precedence.
         Ref<Expr> Expression();
         Ref<Expr> Sequence();
-        Ref<Expr> Variable();
+        Ref<Expr> Assignment();
         Ref<Expr> Keyword();
         Ref<Expr> Operator();
         Ref<Expr> Unary();

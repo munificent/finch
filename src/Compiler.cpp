@@ -15,21 +15,17 @@
 
 namespace Finch
 {
-    Compiler::Compiler(Environment & environment, Ref<CodeBlock> code)
+    void Compiler::Compile(Environment & environment, const Expr & expr,
+                           CodeBlock & code)
+    {
+        Compiler compiler = Compiler(environment, code);
+        expr.Accept(compiler);
+    }
+    
+    Compiler::Compiler(Environment & environment, CodeBlock & code)
     :   mEnvironment(environment),
         mCode(code)
     {
-    }
-    
-    Ref<CodeBlock> Compiler::Compile(Environment & environment, const Expr & expr)
-    {
-         //### bob: hack hard-coded size
-        Ref<CodeBlock> code = Ref<CodeBlock>(new CodeBlock(256));
-        
-        Compiler compiler = Compiler(environment, code);
-        expr.Accept(compiler);
-        
-        return code;
     }
     
     void Compiler::Visit(const BlockExpr & expr)
@@ -37,25 +33,26 @@ namespace Finch
         Ref<Object> block = Object::NewBlock(mEnvironment, expr.Params(), expr.Body());
 
         int id = mEnvironment.Blocks().Add(block);
-        mCode->Write(OP_BLOCK_LITERAL, id);
+        mCode.Write(OP_BLOCK_LITERAL, id);
     }
     
     void Compiler::Visit(const DefExpr & expr)
     {
         expr.Value()->Accept(*this);
         
-        //int id = mEnvironment.Strings().Add(expr.Name());
+        int id = mEnvironment.Strings().Add(expr.Name());
         switch (Expr::GetNameScope(expr.Name()))
         {
             case NAMESCOPE_GLOBAL:
+                mCode.Write(OP_DEF_GLOBAL, id);
+                break;
+                
             case NAMESCOPE_OBJECT:
-                //### bob: error! def is only needed for locals. globals and
-                // objects just use set
-                //### bob: need error-handling here
+                mCode.Write(OP_DEF_OBJECT, id);
                 break;
                 
             case NAMESCOPE_LOCAL:
-                //### bob: implement me
+                mCode.Write(OP_DEF_LOCAL, id);
                 break;
         }
     }
@@ -80,7 +77,7 @@ namespace Finch
         int id = mEnvironment.Strings().Add(fullName);
         OpCode op = static_cast<OpCode>(OP_MESSAGE_0 + expr.Keywords().size());
         
-        mCode->Write(op, id);
+        mCode.Write(op, id);
     }
     
     void Compiler::Visit(const NameExpr & expr)
@@ -89,22 +86,22 @@ namespace Finch
         switch (Expr::GetNameScope(expr.Name()))
         {
             case NAMESCOPE_GLOBAL:
-                mCode->Write(OP_LOAD_GLOBAL, id);
+                mCode.Write(OP_LOAD_GLOBAL, id);
                 break;
                 
             case NAMESCOPE_OBJECT:
-                mCode->Write(OP_LOAD_OBJECT, id);
+                mCode.Write(OP_LOAD_OBJECT, id);
                 break;
                 
             case NAMESCOPE_LOCAL:
-                mCode->Write(OP_LOAD_LOCAL, id);
+                mCode.Write(OP_LOAD_LOCAL, id);
                 break;
         }
     }
     
     void Compiler::Visit(const NumberExpr & expr)
     {
-        mCode->Write(OP_NUMBER_LITERAL, expr.Value());
+        mCode.Write(OP_NUMBER_LITERAL, expr.Value());
     }
     
     void Compiler::Visit(const OperatorExpr & expr)
@@ -113,7 +110,7 @@ namespace Finch
         expr.Argument()->Accept(*this);
         
         int id = mEnvironment.Strings().Add(expr.Operator());
-        mCode->Write(OP_MESSAGE_1, id);
+        mCode.Write(OP_MESSAGE_1, id);
     }
     
     void Compiler::Visit(const SequenceExpr & expr)
@@ -121,7 +118,7 @@ namespace Finch
         expr.First()->Accept(*this);
         
         // discard the first expression's return value
-        mCode->Write(OP_POP);
+        mCode.Write(OP_POP);
         
         expr.Second()->Accept(*this);
     }
@@ -130,19 +127,18 @@ namespace Finch
     {
         expr.Value()->Accept(*this);
         
-        int id = mEnvironment.Strings().Add(expr.Name());
         switch (Expr::GetNameScope(expr.Name()))
         {
             case NAMESCOPE_GLOBAL:
-                mCode->Write(OP_SET_GLOBAL, id);
-                break;
-                
             case NAMESCOPE_OBJECT:
-                mCode->Write(OP_SET_OBJECT, id);
+                //### bob: need error-handling (or have the parser
+                // disallow this). should not be able to <-- on
+                // globals or object vars
                 break;
                 
             case NAMESCOPE_LOCAL:
-                //### bob: implement me
+                int id = mEnvironment.Strings().Add(expr.Name());
+                mCode.Write(OP_SET_LOCAL, id);
                 break;
         }
     }
@@ -151,7 +147,7 @@ namespace Finch
     {
         // push string
         int id = mEnvironment.Strings().Add(expr.Value());
-        mCode->Write(OP_STRING_LITERAL, id);
+        mCode.Write(OP_STRING_LITERAL, id);
     }
     
     void Compiler::Visit(const UnaryExpr & expr)
@@ -159,6 +155,6 @@ namespace Finch
         expr.Receiver()->Accept(*this);
         
         int id = mEnvironment.Strings().Add(expr.Message());
-        mCode->Write(OP_MESSAGE_0, id);
+        mCode.Write(OP_MESSAGE_0, id);
     }
 }

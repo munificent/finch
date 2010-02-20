@@ -18,10 +18,10 @@ namespace Finch
     class Compiler : private IExprVisitor2
     {
     public:
-        static Ref<CodeBlock> Compile(Environment & environment, const Expr & expr);
+        static void Compile(Environment & environment, const Expr & expr, CodeBlock & code);
         
     private:
-        Compiler(Environment & environment, Ref<CodeBlock> code);
+        Compiler(Environment & environment, CodeBlock & code);
         
         virtual ~Compiler() {}
         
@@ -36,8 +36,8 @@ namespace Finch
         virtual void Visit(const StringExpr & expr);
         virtual void Visit(const UnaryExpr & expr);
         
-        Environment &  mEnvironment;
-        Ref<CodeBlock> mCode;
+        Environment & mEnvironment;
+        CodeBlock & mCode;
         
         NO_COPY(Compiler);
     };

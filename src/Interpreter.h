@@ -16,13 +16,16 @@ namespace Finch
     class Interpreter
     {
     public:
-        Interpreter() {}
+        Interpreter(Environment & environment)
+        :   mEnvironment(environment)
+        {}
         
-        Ref<Object> Execute(Environment & environment, const CodeBlock & code);
+        Ref<Object> Execute(const CodeBlock & code);
         
     private:
         static const int STACK_SIZE = 1024;
         
+        Environment & mEnvironment;
         Stack<Ref<Object>, STACK_SIZE> mStack; 
         
         NO_COPY(Interpreter);

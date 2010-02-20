@@ -14,8 +14,11 @@ namespace Finch
         OP_BLOCK_LITERAL,
         OP_POP,
         
-        OP_SET_GLOBAL,
-        OP_SET_OBJECT,
+        OP_DEF_GLOBAL,
+        OP_DEF_OBJECT,
+        OP_DEF_LOCAL,
+        
+        OP_SET_LOCAL,
         
         OP_LOAD_GLOBAL,
         OP_LOAD_OBJECT,

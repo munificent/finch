@@ -28,7 +28,7 @@ namespace Finch
         LineNormalizer normalizer(lexer);
         FinchParser    parser(normalizer);
         
-        Interpreter    interpreter;
+        Interpreter    interpreter(env);
 
         cout << "Finch 0.0.0d" << endl;
         cout << "------------" << endl;
@@ -59,8 +59,11 @@ namespace Finch
                 }
 
                 //### bob: new hotness!
-                Ref<CodeBlock> compiled = Compiler::Compile(env, *expr);
-                result = interpreter.Execute(env, *compiled);
+                //### bob: hack hard-coded size
+                CodeBlock compiled(256);
+                Compiler::Compile(env, *expr, compiled);
+                
+                result = interpreter.Execute(compiled);
 
                 if (!result.IsNull())
                 {
