@@ -19,9 +19,7 @@ namespace Finch
     PRIMITIVE(EtherDo);
     PRIMITIVE(EtherIfThen);
     PRIMITIVE(EtherIfThenElse);
-    /*
     PRIMITIVE(EtherWhileDo);
-    */
     
     // Basic IO
     PRIMITIVE(EtherWrite);

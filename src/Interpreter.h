@@ -43,6 +43,8 @@ namespace Finch
                         const BlockObject & block,
                         const vector<Ref<Object> > & args);
         
+        void WhileLoop(Ref<Object> condition, Ref<Object> body);
+        
         // Displays a runtime error to the user.
         void RuntimeError(const String & message);
         
@@ -83,6 +85,8 @@ namespace Finch
         Stack<Ref<Object>, MAX_OPERANDS> mOperands; 
         Stack<CallFrame, STACK_SIZE>     mCallStack;
 
+        CodeBlock mLoopCode;
+        
         NO_COPY(Interpreter);
     };
 }

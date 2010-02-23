@@ -1,31 +1,28 @@
 ' defines a "fib" method on numbers that returns the nth value of the
 ' fibonacci sequence. uses a slow naive recursive process. useful for
 ' performance testing.
-Number addMethod: "fib" body:
-{
-    def result <- 0
+Number addMethod: "fib" body: {
+    result <- 0
 
-    if: self = 0 then: { result <- 0 }
-    if: self = 1 then: { result <- 1 }
-    if: self > 1 then: { result <- (self - 2) fib + (self - 1) fib }
-    
+    if: self = 0 then: { result <-- 0 }
+    if: self = 1 then: { result <-- 1 }
+    if: self > 1 then: { result <-- (self - 2) fib + (self - 1) fib }
     result
 }
 
 ' define a for-style loop
-Ether addMethod: "from:to:do:" body:
-{|start end block|
-    def i <- start
+Ether addMethod: "from:to:do:" body: {
+    |start end block|
+    i <- start
     
-    while: { i <= end } do:
-    {
+    while: { i <= end } do: {
         block call: i
-        i <- i + 1
+        i <-- i + 1
     }
 }
 
 ' test
-from: 0 to: 20 do:
-{|i|
+from: 0 to: 20 do: {
+    |i|
     writeLine: "" + i + " fib = " + i fib
 }

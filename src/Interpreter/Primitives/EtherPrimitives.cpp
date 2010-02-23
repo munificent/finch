@@ -69,29 +69,10 @@ namespace Finch
         }
     }
     
-    //### bob: need to figure out how this is going to work...
-    /*
     PRIMITIVE(EtherWhileDo)
     {
-        BlockObject * condition = args[0]->AsBlock();
-        
-        if (condition == NULL)
-        {
-            interpreter.RuntimeError("First argument to while:do: must be a block.");
-            return Ref<Object>();
-        }
-        
-        vector<Ref<Object> > noArgs;
-        
-        while (interpreter.EvaluateBlock(*condition, noArgs) ==
-               interpreter.GetEnvironment().True())
-        {
-            args[1]->Receive(args[1], interpreter, "call", noArgs);
-        }
-        
-        return Ref<Object>();
+        interpreter.WhileLoop(args[0], args[1]);
     }
-    */
     
     PRIMITIVE(EtherWrite)
     {

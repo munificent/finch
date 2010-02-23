@@ -12,8 +12,16 @@ namespace Finch
     
     Interpreter::Interpreter(Environment & environment)
     :   mIsRunning(true),
-        mEnvironment(environment)
-    {}
+        mEnvironment(environment),
+        mLoopCode(vector<String>(), 5)
+    {
+        // build the special "while loop" chunk of bytecode
+        mLoopCode.Write(OP_LOOP_1);
+        mLoopCode.Write(OP_LOOP_2);
+        mLoopCode.Write(OP_LOOP_3);
+        mLoopCode.Write(OP_LOOP_4);
+        mLoopCode.Write(OP_END_BLOCK);
+    }
 
     Ref<Object> Interpreter::Execute(const CodeBlock & code)
     {
@@ -135,8 +143,16 @@ namespace Finch
                 case OP_LOAD_LOCAL:
                     {
                         String name = mEnvironment.Strings().Find(instruction.arg.id);
-                        Ref<Object> value = CurrentScope()->LookUp(name);
-                        PushOperand(value.IsNull() ? mEnvironment.Nil() : value);
+                        
+                        if (name == "self")
+                        {
+                            PushOperand(mCallStack.Peek().self);
+                        }
+                        else
+                        {
+                            Ref<Object> value = CurrentScope()->LookUp(name);
+                            PushOperand(value.IsNull() ? mEnvironment.Nil() : value);
+                        }
                     }
                     break;
                     
@@ -170,6 +186,66 @@ namespace Finch
                         
                         receiver->Receive(receiver, *this, string, args);
                     }
+                    break;
+                    
+                    // these next for opcodes handle the one built-in loop
+                    // construct: "while". because a while loop must wait for
+                    // the condition to be evaluated, and then later the body,
+                    // it proceeds in stages, with an opcode for each stage.
+                    //
+                    // OP_LOOP_1 begins evaluating the condition expression
+                    // OP_LOOP_2 checks the result of that and either ends the
+                    //           loop or continues
+                    // OP_LOOP_3 begins evaluating the body
+                    // OP_LOOP_4 discards the result of that and loops back to
+                    //           the beginning by explicitly changing the
+                    //           instruction pointer
+                    //
+                    // note that all of this is initiated by a call to
+                    // WhileLoop on the interpreter. that pushes a special
+                    // static CodeBlock that contains this sequence of opcodes.
+                    // we do this, instead of compiling a while loop directly
+                    // into the bytecode where it appears so that it's still
+                    // possible to overload while:do: at runtime.
+                    
+                case OP_LOOP_1:
+                    {
+                        // evaluate the conditional (while leaving it on the stack)
+                        Ref<Object> condition = mOperands.Peek();
+                        condition->Receive(condition, *this, "call", vector<Ref<Object> >());
+                    }
+                    break;
+
+                case OP_LOOP_2:
+                    // if the condition is false, end the loop
+                    if (PopOperand() != mEnvironment.True())
+                    {
+                        // pop the condition and body blocks
+                        PopOperand();
+                        PopOperand();
+                        
+                        // end the loop
+                        mCallStack.Pop();
+                        
+                        // every expression must return something
+                        PushNil();
+                    }
+                    break;
+                    
+                case OP_LOOP_3:
+                    {
+                        // evaluate the body
+                        Ref<Object> body = mOperands[1];
+                        body->Receive(body, *this, "call", vector<Ref<Object> >());
+                    }
+                    break;
+                    
+                case OP_LOOP_4:
+                    // discard the body's return value
+                    PopOperand();
+                    
+                    // restart the loop
+                    frame.address = -1; // the ++ later will get us to 0
                     break;
                     
                 case OP_END_BLOCK:
@@ -245,6 +321,16 @@ namespace Finch
         mCallStack.Push(CallFrame(&block.GetCode(), scope, self));
     }
     
+    void Interpreter::WhileLoop(Ref<Object> condition, Ref<Object> body)
+    {
+        // push the arguments onto the stack
+        Push(body);
+        Push(condition);
+        
+        // call our special loop "function"
+        mCallStack.Push(CallFrame(&mLoopCode, mCallStack.Peek().scope, mCallStack.Peek().self));
+    }
+
     void Interpreter::RuntimeError(const String & message)
     {
         //### bob: ideally, this should be programmatically configurable from

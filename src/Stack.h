@@ -42,6 +42,7 @@ namespace Finch
             return mItems[--mCount];
         }
         
+        // Returns the item on the top of the stack without removing it.
         T & Peek()
         {
             ASSERT(mCount > 0, "Cannot peek an empty stack.");

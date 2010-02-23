@@ -102,9 +102,7 @@ namespace Finch
         etherObj->RegisterPrimitive("if:then:",       EtherIfThen);
         etherObj->RegisterPrimitive("if:then:else:",  EtherIfThenElse);
         
-        /*
         etherObj->RegisterPrimitive("while:do:",      EtherWhileDo);
-        */
         etherObj->RegisterPrimitive("write:",         EtherWrite);
         etherObj->RegisterPrimitive("writeLine:",     EtherWriteLine);
         etherObj->RegisterPrimitive("load:",          EtherLoad);

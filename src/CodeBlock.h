@@ -40,6 +40,11 @@ namespace Finch
         OP_MESSAGE_9,
         OP_MESSAGE_10,
         
+        OP_LOOP_1,
+        OP_LOOP_2,
+        OP_LOOP_3,
+        OP_LOOP_4,
+        
         OP_END_BLOCK
     };
     
