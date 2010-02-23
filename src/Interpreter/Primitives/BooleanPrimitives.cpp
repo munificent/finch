@@ -8,11 +8,11 @@ namespace Finch
 {
     PRIMITIVE(BooleanTrue)
     {
-        interpreter.Push(interpreter.GetEnvironment().True());
+        interpreter.PushBool(true);
     }
 
     PRIMITIVE(BooleanFalse)
     {
-        interpreter.Push(interpreter.GetEnvironment().False());
+        interpreter.PushBool(false);
     }
 }

@@ -89,6 +89,7 @@ namespace Finch
                 break;
                 
             case TOKEN_LINE:            cout << "newline"; break;
+            case TOKEN_IGNORE_LINE:     cout << "ignore line"; break;
             case TOKEN_EOF:             cout << "eof"; break;
         }
 

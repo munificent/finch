@@ -31,6 +31,7 @@ namespace Finch
         TOKEN_KEYWORD,
         
         TOKEN_LINE,
+        TOKEN_IGNORE_LINE,
         TOKEN_EOF
     };
     

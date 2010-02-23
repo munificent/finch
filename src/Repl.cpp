@@ -36,31 +36,26 @@ namespace Finch
             // ansi color: std::cout << "\033[0;32m";
             reader.Reset();
             Ref<Expr> expr = parser.ParseLine();
-            if (!expr.IsNull())
-            {
-                //cout << "parsed \"" << *expr << "\"" << endl;
-                
-                int id = env.Blocks().Add(vector<String>(), *expr, env);
-                const CodeBlock & code = env.Blocks().Find(id);
-                
-                Ref<Object> result = interpreter.Execute(code);
-
-                if (!result.IsNull())
-                {
-                    // don't bother printing nil results
-                    if (result != env.Nil())
-                    {
-                        cout << *result << endl;
-                    }
-                }
-                else
-                {
-                    cout << "no result" << endl;
-                }
-            }
-            else
+            
+            if (expr.IsNull())
             {
                 cout << "parse error" << endl;
+                continue;
+            }
+            
+            //cout << "parsed \"" << *expr << "\"" << endl;
+            
+            // create a block for the expression
+            int id = env.Blocks().Add(vector<String>(), *expr, env);
+            const CodeBlock & code = env.Blocks().Find(id);
+            
+            // and execute it
+            Ref<Object> result = interpreter.Execute(code);
+
+            // don't bother printing nil results
+            if (result != env.Nil())
+            {
+                cout << *result << endl;
             }
         }
     }

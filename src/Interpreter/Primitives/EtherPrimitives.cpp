@@ -19,7 +19,6 @@ namespace Finch
     // Calls the given object if it's a block, otherwise just returns it.
     void CondtionallyEvaluate(Interpreter & interpreter, Ref<Object> object)
     {
-        // evaluate the arg if it's a block, otherwise just return it
         if (object->AsBlock() == NULL)
         {
             interpreter.Push(object);
@@ -78,7 +77,7 @@ namespace Finch
         
         if (condition == NULL)
         {
-            interpreter.GetEnvironment().RuntimeError("First argument to while:do: must be a block.");
+            interpreter.RuntimeError("First argument to while:do: must be a block.");
             return Ref<Object>();
         }
         

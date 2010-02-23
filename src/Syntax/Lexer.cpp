@@ -41,6 +41,7 @@ namespace Finch
                         case '.': token = SingleToken(TOKEN_DOT); break;
                         case ':': token = SingleToken(TOKEN_KEYWORD); break;
                         case ';': token = SingleToken(TOKEN_LINE); break;
+                        case '\\': token = SingleToken(TOKEN_IGNORE_LINE); break;
                         case '|': token = SingleToken(TOKEN_PIPE); break;
                             
                         case '-': StartState(LEX_IN_MINUS); break;
@@ -252,6 +253,6 @@ namespace Finch
     bool Lexer::IsOperator(char c) const
     {
         return (c != '\0') &&
-               (strchr("-+=\\/<>?~!@#$%^&*", c) != NULL);
+               (strchr("-+=/<>?~!@#$%^&*", c) != NULL);
     }
 }

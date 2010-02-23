@@ -47,8 +47,6 @@ namespace Finch
         // dynamically convert the object to a string
         vector<Ref<Object> > noArgs;
         Ref<Object> toString = args[0]->Receive(args[0], interpreter, "toString", noArgs);
-        
-        return (thisRef->AsString() == toString->AsString()) ? interpreter.GetEnvironment().True() : interpreter.GetEnvironment().False();
         */
         interpreter.PushBool(thisRef->AsString() == args[0]->AsString());
     }
@@ -59,8 +57,6 @@ namespace Finch
         // dynamically convert the object to a string
         vector<Ref<Object> > noArgs;
         Ref<Object> toString = args[0]->Receive(args[0], interpreter, "toString", noArgs);
-        
-        return (thisRef->AsString() != toString->AsString()) ? interpreter.GetEnvironment().True() : interpreter.GetEnvironment().False();
         */
         interpreter.PushBool(thisRef->AsString() != args[0]->AsString());
     }

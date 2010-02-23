@@ -27,6 +27,14 @@ namespace Finch
                         mEatNewlines = true;
                     }
                     break;
+                    
+                case TOKEN_IGNORE_LINE:
+                    // eat the ignore token
+                    token.Clear();
+                    
+                    // and newlines after it
+                    mEatNewlines = true;
+                    break;
 
                 // discard newlines after token that can't end expression
                 case TOKEN_KEYWORD:

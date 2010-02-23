@@ -346,16 +346,16 @@
 	};
 	C4012A4410CA94580088B77F /* Repl.h */ = {
 		uiCtxt = {
-			sepNavIntBoundsRect = "{{0, 0}, {747, 724}}";
+			sepNavIntBoundsRect = "{{0, 0}, {747, 747}}";
 			sepNavSelRange = "{402, 0}";
 			sepNavVisRange = "{0, 476}";
 		};
 	};
 	C4012A4710CA948B0088B77F /* Repl.cpp */ = {
 		uiCtxt = {
-			sepNavIntBoundsRect = "{{0, 0}, {747, 896}}";
-			sepNavSelRange = "{719, 0}";
-			sepNavVisRange = "{0, 1468}";
+			sepNavIntBoundsRect = "{{0, 0}, {747, 868}}";
+			sepNavSelRange = "{1322, 0}";
+			sepNavVisRange = "{136, 1420}";
 		};
 	};
 	C40323F9112CBB9D00B0ED5C /* PBXTextBookmark */ = {
@@ -403,7 +403,7 @@
 		fRef = C4949EFB10E02508001A57BA /* BooleanPrimitives.cpp */;
 		name = "BooleanPrimitives.cpp: 19";
 		rLen = 0;
-		rLoc = 330;
+		rLoc = 276;
 		rType = 0;
 		vrLen = 330;
 		vrLoc = 0;
@@ -563,7 +563,7 @@
 		fRef = C4012A4710CA948B0088B77F /* Repl.cpp */;
 		name = "Repl.cpp: 51";
 		rLen = 0;
-		rLoc = 1216;
+		rLoc = 1041;
 		rType = 0;
 		vrLen = 1476;
 		vrLoc = 311;
@@ -672,7 +672,7 @@
 		fRef = C4CDF8B010D88DF3001C9D4A /* EtherPrimitives.cpp */;
 		name = "EtherPrimitives.cpp: 74";
 		rLen = 2;
-		rLoc = 1669;
+		rLoc = 1599;
 		rType = 0;
 		vrLen = 1311;
 		vrLoc = 1059;
@@ -1042,7 +1042,7 @@
 		rLen = 1;
 		rLoc = 239;
 		rType = 0;
-		vrLen = 468;
+		vrLen = 420;
 		vrLoc = 0;
 	};
 	C416049C112FA2E90069F928 /* PBXTextBookmark */ = {
@@ -1146,8 +1146,8 @@
 	};
 	C45102D210DF37DC0009E52E /* EtherPrimitives.h */ = {
 		uiCtxt = {
-			sepNavIntBoundsRect = "{{0, 0}, {747, 724}}";
-			sepNavSelRange = "{368, 2}";
+			sepNavIntBoundsRect = "{{0, 0}, {747, 747}}";
+			sepNavSelRange = "{370, 0}";
 			sepNavVisRange = "{0, 513}";
 		};
 	};
@@ -1177,24 +1177,24 @@
 	};
 	C46588CE10DE847F007C4C3E /* StringPrimitives.cpp */ = {
 		uiCtxt = {
-			sepNavIntBoundsRect = "{{0, 0}, {978, 980}}";
-			sepNavSelRange = "{294, 2}";
-			sepNavVisRange = "{0, 1645}";
+			sepNavIntBoundsRect = "{{0, 0}, {831, 896}}";
+			sepNavSelRange = "{345, 0}";
+			sepNavVisRange = "{165, 1740}";
 			sepNavWindowFrame = "{{15, 0}, {836, 878}}";
 		};
 	};
 	C46588CF10DE847F007C4C3E /* ObjectPrimitives.h */ = {
 		uiCtxt = {
 			sepNavIntBoundsRect = "{{0, 0}, {747, 747}}";
-			sepNavSelRange = "{239, 31}";
-			sepNavVisRange = "{0, 468}";
+			sepNavSelRange = "{266, 0}";
+			sepNavVisRange = "{0, 420}";
 		};
 	};
 	C46588D010DE847F007C4C3E /* ObjectPrimitives.cpp */ = {
 		uiCtxt = {
 			sepNavIntBoundsRect = "{{0, 0}, {747, 896}}";
 			sepNavSelRange = "{1462, 0}";
-			sepNavVisRange = "{193, 1324}";
+			sepNavVisRange = "{167, 1350}";
 		};
 	};
 	C465890610DE874E007C4C3E /* FileLineReader.h */ = {
@@ -1412,21 +1412,21 @@
 	};
 	C4949EFB10E02508001A57BA /* BooleanPrimitives.cpp */ = {
 		uiCtxt = {
-			sepNavIntBoundsRect = "{{0, 0}, {747, 724}}";
-			sepNavSelRange = "{223, 0}";
-			sepNavVisRange = "{0, 330}";
+			sepNavIntBoundsRect = "{{0, 0}, {747, 747}}";
+			sepNavSelRange = "{265, 0}";
+			sepNavVisRange = "{0, 276}";
 		};
 	};
 	C4A6F68610DC3B4400854074 /* ReplLineReader.h */ = {
 		uiCtxt = {
-			sepNavIntBoundsRect = "{{0, 0}, {747, 724}}";
+			sepNavIntBoundsRect = "{{0, 0}, {747, 747}}";
 			sepNavSelRange = "{352, 0}";
 			sepNavVisRange = "{0, 537}";
 		};
 	};
 	C4A6F68710DC3B4400854074 /* ReplLineReader.cpp */ = {
 		uiCtxt = {
-			sepNavIntBoundsRect = "{{0, 0}, {747, 748}}";
+			sepNavIntBoundsRect = "{{0, 0}, {747, 747}}";
 			sepNavSelRange = "{607, 0}";
 			sepNavVisRange = "{0, 607}";
 		};
@@ -1503,16 +1503,16 @@
 	};
 	C4CDF8AB10D88DF3001C9D4A /* NumberPrimitives.h */ = {
 		uiCtxt = {
-			sepNavIntBoundsRect = "{{0, 0}, {747, 724}}";
+			sepNavIntBoundsRect = "{{0, 0}, {747, 747}}";
 			sepNavSelRange = "{217, 0}";
 			sepNavVisRange = "{0, 588}";
 		};
 	};
 	C4CDF8AC10D88DF3001C9D4A /* NumberPrimitives.cpp */ = {
 		uiCtxt = {
-			sepNavIntBoundsRect = "{{0, 0}, {831, 1078}}";
-			sepNavSelRange = "{156, 118}";
-			sepNavVisRange = "{0, 1449}";
+			sepNavIntBoundsRect = "{{0, 0}, {747, 1092}}";
+			sepNavSelRange = "{881, 0}";
+			sepNavVisRange = "{150, 1253}";
 		};
 	};
 	C4CDF8B010D88DF3001C9D4A /* EtherPrimitives.cpp */ = {
@@ -1523,14 +1523,14 @@
 		path = /Users/bob/Documents/dev/finch/src/Interpreter/Primitives/EtherPrimitives.cpp;
 		sourceTree = "<absolute>";
 		uiCtxt = {
-			sepNavIntBoundsRect = "{{0, 0}, {747, 1666}}";
-			sepNavSelRange = "{2272, 0}";
-			sepNavVisRange = "{651, 1159}";
+			sepNavIntBoundsRect = "{{0, 0}, {747, 1680}}";
+			sepNavSelRange = "{713, 0}";
+			sepNavVisRange = "{199, 1246}";
 		};
 	};
 	C4CDF8B110D88DF3001C9D4A /* BlockPrimitives.h */ = {
 		uiCtxt = {
-			sepNavIntBoundsRect = "{{0, 0}, {747, 724}}";
+			sepNavIntBoundsRect = "{{0, 0}, {747, 747}}";
 			sepNavSelRange = "{239, 0}";
 			sepNavVisRange = "{0, 239}";
 		};
@@ -1624,8 +1624,8 @@
 	C4E0BAEB10E09F2800D04F42 /* Script.cpp */ = {
 		uiCtxt = {
 			sepNavIntBoundsRect = "{{0, 0}, {887, 812}}";
-			sepNavSelRange = "{445, 0}";
-			sepNavVisRange = "{117, 1568}";
+			sepNavSelRange = "{1033, 0}";
+			sepNavVisRange = "{64, 1621}";
 		};
 	};
 	C4E3B58111322A89005F431D /* PBXTextBookmark */ = {
@@ -1653,7 +1653,7 @@
 		fRef = C4949EFB10E02508001A57BA /* BooleanPrimitives.cpp */;
 		name = "BooleanPrimitives.cpp: 16";
 		rLen = 0;
-		rLoc = 283;
+		rLoc = 260;
 		rType = 0;
 		vrLen = 330;
 		vrLoc = 0;
@@ -1673,7 +1673,7 @@
 		fRef = C4CDF8AC10D88DF3001C9D4A /* NumberPrimitives.cpp */;
 		name = "NumberPrimitives.cpp: 59";
 		rLen = 0;
-		rLoc = 1484;
+		rLoc = 1282;
 		rType = 0;
 		vrLen = 1377;
 		vrLoc = 692;
@@ -1683,7 +1683,7 @@
 		fRef = C46588CE10DE847F007C4C3E /* StringPrimitives.cpp */;
 		name = "StringPrimitives.cpp: 58";
 		rLen = 0;
-		rLoc = 2199;
+		rLoc = 1903;
 		rType = 0;
 		vrLen = 1783;
 		vrLoc = 103;
@@ -1881,7 +1881,7 @@
 		fRef = C4012A4710CA948B0088B77F /* Repl.cpp */;
 		name = "Repl.cpp: 47";
 		rLen = 0;
-		rLoc = 1152;
+		rLoc = 1041;
 		rType = 0;
 		vrLen = 1453;
 		vrLoc = 353;
@@ -1921,7 +1921,7 @@
 		fRef = C4CDF8B010D88DF3001C9D4A /* EtherPrimitives.cpp */;
 		name = "EtherPrimitives.cpp: 113";
 		rLen = 0;
-		rLoc = 2605;
+		rLoc = 2518;
 		rType = 0;
 		vrLen = 1196;
 		vrLoc = 1515;
@@ -1992,14 +1992,14 @@
 	};
 	C4E770D4112AD9AA000957EF /* Interpreter.h */ = {
 		uiCtxt = {
-			sepNavIntBoundsRect = "{{0, 0}, {747, 1232}}";
-			sepNavSelRange = "{812, 39}";
-			sepNavVisRange = "{252, 1733}";
+			sepNavIntBoundsRect = "{{0, 0}, {747, 1218}}";
+			sepNavSelRange = "{326, 0}";
+			sepNavVisRange = "{151, 1639}";
 		};
 	};
 	C4E770D5112AD9AA000957EF /* Interpreter.cpp */ = {
 		uiCtxt = {
-			sepNavIntBoundsRect = "{{0, 0}, {747, 3794}}";
+			sepNavIntBoundsRect = "{{0, 0}, {747, 3808}}";
 			sepNavSelRange = "{8088, 10}";
 			sepNavVisRange = "{7543, 1658}";
 			sepNavWindowFrame = "{{15, 0}, {836, 878}}";
