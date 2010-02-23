@@ -26,8 +26,6 @@ namespace Finch
     public:
         Environment();
         
-        void RuntimeError(const String & message);
-        
         BlockTable &  Blocks()  { return mBlocks; }
         StringTable & Strings() { return mStrings; }
         

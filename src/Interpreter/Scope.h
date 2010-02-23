@@ -11,7 +11,7 @@ namespace Finch
 {
     class Object;
     
-    // A local variable scope. Basically a dictionary of name -> value pairs.
+    // A variable scope. Basically a dictionary of name -> value pairs.
     class Scope
     {
     public:
@@ -32,6 +32,11 @@ namespace Finch
         // Gets the value of the given variable.
         Ref<Object> LookUp(String name);
         
+        // Gets the parent scope of this one, or a null reference if it has
+        // none. Looking up will defer to this scope if it couldn't be found in
+        // this one. For local variable scopes, the parent will be the enclosing
+        // lexical scope. For object variable scopes, the parent will be the
+        // prototype object.
         Ref<Scope> Parent() const { return mParent; }
         
     private:

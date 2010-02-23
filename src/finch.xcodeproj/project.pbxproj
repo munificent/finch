@@ -36,7 +36,6 @@
 		C4E770D6112AD9AA000957EF /* Interpreter.cpp in Sources */ = {isa = PBXBuildFile; fileRef = C4E770D5112AD9AA000957EF /* Interpreter.cpp */; };
 		C4F6E2F7112CE93600FD591F /* StringTable.cpp in Sources */ = {isa = PBXBuildFile; fileRef = C4F6E2F6112CE93600FD591F /* StringTable.cpp */; };
 		C4F6E31F112D83EA00FD591F /* BlockTable.cpp in Sources */ = {isa = PBXBuildFile; fileRef = C4F6E31E112D83EA00FD591F /* BlockTable.cpp */; };
-		C4FC160310D4328300E6ABD6 /* Evaluator.cpp in Sources */ = {isa = PBXBuildFile; fileRef = C4FC15F710D4328300E6ABD6 /* Evaluator.cpp */; };
 		C4FC160610D4328300E6ABD6 /* Scope.cpp in Sources */ = {isa = PBXBuildFile; fileRef = C4FC15FD10D4328300E6ABD6 /* Scope.cpp */; };
 		C4FC166010D4331C00E6ABD6 /* Expr.cpp in Sources */ = {isa = PBXBuildFile; fileRef = C4FC164B10D4331C00E6ABD6 /* Expr.cpp */; };
 		C4FC167110D4334800E6ABD6 /* FinchParser.cpp in Sources */ = {isa = PBXBuildFile; fileRef = C4FC166910D4334800E6ABD6 /* FinchParser.cpp */; };
@@ -125,8 +124,6 @@
 		C4F6E2F6112CE93600FD591F /* StringTable.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = StringTable.cpp; sourceTree = "<group>"; };
 		C4F6E31D112D83EA00FD591F /* BlockTable.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = BlockTable.h; sourceTree = "<group>"; };
 		C4F6E31E112D83EA00FD591F /* BlockTable.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = BlockTable.cpp; sourceTree = "<group>"; };
-		C4FC15F710D4328300E6ABD6 /* Evaluator.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = Evaluator.cpp; path = Interpreter/Evaluator.cpp; sourceTree = "<group>"; };
-		C4FC15F810D4328300E6ABD6 /* Evaluator.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = Evaluator.h; path = Interpreter/Evaluator.h; sourceTree = "<group>"; };
 		C4FC15FD10D4328300E6ABD6 /* Scope.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = Scope.cpp; path = Interpreter/Scope.cpp; sourceTree = "<group>"; };
 		C4FC15FE10D4328300E6ABD6 /* Scope.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = Scope.h; path = Interpreter/Scope.h; sourceTree = "<group>"; };
 		C4FC164810D4331C00E6ABD6 /* BlockExpr.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = BlockExpr.h; path = Syntax/AST/BlockExpr.h; sourceTree = "<group>"; };
@@ -180,15 +177,15 @@
 		08FB7795FE84155DC02AAC07 /* Source */ = {
 			isa = PBXGroup;
 			children = (
-				C422D6B310E9047600980E01 /* Compiler */,
-				C4E0BAEA10E09F2800D04F42 /* Script.h */,
-				C4E0BAEB10E09F2800D04F42 /* Script.cpp */,
-				C4A6F68610DC3B4400854074 /* ReplLineReader.h */,
-				C4A6F68710DC3B4400854074 /* ReplLineReader.cpp */,
-				C4B9DB2F10CF3C19003C556D /* Interpreter */,
 				08FB7796FE84155DC02AAC07 /* main.cpp */,
 				C4012A4410CA94580088B77F /* Repl.h */,
 				C4012A4710CA948B0088B77F /* Repl.cpp */,
+				C4A6F68610DC3B4400854074 /* ReplLineReader.h */,
+				C4A6F68710DC3B4400854074 /* ReplLineReader.cpp */,
+				C4E0BAEA10E09F2800D04F42 /* Script.h */,
+				C4E0BAEB10E09F2800D04F42 /* Script.cpp */,
+				C422D6B310E9047600980E01 /* Compiler */,
+				C4B9DB2F10CF3C19003C556D /* Interpreter */,
 				C4C514D410CB7A0C0045AA86 /* Syntax */,
 				C4C514AE10CB77410045AA86 /* Base */,
 				C4012A9F10CA99260088B77F /* Test */,
@@ -254,8 +251,6 @@
 				C422D6B510E9048300980E01 /* Compiler.cpp */,
 				C4E770CC112AD58F000957EF /* CodeBlock.h */,
 				C4E770CD112AD58F000957EF /* CodeBlock.cpp */,
-				C4E770D4112AD9AA000957EF /* Interpreter.h */,
-				C4E770D5112AD9AA000957EF /* Interpreter.cpp */,
 				C4F6E31D112D83EA00FD591F /* BlockTable.h */,
 				C4F6E31E112D83EA00FD591F /* BlockTable.cpp */,
 			);
@@ -267,10 +262,10 @@
 			children = (
 				C4CDF8B710D88E1F001C9D4A /* Environment.h */,
 				C4CDF8B810D88E1F001C9D4A /* Environment.cpp */,
-				C4FC15F810D4328300E6ABD6 /* Evaluator.h */,
-				C4FC15F710D4328300E6ABD6 /* Evaluator.cpp */,
 				C465890610DE874E007C4C3E /* FileLineReader.h */,
 				C465890710DE874E007C4C3E /* FileLineReader.cpp */,
+				C4E770D4112AD9AA000957EF /* Interpreter.h */,
+				C4E770D5112AD9AA000957EF /* Interpreter.cpp */,
 				C4FC15FE10D4328300E6ABD6 /* Scope.h */,
 				C4FC15FD10D4328300E6ABD6 /* Scope.cpp */,
 				C4CDF86D10D7CAAE001C9D4A /* Objects */,
@@ -401,7 +396,6 @@
 			files = (
 				8DD76F650486A84900D96B5E /* main.cpp in Sources */,
 				C4012A4810CA948B0088B77F /* Repl.cpp in Sources */,
-				C4FC160310D4328300E6ABD6 /* Evaluator.cpp in Sources */,
 				C4FC160610D4328300E6ABD6 /* Scope.cpp in Sources */,
 				C4FC166010D4331C00E6ABD6 /* Expr.cpp in Sources */,
 				C4FC167110D4334800E6ABD6 /* FinchParser.cpp in Sources */,

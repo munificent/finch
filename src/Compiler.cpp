@@ -32,18 +32,6 @@ namespace Finch
     
     void Compiler::Visit(const BlockExpr & expr)
     {
-        /*
-        //### bob: need to get outer closure here (if there is one)
-        // maybe have compiler maintain block stack and push the block when
-        // visiting it? then this can just peek the top of the stack (before
-        // pushing this block itself) to get the closure?
-        // the closure then would become the parent BlockObject, not the actual
-        // Scope (which won't be created until the block is actually invoked,
-        // not just compiled.
-        Ref<Object> block = Object::NewBlock(mEnvironment, expr.Params(), expr.Body());
-
-        int id = mEnvironment.Blocks().Add(block);
-        */
         int id = mEnvironment.Blocks().Add(expr.Params(), *expr.Body(), mEnvironment);
         mCode.Write(OP_BLOCK_LITERAL, id);
     }

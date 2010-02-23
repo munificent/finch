@@ -1,3 +1,5 @@
+#include <iostream>
+
 #include "BlockObject.h"
 #include "CodeBlock.h"
 #include "Environment.h"
@@ -5,8 +7,11 @@
 
 namespace Finch
 {
+    using std::cout;
+    using std::endl;
+    
     Interpreter::Interpreter(Environment & environment)
-    :   mRunning(true),
+    :   mIsRunning(true),
         mEnvironment(environment)
     {}
 
@@ -15,6 +20,8 @@ namespace Finch
         // push the starting block
         mCallStack.Push(CallFrame(&code, mEnvironment.Globals(), mEnvironment.Nil()));
         
+        // continue processing bytecode until the entire callstack has
+        // completed
         while (mCallStack.Count() > 0)
         {
             CallFrame & frame = mCallStack.Peek();
@@ -152,20 +159,15 @@ namespace Finch
                             args.push_back(PopOperand());
                         }
                         
-                        // reverse them since the stack has them in order and popping
-                        // reverses
+                        // reverse them since the stack has them in order (so
+                        // that arguments are evaluated from left to right) and
+                        // popping reverses the order
                         reverse(args.begin(), args.end());
                         
                         // send the message
                         String string = mEnvironment.Strings().Find(instruction.arg.id);
                         Ref<Object> receiver = PopOperand();
                         
-                        //### bob: instead of receiving a result directly from calling this
-                        // this should return nothing. instead, the result will end up
-                        // either getting pushed to the operand stack, or the received
-                        // call will eventually call EvaluateBlock or EvaluateMethod, which
-                        // will push a new stack frame that will leave something on the
-                        // operand stack when done processing
                         receiver->Receive(receiver, *this, string, args);
                     }
                     break;
@@ -201,6 +203,11 @@ namespace Finch
         PushOperand(value ? mEnvironment.True() : mEnvironment.False());
     }
 
+    void Interpreter::PushNumber(double value)
+    {
+        Push(Object::NewNumber(mEnvironment, value));
+    }
+
     void Interpreter::CallBlock(const BlockObject & block,
                                 const vector<Ref<Object> > & args)
     {
@@ -219,8 +226,8 @@ namespace Finch
         // nil if we want to be "looser" about calling convention
         if (block.Params().size() != args.size())
         {
-            mEnvironment.RuntimeError(String::Format("Block expects %d arguments, but was passed %d.",
-                                                     block.Params().size(), args.size()));
+            RuntimeError(String::Format("Block expects %d arguments, but was passed %d.",
+                                        block.Params().size(), args.size()));
             PushNil();
             return;
         }
@@ -237,7 +244,14 @@ namespace Finch
         // push the call onto the stack
         mCallStack.Push(CallFrame(&block.GetCode(), scope, self));
     }
-
+    
+    void Interpreter::RuntimeError(const String & message)
+    {
+        //### bob: ideally, this should be programmatically configurable from
+        // within Finch
+        cout << "Runtime error: " << message << endl;
+    }
+    
     void Interpreter::PushOperand(Ref<Object> object)
     {
         ASSERT(!object.IsNull(), "Cannot push a null object. (Should be Nil instead.)");

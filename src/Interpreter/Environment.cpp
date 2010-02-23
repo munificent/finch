@@ -1,12 +1,9 @@
-#include <iostream>
-
 #include "BlockObject.h"
 #include "BlockPrimitives.h"
 #include "BooleanPrimitives.h"
 #include "DynamicObject.h"
 #include "Environment.h"
 #include "EtherPrimitives.h"
-#include "Evaluator.h"
 #include "Expr.h"
 #include "Interpreter.h"
 #include "NumberPrimitives.h"
@@ -15,9 +12,6 @@
 
 namespace Finch
 {
-    using std::cout;
-    using std::endl;
-    
     Environment::Environment()
     {
         // build the global scope
@@ -114,12 +108,5 @@ namespace Finch
         etherObj->RegisterPrimitive("write:",         EtherWrite);
         etherObj->RegisterPrimitive("writeLine:",     EtherWriteLine);
         etherObj->RegisterPrimitive("load:",          EtherLoad);
-    }
-    
-    void Environment::RuntimeError(const String & message)
-    {
-        //### bob: ideally, this should be programmatically configurable from
-        // within Finch
-        cout << "Runtime error: " << message << endl;
     }
 }

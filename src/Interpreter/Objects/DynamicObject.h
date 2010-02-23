@@ -17,7 +17,9 @@ namespace Finch
     using std::ostream;
     using std::map;
     using std::vector;
-        
+    
+    class Interpreter;
+    
     // Function pointer type for a primitive Finch method implemented in C++.
     typedef void (*PrimitiveMethod)(Ref<Object> thisRef, Interpreter & interpreter,
                                     String message, const vector<Ref<Object> > & args);
@@ -51,7 +53,7 @@ namespace Finch
         virtual void Receive(Ref<Object> thisRef, Interpreter & interpreter,
                              String message, const vector<Ref<Object> > & args);
         
-        void AddMethod(Environment & env, String name, Ref<Object> body);
+        void AddMethod(Interpreter & interpreter, String name, Ref<Object> body);
         
         void RegisterPrimitive(String message, PrimitiveMethod method);
         

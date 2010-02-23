@@ -42,17 +42,17 @@ namespace Finch
         Object::Receive(thisRef, interpreter, message, args);
     }
     
-    void DynamicObject::AddMethod(Environment & env, String name, Ref<Object> body)
+    void DynamicObject::AddMethod(Interpreter & interpreter, String name, Ref<Object> body)
     {
         if (name.Length() == 0)
         {
-            env.RuntimeError("Cannot create a method with an empty name.");
+            interpreter.RuntimeError("Cannot create a method with an empty name.");
             return;
         }
         
         if (body->AsBlock() == NULL)
         {
-            env.RuntimeError("Body of method must be a block.");
+            interpreter.RuntimeError("Body of method must be a block.");
             return;
         }
         

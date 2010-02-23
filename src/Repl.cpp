@@ -2,7 +2,6 @@
 #include <string>
 
 #include "Compiler.h"
-#include "Evaluator.h"
 #include "Environment.h"
 #include "FinchParser.h"
 #include "Interpreter.h"
@@ -32,7 +31,7 @@ namespace Finch
         cout << "Finch 0.0.0d" << endl;
         cout << "------------" << endl;
         
-        while (interpreter.Running())
+        while (interpreter.IsRunning())
         {
             // ansi color: std::cout << "\033[0;32m";
             reader.Reset();

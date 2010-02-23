@@ -39,7 +39,7 @@ namespace Finch
         BlockObject * block = args[0]->AsBlock();
         if (block == NULL)
         {
-            interpreter.GetEnvironment().RuntimeError("copyWith: must be passed a block argument.");
+            interpreter.RuntimeError("copyWith: must be passed a block argument.");
             interpreter.PushNil();
         }
         else
@@ -57,7 +57,7 @@ namespace Finch
         String      name  = args[0]->AsString();
         Ref<Object> value = args[1];
         
-        object->AddMethod(interpreter.GetEnvironment(), name, value);
+        object->AddMethod(interpreter, name, value);
         interpreter.PushNil();
     }
 }

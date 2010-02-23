@@ -19,7 +19,7 @@ namespace Finch
     public:
         Interpreter(Environment & environment);
         
-        bool Running() const { return mRunning; }
+        bool IsRunning() const { return mIsRunning; }
         
         Ref<Object> Execute(const CodeBlock & code);
         
@@ -27,12 +27,13 @@ namespace Finch
         
         Ref<Object> Self()         { return mCallStack.Peek().self; }
 
-        void StopRunning() { mRunning = false; }
+        void StopRunning() { mIsRunning = false; }
         
         // Pushes the given value onto the operand stack.
         void Push(Ref<Object> object);
         void PushNil();
         void PushBool(bool value);
+        void PushNumber(double value);
         
         // Pushes the given block onto the call stack.
         void CallBlock(const BlockObject & block, const vector<Ref<Object> > & args);
@@ -41,6 +42,9 @@ namespace Finch
         void CallMethod(Ref<Object> self,
                         const BlockObject & block,
                         const vector<Ref<Object> > & args);
+        
+        // Displays a runtime error to the user.
+        void RuntimeError(const String & message);
         
     private:
         static const int MAX_OPERANDS = 1024;
@@ -73,7 +77,7 @@ namespace Finch
         void PushOperand(Ref<Object> object);
         Ref<Object> PopOperand();
         
-        bool mRunning;
+        bool mIsRunning;
         
         Environment & mEnvironment;
         Stack<Ref<Object>, MAX_OPERANDS> mOperands; 

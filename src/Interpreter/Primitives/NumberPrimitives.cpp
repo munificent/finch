@@ -7,17 +7,17 @@ namespace Finch
 {
     PRIMITIVE(NumberAdd)
     {
-        interpreter.Push(Object::NewNumber(interpreter.GetEnvironment(), thisRef->AsNumber() + args[0]->AsNumber()));
+        interpreter.PushNumber(thisRef->AsNumber() + args[0]->AsNumber());
     }
 
     PRIMITIVE(NumberSubtract)
     {
-        interpreter.Push(Object::NewNumber(interpreter.GetEnvironment(), thisRef->AsNumber() - args[0]->AsNumber()));
+        interpreter.PushNumber(thisRef->AsNumber() - args[0]->AsNumber());
     }
     
     PRIMITIVE(NumberMultiply)
     {
-        interpreter.Push(Object::NewNumber(interpreter.GetEnvironment(), thisRef->AsNumber() * args[0]->AsNumber()));
+        interpreter.PushNumber(thisRef->AsNumber() * args[0]->AsNumber());
     }
     
     PRIMITIVE(NumberDivide)
@@ -31,20 +31,19 @@ namespace Finch
         }
         else
         {
-            interpreter.Push(Object::NewNumber(interpreter.GetEnvironment(), thisRef->AsNumber() / dividend));
+            interpreter.PushNumber(thisRef->AsNumber() / dividend);
         }
     }
 
     PRIMITIVE(NumberAbs)
     {
         double number = thisRef->AsNumber();        
-        double value = (number < 0) ? -number : number;
-        interpreter.Push(Object::NewNumber(interpreter.GetEnvironment(), value));
+        interpreter.PushNumber((number < 0) ? -number : number);
     }
 
     PRIMITIVE(NumberNeg)
     {
-        interpreter.Push(Object::NewNumber(interpreter.GetEnvironment(), -thisRef->AsNumber()));
+        interpreter.PushNumber(-thisRef->AsNumber());
     }
 
     PRIMITIVE(NumberEquals)

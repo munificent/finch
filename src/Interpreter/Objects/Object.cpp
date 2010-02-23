@@ -55,7 +55,7 @@ namespace Finch
             String error = String::Format("Object '%s' did not handle message '%s'",
                                           thisRef->AsString().CString(),
                                           message.CString());
-            interpreter.GetEnvironment().RuntimeError(error.CString());
+            interpreter.RuntimeError(error.CString());
             interpreter.PushNil();
         }
     }
