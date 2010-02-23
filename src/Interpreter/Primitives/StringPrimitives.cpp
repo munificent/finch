@@ -3,28 +3,28 @@
 #include "StringPrimitives.h"
 #include "DynamicObject.h"
 #include "Environment.h"
+#include "Interpreter.h"
 #include "Object.h"
 
 namespace Finch
 {
-    Ref<Object> StringAdd(Ref<Object> thisRef, Environment & env,
-                           String message, const vector<Ref<Object> > & args)
+    PRIMITIVE(StringAdd)
     {
-        // dynamically convert the object to a string
-        vector<Ref<Object> > noArgs;
-        Ref<Object> toString = args[0]->Receive(args[0], env, "toString", noArgs);
-        
-        return Object::NewString(env, thisRef->AsString() + toString->AsString());
+        //### bob: need to figure out how a primitive can call a non-primitive function
+        /*
+         // dynamically convert the object to a string
+         vector<Ref<Object> > noArgs;
+         Ref<Object> toString = args[0]->Receive(args[0], interpreter, "toString", noArgs);
+         */
+        interpreter.Push(Object::NewString(interpreter.GetEnvironment(), thisRef->AsString() + args[0]->AsString()));
     }
     
-    Ref<Object> StringLength(Ref<Object> thisRef, Environment & env,
-                          String message, const vector<Ref<Object> > & args)
+    PRIMITIVE(StringLength)
     {
-        return Object::NewNumber(env, thisRef->AsString().Length());
+        interpreter.Push(Object::NewNumber(interpreter.GetEnvironment(), thisRef->AsString().Length()));
     }
     
-    Ref<Object> StringAt(Ref<Object> thisRef, Environment & env,
-                          String message, const vector<Ref<Object> > & args)
+    PRIMITIVE(StringAt)
     {
         String thisString = thisRef->AsString();
         int    index      = static_cast<int>(args[0]->AsNumber());
@@ -32,30 +32,36 @@ namespace Finch
         if ((index >= 0) && (index < thisString.Length()))
         {
             String substring = String(thisString[index]);
-            return Object::NewString(env, substring);
+            interpreter.Push(Object::NewString(interpreter.GetEnvironment(), substring));
         }
-        
-        // out of bounds
-        return env.Nil();
+        else
+        {
+            // out of bounds
+            interpreter.PushNil();
+        }
     }
 
-    Ref<Object> StringEquals(Ref<Object> thisRef, Environment & env,
-                          String message, const vector<Ref<Object> > & args)
+    PRIMITIVE(StringEquals)
     {
+        /*
         // dynamically convert the object to a string
         vector<Ref<Object> > noArgs;
-        Ref<Object> toString = args[0]->Receive(args[0], env, "toString", noArgs);
+        Ref<Object> toString = args[0]->Receive(args[0], interpreter, "toString", noArgs);
         
-        return (thisRef->AsString() == toString->AsString()) ? env.True() : env.False();
+        return (thisRef->AsString() == toString->AsString()) ? interpreter.GetEnvironment().True() : interpreter.GetEnvironment().False();
+        */
+        interpreter.PushBool(thisRef->AsString() == args[0]->AsString());
     }
     
-    Ref<Object> StringNotEquals(Ref<Object> thisRef, Environment & env,
-                             String message, const vector<Ref<Object> > & args)
+    PRIMITIVE(StringNotEquals)
     {
+        /*
         // dynamically convert the object to a string
         vector<Ref<Object> > noArgs;
-        Ref<Object> toString = args[0]->Receive(args[0], env, "toString", noArgs);
+        Ref<Object> toString = args[0]->Receive(args[0], interpreter, "toString", noArgs);
         
-        return (thisRef->AsString() != toString->AsString()) ? env.True() : env.False();
+        return (thisRef->AsString() != toString->AsString()) ? interpreter.GetEnvironment().True() : interpreter.GetEnvironment().False();
+        */
+        interpreter.PushBool(thisRef->AsString() != args[0]->AsString());
     }
 }

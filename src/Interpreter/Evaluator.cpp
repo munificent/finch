@@ -14,6 +14,8 @@
 #include "StringExpr.h"
 #include "UnaryExpr.h"
 
+//### bob: commented out since we're moving over to bytecode
+/*
 namespace Finch
 {
     Ref<Object> Evaluator::Evaluate(Ref<Expr> expr)
@@ -120,7 +122,7 @@ namespace Finch
         args.push_back(arg);
         
         return NullToNil(receiver->Receive(receiver, mEnvironment, expr.Operator(), args));
-    }    
+    }
     
     Ref<Object> Evaluator::Visit(const SequenceExpr & expr)
     {
@@ -181,3 +183,4 @@ namespace Finch
         return result;
     }
 }
+*/

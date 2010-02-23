@@ -1,11 +1,15 @@
 #pragma once
 
 #include <iostream>
+#include <vector>
 
 #include "Macros.h"
+#include "String.h"
 
 namespace Finch
 {
+    using std::vector;
+    
     enum OpCode
     {
         OP_NOTHING,
@@ -34,7 +38,9 @@ namespace Finch
         OP_MESSAGE_7,
         OP_MESSAGE_8,
         OP_MESSAGE_9,
-        OP_MESSAGE_10
+        OP_MESSAGE_10,
+        
+        OP_END_BLOCK
     };
     
     struct Instruction
@@ -55,9 +61,11 @@ namespace Finch
     class CodeBlock
     {
     public:
-        CodeBlock(int capacity);
+        CodeBlock(const vector<String> & params, int capacity);
         
         ~CodeBlock();
+        
+        const vector<String> &  Params() const { return mParams; }
         
         int Size() const { return mSize; }
         
@@ -68,7 +76,8 @@ namespace Finch
         void Write(OpCode op, int id);
         
     private:
-        Instruction * mInstructions;
+        vector<String>  mParams;
+        Instruction *   mInstructions;
         
         int mCapacity;
         int mSize;

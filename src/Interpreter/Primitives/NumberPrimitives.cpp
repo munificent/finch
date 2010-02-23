@@ -1,91 +1,79 @@
 #include "NumberPrimitives.h"
 #include "NumberObject.h"
 #include "Environment.h"
+#include "Interpreter.h"
 
 namespace Finch
 {
-    Ref<Object> NumberAdd(Ref<Object> thisRef, Environment & env,
-                           String message, const vector<Ref<Object> > & args)
+    PRIMITIVE(NumberAdd)
     {
-        return Object::NewNumber(env, thisRef->AsNumber() + args[0]->AsNumber());
+        interpreter.Push(Object::NewNumber(interpreter.GetEnvironment(), thisRef->AsNumber() + args[0]->AsNumber()));
     }
 
-    Ref<Object> NumberSubtract(Ref<Object> thisRef, Environment & env,
-                            String message, const vector<Ref<Object> > & args)
+    PRIMITIVE(NumberSubtract)
     {
-        return Object::NewNumber(env, thisRef->AsNumber() - args[0]->AsNumber());
+        interpreter.Push(Object::NewNumber(interpreter.GetEnvironment(), thisRef->AsNumber() - args[0]->AsNumber()));
     }
     
-    Ref<Object> NumberMultiply(Ref<Object> thisRef, Environment & env,
-                               String message, const vector<Ref<Object> > & args)
+    PRIMITIVE(NumberMultiply)
     {
-        return Object::NewNumber(env, thisRef->AsNumber() * args[0]->AsNumber());
+        interpreter.Push(Object::NewNumber(interpreter.GetEnvironment(), thisRef->AsNumber() * args[0]->AsNumber()));
     }
     
-    Ref<Object> NumberDivide(Ref<Object> thisRef, Environment & env,
-                             String message, const vector<Ref<Object> > & args)
+    PRIMITIVE(NumberDivide)
     {
         double dividend = args[0]->AsNumber();
         
         // check for divide by zero
-        if (dividend == 0) return env.Nil();
+        if (dividend == 0)
+        {
+            interpreter.PushNil();
+        }
+        else
+        {
+            interpreter.Push(Object::NewNumber(interpreter.GetEnvironment(), thisRef->AsNumber() / dividend));
+        }
+    }
 
-        return Object::NewNumber(env, thisRef->AsNumber() / dividend);
-    }    
-
-    Ref<Object> NumberAbs(Ref<Object> thisRef, Environment & env,
-                          String message, const vector<Ref<Object> > & args)
+    PRIMITIVE(NumberAbs)
     {
         double number = thisRef->AsNumber();        
         double value = (number < 0) ? -number : number;
-        return Object::NewNumber(env, value);
+        interpreter.Push(Object::NewNumber(interpreter.GetEnvironment(), value));
     }
 
-    Ref<Object> NumberNeg(Ref<Object> thisRef, Environment & env,
-                          String message, const vector<Ref<Object> > & args)
+    PRIMITIVE(NumberNeg)
     {
-        return Object::NewNumber(env, -thisRef->AsNumber());
+        interpreter.Push(Object::NewNumber(interpreter.GetEnvironment(), -thisRef->AsNumber()));
     }
 
-    Ref<Object> NumberEquals(Ref<Object> thisRef, Environment & env,
-                             String message, const vector<Ref<Object> > & args)
+    PRIMITIVE(NumberEquals)
     {
-        bool result = thisRef->AsNumber() == args[0]->AsNumber();
-        return result ? env.True() : env.False();
+        interpreter.PushBool(thisRef->AsNumber() == args[0]->AsNumber());
     }
 
-    Ref<Object> NumberNotEquals(Ref<Object> thisRef, Environment & env,
-                                String message, const vector<Ref<Object> > & args)
+    PRIMITIVE(NumberNotEquals)
     {
-        bool result = thisRef->AsNumber() != args[0]->AsNumber();
-        return result ? env.True() : env.False();
+        interpreter.PushBool(thisRef->AsNumber() != args[0]->AsNumber());
     }
     
-    Ref<Object> NumberLessThan(Ref<Object> thisRef, Environment & env,
-                               String message, const vector<Ref<Object> > & args)
+    PRIMITIVE(NumberLessThan)
     {
-        bool result = thisRef->AsNumber() < args[0]->AsNumber();
-        return result ? env.True() : env.False();
+        interpreter.PushBool(thisRef->AsNumber() < args[0]->AsNumber());
     }
     
-    Ref<Object> NumberGreaterThan(Ref<Object> thisRef, Environment & env,
-                                  String message, const vector<Ref<Object> > & args)
+    PRIMITIVE(NumberGreaterThan)
     {
-        bool result = thisRef->AsNumber() > args[0]->AsNumber();
-        return result ? env.True() : env.False();
+        interpreter.PushBool(thisRef->AsNumber() > args[0]->AsNumber());
     }
     
-    Ref<Object> NumberLessThanOrEqual(Ref<Object> thisRef, Environment & env,
-                                      String message, const vector<Ref<Object> > & args)
+    PRIMITIVE(NumberLessThanOrEqual)
     {
-        bool result = thisRef->AsNumber() <= args[0]->AsNumber();
-        return result ? env.True() : env.False();
+        interpreter.PushBool(thisRef->AsNumber() <= args[0]->AsNumber());
     }
     
-    Ref<Object> NumberGreaterThanOrEqual(Ref<Object> thisRef, Environment & env,
-                                         String message, const vector<Ref<Object> > & args)
+    PRIMITIVE(NumberGreaterThanOrEqual)
     {
-        bool result = thisRef->AsNumber() >= args[0]->AsNumber();
-        return result ? env.True() : env.False();
+        interpreter.PushBool(thisRef->AsNumber() >= args[0]->AsNumber());
     }
 }

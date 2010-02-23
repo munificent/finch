@@ -3,6 +3,7 @@
 #include <iostream>
 #include <vector>
 
+#include "CodeBlock.h"
 #include "Expr.h"
 #include "Macros.h"
 #include "Object.h"
@@ -15,48 +16,32 @@ namespace Finch
     using std::ostream;
     using std::vector;
     
-    class CodeBlock;
-    
     // Object class for a block: an invokable expression and the scope that
     // encloses it.
     class BlockObject : public Object
     {
     public:
-        BlockObject(Ref<Object> prototype, vector<String> params,
-                    Ref<Expr> body, Ref<Scope> closure)
+        BlockObject(Ref<Object> prototype, const CodeBlock & code, Ref<Scope> closure)
         :   Object(prototype),
-            mParams(params),
-            mBody(body),
-            mClosure(closure),
-            mCode(NULL)
+            mCode(code),
+            mClosure(closure)
         {}
         
-        ~BlockObject();
-        
-        const vector<String> &  Params() const { return mParams; }
+        const vector<String> &  Params() const { return mCode.Params(); }
 
-        //### bob: if we don't want to support metaprogramming (i.e. getting
-        // the ast from a block and playing with it at runtime), this can go
-        // away
-        Ref<Expr>               Body() const { return mBody; }
+              Ref<Scope>        Closure() const { return mClosure; }
         
-        Ref<Scope>              Closure() const { return mClosure; }
-        
-        const CodeBlock & GetCode(Environment & environment) const; 
+        const CodeBlock &       GetCode() const { return mCode; } 
         
         virtual BlockObject * AsBlock() { return this; }
         
         virtual void Trace(ostream & stream) const
         {
-            stream << "block " << mBody;
+            stream << "block";
         }
             
     private:
-        vector<String>  mParams;
-        Ref<Expr>       mBody;
-        Ref<Scope>      mClosure;
-        
-        // mutable so that it can be lazy initialized in GetCode()
-        mutable CodeBlock * mCode;
+        const CodeBlock & mCode;
+              Ref<Scope>  mClosure;
     };
 }

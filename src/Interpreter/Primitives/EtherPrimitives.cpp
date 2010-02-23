@@ -5,6 +5,7 @@
 #include "Environment.h"
 #include "EtherPrimitives.h"
 #include "Expr.h"
+#include "Interpreter.h"
 #include "Script.h"
 
 namespace Finch
@@ -15,92 +16,103 @@ namespace Finch
     using std::ifstream;
     using std::ios;
     
-    Ref<Object> EtherQuit(Ref<Object> thisRef, Environment & env,
-                                String message, const vector<Ref<Object> > & args)
+    // Calls the given object if it's a block, otherwise just returns it.
+    void CondtionallyEvaluate(Interpreter & interpreter, Ref<Object> object)
     {
-        env.StopRunning();
-        return Ref<Object>();
-    }
-    
-    Ref<Object> EtherDo(Ref<Object> thisRef, Environment & env,
-                             String message, const vector<Ref<Object> > & args)
-    {
-        vector<Ref<Object> > noArgs;
-        return args[0]->Receive(args[0], env, "call", noArgs);
-    }
-    
-    Ref<Object> EtherIfThen(Ref<Object> thisRef, Environment & env,
-                          String message, const vector<Ref<Object> > & args)
-    {
-        vector<Ref<Object> > noArgs;
-        
-        if (args[0] == env.True())
+        // evaluate the arg if it's a block, otherwise just return it
+        if (object->AsBlock() == NULL)
         {
-            return args[1]->Receive(args[1], env, "call", noArgs);
-        }
-        
-        return Ref<Object>();
-    }
-    
-    Ref<Object> EtherIfThenElse(Ref<Object> thisRef, Environment & env,
-                              String message, const vector<Ref<Object> > & args)
-    {
-        vector<Ref<Object> > noArgs;
-        
-        if (args[0] == env.True())
-        {
-            return args[1]->Receive(args[1], env, "call", noArgs);
+            interpreter.Push(object);
         }
         else
         {
-            return args[2]->Receive(args[2], env, "call", noArgs);
+            vector<Ref<Object> > noArgs;
+            object->Receive(object, interpreter, "call", noArgs);
         }
     }
     
-    Ref<Object> EtherWhileDo(Ref<Object> thisRef, Environment & env,
-                                   String message, const vector<Ref<Object> > & args)
+    PRIMITIVE(EtherQuit)
+    {
+        interpreter.StopRunning();
+        interpreter.PushNil();
+    }
+    
+    PRIMITIVE(EtherDo)
+    {
+        CondtionallyEvaluate(interpreter, args[0]);
+    }
+    
+    PRIMITIVE(EtherIfThen)
+    {
+        vector<Ref<Object> > noArgs;
+        
+        if (args[0] == interpreter.GetEnvironment().True())
+        {
+            CondtionallyEvaluate(interpreter, args[1]);
+        }
+        else
+        {
+            interpreter.PushNil();
+        }
+    }
+    
+    PRIMITIVE(EtherIfThenElse)
+    {
+        vector<Ref<Object> > noArgs;
+        
+        if (args[0] == interpreter.GetEnvironment().True())
+        {
+            CondtionallyEvaluate(interpreter, args[1]);
+        }
+        else
+        {
+            CondtionallyEvaluate(interpreter, args[2]);
+        }
+    }
+    
+    //### bob: need to figure out how this is going to work...
+    /*
+    PRIMITIVE(EtherWhileDo)
     {
         BlockObject * condition = args[0]->AsBlock();
         
         if (condition == NULL)
         {
-            env.RuntimeError("First argument to while:do: must be a block.");
+            interpreter.GetEnvironment().RuntimeError("First argument to while:do: must be a block.");
             return Ref<Object>();
         }
         
         vector<Ref<Object> > noArgs;
         
-        while (env.EvaluateBlock(*condition, noArgs) == env.True())
+        while (interpreter.EvaluateBlock(*condition, noArgs) ==
+               interpreter.GetEnvironment().True())
         {
-            args[1]->Receive(args[1], env, "call", noArgs);
+            args[1]->Receive(args[1], interpreter, "call", noArgs);
         }
         
         return Ref<Object>();
     }
+    */
     
-    Ref<Object> EtherWrite(Ref<Object> thisRef, Environment & env,
-                             String message, const vector<Ref<Object> > & args)
+    PRIMITIVE(EtherWrite)
     {
         String text = args[0]->AsString();
         cout << text;
         
-        return Ref<Object>();
+        interpreter.PushNil();
     }
     
-    Ref<Object> EtherWriteLine(Ref<Object> thisRef, Environment & env,
-                             String message, const vector<Ref<Object> > & args)
+    PRIMITIVE(EtherWriteLine)
     {
         String text = args[0]->AsString();
         cout << text << endl;
         
-        return Ref<Object>();
+        interpreter.PushNil();
     }
     
-    Ref<Object> EtherLoad(Ref<Object> thisRef, Environment & env,
-                                 String message, const vector<Ref<Object> > & args)
+    PRIMITIVE(EtherLoad)
     {
         String fileName = args[0]->AsString();
-        
-        return Script::Run(fileName, env);
+        Script::Run(fileName, interpreter);
     }
 }

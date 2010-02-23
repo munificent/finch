@@ -9,6 +9,8 @@
 #include "Ref.h"
 #include "Scope.h"
 
+//### bob: commented out since we're moving over to bytecode
+/*
 namespace Finch
 {
     class Environment;
@@ -42,3 +44,4 @@ namespace Finch
         Environment & mEnvironment;
     };
 }
+*/

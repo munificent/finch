@@ -42,6 +42,13 @@ namespace Finch
             return mItems[--mCount];
         }
         
+        T & Peek()
+        {
+            ASSERT(mCount > 0, "Cannot peek an empty stack.");
+            
+            return mItems[mCount - 1];
+        }
+        
         // Gets the item at the given index in the stack. Index zero is the
         // top of the stack, and indices increase towards the bottom of the
         // stack.

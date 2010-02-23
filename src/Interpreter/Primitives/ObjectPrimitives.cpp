@@ -3,38 +3,34 @@
 #include "ObjectPrimitives.h"
 #include "DynamicObject.h"
 #include "Environment.h"
+#include "Interpreter.h"
 #include "Object.h"
 
 namespace Finch
 {
-    Ref<Object> ObjectSelf(Ref<Object> thisRef, Environment & env,
-                           String message, const vector<Ref<Object> > & args)
+    PRIMITIVE(ObjectSelf)
     {
-        return thisRef;
+        interpreter.Push(thisRef);
     }
     
-    Ref<Object> ObjectEquals(Ref<Object> thisRef, Environment & env,
-                           String message, const vector<Ref<Object> > & args)
+    PRIMITIVE(ObjectEquals)
     {
         // by default, objects compare using reference equality
-        return (thisRef == args[0]) ? env.True() : env.False();
+        interpreter.PushBool(thisRef == args[0]);
     }
     
-    Ref<Object> ObjectNotEquals(Ref<Object> thisRef, Environment & env,
-                             String message, const vector<Ref<Object> > & args)
+    PRIMITIVE(ObjectNotEquals)
     {
         // by default, objects compare using reference equality
-        return (thisRef != args[0]) ? env.True() : env.False();
+        interpreter.PushBool(thisRef != args[0]);
     }
     
-    Ref<Object> ObjectCopy(Ref<Object> thisRef, Environment & env,
-                           String message, const vector<Ref<Object> > & args)
+    PRIMITIVE(ObjectCopy)
     {
-        return Object::NewObject(thisRef);
+        interpreter.Push(Object::NewObject(thisRef));
     }
     
-    Ref<Object> ObjectCopyWith(Ref<Object> thisRef, Environment & env,
-                           String message, const vector<Ref<Object> > & args)
+    PRIMITIVE(ObjectCopyWith)
     {
         // create the object
         Ref<Object> copy = Object::NewObject(thisRef);
@@ -43,18 +39,17 @@ namespace Finch
         BlockObject * block = args[0]->AsBlock();
         if (block == NULL)
         {
-            env.RuntimeError("copyWith: must be passed a block argument.");
-            return Ref<Object>();
+            interpreter.GetEnvironment().RuntimeError("copyWith: must be passed a block argument.");
+            interpreter.PushNil();
         }
-        
-        vector<Ref<Object> > noArgs;
-        env.EvaluateMethod(copy, *block, noArgs);
-        
-        return copy;
+        else
+        {
+            vector<Ref<Object> > noArgs;
+            interpreter.CallMethod(copy, *block, noArgs);
+        }
     }
     
-    Ref<Object> ObjectAddMethodValue(Ref<Object> thisRef, Environment & env,
-                           String message, const vector<Ref<Object> > & args)
+    PRIMITIVE(ObjectAddMethodValue)
     {
         DynamicObject * object = thisRef->AsDynamic();
         ASSERT_NOT_NULL(object);
@@ -62,6 +57,7 @@ namespace Finch
         String      name  = args[0]->AsString();
         Ref<Object> value = args[1];
         
-        return object->AddMethod(env, name, value);
+        object->AddMethod(interpreter.GetEnvironment(), name, value);
+        interpreter.PushNil();
     }
 }

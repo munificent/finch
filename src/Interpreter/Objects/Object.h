@@ -7,6 +7,10 @@
 #include "Ref.h"
 #include "String.h"
 
+#define PRIMITIVE(name)                                             \
+        void name(Ref<Object> thisRef, Interpreter & interpreter,   \
+             String message, const vector<Ref<Object> > & args)
+
 namespace Finch
 {
     using std::ostream;
@@ -15,8 +19,10 @@ namespace Finch
     class Expr;
     class Scope;
     class BlockObject;
+    class CodeBlock;
     class DynamicObject;
     class Environment;
+    class Interpreter;
     
     // Base class for an object in Finch. All values in Finch inherit from this.
     class Object
@@ -27,14 +33,12 @@ namespace Finch
         static Ref<Object> NewObject(Ref<Object> prototype);
         static Ref<Object> NewNumber(Environment & env, double value);
         static Ref<Object> NewString(Environment & env, String value);
-        static Ref<Object> NewBlock(Environment & env, vector<String> params,
-                                    Ref<Expr> value);
+        static Ref<Object> NewBlock(Environment & env, const CodeBlock & code, Ref<Scope> closure);
         
         virtual ~Object() {}
         
-        //### bob: pass args by const&
-        virtual Ref<Object> Receive(Ref<Object> thisRef, Environment & env,
-                                    String message, const vector<Ref<Object> > & args);
+        virtual void Receive(Ref<Object> thisRef, Interpreter & interpreter,
+                             String message, const vector<Ref<Object> > & args);
         
         virtual double          AsNumber() const { return 0; }
         virtual String          AsString() const { return ""; }

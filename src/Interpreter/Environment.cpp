@@ -19,11 +19,9 @@ namespace Finch
     using std::endl;
     
     Environment::Environment()
-    :   mRunning(true)
     {
         // build the global scope
         mGlobals = Ref<Scope>(new Scope()); 
-        mCurrentScope = mGlobals;
         
         // define Object prototype
         Ref<Object> object = Object::NewObject(Ref<Object>(), "Object");
@@ -85,7 +83,7 @@ namespace Finch
         stringObj->RegisterPrimitive("at:",         StringAt);
         stringObj->RegisterPrimitive("=",           StringEquals);
         stringObj->RegisterPrimitive("!=",          StringNotEquals);
-
+        
         // define nil
         mNil = Object::NewObject(object, "Nil");
         mGlobals->Define("Nil", mNil);
@@ -106,10 +104,13 @@ namespace Finch
         
         DynamicObject* etherObj = &static_cast<DynamicObject&>(*ether);
         etherObj->RegisterPrimitive("quit",           EtherQuit);
-        etherObj->RegisterPrimitive("do:",       EtherDo);
+        etherObj->RegisterPrimitive("do:",            EtherDo);
         etherObj->RegisterPrimitive("if:then:",       EtherIfThen);
         etherObj->RegisterPrimitive("if:then:else:",  EtherIfThenElse);
+        
+        /*
         etherObj->RegisterPrimitive("while:do:",      EtherWhileDo);
+        */
         etherObj->RegisterPrimitive("write:",         EtherWrite);
         etherObj->RegisterPrimitive("writeLine:",     EtherWriteLine);
         etherObj->RegisterPrimitive("load:",          EtherLoad);
@@ -120,49 +121,5 @@ namespace Finch
         //### bob: ideally, this should be programmatically configurable from
         // within Finch
         cout << "Runtime error: " << message << endl;
-    }
-
-    Ref<Object> Environment::EvaluateBlock(const BlockObject & block,
-                                           const vector<Ref<Object> > & args)
-    {
-        // create a new local scope for the block
-        Ref<Scope> oldScope = mCurrentScope;
-        mCurrentScope = Ref<Scope>(new Scope(block.Closure()));
-        
-        if (block.Params().size() != args.size())
-        {
-            RuntimeError(String::Format("Block expects %d arguments, but was passed %d.",
-                                            block.Params().size(), args.size()));
-            return Ref<Object>();
-        }
-        
-        // bind the arguments
-        for (unsigned int i = 0; i < args.size(); i++)
-        {
-            mCurrentScope->Define(block.Params()[i], args[i]);
-        }
-        
-        Evaluator evaluator(*this);
-        Ref<Object> result = evaluator.Evaluate(block.Body());
-        
-        mCurrentScope = oldScope;
-        
-        return result;
-    }
-    
-    Ref<Object> Environment::EvaluateMethod(Ref<Object> self,
-                                            const BlockObject & block,
-                                            const vector<Ref<Object> > & args)
-    {
-        // swap out the current self object
-        Ref<Object> previousSelf = mSelf;
-        mSelf = self;
-        
-        // evaluate the method body block
-        Ref<Object> result = EvaluateBlock(block, args);
-        
-        mSelf = previousSelf;
-        
-        return result;
     }
 }

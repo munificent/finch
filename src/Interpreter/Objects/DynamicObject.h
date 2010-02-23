@@ -17,12 +17,10 @@ namespace Finch
     using std::ostream;
     using std::map;
     using std::vector;
-    
-    class Environment;
-    
+        
     // Function pointer type for a primitive Finch method implemented in C++.
-    typedef Ref<Object> (*PrimitiveMethod)(Ref<Object> thisRef, Environment & env,
-                                           String message, const vector<Ref<Object> > & args);
+    typedef void (*PrimitiveMethod)(Ref<Object> thisRef, Interpreter & interpreter,
+                                    String message, const vector<Ref<Object> > & args);
 
     // Object class for a "normal" full-featured object. Supports user-defined
     // fields and methods as well as primitive methods.
@@ -50,10 +48,10 @@ namespace Finch
         
         virtual Ref<Scope> ObjectScope() const { return mScope; }
         
-        virtual Ref<Object> Receive(Ref<Object> thisRef, Environment & env,
-                                    String message, const vector<Ref<Object> > & args);
+        virtual void Receive(Ref<Object> thisRef, Interpreter & interpreter,
+                             String message, const vector<Ref<Object> > & args);
         
-        Ref<Object> AddMethod(Environment & env, String name, Ref<Object> body);
+        void AddMethod(Environment & env, String name, Ref<Object> body);
         
         void RegisterPrimitive(String message, PrimitiveMethod method);
         

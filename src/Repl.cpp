@@ -21,7 +21,6 @@ namespace Finch
     void Repl::Run()
     {
         Environment env;
-        Evaluator   evaluator(env);
         
         ReplLineReader reader;
         Lexer          lexer(reader);
@@ -33,7 +32,7 @@ namespace Finch
         cout << "Finch 0.0.0d" << endl;
         cout << "------------" << endl;
         
-        while (env.Running())
+        while (interpreter.Running())
         {
             // ansi color: std::cout << "\033[0;32m";
             reader.Reset();
@@ -42,40 +41,22 @@ namespace Finch
             {
                 //cout << "parsed \"" << *expr << "\"" << endl;
                 
-                //### bob: run the old interpreter
-                Ref<Object> result = evaluator.Evaluate(expr);
+                int id = env.Blocks().Add(vector<String>(), *expr, env);
+                const CodeBlock & code = env.Blocks().Find(id);
                 
-                if (!result.IsNull())
-                {
-                    // don't bother printing nil results
-                    if (result != env.Nil())
-                    {
-                        cout << "old " << *result << endl;
-                    }
-                }
-                else
-                {
-                    cout << "old no result" << endl;
-                }
-
-                //### bob: new hotness!
-                //### bob: hack hard-coded size
-                CodeBlock compiled(256);
-                Compiler::Compile(env, *expr, compiled);
-                
-                result = interpreter.Execute(compiled);
+                Ref<Object> result = interpreter.Execute(code);
 
                 if (!result.IsNull())
                 {
                     // don't bother printing nil results
                     if (result != env.Nil())
                     {
-                        cout << "new " << *result << endl;
+                        cout << *result << endl;
                     }
                 }
                 else
                 {
-                    cout << "new no result" << endl;
+                    cout << "no result" << endl;
                 }
             }
             else

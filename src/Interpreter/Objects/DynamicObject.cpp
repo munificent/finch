@@ -1,6 +1,7 @@
 #include "DynamicObject.h"
 #include "BlockObject.h"
 #include "Environment.h"
+#include "Interpreter.h"
 
 namespace Finch
 {
@@ -11,8 +12,8 @@ namespace Finch
         stream << mName;
     }
     
-    Ref<Object> DynamicObject::Receive(Ref<Object> thisRef, Environment & env, 
-                                       String message, const vector<Ref<Object> > & args)
+    void DynamicObject::Receive(Ref<Object> thisRef, Interpreter & interpreter, 
+                                String message, const vector<Ref<Object> > & args)
     {        
         // see if it's a method call
         Ref<Object> found = mMethods.Find(message);
@@ -22,9 +23,8 @@ namespace Finch
             
             ASSERT_NOT_NULL(block);
             
-            Ref<Object> result = env.EvaluateMethod(thisRef, *block, args);
-            
-            return result;
+            interpreter.CallMethod(thisRef, *block, args);
+            return;
         }
         
         // see if it's a primitive call
@@ -32,33 +32,32 @@ namespace Finch
         if (primitive != mPrimitives.end())
         {
             PrimitiveMethod method = primitive->second;
-            
             ASSERT_NOT_NULL(method);
             
-            return method(thisRef, env, message, args);
+            method(thisRef, interpreter, message, args);
+            return;
         }
         
-        return Object::Receive(thisRef, env, message, args);
+        // if we got here, the message wasn't handled
+        Object::Receive(thisRef, interpreter, message, args);
     }
     
-    Ref<Object> DynamicObject::AddMethod(Environment & env, String name, Ref<Object> body)
+    void DynamicObject::AddMethod(Environment & env, String name, Ref<Object> body)
     {
         if (name.Length() == 0)
         {
             env.RuntimeError("Cannot create a method with an empty name.");
-            return Ref<Object>();
+            return;
         }
         
         if (body->AsBlock() == NULL)
         {
             env.RuntimeError("Body of method must be a block.");
-            return Ref<Object>();
+            return;
         }
         
         // add the method
         mMethods.Insert(name, body);
-        
-        return Ref<Object>();        
     }
     
     void DynamicObject::RegisterPrimitive(String message, PrimitiveMethod method)

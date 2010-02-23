@@ -28,15 +28,10 @@ namespace Finch
         
         void RuntimeError(const String & message);
         
-        bool Running() const { return mRunning; }
-        
         BlockTable &  Blocks()  { return mBlocks; }
         StringTable & Strings() { return mStrings; }
         
         Ref<Scope>  Globals()       const { return mGlobals; }
-        Ref<Scope>  CurrentScope()  const { return mCurrentScope; }
-
-        Ref<Object> Self()          const { return mSelf; }
 
         // Get the core built-in prototype objects.
         Ref<Object> Nil()           const { return mNil; }
@@ -46,27 +41,12 @@ namespace Finch
         Ref<Object> True()          const { return mTrue; }
         Ref<Object> False()         const { return mFalse; }
         
-        // Evaluates the given block within this environment.
-        Ref<Object> EvaluateBlock(const BlockObject & block,
-                                  const vector<Ref<Object> > & args);
-        
-        // Evaluates the given method within this environment.
-        Ref<Object> EvaluateMethod(Ref<Object> self,
-                                   const BlockObject & block,
-                                   const vector<Ref<Object> > & args);
-        
-        void StopRunning() { mRunning = false; }
-        
     private:
-        
-        bool mRunning;
         
         BlockTable  mBlocks;
         StringTable mStrings;
         
         Ref<Scope> mGlobals;
-        Ref<Scope> mCurrentScope;
-        Ref<Object> mSelf;
         Ref<Object> mNil;
         Ref<Object> mBlock;
         Ref<Object> mNumber;

@@ -2,18 +2,17 @@
 
 #include "BooleanPrimitives.h"
 #include "Environment.h"
+#include "Interpreter.h"
 
 namespace Finch
 {
-    Ref<Object> BooleanTrue(Ref<Object> thisRef, Environment & env,
-                          String message, const vector<Ref<Object> > & args)
+    PRIMITIVE(BooleanTrue)
     {
-        return env.True();
+        interpreter.Push(interpreter.GetEnvironment().True());
     }
 
-    Ref<Object> BooleanFalse(Ref<Object> thisRef, Environment & env,
-                            String message, const vector<Ref<Object> > & args)
+    PRIMITIVE(BooleanFalse)
     {
-        return env.False();
+        interpreter.Push(interpreter.GetEnvironment().False());
     }
 }

@@ -1,10 +1,10 @@
 #include <iostream>
 #include <string>
 
-#include "Evaluator.h"
 #include "Environment.h"
 #include "FileLineReader.h"
 #include "FinchParser.h"
+#include "Interpreter.h"
 #include "LineNormalizer.h"
 #include "Object.h"
 #include "Scope.h"
@@ -13,46 +13,46 @@
 
 namespace Finch
 {
-    Ref<Object> Script::Run(String fileName)
+    void Script::Run(String fileName)
     {
-        Environment env;
+        Environment environment;
+        Interpreter interpreter(environment);
 
-        return Run(fileName, env);
+        return Run(fileName, interpreter);
     }
-
-    Ref<Object> Script::Run(String fileName, Environment & env)
+    
+    void Script::Run(String fileName, Interpreter & interpreter)
     {
         FileLineReader reader(fileName);
-        
-        Ref<Object> result;
         
         if (reader.EndOfLines())
         {
             // couldn't open
             std::cout << "Couldn't open file \"" << fileName << "\"" << std::endl;
-            //### bob: what should this error code be?
-            return result;
+            return;
         }
         
         Lexer           lexer(reader);
         LineNormalizer  normalizer(lexer);
         FinchParser     parser(normalizer);
         
-        Evaluator       evaluator(env);
-        
         Ref<Expr> expr = parser.ParseFile();
         
         //### bob: need to report parse error
         if (!expr.IsNull())
         {
-            result = evaluator.Evaluate(expr);
+            vector<String> noParams;
+            int id = interpreter.GetEnvironment().Blocks().Add(noParams, *expr, interpreter.GetEnvironment());
+            const CodeBlock & code = interpreter.GetEnvironment().Blocks().Find(id);
+            Ref<Object> block = Object::NewBlock(interpreter.GetEnvironment(), code, interpreter.GetEnvironment().Globals());
+            
+            vector<Ref<Object> > noArgs;
+            interpreter.CallBlock(*(block->AsBlock()), noArgs);
         }
         else
         {
             //### bob: need better error-handling
             std::cout << "parse error loading " << fileName << std::endl;
         }
-        
-        return result;
     }
 }

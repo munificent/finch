@@ -2,6 +2,7 @@
 #include "BlockObject.h"
 #include "Environment.h"
 #include "DynamicObject.h"
+#include "Interpreter.h"
 #include "NumberObject.h"
 #include "Scope.h"
 #include "StringObject.h"
@@ -30,16 +31,12 @@ namespace Finch
         return Ref<Object>(new StringObject(env.StringProto(), value));
     }
     
-    Ref<Object> Object::NewBlock(Environment & env, vector<String> params,
-                                 Ref<Expr> value)
+    Ref<Object> Object::NewBlock(Environment & env, const CodeBlock & code, Ref<Scope> closure)
     {
-        return Ref<Object>(new BlockObject(env.Block(), params, value,
-                                           // create a closure from the scope
-                                           // where the block is defined
-                                           env.CurrentScope()));
+        return Ref<Object>(new BlockObject(env.Block(), code, closure));
     }
     
-    Ref<Object> Object::Receive(Ref<Object> thisRef, Environment & env,
+    void Object::Receive(Ref<Object> thisRef, Interpreter & interpreter,
                                 String message, const vector<Ref<Object> > & args)
     {
         // walk up the prototype chain
@@ -50,11 +47,17 @@ namespace Finch
             // object a few links down the prototype chain from Object, you'll
             // get a copy of *that* object, and not Object itself where "copy"
             // is implemented.
-            return mPrototype->Receive(thisRef, env, message, args);
+            mPrototype->Receive(thisRef, interpreter, message, args);
         }
-        
-        //### bob: should do some sort of message not handled thing here
-        return Ref<Object>();
+        else
+        {
+            //### bob: should do some sort of message not handled thing here
+            String error = String::Format("Object '%s' did not handle message '%s'",
+                                          thisRef->AsString().CString(),
+                                          message.CString());
+            interpreter.GetEnvironment().RuntimeError(error.CString());
+            interpreter.PushNil();
+        }
     }
     
     Ref<Scope> Object::ObjectScope() const

@@ -2,8 +2,9 @@
 
 namespace Finch
 {
-    CodeBlock::CodeBlock(int capacity)
-    :   mCapacity(capacity),
+    CodeBlock::CodeBlock(const vector<String> & params, int capacity)
+    :   mParams(params),
+        mCapacity(capacity),
         mSize(0)
     {
         mInstructions = new Instruction[capacity];

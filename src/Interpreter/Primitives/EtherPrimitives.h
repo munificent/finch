@@ -13,26 +13,18 @@ namespace Finch
     using std::vector;
     
     // Primitive methods for the global Ether object.
-    Ref<Object> EtherQuit(Ref<Object> thisRef, Environment & env,
-                                  String message, const vector<Ref<Object> > & args);
+    PRIMITIVE(EtherQuit);
     
     // Flow control
-    Ref<Object> EtherDo(Ref<Object> thisRef, Environment & env,
-                            String message, const vector<Ref<Object> > & args);
-    Ref<Object> EtherIfThen(Ref<Object> thisRef, Environment & env,
-                          String message, const vector<Ref<Object> > & args);
-    Ref<Object> EtherIfThenElse(Ref<Object> thisRef, Environment & env,
-                              String message, const vector<Ref<Object> > & args);
-    Ref<Object> EtherWhileDo(Ref<Object> thisRef, Environment & env,
-                                   String message, const vector<Ref<Object> > & args);
+    PRIMITIVE(EtherDo);
+    PRIMITIVE(EtherIfThen);
+    PRIMITIVE(EtherIfThenElse);
+    /*
+    PRIMITIVE(EtherWhileDo);
+    */
     
     // Basic IO
-    Ref<Object> EtherWrite(Ref<Object> thisRef, Environment & env,
-                             String message, const vector<Ref<Object> > & args);
-    
-    Ref<Object> EtherWriteLine(Ref<Object> thisRef, Environment & env,
-                             String message, const vector<Ref<Object> > & args);
-
-    Ref<Object> EtherLoad(Ref<Object> thisRef, Environment & env,
-                                 String message, const vector<Ref<Object> > & args);
+    PRIMITIVE(EtherWrite);
+    PRIMITIVE(EtherWriteLine);
+    PRIMITIVE(EtherLoad);
 }
