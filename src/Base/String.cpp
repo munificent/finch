@@ -101,6 +101,13 @@ namespace Finch
         
         return mData->length;
     }
+    
+    unsigned int String::HashCode() const
+    {
+        if (mData.IsNull()) return EmptyStringHash;
+
+        return mData->hashCode;
+    }
 
     String String::Substring(int startIndex) const
     {
@@ -175,6 +182,29 @@ namespace Finch
             
             mData = Ref<StringData>(new StringData(heap));
         }
+    }
+
+    unsigned int String::Fnv1Hash(const char * text)
+    {
+        // magical number!
+        const unsigned int fnvPrime = 0x01000193;
+        
+        // treat as unsigned
+        const unsigned char * byte = reinterpret_cast<const unsigned char *>(text);
+        
+        unsigned int hash = EmptyStringHash;
+        
+        while (*byte != '\0')
+        {
+            // multiply by the 32 bit FNV magic prime mod 2^32
+            hash *= fnvPrime;
+
+            // xor the bottom with the current octet
+            hash ^= static_cast<unsigned int>(*byte);
+            byte++;
+        }
+        
+        return hash;
     }
 
     bool operator ==(const char * left, const String & right)

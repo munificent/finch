@@ -77,6 +77,7 @@ namespace Finch
         stringObj->RegisterPrimitive("at:",         StringAt);
         stringObj->RegisterPrimitive("=",           StringEquals);
         stringObj->RegisterPrimitive("!=",          StringNotEquals);
+        stringObj->RegisterPrimitive("hashCode",    StringHashCode);
         
         // define nil
         mNil = Object::NewObject(object, "Nil");

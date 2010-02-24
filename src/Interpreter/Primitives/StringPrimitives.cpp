@@ -60,4 +60,9 @@ namespace Finch
         */
         interpreter.PushBool(thisRef->AsString() != args[0]->AsString());
     }
+    
+    PRIMITIVE(StringHashCode)
+    {
+        interpreter.PushNumber(static_cast<double>(thisRef->AsString().HashCode()));
+    }
 }

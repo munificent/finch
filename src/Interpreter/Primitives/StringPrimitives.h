@@ -18,4 +18,5 @@ namespace Finch
     PRIMITIVE(StringAt);
     PRIMITIVE(StringEquals);
     PRIMITIVE(StringNotEquals);
+    PRIMITIVE(StringHashCode);
 }

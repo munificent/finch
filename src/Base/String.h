@@ -26,22 +26,30 @@ namespace Finch
         :   mData(other.mData)
         {}
         
-        bool operator <(const String & other) const;
-        bool operator <=(const String & other) const;
-        bool operator >(const String & other) const;
-        bool operator >=(const String & other) const;
+        // Comparison operators.
+        bool         operator < (const String & other) const;
+        bool         operator <=(const String & other) const;
+        bool         operator > (const String & other) const;
+        bool         operator >=(const String & other) const;
+        bool         operator ==(const String & other) const;
+        bool         operator !=(const String & other) const;
         
-        bool operator ==(const String & other) const;
-        bool operator !=(const String & other) const;
+        // Subscript operator to get characters from the string.
+        const char & operator [](int index) const;
         
-        const char & operator[] (int index) const;
+        // Concatenation operators.
+        String       operator + (const String & other) const;
+        String &     operator +=(const String & other);
         
-        String operator +(const String & other) const;
-        String & operator +=(const String & other);
+        // Gets the raw character array for the string. Returns a reference to
+        // a zero-length string, not NULL, if the string is empty.
+        const char * CString() const;
         
-        const char* CString() const;
-
+        // Gets the number of characters in the string.
         int Length() const;
+        
+        // Gets the hash code for the string.
+        unsigned int HashCode() const;
         
         String Substring(int startIndex) const;
         String Substring(int startIndex, int count) const;
@@ -53,10 +61,12 @@ namespace Finch
             :   chars(text)
             {
                 length = strlen(text);
+                hashCode = Fnv1Hash(text);
             }
             
-            int    length;
+            int          length;
             const char * chars;
+            int          hashCode;
         };
         
         String(const String & left, const String & right);
@@ -64,7 +74,13 @@ namespace Finch
         
         void Init(const char * text, bool isOnHeap);
         
+        static unsigned int Fnv1Hash(const char * text);
+        
         static const int FormattedStringMax = 512;
+        
+        // The hash code of a zero-character string. This constant comes from
+        // the FNV1 hash algorithm used to hash strings.
+        static const unsigned int EmptyStringHash = 0x811c9dc5;
         
         static const char * sEmptyString;
         
