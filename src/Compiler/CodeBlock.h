@@ -3,6 +3,7 @@
 #include <iostream>
 #include <vector>
 
+#include "Array.h"
 #include "Macros.h"
 #include "String.h"
 
@@ -11,43 +12,45 @@ namespace Finch
     using std::vector;
     
     enum OpCode
-    {
-        OP_NOTHING,
-        OP_NUMBER_LITERAL,
-        OP_STRING_LITERAL,
-        OP_BLOCK_LITERAL,
-        OP_POP,
+    {                       // arg
+        OP_NOTHING,         // (not used)
+        OP_NUMBER_LITERAL,  // number = value
+        OP_STRING_LITERAL,  // id = string table id of literal
+        OP_BLOCK_LITERAL,   // id = block table id of code
+        OP_POP,             // (not used)
         
-        OP_DEF_GLOBAL,
-        OP_DEF_OBJECT,
-        OP_DEF_LOCAL,
+        OP_DEF_GLOBAL,      // id = string table id of identifier
+        OP_DEF_OBJECT,      // id = string table id of identifier
+        OP_DEF_LOCAL,       // id = string table id of identifier
         
-        OP_SET_LOCAL,
+        OP_SET_LOCAL,       // id = string table id of identifier
         
-        OP_LOAD_GLOBAL,
-        OP_LOAD_OBJECT,
-        OP_LOAD_LOCAL,
+        OP_LOAD_GLOBAL,     // id = string table id of identifier
+        OP_LOAD_OBJECT,     // id = string table id of identifier
+        OP_LOAD_LOCAL,      // id = string table id of identifier
         
-        OP_MESSAGE_0,
-        OP_MESSAGE_1,
-        OP_MESSAGE_2,
-        OP_MESSAGE_3,
-        OP_MESSAGE_4,
-        OP_MESSAGE_5,
-        OP_MESSAGE_6,
-        OP_MESSAGE_7,
-        OP_MESSAGE_8,
-        OP_MESSAGE_9,
-        OP_MESSAGE_10,
+        OP_MESSAGE_0,       // id = string table id of message name
+        OP_MESSAGE_1,       // id = string table id of message name
+        OP_MESSAGE_2,       // id = string table id of message name
+        OP_MESSAGE_3,       // id = string table id of message name
+        OP_MESSAGE_4,       // id = string table id of message name
+        OP_MESSAGE_5,       // id = string table id of message name
+        OP_MESSAGE_6,       // id = string table id of message name
+        OP_MESSAGE_7,       // id = string table id of message name
+        OP_MESSAGE_8,       // id = string table id of message name
+        OP_MESSAGE_9,       // id = string table id of message name
+        OP_MESSAGE_10,      // id = string table id of message name
         
-        OP_LOOP_1,
-        OP_LOOP_2,
-        OP_LOOP_3,
-        OP_LOOP_4,
+        OP_LOOP_1,          // (not used)
+        OP_LOOP_2,          // (not used)
+        OP_LOOP_3,          // (not used)
+        OP_LOOP_4,          // (not used)
         
-        OP_END_BLOCK
+        OP_END_BLOCK        // (not used)
     };
     
+    // A single bytecode instruction. Each instruction is an OpCode and an
+    // argument (which is unused for some ops).
     struct Instruction
     {
         Instruction()
@@ -66,13 +69,9 @@ namespace Finch
     class CodeBlock
     {
     public:
-        CodeBlock(const vector<String> & params, int capacity);
-        
-        ~CodeBlock();
+        CodeBlock(const vector<String> & params);
         
         const vector<String> &  Params() const { return mParams; }
-        
-        int Size() const { return mSize; }
         
         const Instruction & operator[](int i) const { return mInstructions[i]; }
 
@@ -81,11 +80,8 @@ namespace Finch
         void Write(OpCode op, int id);
         
     private:
-        vector<String>  mParams;
-        Instruction *   mInstructions;
-        
-        int mCapacity;
-        int mSize;
+        vector<String>      mParams;
+        Array<Instruction>  mInstructions;
         
         NO_COPY(CodeBlock);
     };

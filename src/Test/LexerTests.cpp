@@ -90,8 +90,7 @@ namespace Finch
                 TOKEN_NAME,
                 TOKEN_LINE, TOKEN_EOF);
 
-        TestLex("- + = \\ / < > ? ~ ! @ # $ % ^ & * *$-+-==",
-                TOKEN_OPERATOR,
+        TestLex("- + = / < > ? ~ ! @ # $ % ^ & * *$-+-==",
                 TOKEN_OPERATOR,
                 TOKEN_OPERATOR,
                 TOKEN_OPERATOR,

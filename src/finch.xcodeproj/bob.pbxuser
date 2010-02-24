@@ -207,8 +207,8 @@
 	};
 	08FB7796FE84155DC02AAC07 /* main.cpp */ = {
 		uiCtxt = {
-			sepNavIntBoundsRect = "{{0, 0}, {747, 722}}";
-			sepNavSelRange = "{484, 0}";
+			sepNavIntBoundsRect = "{{0, 0}, {747, 724}}";
+			sepNavSelRange = "{99, 0}";
 			sepNavVisRange = "{0, 637}";
 			sepNavWindowFrame = "{{15, 0}, {836, 878}}";
 		};
@@ -415,7 +415,7 @@
 		ignoreCount = 0;
 		lineNumber = 30;
 		location = finch;
-		modificationTime = 288587081.246903;
+		modificationTime = 288671042.506564;
 		originalNumberOfMultipleMatches = 1;
 		state = 1;
 	};
@@ -429,11 +429,11 @@
 		delayBeforeContinue = 0;
 		fileReference = C4E770D5112AD9AA000957EF /* Interpreter.cpp */;
 		functionName = "Interpreter::Execute(const CodeBlock & code)";
-		hitCount = 1;
+		hitCount = 0;
 		ignoreCount = 0;
 		lineNumber = 30;
 		location = finch;
-		modificationTime = 288587093.730222;
+		modificationTime = 288671042.506581;
 		originalNumberOfMultipleMatches = 1;
 		state = 1;
 	};
@@ -910,8 +910,8 @@
 	};
 	C465890710DE874E007C4C3E /* FileLineReader.cpp */ = {
 		uiCtxt = {
-			sepNavIntBoundsRect = "{{0, 0}, {747, 514}}";
-			sepNavSelRange = "{48, 0}";
+			sepNavIntBoundsRect = "{{0, 0}, {747, 747}}";
+			sepNavSelRange = "{191, 0}";
 			sepNavVisRange = "{0, 613}";
 		};
 	};
@@ -966,16 +966,16 @@
 	};
 	C465892A10DE8802007C4C3E /* TestMain.h */ = {
 		uiCtxt = {
-			sepNavIntBoundsRect = "{{0, 0}, {747, 748}}";
+			sepNavIntBoundsRect = "{{0, 0}, {747, 747}}";
 			sepNavSelRange = "{105, 0}";
 			sepNavVisRange = "{0, 105}";
 		};
 	};
 	C465892B10DE8802007C4C3E /* TestMain.cpp */ = {
 		uiCtxt = {
-			sepNavIntBoundsRect = "{{0, 0}, {747, 748}}";
-			sepNavSelRange = "{389, 10}";
-			sepNavVisRange = "{0, 501}";
+			sepNavIntBoundsRect = "{{0, 0}, {747, 747}}";
+			sepNavSelRange = "{182, 0}";
+			sepNavVisRange = "{0, 552}";
 		};
 	};
 	C465892C10DE8802007C4C3E /* Test.h */ = {
@@ -1257,6 +1257,83 @@
 		vrLen = 311;
 		vrLoc = 0;
 	};
+	C4C697921134B2EF00662643 /* Stack.h */ = {
+		uiCtxt = {
+			sepNavIntBoundsRect = "{{0, 0}, {747, 910}}";
+			sepNavSelRange = "{0, 1850}";
+			sepNavVisRange = "{0, 1567}";
+		};
+	};
+	C4C697961134B33A00662643 /* BlockTable.cpp */ = {
+		uiCtxt = {
+			sepNavIntBoundsRect = "{{0, 0}, {747, 724}}";
+			sepNavSelRange = "{213, 0}";
+			sepNavVisRange = "{0, 622}";
+		};
+	};
+	C4C697981134B33A00662643 /* CodeBlock.cpp */ = {
+		uiCtxt = {
+			sepNavIntBoundsRect = "{{0, 0}, {747, 724}}";
+			sepNavSelRange = "{152, 0}";
+			sepNavVisRange = "{0, 659}";
+		};
+	};
+	C4C697991134B33A00662643 /* CodeBlock.h */ = {
+		uiCtxt = {
+			sepNavIntBoundsRect = "{{0, 0}, {747, 1232}}";
+			sepNavSelRange = "{470, 0}";
+			sepNavVisRange = "{1232, 1612}";
+		};
+	};
+	C4C6979F1134B35200662643 /* Interpreter.cpp */ = {
+		uiCtxt = {
+			sepNavIntBoundsRect = "{{0, 0}, {747, 5180}}";
+			sepNavSelRange = "{336, 0}";
+			sepNavVisRange = "{0, 1715}";
+		};
+	};
+	C4C697A21134B36F00662643 /* LexerTests.cpp */ = {
+		uiCtxt = {
+			sepNavIntBoundsRect = "{{0, 0}, {747, 2352}}";
+			sepNavSelRange = "{2671, 0}";
+			sepNavVisRange = "{3261, 1378}";
+		};
+	};
+	C4C697A31134B36F00662643 /* LexerTests.h */ = {
+		uiCtxt = {
+			sepNavIntBoundsRect = "{{0, 0}, {747, 747}}";
+			sepNavSelRange = "{0, 0}";
+			sepNavVisRange = "{0, 290}";
+		};
+	};
+	C4C697A41134B36F00662643 /* StackTests.cpp */ = {
+		uiCtxt = {
+			sepNavIntBoundsRect = "{{0, 0}, {747, 1050}}";
+			sepNavSelRange = "{0, 1670}";
+			sepNavVisRange = "{0, 1250}";
+		};
+	};
+	C4C697A51134B36F00662643 /* StackTests.h */ = {
+		uiCtxt = {
+			sepNavIntBoundsRect = "{{0, 0}, {747, 747}}";
+			sepNavSelRange = "{0, 267}";
+			sepNavVisRange = "{0, 267}";
+		};
+	};
+	C4C698071134CA9900662643 /* ArrayTests.cpp */ = {
+		uiCtxt = {
+			sepNavIntBoundsRect = "{{0, 0}, {747, 1008}}";
+			sepNavSelRange = "{0, 0}";
+			sepNavVisRange = "{0, 1132}";
+		};
+	};
+	C4C698081134CA9900662643 /* ArrayTests.h */ = {
+		uiCtxt = {
+			sepNavIntBoundsRect = "{{0, 0}, {747, 747}}";
+			sepNavSelRange = "{0, 0}";
+			sepNavVisRange = "{0, 265}";
+		};
+	};
 	C4CDF89D10D88DDF001C9D4A /* BlockObject.h */ = {
 		uiCtxt = {
 			sepNavIntBoundsRect = "{{0, 0}, {747, 724}}";
@@ -1328,6 +1405,11 @@
 		name = EtherPrimitives.cpp;
 		path = /Users/bob/Documents/dev/finch/src/Interpreter/Primitives/EtherPrimitives.cpp;
 		sourceTree = "<absolute>";
+		uiCtxt = {
+			sepNavIntBoundsRect = "{{0, 0}, {747, 1386}}";
+			sepNavSelRange = "{1649, 0}";
+			sepNavVisRange = "{998, 1066}";
+		};
 	};
 	C4CDF8B110D88DF3001C9D4A /* BlockPrimitives.h */ = {
 		uiCtxt = {
@@ -1353,8 +1435,8 @@
 	C4CDF8B810D88E1F001C9D4A /* Environment.cpp */ = {
 		uiCtxt = {
 			sepNavIntBoundsRect = "{{0, 0}, {747, 1540}}";
-			sepNavSelRange = "{4722, 0}";
-			sepNavVisRange = "{2376, 2557}";
+			sepNavSelRange = "{3796, 0}";
+			sepNavVisRange = "{2488, 2445}";
 		};
 	};
 	C4CDF8BA10D88E43001C9D4A /* StringExpr.h */ = {
@@ -1422,7 +1504,7 @@
 	};
 	C4E0BAEA10E09F2800D04F42 /* Script.h */ = {
 		uiCtxt = {
-			sepNavIntBoundsRect = "{{0, 0}, {747, 722}}";
+			sepNavIntBoundsRect = "{{0, 0}, {747, 724}}";
 			sepNavSelRange = "{131, 0}";
 			sepNavVisRange = "{0, 646}";
 		};
@@ -1430,8 +1512,8 @@
 	C4E0BAEB10E09F2800D04F42 /* Script.cpp */ = {
 		uiCtxt = {
 			sepNavIntBoundsRect = "{{0, 0}, {887, 812}}";
-			sepNavSelRange = "{1033, 0}";
-			sepNavVisRange = "{64, 1621}";
+			sepNavSelRange = "{445, 0}";
+			sepNavVisRange = "{117, 1568}";
 		};
 	};
 	C4E3B5DF1132356A005F431D /* Interpreter.cpp:30 */ = {
@@ -1448,7 +1530,7 @@
 		ignoreCount = 0;
 		lineNumber = 30;
 		location = finch;
-		modificationTime = 288587081.222182;
+		modificationTime = 288671042.50653;
 		originalNumberOfMultipleMatches = 1;
 		state = 1;
 	};

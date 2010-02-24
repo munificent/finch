@@ -30,6 +30,7 @@
 		C4C697A11134B35200662643 /* Interpreter.cpp in Sources */ = {isa = PBXBuildFile; fileRef = C4C6979F1134B35200662643 /* Interpreter.cpp */; };
 		C4C697A61134B36F00662643 /* LexerTests.cpp in Sources */ = {isa = PBXBuildFile; fileRef = C4C697A21134B36F00662643 /* LexerTests.cpp */; };
 		C4C697A71134B36F00662643 /* StackTests.cpp in Sources */ = {isa = PBXBuildFile; fileRef = C4C697A41134B36F00662643 /* StackTests.cpp */; };
+		C4C698091134CA9900662643 /* ArrayTests.cpp in Sources */ = {isa = PBXBuildFile; fileRef = C4C698071134CA9900662643 /* ArrayTests.cpp */; };
 		C4CDF8A710D88DDF001C9D4A /* DynamicObject.cpp in Sources */ = {isa = PBXBuildFile; fileRef = C4CDF89E10D88DDF001C9D4A /* DynamicObject.cpp */; };
 		C4CDF8A910D88DDF001C9D4A /* Object.cpp in Sources */ = {isa = PBXBuildFile; fileRef = C4CDF8A210D88DDF001C9D4A /* Object.cpp */; };
 		C4CDF8B310D88DF3001C9D4A /* NumberPrimitives.cpp in Sources */ = {isa = PBXBuildFile; fileRef = C4CDF8AC10D88DF3001C9D4A /* NumberPrimitives.cpp */; };
@@ -108,6 +109,9 @@
 		C4C697A31134B36F00662643 /* LexerTests.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = LexerTests.h; path = Test/LexerTests.h; sourceTree = "<group>"; };
 		C4C697A41134B36F00662643 /* StackTests.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = StackTests.cpp; path = Test/StackTests.cpp; sourceTree = "<group>"; };
 		C4C697A51134B36F00662643 /* StackTests.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = StackTests.h; path = Test/StackTests.h; sourceTree = "<group>"; };
+		C4C698061134CA7900662643 /* Array.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = Array.h; path = Base/Array.h; sourceTree = "<group>"; };
+		C4C698071134CA9900662643 /* ArrayTests.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = ArrayTests.cpp; path = Test/ArrayTests.cpp; sourceTree = "<group>"; };
+		C4C698081134CA9900662643 /* ArrayTests.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = ArrayTests.h; path = Test/ArrayTests.h; sourceTree = "<group>"; };
 		C4CDF89D10D88DDF001C9D4A /* BlockObject.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = BlockObject.h; path = Interpreter/Objects/BlockObject.h; sourceTree = "<group>"; };
 		C4CDF89E10D88DDF001C9D4A /* DynamicObject.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = DynamicObject.cpp; path = Interpreter/Objects/DynamicObject.cpp; sourceTree = "<group>"; };
 		C4CDF89F10D88DDF001C9D4A /* DynamicObject.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = DynamicObject.h; path = Interpreter/Objects/DynamicObject.h; sourceTree = "<group>"; };
@@ -204,10 +208,12 @@
 		C4012A9F10CA99260088B77F /* Test */ = {
 			isa = PBXGroup;
 			children = (
-				C4C697A21134B36F00662643 /* LexerTests.cpp */,
+				C4C698081134CA9900662643 /* ArrayTests.h */,
+				C4C698071134CA9900662643 /* ArrayTests.cpp */,
 				C4C697A31134B36F00662643 /* LexerTests.h */,
-				C4C697A41134B36F00662643 /* StackTests.cpp */,
+				C4C697A21134B36F00662643 /* LexerTests.cpp */,
 				C4C697A51134B36F00662643 /* StackTests.h */,
+				C4C697A41134B36F00662643 /* StackTests.cpp */,
 				C424166010E5B70E001E7103 /* QueueTests.h */,
 				C424166110E5B70E001E7103 /* QueueTests.cpp */,
 				C465892E10DE8802007C4C3E /* RefTests.h */,
@@ -247,12 +253,12 @@
 		C422D6B310E9047600980E01 /* Compiler */ = {
 			isa = PBXGroup;
 			children = (
-				C4C697961134B33A00662643 /* BlockTable.cpp */,
 				C4C697971134B33A00662643 /* BlockTable.h */,
-				C4C697981134B33A00662643 /* CodeBlock.cpp */,
+				C4C697961134B33A00662643 /* BlockTable.cpp */,
 				C4C697991134B33A00662643 /* CodeBlock.h */,
-				C4C6979A1134B33A00662643 /* Compiler.cpp */,
+				C4C697981134B33A00662643 /* CodeBlock.cpp */,
 				C4C6979B1134B33A00662643 /* Compiler.h */,
+				C4C6979A1134B33A00662643 /* Compiler.cpp */,
 			);
 			name = Compiler;
 			sourceTree = "<group>";
@@ -260,8 +266,8 @@
 		C4B9DB2F10CF3C19003C556D /* Interpreter */ = {
 			isa = PBXGroup;
 			children = (
-				C4C6979F1134B35200662643 /* Interpreter.cpp */,
 				C4C697A01134B35200662643 /* Interpreter.h */,
+				C4C6979F1134B35200662643 /* Interpreter.cpp */,
 				C4CDF8B710D88E1F001C9D4A /* Environment.h */,
 				C4CDF8B810D88E1F001C9D4A /* Environment.cpp */,
 				C465890610DE874E007C4C3E /* FileLineReader.h */,
@@ -277,15 +283,16 @@
 		C4C514AE10CB77410045AA86 /* Base */ = {
 			isa = PBXGroup;
 			children = (
-				C4C697921134B2EF00662643 /* Stack.h */,
-				C4C697931134B2EF00662643 /* StringTable.cpp */,
-				C4C697941134B2EF00662643 /* StringTable.h */,
+				C4C698061134CA7900662643 /* Array.h */,
 				C465892310DE87AB007C4C3E /* Dictionary.h */,
 				C4FC167510D4336500E6ABD6 /* Macros.h */,
 				C424166410E5B71D001E7103 /* Queue.h */,
 				C4FC167710D4336500E6ABD6 /* Ref.h */,
+				C4C697921134B2EF00662643 /* Stack.h */,
 				C4FC167910D4336500E6ABD6 /* String.h */,
 				C4FC167810D4336500E6ABD6 /* String.cpp */,
+				C4C697941134B2EF00662643 /* StringTable.h */,
+				C4C697931134B2EF00662643 /* StringTable.cpp */,
 			);
 			name = Base;
 			sourceTree = "<group>";
@@ -429,6 +436,7 @@
 				C4C697A11134B35200662643 /* Interpreter.cpp in Sources */,
 				C4C697A61134B36F00662643 /* LexerTests.cpp in Sources */,
 				C4C697A71134B36F00662643 /* StackTests.cpp in Sources */,
+				C4C698091134CA9900662643 /* ArrayTests.cpp in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

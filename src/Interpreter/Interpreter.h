@@ -44,6 +44,7 @@ namespace Finch
                         const vector<Ref<Object> > & args);
         
         void WhileLoop(Ref<Object> condition, Ref<Object> body);
+        void DiscardReturn();
         
         // Displays a runtime error to the user.
         void RuntimeError(const String & message);
@@ -86,6 +87,7 @@ namespace Finch
         Stack<CallFrame, STACK_SIZE>     mCallStack;
 
         CodeBlock mLoopCode;
+        CodeBlock mDiscardCode;
         
         NO_COPY(Interpreter);
     };

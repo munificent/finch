@@ -2,44 +2,32 @@
 
 namespace Finch
 {
-    CodeBlock::CodeBlock(const vector<String> & params, int capacity)
+    CodeBlock::CodeBlock(const vector<String> & params)
     :   mParams(params),
-        mCapacity(capacity),
-        mSize(0)
+        mInstructions()
     {
-        mInstructions = new Instruction[capacity];
-    }
-    
-    CodeBlock::~CodeBlock()
-    {
-        //### bob: may need to decrement ref count or gc references to
-        // objects in instructions at some point
-        delete [] mInstructions;
     }
 
     void CodeBlock::Write(OpCode op)
     {
-        ASSERT(mSize < mCapacity, "Code block is full.");
-        
-        mInstructions[mSize].op = op;
-        mSize++;
+        Write(op, 0);
     }
     
     void CodeBlock::Write(OpCode op, double number)
     {
-        ASSERT(mSize < mCapacity, "Code block is full.");
+        Instruction instruction;
+        instruction.op = op;
+        instruction.arg.number = number;
         
-        mInstructions[mSize].op = op;
-        mInstructions[mSize].arg.number = number;
-        mSize++;
+        mInstructions.Add(instruction);
     }
     
     void CodeBlock::Write(OpCode op, int id)
     {
-        ASSERT(mSize < mCapacity, "Code block is full.");
+        Instruction instruction;
+        instruction.op = op;
+        instruction.arg.id = id;
         
-        mInstructions[mSize].op = op;
-        mInstructions[mSize].arg.id = id;
-        mSize++;
+        mInstructions.Add(instruction);
     }
 }

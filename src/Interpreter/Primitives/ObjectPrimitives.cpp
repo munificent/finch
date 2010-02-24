@@ -44,6 +44,16 @@ namespace Finch
         }
         else
         {
+            // push the new object. this is what copyWith: will ultimately
+            // return
+            interpreter.Push(copy);
+            
+            // tell the inrepreter to discard the return value of the next
+            // called method. this will ditch the value returned by the
+            // copyWith: block
+            interpreter.DiscardReturn();
+            
+            // call the copyWith: block as if it were a method on the new object
             vector<Ref<Object> > noArgs;
             interpreter.CallMethod(copy, *block, noArgs);
         }

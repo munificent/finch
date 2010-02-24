@@ -13,7 +13,8 @@ namespace Finch
     Interpreter::Interpreter(Environment & environment)
     :   mIsRunning(true),
         mEnvironment(environment),
-        mLoopCode(vector<String>(), 5)
+        mLoopCode(vector<String>()),
+        mDiscardCode(vector<String>())
     {
         // build the special "while loop" chunk of bytecode
         mLoopCode.Write(OP_LOOP_1);
@@ -21,6 +22,9 @@ namespace Finch
         mLoopCode.Write(OP_LOOP_3);
         mLoopCode.Write(OP_LOOP_4);
         mLoopCode.Write(OP_END_BLOCK);
+        
+        mDiscardCode.Write(OP_POP);
+        mDiscardCode.Write(OP_END_BLOCK);
     }
 
     Ref<Object> Interpreter::Execute(const CodeBlock & code)
@@ -329,6 +333,12 @@ namespace Finch
         
         // call our special loop "function"
         mCallStack.Push(CallFrame(&mLoopCode, mCallStack.Peek().scope, mCallStack.Peek().self));
+    }
+    
+    void Interpreter::DiscardReturn()
+    {
+        // call our special pop "function"
+        mCallStack.Push(CallFrame(&mDiscardCode, mCallStack.Peek().scope, mCallStack.Peek().self));
     }
 
     void Interpreter::RuntimeError(const String & message)

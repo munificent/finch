@@ -7,8 +7,7 @@ namespace Finch
     int BlockTable::Add(const vector<String> & params, const Expr & body,
                         Environment & environment)
     {
-        //### bob: arbitrary size :(
-        Ref<CodeBlock> code = Ref<CodeBlock>(new CodeBlock(params, 256));
+        Ref<CodeBlock> code = Ref<CodeBlock>(new CodeBlock(params));
         Compiler::Compile(environment, body, *code);
         
         //### bob: doesn't actually check for duplicates yet

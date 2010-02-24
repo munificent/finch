@@ -8,3 +8,7 @@ syntax: glob
 
 # build files
 build/**
+
+# xcode user settings files
+src/finch.xcodeproj/*.mode1v3
+src/finch.xcodeproj/*.pbxuser
