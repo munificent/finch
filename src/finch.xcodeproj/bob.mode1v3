@@ -405,7 +405,7 @@
 										<key>_historyCapacity</key>
 										<integer>0</integer>
 										<key>bookmark</key>
-										<string>C4AA0D6411341EB00047089D</string>
+										<string>C4AA0D7211341F100047089D</string>
 										<key>history</key>
 										<array>
 											<string>C493998110CDFD60003ECF01</string>
@@ -670,7 +670,7 @@
 	<key>StatusbarIsVisible</key>
 	<true/>
 	<key>TimeStamp</key>
-	<real>288628400.15340197</real>
+	<real>288628496.662081</real>
 	<key>ToolbarDisplayMode</key>
 	<integer>2</integer>
 	<key>ToolbarIsVisible</key>
@@ -685,7 +685,6 @@
 	<integer>5</integer>
 	<key>WindowOrderList</key>
 	<array>
-		<string>C4AA0D6F11341EB00047089D</string>
 		<string>C4AA0D7011341EB00047089D</string>
 		<string>C4AA0D7111341EB00047089D</string>
 		<string>1CD10A99069EF8BA00B06720</string>
