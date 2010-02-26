@@ -11,15 +11,13 @@ namespace Finch
         Compiler::Compile(environment, body, *code);
         
         //### bob: doesn't actually check for duplicates yet
-        mBlocks[mNumBlocks] = code;
+        mBlocks.Add(code);
         
-        return mNumBlocks++;
+        return mBlocks.Count() - 1;
     }
     
     CodeBlock & BlockTable::Find(int id)
     {
-        ASSERT_INDEX(id, mNumBlocks);
-        
         return *mBlocks[id];
     }
 }

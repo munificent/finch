@@ -2,6 +2,7 @@
 
 #include <vector>
 
+#include "Array.h"
 #include "CodeBlock.h"
 #include "Ref.h"
 
@@ -12,7 +13,8 @@ namespace Finch
     class Environment;
     class Expr;
     
-    //### bob: the implementation of this just a temp prototype.
+    // A table of CodeBlocks. The compiler adds compiled code to this so that
+    // a block can be referenced by ID.
     class BlockTable
     {
     public:
@@ -24,9 +26,6 @@ namespace Finch
         CodeBlock & Find(int id);
         
     private:
-        static const int MAX_BLOCKS = 4096; //### bob: arbitrary
-        
-        Ref<CodeBlock>  mBlocks[MAX_BLOCKS];
-        int             mNumBlocks;
+        Array<Ref<CodeBlock> > mBlocks;
     };
 }

@@ -1,10 +1,13 @@
 #pragma once
 
+#include "Array.h"
 #include "String.h"
 
 namespace Finch
 {
-    //### bob: the implementation of this just a temp prototype.
+    // A string table for interning strings and allowing them to be looked up
+    // by id. Used by the bytecode compiler to reference string literals from
+    // code.
     class StringTable
     {
     public:
@@ -16,9 +19,6 @@ namespace Finch
         String Find(int id);
         
     private:
-        static const int MAX_STRINGS = 4096; //### bob: arbitrary
-        
-        String mStrings[MAX_STRINGS];
-        int    mNumStrings;
+        Array<String> mStrings;
     };
 }

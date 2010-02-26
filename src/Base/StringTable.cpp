@@ -4,16 +4,19 @@ namespace Finch
 {
     int StringTable::Add(String string)
     {
-        //### bob: doesn't actually check for duplicates yet
-        mStrings[mNumStrings] = string;
-        
-        return mNumStrings++;
+        // see if the string is already in the table
+        for (int i = 0; i < mStrings.Count(); i++)
+        {
+            if (mStrings[i] == string) return i;
+        }
+
+        // not in the table, so add it
+        mStrings.Add(string);
+        return mStrings.Count() - 1;
     }
     
     String StringTable::Find(int id)
     {
-        ASSERT_INDEX(id, mNumStrings);
-        
         return mStrings[id];
     }
 }
