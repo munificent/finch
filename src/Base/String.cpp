@@ -61,6 +61,9 @@ namespace Finch
         if (this == &other) return true;
         if (mData == other.mData) return true;
         
+        // if the hashes don't match, the strings must be different
+        if (HashCode() != other.HashCode()) return false;
+        
         return strcmp(CString(), other.CString()) == 0;
     }
     
@@ -209,21 +212,33 @@ namespace Finch
 
     bool operator ==(const char * left, const String & right)
     {
+        // if the hashes don't match, the strings must be different
+        if (String::Fnv1Hash(left) != right.HashCode()) return false;
+        
         return strcmp(left, right.CString()) == 0;
     }
     
     bool operator !=(const char * left, const String & right)
     {
+        // if the hashes don't match, the strings must be different
+        if (String::Fnv1Hash(left) != right.HashCode()) return true;
+        
         return strcmp(left, right.CString()) != 0;
     }
     
     bool operator ==(const String & left, const char * right)
     {
+        // if the hashes don't match, the strings must be different
+        if (left.HashCode() != String::Fnv1Hash(right)) return false;
+        
         return strcmp(left.CString(), right) == 0;
     }
     
     bool operator !=(const String & left, const char * right)
     {
+        // if the hashes don't match, the strings must be different
+        if (left.HashCode() != String::Fnv1Hash(right)) return true;
+        
         return strcmp(left.CString(), right) != 0;
     }
     

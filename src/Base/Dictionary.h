@@ -1,98 +1,181 @@
 #pragma once
 
 #include <iostream>
-#include <map>
 
 #include "Macros.h"
-#include "Ref.h"
 
 namespace Finch
 {
-    using std::map;
-
-    // A dictionary mapping keys to references to values.
+    // A dictionary mapping keys to values. Uses a dynamically-grown hashtable.
+    // Both TKey and TValue must have default constructors as well as support
+    // copying. TKey must all have a HashCode() method.
     template <class TKey, class TValue>
     class Dictionary
     {
     public:
-        // Looks up the value associated with the given key. Returns a null
-        // reference if the key was not found.
-        Ref<TValue> Find(TKey key)
+        Dictionary()
+        :   mTable(NULL),
+            mCount(0),
+            mTableSize(0)
+        {}
+        
+        ~Dictionary()
         {
-            typename map<TKey, Ref<TValue> >::iterator found = mMap.find(key);
-            
-            if (found != mMap.end())
+            if (mTable != NULL)
             {
-                return found->second;
+                delete [] mTable;
             }
-            
-            return Ref<TValue>();
         }
         
-        // Inserts the given value at the given key. Returns the previous value
-        // with that key, or an empty reference if the key was not found.
-        Ref<TValue> Insert(TKey key, Ref<TValue> value)
+        // Looks up the value associated with the given key. Returns a null
+        // reference if the key was not found.
+        bool Find(const TKey & key, TValue * value)
         {
-            typename map<TKey, Ref<TValue> >::iterator found = mMap.lower_bound(key);
+            int index = FindIndex(key);            
             
-            Ref<TValue> oldValue;
+            if (index == -1) return false;
             
-            if ((found != mMap.end()) && !(mMap.key_comp()(key, found->first)))
+            *value = mTable[index].value;
+            return true;
+        }
+        
+        // Inserts the given value at the given key.
+        void Insert(const TKey & key, const TValue & value)
+        {
+            EnsureCapacity();
+            
+            // figure out where to insert it in the table. use open addressing
+            // and basic linear probing
+            int index = static_cast<int>(key.HashCode() & 0x7fffffff) % mTableSize;
+
+            // note that we shouldn't have to worry about an infinite loop here
+            // the previous call will ensure there are open spaces in the table
+            //### bob: hack. using .Length() here assumes TKey is string
+            while ((mTable[index].key.Length() > 0) &&
+                   (mTable[index].key != key))
             {
-                // key already present, so get the old value then replace it
-                oldValue = found->second;
-                found->second = value;
-            }
-            else
-            {
-                // key not present, so add it now
-                mMap.insert(found, typename map<TKey, Ref<TValue> >::value_type(key, value));
+                index = (index + 1) % mTableSize;
             }
             
-            return oldValue;
+            // insert it into the table
+            mTable[index].key   = key;
+            mTable[index].value = value;
+            
+            mCount++;
         }
         
         // Replaces the value at the given key. If the key is not already
-        // present, does nothing and returns an empty reference. Otherwise, it
-        // replaces the value at that key and returns the old value.
-        Ref<TValue> Replace(TKey key, Ref<TValue> value)
+        // present, does nothing and returns false. Otherwise, it
+        // replaces the value at that key and returns true.
+        bool Replace(const TKey & key, const TValue & value)
         {
-            typename map<TKey, Ref<TValue> >::iterator found = mMap.lower_bound(key);
+            int index = FindIndex(key);
             
-            Ref<TValue> oldValue;
+            // not found
+            if (index == -1) return false;
             
-            if ((found != mMap.end()) && !(mMap.key_comp()(key, found->first)))
-            {
-                // key present, so get the old value then replace it
-                oldValue = found->second;
-                found->second = value;
-            }
+            // replace the value
+            mTable[index].value = value;
             
-            return oldValue;
+            return true;
         }
         
         // Removes the value with the given key. Returns true if the key was
         // found and removed.
-        bool Remove(TKey key)
+        bool Remove(const TKey & key)
         {
-            typename map<TKey, Ref<TValue> >::iterator found = mMap.find(key);
-
-            if (found != mMap.end())
-            {
-                mMap.erase(found);
-                return true;
-            }
+            int index = FindIndex(key);
             
-            return false;
+            // not found
+            if (index == -1) return false;
+            
+            // remove the item
+            mTable[index].key   = TKey();
+            mTable[index].value = TValue();
+            
+            mCount--;
         }
         
         // Removes all items from the Dictionary.
         void Clear()
         {
-            mMap.clear();
+            mCount = 0;
+            mTableSize = 0;
+            delete [] mTable;
         }
         
     private:
-        map<TKey, Ref<TValue> > mMap;
+        // Gets the index of the item with the given key in the table, or -1
+        // if not found.
+        int FindIndex(const TKey & key)
+        {
+            // can't find it in an empty table
+            if (mTableSize == 0) return -1;
+            
+            int index = static_cast<int>(key.HashCode() & 0x7fffffff) % mTableSize;
+            
+            while (true)
+            {
+                // stop if we found it
+                if (mTable[index].key == key) return index;
+                
+                // if we found an empty slot, the item must not be in the table
+                //### bob: hack. using .Length() here assumes TKey is string
+                if (mTable[index].key.Length() == 0) return -1;
+                
+                // try the next slot
+                index = (index + 1) % mTableSize;
+            }
+        }
+        
+        void EnsureCapacity()
+        {
+            // only resize if we're too full
+            if (mCount + 1 <= mTableSize * 100 / MAX_LOAD_PERCENT) return;
+
+            // figure out the new table size
+            int oldSize = mTableSize;
+            mTableSize = MIN_CAPACITY;
+            if (oldSize >= MIN_CAPACITY)
+            {
+                mTableSize = oldSize * GROW_FACTOR;
+            }
+            
+            // create the new hashtable
+            Pair * oldTable = mTable;
+            mTable = new Pair[mTableSize];
+            
+            // move the existing items over
+            if (oldTable != NULL)
+            {
+                for (int i = 0; i < oldSize; i++)
+                {
+                    //### bob: hack. using .Length() here assumes TKey is string
+                    if (oldTable[i].key.Length() > 0)
+                    {
+                        Insert(oldTable[i].key, oldTable[i].value);
+                    }
+                }
+                
+                delete [] oldTable;
+            }
+        }
+        
+        // What percentage of the table should be filled with values before
+        // it is resized.
+        static const int MAX_LOAD_PERCENT = 75;
+        
+        static const int MIN_CAPACITY = 16;
+        static const int GROW_FACTOR  = 2;
+
+        struct Pair
+        {
+            TKey   key;
+            TValue value;
+        };
+        
+        Pair * mTable;
+        int    mCount;     // number of items stored in the table
+        int    mTableSize; // size of the table itself
     };
 }

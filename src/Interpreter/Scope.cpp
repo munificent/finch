@@ -8,29 +8,28 @@ namespace Finch
         mVariables.Insert(name, value);
     }
     
-    Ref<Object> Scope::Set(String name, Ref<Object> value)
+    void Scope::Set(String name, Ref<Object> value)
     {
-        Ref<Object> oldValue = mVariables.Replace(name, value);
+        bool found = mVariables.Replace(name, value);
         
-        if (oldValue.IsNull() && !mParent.IsNull())
+        if (!found && !mParent.IsNull())
         {
             // wasn't found, so defer to parent scope
-            oldValue = mParent->Set(name, value);
+            mParent->Set(name, value);
         }
-        
-        return oldValue;
     }
     
     Ref<Object> Scope::LookUp(String name)
     {
-        Ref<Object> found = mVariables.Find(name);
+        Ref<Object> variable;
+        bool found = mVariables.Find(name, &variable);
         
         // try parent scope (recursively) if we didn't find it here
-        if (found.IsNull() && !mParent.IsNull())
+        if (!found && !mParent.IsNull())
         {
-            found = mParent->LookUp(name);
+            variable = mParent->LookUp(name);
         }
         
-        return found;
+        return variable;
     }
 }

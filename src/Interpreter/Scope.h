@@ -26,8 +26,8 @@ namespace Finch
         
         // Walks the scope chain to find where the given variable is defined
         // and assigns it the given value. If no variable with that name is
-        // found, does nothing. Returns the variable's previous value.
-        Ref<Object> Set(String name, Ref<Object> value);
+        // found, does nothing.
+        void Set(String name, Ref<Object> value);
         
         // Gets the value of the given variable.
         Ref<Object> LookUp(String name);
@@ -40,7 +40,7 @@ namespace Finch
         Ref<Scope> Parent() const { return mParent; }
         
     private:
-        Ref<Scope>                 mParent;
-        Dictionary<String, Object> mVariables;
+        Ref<Scope>                       mParent;
+        Dictionary<String, Ref<Object> > mVariables;
     };
 }

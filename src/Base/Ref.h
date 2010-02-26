@@ -72,6 +72,9 @@ namespace Finch
                 
                 mPrev = this;
                 mNext = this;
+                
+                ASSERT(((mPrev != NULL) && (mNext != NULL)) ||
+                       ((mPrev == NULL) && (mNext == NULL)), "wtf");
             }
             else if (mObj != NULL)
             {

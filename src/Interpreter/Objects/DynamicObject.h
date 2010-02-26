@@ -1,7 +1,6 @@
 #pragma once
 
 #include <iostream>
-#include <map>
 #include <vector>
 
 #include "Dictionary.h"
@@ -15,7 +14,6 @@
 namespace Finch
 {
     using std::ostream;
-    using std::map;
     using std::vector;
     
     class Interpreter;
@@ -60,9 +58,9 @@ namespace Finch
     private:
         void InitializeScope();
         
-        String                          mName; //### bob: hack temp
-        Dictionary<String, Object>      mMethods;
-        map<String, PrimitiveMethod >   mPrimitives;
+        String                              mName; //### bob: hack temp
+        Dictionary<String, Ref<Object> >    mMethods;
+        Dictionary<String, PrimitiveMethod> mPrimitives;
         
         Ref<Scope> mScope;
     };    

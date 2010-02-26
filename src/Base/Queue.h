@@ -43,8 +43,13 @@ namespace Finch
             ASSERT(mCount > 0, "Cannot dequeue an empty queue.");
             
             int tail = Wrap(mHead - mCount);
+            
+            // clear the item from the queue
+            T dequeued = mItems[tail];
+            mItems[tail] = T();
+            
             mCount--;
-            return mItems[tail];
+            return dequeued;
         }
         
         // Gets the item at the given index in the queue. Index zero is the

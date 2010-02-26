@@ -16,10 +16,10 @@ namespace Finch
                                 String message, const vector<Ref<Object> > & args)
     {        
         // see if it's a method call
-        Ref<Object> found = mMethods.Find(message);
-        if (!found.IsNull())
+        Ref<Object> method;
+        if (mMethods.Find(message, &method))
         {
-            BlockObject* block = found->AsBlock();
+            BlockObject* block = method->AsBlock();
             
             ASSERT_NOT_NULL(block);
             
@@ -28,13 +28,12 @@ namespace Finch
         }
         
         // see if it's a primitive call
-        map<String, PrimitiveMethod>::iterator primitive = mPrimitives.find(message);
-        if (primitive != mPrimitives.end())
+        PrimitiveMethod primitive;
+        if (mPrimitives.Find(message, &primitive))
         {
-            PrimitiveMethod method = primitive->second;
-            ASSERT_NOT_NULL(method);
+            ASSERT_NOT_NULL(primitive);
             
-            method(thisRef, interpreter, message, args);
+            primitive(thisRef, interpreter, message, args);
             return;
         }
         
@@ -62,7 +61,7 @@ namespace Finch
     
     void DynamicObject::RegisterPrimitive(String message, PrimitiveMethod method)
     {
-        mPrimitives[message] = method;
+        mPrimitives.Insert(message, method);
     }
 
     void DynamicObject::InitializeScope()

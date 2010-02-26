@@ -39,7 +39,12 @@ namespace Finch
         {
             ASSERT(mCount > 0, "Cannot pop an empty stack.");
             
-            return mItems[--mCount];
+            // clear the item from the stack
+            T popped = mItems[mCount - 1];
+            mItems[mCount - 1] = T();
+            
+            mCount--;
+            return popped;
         }
         
         // Returns the item on the top of the stack without removing it.

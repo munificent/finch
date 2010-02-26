@@ -75,5 +75,12 @@ namespace Finch
             
             EXPECT_EQUAL(true, DestructorTester::Destructed());
         }
+        
+        {
+            Ref<int> a(new int(123));
+            Ref<int> b = a;
+            
+            b = Ref<int>();
+        }
     }
 }

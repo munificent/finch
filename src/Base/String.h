@@ -54,6 +54,8 @@ namespace Finch
         String Substring(int startIndex) const;
         String Substring(int startIndex, int count) const;
         
+        static unsigned int Fnv1Hash(const char * text);
+        
     private:
         struct StringData
         {
@@ -73,8 +75,6 @@ namespace Finch
         String(const char * text, bool isOnHeap);
         
         void Init(const char * text, bool isOnHeap);
-        
-        static unsigned int Fnv1Hash(const char * text);
         
         static const int FormattedStringMax = 512;
         
