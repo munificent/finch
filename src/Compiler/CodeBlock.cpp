@@ -2,7 +2,7 @@
 
 namespace Finch
 {
-    CodeBlock::CodeBlock(const vector<String> & params)
+    CodeBlock::CodeBlock(const Array<String> & params)
     :   mParams(params),
         mInstructions()
     {

@@ -23,7 +23,15 @@ namespace Finch
             mCapacity(capacity),
             mItems(NULL)
         {
-            Resize(mCapacity);
+            EnsureCapacity(mCapacity);
+        }
+        
+        Array(const Array<T> & array)
+        :   mCount(0),
+            mCapacity(0),
+            mItems(NULL)
+        {
+            Add(array);
         }
         
         ~Array()
@@ -45,21 +53,20 @@ namespace Finch
         // automatically.
         void Add(const T & value)
         {
-            // grow the array if needed
-            if (mCount >= mCapacity)
-            {
-                if (mCapacity < MIN_CAPACITY)
-                {
-                    Resize(MIN_CAPACITY);
-                }
-                else
-                {
-                    Resize(mCapacity * GROW_FACTOR);
-                }
-
-            }
+            EnsureCapacity(mCount + 1);
             
             mItems[mCount++] = value;
+        }
+        
+        // Adds all of the items from the given array to this one.
+        void Add(const Array<T> & array)
+        {
+            EnsureCapacity(mCount + array.mCount);
+            
+            for (int i = 0; i < array.mCount; i++)
+            {
+                mItems[mCount++] = array[i];
+            }
         }
         
         // Removes the item at the given index. Indexes are zero-based from the
@@ -102,11 +109,42 @@ namespace Finch
             return mItems[index];
         }
         
-    private:
-        void Resize(int capacity)
+        // Reverses the order of the items in the array.
+        void Reverse()
         {
-            ASSERT(capacity >= mCount, "Resize cannot truncate items.");
+            for (int i = 0; i < mCount / 2; i++)
+            {
+                T temp = mItems[i];
+                mItems[i] = mItems[mCount - i - 1];
+                mItems[mCount - i - 1] = temp;
+            }
+        }
+        
+    private:
+        void EnsureCapacity(int capacity)
+        {
+            // early out if we have enough capacity
+            if (mCapacity >= capacity) return;
             
+            // figure out the new array size
+            // instead of growing to just the capacity we need, we'll grow by
+            // a multiple of the current size. this ensures amortized O(n)
+            // complexity on adding instead of O(n^2).
+            if (capacity < MIN_CAPACITY)
+            {
+                capacity = MIN_CAPACITY;
+            }
+            else
+            {
+                int newCapacity = mCapacity;
+                while (newCapacity < capacity)
+                {
+                    newCapacity *= GROW_FACTOR;
+                }
+                
+                capacity = newCapacity;
+            }
+        
             // create the new array
             T* newItems = new T[capacity];
             
@@ -129,7 +167,5 @@ namespace Finch
         int mCount;
         int mCapacity;
         T*  mItems;
-        
-        NO_COPY(Array);
     };
 }

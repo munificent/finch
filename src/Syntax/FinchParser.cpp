@@ -1,9 +1,6 @@
-#include <vector>
-
-#include "FinchParser.h"
-
 #include "BlockExpr.h"
 #include "DefExpr.h"
+#include "FinchParser.h"
 #include "ILineReader.h"
 #include "KeywordExpr.h"
 #include "NameExpr.h"
@@ -16,8 +13,6 @@
 
 namespace Finch
 {
-    using std::vector;
-    
     Ref<Expr> FinchParser::ParseFile()
     {
         // since expression includes sequence expressions, this will parse
@@ -175,21 +170,21 @@ namespace Finch
         }
         if (Match(TOKEN_LEFT_BRACE))
         {
-            vector<String> args;
+            Array<String> args;
             
             // see if there are args
             if (Match(TOKEN_PIPE))
             {
                 while (LookAhead(TOKEN_NAME))
                 {
-                    args.push_back(Consume()->Text());
+                    args.Add(Consume()->Text());
                 }
                 
                 if (!Match(TOKEN_PIPE)) return ParseError("Expect closing '|' after block arguments.");
                 
                 // if there were no named args, but there were pipes (||),
                 // use an automatic "it" arg
-                if (args.size() == 0) args.push_back("it");
+                if (args.Count() == 0) args.Add("it");
             }
             
             Ref<Expr> body = Expression();
@@ -205,8 +200,8 @@ namespace Finch
     // Parses just the message send part of a keyword message: "foo: a bar: b"
     Ref<Expr> FinchParser::KeywordMessage(Ref<Expr> object)
     {
-        vector<String>      keywords;
-        vector<Ref<Expr> >  args;
+        Array<String>      keywords;
+        Array<Ref<Expr> >  args;
         
         while (LookAhead(TOKEN_KEYWORD))
         {
@@ -214,11 +209,11 @@ namespace Finch
             Ref<Expr> arg = Operator();
             if (arg.IsNull()) return ParseError("Expect argument after keyword.");
             
-            keywords.push_back(keyword);
-            args.push_back(arg);
+            keywords.Add(keyword);
+            args.Add(arg);
         }
         
-        if (keywords.size() > 0)
+        if (keywords.Count() > 0)
         {
             return Ref<Expr>(new KeywordExpr(object, keywords, args));
         }

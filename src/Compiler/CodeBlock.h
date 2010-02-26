@@ -1,7 +1,6 @@
 #pragma once
 
 #include <iostream>
-#include <vector>
 
 #include "Array.h"
 #include "Macros.h"
@@ -9,8 +8,6 @@
 
 namespace Finch
 {
-    using std::vector;
-    
     enum OpCode
     {                       // arg
         OP_NOTHING,         // (not used)
@@ -69,9 +66,9 @@ namespace Finch
     class CodeBlock
     {
     public:
-        CodeBlock(const vector<String> & params);
+        CodeBlock(const Array<String> & params);
         
-        const vector<String> &  Params() const { return mParams; }
+        const Array<String> & Params() const { return mParams; }
         
         const Instruction & operator[](int i) const { return mInstructions[i]; }
 
@@ -80,8 +77,8 @@ namespace Finch
         void Write(OpCode op, int id);
         
     private:
-        vector<String>      mParams;
-        Array<Instruction>  mInstructions;
+        Array<String>      mParams;
+        Array<Instruction> mInstructions;
         
         NO_COPY(CodeBlock);
     };

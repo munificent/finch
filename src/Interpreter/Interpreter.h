@@ -36,12 +36,12 @@ namespace Finch
         void PushNumber(double value);
         
         // Pushes the given block onto the call stack.
-        void CallBlock(const BlockObject & block, const vector<Ref<Object> > & args);
+        void CallBlock(const BlockObject & block, const Array<Ref<Object> > & args);
         
         // Pushes the given method onto the call stack.
         void CallMethod(Ref<Object> self,
                         const BlockObject & block,
-                        const vector<Ref<Object> > & args);
+                        const Array<Ref<Object> > & args);
         
         void WhileLoop(Ref<Object> condition, Ref<Object> body);
         void DiscardReturn();

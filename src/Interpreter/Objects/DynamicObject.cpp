@@ -13,7 +13,7 @@ namespace Finch
     }
     
     void DynamicObject::Receive(Ref<Object> thisRef, Interpreter & interpreter, 
-                                String message, const vector<Ref<Object> > & args)
+                                String message, const Array<Ref<Object> > & args)
     {        
         // see if it's a method call
         Ref<Object> method;

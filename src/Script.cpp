@@ -41,12 +41,11 @@ namespace Finch
         //### bob: need to report parse error
         if (!expr.IsNull())
         {
-            vector<String> noParams;
-            int id = interpreter.GetEnvironment().Blocks().Add(noParams, *expr, interpreter.GetEnvironment());
+            int id = interpreter.GetEnvironment().Blocks().Add(Array<String>(), *expr, interpreter.GetEnvironment());
             const CodeBlock & code = interpreter.GetEnvironment().Blocks().Find(id);
             Ref<Object> block = Object::NewBlock(interpreter.GetEnvironment(), code, interpreter.GetEnvironment().Globals());
             
-            vector<Ref<Object> > noArgs;
+            Array<Ref<Object> > noArgs;
             interpreter.CallBlock(*(block->AsBlock()), noArgs);
         }
         else

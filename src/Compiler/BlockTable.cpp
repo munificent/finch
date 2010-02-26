@@ -4,7 +4,7 @@
 
 namespace Finch
 {
-    int BlockTable::Add(const vector<String> & params, const Expr & body,
+    int BlockTable::Add(const Array<String> & params, const Expr & body,
                         Environment & environment)
     {
         Ref<CodeBlock> code = Ref<CodeBlock>(new CodeBlock(params));

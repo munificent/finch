@@ -1,7 +1,6 @@
 #pragma once
 
 #include <iostream>
-#include <vector>
 
 #include "Dictionary.h"
 #include "Expr.h"
@@ -14,13 +13,12 @@
 namespace Finch
 {
     using std::ostream;
-    using std::vector;
     
     class Interpreter;
     
     // Function pointer type for a primitive Finch method implemented in C++.
     typedef void (*PrimitiveMethod)(Ref<Object> thisRef, Interpreter & interpreter,
-                                    String message, const vector<Ref<Object> > & args);
+                                    String message, const Array<Ref<Object> > & args);
 
     // Object class for a "normal" full-featured object. Supports user-defined
     // fields and methods as well as primitive methods.
@@ -49,7 +47,7 @@ namespace Finch
         virtual Ref<Scope> ObjectScope() const { return mScope; }
         
         virtual void Receive(Ref<Object> thisRef, Interpreter & interpreter,
-                             String message, const vector<Ref<Object> > & args);
+                             String message, const Array<Ref<Object> > & args);
         
         void AddMethod(Interpreter & interpreter, String name, Ref<Object> body);
         

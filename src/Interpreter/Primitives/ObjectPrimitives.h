@@ -1,7 +1,5 @@
 #pragma once
 
-#include <vector>
-
 #include "Expr.h"
 #include "Macros.h"
 #include "Object.h"
@@ -10,8 +8,6 @@
 
 namespace Finch
 {
-    using std::vector;
-    
     // Primitive methods for dynamic (i.e. regular) objects.
     PRIMITIVE(ObjectSelf);
     PRIMITIVE(ObjectEquals);

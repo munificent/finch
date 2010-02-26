@@ -13,8 +13,8 @@ namespace Finch
     Interpreter::Interpreter(Environment & environment)
     :   mIsRunning(true),
         mEnvironment(environment),
-        mLoopCode(vector<String>()),
-        mDiscardCode(vector<String>())
+        mLoopCode(Array<String>()),
+        mDiscardCode(Array<String>())
     {
         // build the special "while loop" chunk of bytecode
         mLoopCode.Write(OP_LOOP_1);
@@ -173,16 +173,16 @@ namespace Finch
                 case OP_MESSAGE_10:
                     {
                         // pop the arguments
-                        vector<Ref<Object> > args;
+                        Array<Ref<Object> > args;
                         for (int i = 0; i < instruction.op - OP_MESSAGE_0; i++)
                         {
-                            args.push_back(PopOperand());
+                            args.Add(PopOperand());
                         }
                         
                         // reverse them since the stack has them in order (so
                         // that arguments are evaluated from left to right) and
                         // popping reverses the order
-                        reverse(args.begin(), args.end());
+                        args.Reverse();
                         
                         // send the message
                         String string = mEnvironment.Strings().Find(instruction.arg.id);
@@ -216,7 +216,7 @@ namespace Finch
                     {
                         // evaluate the conditional (while leaving it on the stack)
                         Ref<Object> condition = mOperands.Peek();
-                        condition->Receive(condition, *this, "call", vector<Ref<Object> >());
+                        condition->Receive(condition, *this, "call", Array<Ref<Object> >());
                     }
                     break;
 
@@ -240,7 +240,7 @@ namespace Finch
                     {
                         // evaluate the body
                         Ref<Object> body = mOperands[1];
-                        body->Receive(body, *this, "call", vector<Ref<Object> >());
+                        body->Receive(body, *this, "call", Array<Ref<Object> >());
                     }
                     break;
                     
@@ -289,7 +289,7 @@ namespace Finch
     }
 
     void Interpreter::CallBlock(const BlockObject & block,
-                                const vector<Ref<Object> > & args)
+                                const Array<Ref<Object> > & args)
     {
         // continue using the current self object
         Ref<Object> self = mCallStack.Peek().self;
@@ -299,15 +299,15 @@ namespace Finch
     
     void Interpreter::CallMethod(Ref<Object> self,
                                  const BlockObject & block,
-                                 const vector<Ref<Object> > & args)
+                                 const Array<Ref<Object> > & args)
     {
         // make sure we have the right number of arguments
         //### bob: could change to ignore extra args and pad missing ones with
         // nil if we want to be "looser" about calling convention
-        if (block.Params().size() != args.size())
+        if (block.Params().Count() != args.Count())
         {
             RuntimeError(String::Format("Block expects %d arguments, but was passed %d.",
-                                        block.Params().size(), args.size()));
+                                        block.Params().Count(), args.Count()));
             PushNil();
             return;
         }
@@ -316,7 +316,7 @@ namespace Finch
         Ref<Scope> scope = Ref<Scope>(new Scope(block.Closure()));
         
         // bind the arguments
-        for (unsigned int i = 0; i < args.size(); i++)
+        for (int i = 0; i < args.Count(); i++)
         {
             scope->Define(block.Params()[i], args[i]);
         }

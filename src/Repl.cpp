@@ -46,7 +46,7 @@ namespace Finch
             //cout << "parsed \"" << *expr << "\"" << endl;
             
             // create a block for the expression
-            int id = env.Blocks().Add(vector<String>(), *expr, env);
+            int id = env.Blocks().Add(Array<String>(), *expr, env);
             const CodeBlock & code = env.Blocks().Find(id);
             
             // and execute it

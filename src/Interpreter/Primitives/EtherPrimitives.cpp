@@ -25,7 +25,7 @@ namespace Finch
         }
         else
         {
-            vector<Ref<Object> > noArgs;
+            Array<Ref<Object> > noArgs;
             object->Receive(object, interpreter, "call", noArgs);
         }
     }
@@ -43,8 +43,6 @@ namespace Finch
     
     PRIMITIVE(EtherIfThen)
     {
-        vector<Ref<Object> > noArgs;
-        
         if (args[0] == interpreter.GetEnvironment().True())
         {
             CondtionallyEvaluate(interpreter, args[1]);
@@ -57,8 +55,6 @@ namespace Finch
     
     PRIMITIVE(EtherIfThenElse)
     {
-        vector<Ref<Object> > noArgs;
-        
         if (args[0] == interpreter.GetEnvironment().True())
         {
             CondtionallyEvaluate(interpreter, args[1]);

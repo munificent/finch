@@ -37,7 +37,7 @@ namespace Finch
     }
     
     void Object::Receive(Ref<Object> thisRef, Interpreter & interpreter,
-                                String message, const vector<Ref<Object> > & args)
+                                String message, const Array<Ref<Object> > & args)
     {
         // walk up the prototype chain
         if (!mPrototype.IsNull())

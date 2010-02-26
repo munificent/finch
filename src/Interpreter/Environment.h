@@ -1,7 +1,6 @@
 #pragma once
 
 #include <iostream>
-#include <vector>
 
 #include "BlockTable.h"
 #include "Macros.h"
@@ -13,8 +12,6 @@
 
 namespace Finch
 {
-    using std::vector;
-    
     class BlockObject;
     class Expr;
     

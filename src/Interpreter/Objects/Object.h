@@ -1,20 +1,19 @@
 #pragma once
 
 #include <iostream>
-#include <vector>
 
+#include "Array.h"
 #include "Macros.h"
 #include "Ref.h"
 #include "String.h"
 
 #define PRIMITIVE(name)                                             \
         void name(Ref<Object> thisRef, Interpreter & interpreter,   \
-             String message, const vector<Ref<Object> > & args)
+             String message, const Array<Ref<Object> > & args)
 
 namespace Finch
 {
     using std::ostream;
-    using std::vector;
     
     class Expr;
     class Scope;
@@ -38,7 +37,7 @@ namespace Finch
         virtual ~Object() {}
         
         virtual void Receive(Ref<Object> thisRef, Interpreter & interpreter,
-                             String message, const vector<Ref<Object> > & args);
+                             String message, const Array<Ref<Object> > & args);
         
         virtual double          AsNumber() const { return 0; }
         virtual String          AsString() const { return ""; }

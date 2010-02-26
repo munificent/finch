@@ -1,7 +1,6 @@
 #pragma once
 
 #include <iostream>
-#include <vector>
 
 #include "Macros.h"
 #include "Object.h"
@@ -11,7 +10,6 @@
 namespace Finch
 {
     using std::ostream;
-    using std::vector;
     
     // Object class for a string.
     class StringObject : public Object

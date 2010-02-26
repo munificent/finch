@@ -62,20 +62,20 @@ namespace Finch
         expr.Receiver()->Accept(*this);
         
         // compile the arguments
-        for (unsigned int i = 0; i < expr.Keywords().size(); i++)
+        for (int i = 0; i < expr.Keywords().Count(); i++)
         {
             expr.Arguments()[i]->Accept(*this);
         }
         
         // get the keyword's full name
         String fullName;
-        for (unsigned int i = 0; i < expr.Keywords().size(); i++)
+        for (int i = 0; i < expr.Keywords().Count(); i++)
         {
             fullName += expr.Keywords()[i];
         }
         
         int id = mEnvironment.Strings().Add(fullName);
-        OpCode op = static_cast<OpCode>(OP_MESSAGE_0 + expr.Keywords().size());
+        OpCode op = static_cast<OpCode>(OP_MESSAGE_0 + expr.Keywords().Count());
         
         mCode.Write(op, id);
     }

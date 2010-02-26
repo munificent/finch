@@ -2,7 +2,6 @@
 
 #include <iostream>
 #include <sstream>
-#include <vector>
 
 #include "Macros.h"
 #include "Object.h"
@@ -13,7 +12,6 @@ namespace Finch
 {
     using std::ostream;
     using std::stringstream;
-    using std::vector;
     
     // Object class for a number. All numbers in Finch are floating point.
     class NumberObject : public Object

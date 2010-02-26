@@ -1,7 +1,6 @@
 #pragma once
 
 #include <iostream>
-#include <vector>
 
 #include "CodeBlock.h"
 #include "Expr.h"
@@ -14,7 +13,6 @@
 namespace Finch
 {
     using std::ostream;
-    using std::vector;
     
     // Object class for a block: an invokable expression and the scope that
     // encloses it.
@@ -27,11 +25,11 @@ namespace Finch
             mClosure(closure)
         {}
         
-        const vector<String> &  Params() const { return mCode.Params(); }
+        const Array<String> &  Params() const { return mCode.Params(); }
 
-              Ref<Scope>        Closure() const { return mClosure; }
+              Ref<Scope>       Closure() const { return mClosure; }
         
-        const CodeBlock &       GetCode() const { return mCode; } 
+        const CodeBlock &      GetCode() const { return mCode; } 
         
         virtual BlockObject * AsBlock() { return this; }
         

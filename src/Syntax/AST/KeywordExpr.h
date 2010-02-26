@@ -1,43 +1,42 @@
 #pragma once
 
 #include <iostream>
-#include <vector>
 
-#include "Macros.h"
+#include "Array.h"
 #include "Expr.h"
 #include "IExprVisitor.h"
+#include "Macros.h"
 #include "Ref.h"
 #include "String.h"
 
 namespace Finch
 {
     using std::ostream;
-    using std::vector;
     
     // AST node for a keyword message send: "obj do: thing with: other"
     class KeywordExpr : public Expr
     {
     public:
-        KeywordExpr(Ref<Expr> receiver, vector<String> keywords,
-                    vector<Ref<Expr> > args)
+        KeywordExpr(Ref<Expr> receiver, const Array<String> & keywords,
+                    const Array<Ref<Expr> > & args)
         :   mReceiver(receiver),
             mKeywords(keywords),
             mArgs(args)
         {
-            ASSERT(mKeywords.size() == mArgs.size(),
+            ASSERT(mKeywords.Count() == mArgs.Count(),
                    "Must have same number of keywords and arguments.");
         }
         
-        Ref<Expr>                  Receiver()  const { return mReceiver; }
+        Ref<Expr>                 Receiver()  const { return mReceiver; }
         
-        const vector<String> &     Keywords()  const { return mKeywords; }
-        const vector<Ref<Expr> > & Arguments() const { return mArgs; }
+        const Array<String> &     Keywords()  const { return mKeywords; }
+        const Array<Ref<Expr> > & Arguments() const { return mArgs; }
         
         virtual void Trace(ostream & stream) const
         {
             stream << mReceiver;
             
-            for (unsigned int i = 0; i < mKeywords.size(); i++)
+            for (int i = 0; i < mKeywords.Count(); i++)
             {
                 stream << " " << mKeywords[i] << " " << mArgs[i];
             }
@@ -50,9 +49,9 @@ namespace Finch
         Ref<Expr> mReceiver;
         
         // the names of the keywords
-        vector<String> mKeywords;
+        Array<String> mKeywords;
         
         // the arguments being passed
-        vector<Ref<Expr> > mArgs;
+        Array<Ref<Expr> > mArgs;
     };
 }

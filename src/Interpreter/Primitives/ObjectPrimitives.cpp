@@ -54,7 +54,7 @@ namespace Finch
             interpreter.DiscardReturn();
             
             // call the copyWith: block as if it were a method on the new object
-            vector<Ref<Object> > noArgs;
+            Array<Ref<Object> > noArgs;
             interpreter.CallMethod(copy, *block, noArgs);
         }
     }

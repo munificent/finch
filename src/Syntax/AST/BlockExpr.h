@@ -1,44 +1,43 @@
 #pragma once
 
 #include <iostream>
-#include <vector>
 
-#include "Macros.h"
+#include "Array.h"
 #include "Expr.h"
 #include "IExprVisitor.h"
+#include "Macros.h"
 #include "Ref.h"
 #include "String.h"
 
 namespace Finch
 {
     using std::ostream;
-    using std::vector;
     
     // AST node for a block: "{|param| obj message }"
     class BlockExpr : public Expr
     {
     public:
-        BlockExpr(vector<String> params, Ref<Expr> body)
+        BlockExpr(const Array<String> & params, Ref<Expr> body)
         :   mParams(params),
             mBody(body)
         {}
         
-        vector<String>  Params() const { return mParams; }
-        Ref<Expr>       Body() const { return mBody; }
+        const Array<String> & Params() const { return mParams; }
+        Ref<Expr>             Body()   const { return mBody; }
         
         virtual void Trace(ostream & stream) const
         {
             stream << "{";
             
-            if (mParams.size() > 0)
+            if (mParams.Count() > 0)
             {
                 stream << "|";
                 
-                for (unsigned int i = 0; i < mParams.size(); i++)
+                for (int i = 0; i < mParams.Count(); i++)
                 {
                     stream << mParams[i];
                     
-                    if(i < mParams.size() - 1) stream << " ";
+                    if(i < mParams.Count() - 1) stream << " ";
                 }            
                 
                 stream << "|";
@@ -50,7 +49,7 @@ namespace Finch
         EXPRESSION_VISITOR
 
     private:
-        vector<String> mParams;
+        Array<String>  mParams;
         Ref<Expr>      mBody;
     };
 }
