@@ -42,6 +42,7 @@ namespace Finch
         // Inserts the given value at the given key.
         void Insert(const TKey & key, const TValue & value)
         {
+            mCount++;
             EnsureCapacity();
             
             // figure out where to insert it in the table. use open addressing
@@ -60,8 +61,6 @@ namespace Finch
             // insert it into the table
             mTable[index].key   = key;
             mTable[index].value = value;
-            
-            mCount++;
         }
         
         // Replaces the value at the given key. If the key is not already
@@ -131,7 +130,7 @@ namespace Finch
         void EnsureCapacity()
         {
             // only resize if we're too full
-            if (mCount + 1 <= mTableSize * 100 / MAX_LOAD_PERCENT) return;
+            if (mCount <= mTableSize * MAX_LOAD_PERCENT / 100) return;
 
             // figure out the new table size
             int oldSize = mTableSize;
@@ -177,5 +176,7 @@ namespace Finch
         Pair * mTable;
         int    mCount;     // number of items stored in the table
         int    mTableSize; // size of the table itself
+        
+        NO_COPY(Dictionary);
     };
 }

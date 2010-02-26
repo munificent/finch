@@ -1,3 +1,5 @@
+#include <math.h>
+
 #include "NumberPrimitives.h"
 #include "NumberObject.h"
 #include "Environment.h"
@@ -45,7 +47,51 @@ namespace Finch
     {
         interpreter.PushNumber(-thisRef->AsNumber());
     }
-
+    
+    PRIMITIVE(NumberSin)
+    {
+        interpreter.PushNumber(sin(thisRef->AsNumber()));
+    }
+    PRIMITIVE(NumberCos)
+    {
+        interpreter.PushNumber(cos(thisRef->AsNumber()));
+    }
+    PRIMITIVE(NumberTan)
+    {
+        interpreter.PushNumber(tan(thisRef->AsNumber()));
+    }
+    PRIMITIVE(NumberAsin)
+    {
+        interpreter.PushNumber(asin(thisRef->AsNumber()));
+    }
+    PRIMITIVE(NumberAcos)
+    {
+        interpreter.PushNumber(acos(thisRef->AsNumber()));
+    }
+    PRIMITIVE(NumberAtan)
+    {
+        interpreter.PushNumber(atan(thisRef->AsNumber()));
+    }
+    PRIMITIVE(NumberAtan2)
+    {
+        interpreter.PushNumber(atan2(thisRef->AsNumber(), args[0]->AsNumber()));
+    }
+    
+    PRIMITIVE(NumberMod)
+    {
+        interpreter.PushNumber(fmod(thisRef->AsNumber(), args[0]->AsNumber()));
+    }
+    
+    PRIMITIVE(NumberFloor)
+    {
+        interpreter.PushNumber(floor(thisRef->AsNumber()));
+    }
+    
+    PRIMITIVE(NumberCeiling)
+    {
+        interpreter.PushNumber(ceil(thisRef->AsNumber()));
+    }
+    
     PRIMITIVE(NumberEquals)
     {
         interpreter.PushBool(thisRef->AsNumber() == args[0]->AsNumber());

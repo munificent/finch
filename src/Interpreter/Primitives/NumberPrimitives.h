@@ -19,6 +19,19 @@ namespace Finch
     PRIMITIVE(NumberDivide);
     PRIMITIVE(NumberAbs);
     PRIMITIVE(NumberNeg);
+    
+    PRIMITIVE(NumberSin);
+    PRIMITIVE(NumberCos);
+    PRIMITIVE(NumberTan);
+    PRIMITIVE(NumberAsin);
+    PRIMITIVE(NumberAcos);
+    PRIMITIVE(NumberAtan);
+    PRIMITIVE(NumberAtan2);
+    
+    PRIMITIVE(NumberMod);
+    PRIMITIVE(NumberFloor);
+    PRIMITIVE(NumberCeiling);
+    
     PRIMITIVE(NumberEquals);
     PRIMITIVE(NumberNotEquals);
     PRIMITIVE(NumberLessThan);

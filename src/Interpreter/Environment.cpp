@@ -56,6 +56,16 @@ namespace Finch
         DynamicObject* numberObj = &static_cast<DynamicObject&>(*mNumber);
         numberObj->RegisterPrimitive("abs", NumberAbs);
         numberObj->RegisterPrimitive("neg", NumberNeg);
+        numberObj->RegisterPrimitive("mod:", NumberMod);
+        numberObj->RegisterPrimitive("floor", NumberFloor);
+        numberObj->RegisterPrimitive("ceiling", NumberCeiling);
+        numberObj->RegisterPrimitive("sin",   NumberSin);
+        numberObj->RegisterPrimitive("cos",   NumberCos);
+        numberObj->RegisterPrimitive("tan",   NumberTan);
+        numberObj->RegisterPrimitive("asin",  NumberAsin);
+        numberObj->RegisterPrimitive("acos",  NumberAcos);
+        numberObj->RegisterPrimitive("atan",  NumberAtan);
+        numberObj->RegisterPrimitive("atan:", NumberAtan2);
         numberObj->RegisterPrimitive("+",   NumberAdd);
         numberObj->RegisterPrimitive("-",   NumberSubtract);
         numberObj->RegisterPrimitive("*",   NumberMultiply);
