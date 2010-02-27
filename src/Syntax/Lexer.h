@@ -32,6 +32,7 @@ namespace Finch
             LEX_DEFAULT,
             LEX_IN_MINUS,
             LEX_IN_NUMBER,
+            LEX_IN_DECIMAL,
             LEX_IN_NAME,
             LEX_IN_OPERATOR,
             LEX_IN_STRING,

@@ -86,6 +86,22 @@ namespace Finch
                     
                 case LEX_IN_NUMBER:
                     if (IsDigit(c)) Consume();
+                    else if (c =='.')
+                    {
+                        ChangeState(LEX_IN_DECIMAL);
+                    }
+                    else
+                    {
+                        String text = mLine.Substring(mTokenStart, mIndex - mTokenStart);
+                        double number = atof(text.CString());
+                        token = Token::New(TOKEN_NUMBER, number);
+                        
+                        mState = LEX_DEFAULT;
+                    }
+                    break;
+                    
+                case LEX_IN_DECIMAL:
+                    if (IsDigit(c)) Consume();
                     else
                     {
                         String text = mLine.Substring(mTokenStart, mIndex - mTokenStart);
@@ -188,6 +204,9 @@ namespace Finch
                 case LEX_DONE:
                     token = Token::New(TOKEN_EOF);
                     break;
+                    
+                default:
+                    ASSERT(false, "Uknown lexer state.");
             }
         }
         
