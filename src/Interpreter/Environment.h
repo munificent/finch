@@ -29,12 +29,13 @@ namespace Finch
         Ref<Scope>  Globals()       const { return mGlobals; }
 
         // Get the core built-in prototype objects.
-        Ref<Object> Nil()           const { return mNil; }
-        Ref<Object> Block()         const { return mBlock; }
-        Ref<Object> Number()        const { return mNumber; }
-        Ref<Object> StringProto()   const { return mString; }
-        Ref<Object> True()          const { return mTrue; }
-        Ref<Object> False()         const { return mFalse; }
+        Ref<Object> Nil()               const { return mNil; }
+        Ref<Object> ArrayPrototype()    const { return mArray; }
+        Ref<Object> Block()             const { return mBlock; }
+        Ref<Object> Number()            const { return mNumber; }
+        Ref<Object> StringPrototype()   const { return mString; }
+        Ref<Object> True()              const { return mTrue; }
+        Ref<Object> False()             const { return mFalse; }
         
     private:
         
@@ -43,6 +44,7 @@ namespace Finch
         
         Ref<Scope> mGlobals;
         Ref<Object> mNil;
+        Ref<Object> mArray;
         Ref<Object> mBlock;
         Ref<Object> mNumber;
         Ref<Object> mString;

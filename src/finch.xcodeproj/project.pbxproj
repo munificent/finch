@@ -10,6 +10,7 @@
 		8DD76F650486A84900D96B5E /* main.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 08FB7796FE84155DC02AAC07 /* main.cpp */; settings = {ATTRIBUTES = (); }; };
 		8DD76F6A0486A84900D96B5E /* finch.1 in CopyFiles */ = {isa = PBXBuildFile; fileRef = C6859E8B029090EE04C91782 /* finch.1 */; };
 		C4012A4810CA948B0088B77F /* Repl.cpp in Sources */ = {isa = PBXBuildFile; fileRef = C4012A4710CA948B0088B77F /* Repl.cpp */; };
+		C402F900113A26860003A36A /* ArrayPrimitives.cpp in Sources */ = {isa = PBXBuildFile; fileRef = C402F8FF113A26860003A36A /* ArrayPrimitives.cpp */; };
 		C424166210E5B70E001E7103 /* StringTests.cpp in Sources */ = {isa = PBXBuildFile; fileRef = C424165F10E5B70E001E7103 /* StringTests.cpp */; };
 		C424166310E5B70E001E7103 /* QueueTests.cpp in Sources */ = {isa = PBXBuildFile; fileRef = C424166110E5B70E001E7103 /* QueueTests.cpp */; };
 		C45102D410DF37DC0009E52E /* EtherPrimitives.cpp in Sources */ = {isa = PBXBuildFile; fileRef = C45102D310DF37DC0009E52E /* EtherPrimitives.cpp */; };
@@ -64,6 +65,10 @@
 		8DD76F6C0486A84900D96B5E /* finch */ = {isa = PBXFileReference; explicitFileType = "compiled.mach-o.executable"; includeInIndex = 0; path = finch; sourceTree = BUILT_PRODUCTS_DIR; };
 		C4012A4410CA94580088B77F /* Repl.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Repl.h; sourceTree = "<group>"; };
 		C4012A4710CA948B0088B77F /* Repl.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = Repl.cpp; sourceTree = "<group>"; };
+		C402F8E7113A23280003A36A /* ArrayExpr.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ArrayExpr.h; sourceTree = "<group>"; };
+		C402F8FB113A25BD0003A36A /* ArrayObject.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ArrayObject.h; sourceTree = "<group>"; };
+		C402F8FE113A26860003A36A /* ArrayPrimitives.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ArrayPrimitives.h; sourceTree = "<group>"; };
+		C402F8FF113A26860003A36A /* ArrayPrimitives.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = ArrayPrimitives.cpp; sourceTree = "<group>"; };
 		C424165E10E5B70E001E7103 /* StringTests.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = StringTests.h; path = Test/StringTests.h; sourceTree = "<group>"; };
 		C424165F10E5B70E001E7103 /* StringTests.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = StringTests.cpp; path = Test/StringTests.cpp; sourceTree = "<group>"; };
 		C424166010E5B70E001E7103 /* QueueTests.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = QueueTests.h; path = Test/QueueTests.h; sourceTree = "<group>"; };
@@ -233,6 +238,7 @@
 		C402051C10CC39D900B521BB /* AST */ = {
 			isa = PBXGroup;
 			children = (
+				C402F8E7113A23280003A36A /* ArrayExpr.h */,
 				C4FC164810D4331C00E6ABD6 /* BlockExpr.h */,
 				C4FC164A10D4331C00E6ABD6 /* DefExpr.h */,
 				C4FC164C10D4331C00E6ABD6 /* Expr.h */,
@@ -332,6 +338,8 @@
 				C46588D010DE847F007C4C3E /* ObjectPrimitives.cpp */,
 				C46588CD10DE847F007C4C3E /* StringPrimitives.h */,
 				C46588CE10DE847F007C4C3E /* StringPrimitives.cpp */,
+				C402F8FE113A26860003A36A /* ArrayPrimitives.h */,
+				C402F8FF113A26860003A36A /* ArrayPrimitives.cpp */,
 			);
 			name = Primitives;
 			sourceTree = "<group>";
@@ -346,6 +354,7 @@
 				C4CDF8A310D88DDF001C9D4A /* Object.h */,
 				C4CDF8A210D88DDF001C9D4A /* Object.cpp */,
 				C4CDF8A510D88DDF001C9D4A /* StringObject.h */,
+				C402F8FB113A25BD0003A36A /* ArrayObject.h */,
 			);
 			name = Objects;
 			sourceTree = "<group>";
@@ -437,6 +446,7 @@
 				C4C697A61134B36F00662643 /* LexerTests.cpp in Sources */,
 				C4C697A71134B36F00662643 /* StackTests.cpp in Sources */,
 				C4C698091134CA9900662643 /* ArrayTests.cpp in Sources */,
+				C402F900113A26860003A36A /* ArrayPrimitives.cpp in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

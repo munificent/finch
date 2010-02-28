@@ -1,3 +1,4 @@
+#include "ArrayExpr.h"
 #include "BlockExpr.h"
 #include "DefExpr.h"
 #include "FinchParser.h"
@@ -45,26 +46,9 @@ namespace Finch
     {
         Array<Ref<Expr> > expressions;
         
-        Ref<Expr> expression = Assignment();
-        if (expression.IsNull()) return ParseError();
+        ParseSequence(expressions);
         
-        expressions.Add(expression);
-        
-        while (Match(TOKEN_LINE))
-        {
-            // there may be a trailing line after the last expression in a
-            // block. if we eat the line and then see a closing brace or eof,
-            // just stop here.
-            if (LookAhead(TOKEN_RIGHT_PAREN)) break;
-            if (LookAhead(TOKEN_RIGHT_BRACKET)) break;
-            if (LookAhead(TOKEN_RIGHT_BRACE)) break;
-            if (LookAhead(TOKEN_EOF)) break;
-            
-            Ref<Expr> next = Assignment();
-            if (next.IsNull()) return ParseError("Expect expression after ';'.");
-            
-            expressions.Add(next);
-        }
+        if (expressions.Count() == 0) return ParseError("Expected sequence.");
         
         // if there's just one, don't wrap it in a sequence
         if (expressions.Count() == 1) return expressions[0];
@@ -106,7 +90,7 @@ namespace Finch
         Ref<Expr> object = Operator();
         if (object.IsNull()) return ParseError();
         
-        Ref<Expr> keyword = KeywordMessage(object);
+        Ref<Expr> keyword = ParseKeyword(object);
         if (!keyword.IsNull()) return keyword;
         
         return object;
@@ -160,7 +144,7 @@ namespace Finch
         else if (LookAhead(TOKEN_KEYWORD))
         {
             // implicit receiver keyword message
-            return KeywordMessage(Ref<Expr>(new NameExpr("Ether")));
+            return ParseKeyword(Ref<Expr>(new NameExpr("Ether")));
         }
         else if (Match(TOKEN_DOT))
         {
@@ -177,12 +161,17 @@ namespace Finch
         }
         else if (Match(TOKEN_LEFT_BRACKET))
         {
-            Ref<Expr> expression = ArrayContents();
-            if (expression.IsNull()) return ParseError("Expect array after '['.");
+            Array<Ref<Expr> > expressions;
+            
+            // allow zero-element arrays
+            if (!LookAhead(TOKEN_RIGHT_BRACKET))
+            {
+                ParseSequence(expressions);
+            }
             
             if (!Match(TOKEN_RIGHT_BRACKET)) return ParseError("Expect closing ']'.");
             
-            return expression;
+            return Ref<Expr>(new ArrayExpr(expressions));
         }
         else if (Match(TOKEN_LEFT_BRACE))
         {
@@ -213,14 +202,34 @@ namespace Finch
         else return ParseError("Couldn't parse primary expression.");
     }
     
-    Ref<Expr> FinchParser::ArrayContents()
+    void FinchParser::ParseSequence(Array<Ref<Expr> > & expressions)
     {
-        //### bob: not implemented yet
-        return Ref<Expr>();
+        Ref<Expr> expression = Assignment();
+        //### bob: need error reporting
+        if (expression.IsNull()) return;
+        
+        expressions.Add(expression);
+        
+        while (Match(TOKEN_LINE))
+        {
+            // there may be a trailing line after the last expression in a
+            // block. if we eat the line and then see a closing brace or eof,
+            // just stop here.
+            if (LookAhead(TOKEN_RIGHT_PAREN)) break;
+            if (LookAhead(TOKEN_RIGHT_BRACKET)) break;
+            if (LookAhead(TOKEN_RIGHT_BRACE)) break;
+            if (LookAhead(TOKEN_EOF)) break;
+            
+            Ref<Expr> next = Assignment();
+            //### bob: need error reporting
+            if (next.IsNull()) return;
+            
+            expressions.Add(next);
+        }
     }
 
     // Parses just the message send part of a keyword message: "foo: a bar: b"
-    Ref<Expr> FinchParser::KeywordMessage(Ref<Expr> object)
+    Ref<Expr> FinchParser::ParseKeyword(Ref<Expr> object)
     {
         Array<String>      keywords;
         Array<Ref<Expr> >  args;

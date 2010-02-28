@@ -37,8 +37,8 @@ namespace Finch
         Ref<Expr> Unary();
         Ref<Expr> Primary();
         
-        Ref<Expr> ArrayContents();
-        Ref<Expr> KeywordMessage(Ref<Expr> object);
+        void ParseSequence(Array<Ref<Expr> > & expressions);
+        Ref<Expr> ParseKeyword(Ref<Expr> object);
         
         Ref<Expr> ParseError();
         Ref<Expr> ParseError(const char * message);

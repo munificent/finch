@@ -1,5 +1,6 @@
 #include <iostream>
 
+#include "ArrayExpr.h"
 #include "BlockExpr.h"
 #include "Compiler.h"
 #include "DefExpr.h"
@@ -28,6 +29,18 @@ namespace Finch
     :   mEnvironment(environment),
         mCode(code)
     {
+    }
+    
+    void Compiler::Visit(const ArrayExpr & expr)
+    {
+        // evaluate and push all of the elements onto the stack
+        for (int i = 0; i < expr.Elements().Count(); i++)
+        {
+            expr.Elements()[i]->Accept(*this);
+        }
+        
+        // pop them into an array object
+        mCode.Write(OP_CREATE_ARRAY, expr.Elements().Count());
     }
     
     void Compiler::Visit(const BlockExpr & expr)

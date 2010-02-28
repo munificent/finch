@@ -67,6 +67,25 @@ namespace Finch
                     }
                     break;
                     
+                case OP_CREATE_ARRAY:
+                    {
+                        // pop the elements
+                        Array<Ref<Object> > elements;
+                        for (int i = 0; i < instruction.arg.id; i++)
+                        {
+                            elements.Add(PopOperand());
+                        }
+                        
+                        // reverse them since the stack has them in order (so
+                        // that elements are evaluated from left to right) and
+                        // popping reverses the order
+                        elements.Reverse();
+                        
+                        // create the array
+                        Push(Object::NewArray(mEnvironment, elements));
+                    }
+                    break;
+                    
                 case OP_POP:
                     PopOperand();
                     break;

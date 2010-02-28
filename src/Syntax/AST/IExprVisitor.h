@@ -8,6 +8,7 @@
 
 namespace Finch
 {
+    class ArrayExpr;
     class BlockExpr;
     class DefExpr;
     class KeywordExpr;
@@ -20,11 +21,14 @@ namespace Finch
     class UnaryExpr;
     class Object;
     
+    //### bob: having two classes here is a total hack. not being able to do
+    // template virtual functions is a drag. need to find a cleaner solution.
     class IExprVisitor
     {
     public:
         virtual ~IExprVisitor() {}
         
+        virtual Ref<Object> Visit(const ArrayExpr & expr) = 0;
         virtual Ref<Object> Visit(const BlockExpr & expr) = 0;
         virtual Ref<Object> Visit(const DefExpr & expr) = 0;
         virtual Ref<Object> Visit(const KeywordExpr & expr) = 0;
@@ -42,6 +46,7 @@ namespace Finch
     public:
         virtual ~IExprVisitor2() {}
         
+        virtual void Visit(const ArrayExpr & expr) = 0;
         virtual void Visit(const BlockExpr & expr) = 0;
         virtual void Visit(const DefExpr & expr) = 0;
         virtual void Visit(const KeywordExpr & expr) = 0;

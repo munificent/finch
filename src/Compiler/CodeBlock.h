@@ -14,6 +14,9 @@ namespace Finch
         OP_NUMBER_LITERAL,  // number = value
         OP_STRING_LITERAL,  // id = string table id of literal
         OP_BLOCK_LITERAL,   // id = block table id of code
+        
+        OP_CREATE_ARRAY,    // id = number of elements to pop
+        
         OP_POP,             // (not used)
         
         OP_DEF_GLOBAL,      // id = string table id of identifier

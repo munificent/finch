@@ -1,4 +1,5 @@
 #include "Object.h"
+#include "ArrayObject.h"
 #include "BlockObject.h"
 #include "Environment.h"
 #include "DynamicObject.h"
@@ -28,9 +29,14 @@ namespace Finch
     
     Ref<Object> Object::NewString(Environment & env, String value)
     {
-        return Ref<Object>(new StringObject(env.StringProto(), value));
+        return Ref<Object>(new StringObject(env.StringPrototype(), value));
     }
     
+    Ref<Object> Object::NewArray(Environment & env, const Array<Ref<Object> > elements)
+    {
+        return Ref<Object>(new ArrayObject(env.ArrayPrototype(), elements));
+    }
+
     Ref<Object> Object::NewBlock(Environment & env, const CodeBlock & code, Ref<Scope> closure)
     {
         return Ref<Object>(new BlockObject(env.Block(), code, closure));

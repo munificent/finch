@@ -1,3 +1,4 @@
+#include "ArrayPrimitives.h"
 #include "BlockObject.h"
 #include "BlockPrimitives.h"
 #include "BooleanPrimitives.h"
@@ -31,7 +32,15 @@ namespace Finch
         // any non-true object is implicitly "false", so sending "not" to it
         // returns true
         objectObj->RegisterPrimitive("not", BooleanTrue);
-
+        
+        // define Array prototype
+        mArray = Object::NewObject(object, "Array");
+        mGlobals->Define("Array", mArray);
+        
+        DynamicObject* arrayObj = &static_cast<DynamicObject&>(*mArray);
+        arrayObj->RegisterPrimitive("length",      ArrayLength);
+        arrayObj->RegisterPrimitive("@",           ArrayAt);
+        
         // define Block prototype
         mBlock = Object::NewObject(object, "Block");
         mGlobals->Define("Block", mBlock);
@@ -84,7 +93,7 @@ namespace Finch
         DynamicObject* stringObj = &static_cast<DynamicObject&>(*mString);
         stringObj->RegisterPrimitive("+",           StringAdd);
         stringObj->RegisterPrimitive("length",      StringLength);
-        stringObj->RegisterPrimitive("at:",         StringAt);
+        stringObj->RegisterPrimitive("@",           StringAt);
         stringObj->RegisterPrimitive("=",           StringEquals);
         stringObj->RegisterPrimitive("!=",          StringNotEquals);
         stringObj->RegisterPrimitive("hashCode",    StringHashCode);
