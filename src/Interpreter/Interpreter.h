@@ -34,6 +34,7 @@ namespace Finch
         void PushNil();
         void PushBool(bool value);
         void PushNumber(double value);
+        void PushString(const String & value);
         
         // Pushes the given block onto the call stack.
         void CallBlock(const BlockObject & block, const Array<Ref<Object> > & args);

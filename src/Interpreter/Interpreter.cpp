@@ -288,6 +288,11 @@ namespace Finch
         Push(Object::NewNumber(mEnvironment, value));
     }
 
+    void Interpreter::PushString(const String & value)
+    {
+        Push(Object::NewString(mEnvironment, value));
+    }
+
     void Interpreter::CallBlock(const BlockObject & block,
                                 const Array<Ref<Object> > & args)
     {

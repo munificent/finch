@@ -9,7 +9,7 @@
 namespace Finch
 {
     // Primitive methods for dynamic (i.e. regular) objects.
-    PRIMITIVE(ObjectSelf);
+    PRIMITIVE(ObjectToString);
     PRIMITIVE(ObjectEquals);
     PRIMITIVE(ObjectNotEquals);
     PRIMITIVE(ObjectCopy);

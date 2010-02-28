@@ -2,7 +2,7 @@ Test suite: "Literals" is: {
     Test test: "Numbers" is: {
         Test that: 0 toString equals: "0"
         Test that: 1 toString equals: "1"
-        Test that: 9999999 toString equals: "9999999"
+        Test that: 999999 toString equals: "999999"
         Test that: -1234 toString equals: "-1234"
     }
 }

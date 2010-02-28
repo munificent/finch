@@ -8,9 +8,9 @@
 
 namespace Finch
 {
-    PRIMITIVE(ObjectSelf)
+    PRIMITIVE(ObjectToString)
     {
-        interpreter.Push(thisRef);
+        interpreter.PushString(thisRef->AsString());
     }
     
     PRIMITIVE(ObjectEquals)

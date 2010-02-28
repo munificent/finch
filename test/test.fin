@@ -25,7 +25,7 @@ Test <- Object copyWith: {
         body call
 
         header <- "--- "
-        if: _failed > 0 then: { header <- "XXX " }
+        if: _failed > 0 then: { header <-- "XXX " }
 
         writeLine: header + _suite + " / " + _test + " " + (_tests - _failed) + " / " + _tests + " tests passed"
 

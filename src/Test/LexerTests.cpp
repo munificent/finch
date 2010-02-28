@@ -131,11 +131,8 @@ namespace Finch
         
         // edge cases:
         
-        // can use reserved words as keywords
-        TestLex("def: undef:",
-                TOKEN_KEYWORD,
-                TOKEN_KEYWORD,
-                TOKEN_LINE, TOKEN_EOF);
+        TestLex("<---",
+                TOKEN_OPERATOR);
     }
     
     Token LexerTests::LexOne(const char * text)

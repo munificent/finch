@@ -16,12 +16,12 @@ namespace Finch
          vector<Ref<Object> > noArgs;
          Ref<Object> toString = args[0]->Receive(args[0], interpreter, "toString", noArgs);
          */
-        interpreter.Push(Object::NewString(interpreter.GetEnvironment(), thisRef->AsString() + args[0]->AsString()));
+        interpreter.PushString(thisRef->AsString() + args[0]->AsString());
     }
     
     PRIMITIVE(StringLength)
     {
-        interpreter.Push(Object::NewNumber(interpreter.GetEnvironment(), thisRef->AsString().Length()));
+        interpreter.PushNumber(thisRef->AsString().Length());
     }
     
     PRIMITIVE(StringAt)
@@ -32,7 +32,7 @@ namespace Finch
         if ((index >= 0) && (index < thisString.Length()))
         {
             String substring = String(thisString[index]);
-            interpreter.Push(Object::NewString(interpreter.GetEnvironment(), substring));
+            interpreter.PushString(substring);
         }
         else
         {
