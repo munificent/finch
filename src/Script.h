@@ -17,6 +17,8 @@ namespace Finch
         // Loads and runs the script at the given path in its own interpreter.
         static void Run(String fileName);
         
+        static void Execute(String fileName, Interpreter & interpreter);
+        
         // Loads and runs the script at the given path in the given existing
         // interpreter.
         static void Run(String fileName, Interpreter & interpreter);

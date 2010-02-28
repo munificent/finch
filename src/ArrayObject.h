@@ -20,7 +20,7 @@ namespace Finch
             mElements(elements)
         {}
         
-        const Array<Ref<Object> > & Elements() const { return mElements; }
+        Array<Ref<Object> > & Elements() { return mElements; }
         
         virtual void Trace(ostream & stream) const
         {

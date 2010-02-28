@@ -9,6 +9,7 @@
 #include "Repl.h"
 #include "ReplLineReader.h"
 #include "Scope.h"
+#include "Script.h"
 #include "String.h"
 
 namespace Finch
@@ -27,9 +28,13 @@ namespace Finch
         FinchParser    parser(normalizer);
         
         Interpreter    interpreter(env);
-
+        
         cout << "Finch 0.0.0d" << endl;
         cout << "------------" << endl;
+        
+        //### bob: hard-coded path here is a total hack
+        // load the base library
+        Script::Execute("../../base/main.fin", interpreter);
         
         while (interpreter.IsRunning())
         {

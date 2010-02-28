@@ -17,8 +17,39 @@ namespace Finch
     {
         Environment environment;
         Interpreter interpreter(environment);
-
-        return Run(fileName, interpreter);
+        Execute(fileName, interpreter);
+    }
+    
+    void Script::Execute(String fileName, Interpreter & interpreter)
+    {
+        FileLineReader reader(fileName);
+        
+        if (reader.EndOfLines())
+        {
+            // couldn't open
+            std::cout << "Couldn't open file \"" << fileName << "\"" << std::endl;
+            return;
+        }
+        
+        Lexer           lexer(reader);
+        LineNormalizer  normalizer(lexer);
+        FinchParser     parser(normalizer);
+        
+        Ref<Expr> expr = parser.ParseFile();
+        
+        //### bob: need to report parse error
+        if (!expr.IsNull())
+        {
+            int id = interpreter.GetEnvironment().Blocks().Add(Array<String>(), *expr, interpreter.GetEnvironment());
+            const CodeBlock & code = interpreter.GetEnvironment().Blocks().Find(id);
+            
+            interpreter.Execute(code);
+        }
+        else
+        {
+            //### bob: need better error-handling
+            std::cout << "parse error loading " << fileName << std::endl;
+        }
     }
     
     void Script::Run(String fileName, Interpreter & interpreter)

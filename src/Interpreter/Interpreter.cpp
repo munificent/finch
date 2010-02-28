@@ -316,7 +316,12 @@ namespace Finch
                                 const Array<Ref<Object> > & args)
     {
         // continue using the current self object
-        Ref<Object> self = mCallStack.Peek().self;
+        Ref<Object> self = mEnvironment.Nil();
+        
+        if (mCallStack.Count() > 0)
+        {
+            self = mCallStack.Peek().self;
+        }
         
         CallMethod(self, block, args);
     }

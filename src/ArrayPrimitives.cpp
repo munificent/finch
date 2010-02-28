@@ -34,4 +34,33 @@ namespace Finch
             interpreter.PushNil();
         }
     }
+    
+    PRIMITIVE(ArrayAtPut)
+    {
+        ArrayObject * array = thisRef->AsArray();
+        ASSERT_NOT_NULL(array);
+        
+        int index = static_cast<int>(args[0]->AsNumber());
+        
+        if ((index >= 0) && (index < array->Elements().Count()))
+        {
+            array->Elements()[index] = args[1];
+        }
+
+        interpreter.PushNil();
+    }
+    
+    PRIMITIVE(ArrayNewWith)
+    {
+        int count = static_cast<int>(args[0]->AsNumber());
+        
+        Array<Ref<Object> > elements(count);
+        
+        for (int i = 0; i < count; i++)
+        {
+            elements.Add(args[1]);
+        }
+        
+        interpreter.Push(Object::NewArray(interpreter.GetEnvironment(), elements));
+    }
 }

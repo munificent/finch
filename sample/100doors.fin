@@ -1,0 +1,14 @@
+' create an array of 100 closed doors
+doors <- Array new: 100 with: False
+
+' open and close them
+from: 1 to: 100 do: {|step|
+    from: step - 1 to: 99 step: step do: {|i|
+        doors at: i put: (doors @ i) not
+    }
+}
+
+' show the results
+from: 0 to: 99 do: {|i|
+    writeLine: "door " + (i + 1) + " is " + (if: doors @ i then: "open" else: "closed")
+}

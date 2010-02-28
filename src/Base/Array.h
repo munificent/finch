@@ -20,7 +20,7 @@ namespace Finch
         
         Array(int capacity)
         :   mCount(0),
-            mCapacity(capacity),
+            mCapacity(0),
             mItems(NULL)
         {
             EnsureCapacity(mCapacity);
@@ -130,19 +130,15 @@ namespace Finch
             // instead of growing to just the capacity we need, we'll grow by
             // a multiple of the current size. this ensures amortized O(n)
             // complexity on adding instead of O(n^2).
-            if (capacity < MIN_CAPACITY)
+            int newCapacity = mCapacity;
+            if (newCapacity < MIN_CAPACITY)
             {
-                capacity = MIN_CAPACITY;
+                newCapacity = MIN_CAPACITY;
             }
-            else
+
+            while (newCapacity < capacity)
             {
-                int newCapacity = mCapacity;
-                while (newCapacity < capacity)
-                {
-                    newCapacity *= GROW_FACTOR;
-                }
-                
-                capacity = newCapacity;
+                newCapacity *= GROW_FACTOR;
             }
         
             // create the new array

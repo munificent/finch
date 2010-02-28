@@ -1,0 +1,17 @@
+' define a for-style loop
+Ether addMethod: "from:to:step:do:" body: {
+    |start end step block|
+    i <- start
+    
+    while: { i <= end } do: {
+        block call: i
+        i <-- i + step
+    }
+}
+
+Ether addMethod: "from:to:do:" body: {
+    |start end block|
+    from: start to: end step: 1 do: block
+}
+
+writeLine: "Base library loaded."

@@ -38,8 +38,12 @@ namespace Finch
         mGlobals->Define("Array", mArray);
         
         DynamicObject* arrayObj = &static_cast<DynamicObject&>(*mArray);
+        //### bob: should separate out Array factory object (with "new:with:"
+        //         etc.) from Array prototype object (length, @, etc.)
         arrayObj->RegisterPrimitive("length",      ArrayLength);
         arrayObj->RegisterPrimitive("@",           ArrayAt);
+        arrayObj->RegisterPrimitive("at:put:",     ArrayAtPut);
+        arrayObj->RegisterPrimitive("new:with:",   ArrayNewWith);
         
         // define Block prototype
         mBlock = Object::NewObject(object, "Block");
