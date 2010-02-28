@@ -12,7 +12,7 @@ namespace Finch
         static void Run();
         
     private:
-        static Ref<Token> LexOne(const char * text);
+        static Token LexOne(const char * text);
         static void TestLex(const char * text, ...);
     };
 }

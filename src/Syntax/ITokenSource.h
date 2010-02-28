@@ -1,7 +1,6 @@
 #pragma once
 
 #include "Macros.h"
-#include "Ref.h"
 #include "Token.h"
 
 namespace Finch
@@ -11,7 +10,7 @@ namespace Finch
     {
     public:
         // Reads the next Token from the source.
-        virtual Ref<Token> ReadToken() = 0;
+        virtual Token ReadToken() = 0;
 
         virtual ~ITokenSource() {}
     };

@@ -1,7 +1,6 @@
 #pragma once
 
 #include "Macros.h"
-#include "Ref.h"
 #include "Token.h"
 #include "ITokenSource.h"
 
@@ -23,7 +22,7 @@ namespace Finch
         
         // Lexes and returns the next full Token read from the source. If the
         // ILineReader is out of lines, this will return an EOF Token.
-        virtual Ref<Token> ReadToken();
+        virtual Token ReadToken();
         
     private:
         enum State
@@ -45,7 +44,7 @@ namespace Finch
         
         void Consume();
         
-        Ref<Token> SingleToken(TokenType type);
+        Token SingleToken(TokenType type);
         void StartState(State state);
         void ChangeState(State state);
 

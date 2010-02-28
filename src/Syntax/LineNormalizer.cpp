@@ -5,21 +5,21 @@
 
 namespace Finch
 {
-    Ref<Token> LineNormalizer::ReadToken()
+    Token LineNormalizer::ReadToken()
     {
-        Ref<Token> token;
+        Token token;
         
-        while (token.IsNull())
+        while (token.Type() == TOKEN_NONE)
         {
             token = mTokens.ReadToken();
             
-            switch (token->Type())
+            switch (token.Type())
             {
                 case TOKEN_LINE:
                     if (mEatNewlines)
                     {
                         // discard any lines
-                        token.Clear();
+                        token = Token();
                     }
                     else
                     {
@@ -30,7 +30,7 @@ namespace Finch
                     
                 case TOKEN_IGNORE_LINE:
                     // eat the ignore token
-                    token.Clear();
+                    token = Token();
                     
                     // and newlines after it
                     mEatNewlines = true;

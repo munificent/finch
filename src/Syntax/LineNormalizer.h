@@ -51,7 +51,7 @@ namespace Finch
             mEatNewlines(true) // strip all leading newlines
         {}
         
-        virtual Ref<Token> ReadToken();
+        virtual Token ReadToken();
         
     private:
         ITokenSource & mTokens;

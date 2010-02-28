@@ -3,7 +3,6 @@
 #include "Macros.h"
 #include "Lexer.h"
 #include "Queue.h"
-#include "Ref.h"
 
 namespace Finch
 {
@@ -19,7 +18,7 @@ namespace Finch
         {}
         
         // Gets the Token the parser is currently looking at.
-        Ref<Token> Current() { return mRead[0]; }
+        Token Current() { return mRead[0]; }
         
         // Returns true if the current Token is the given type.
         bool LookAhead(TokenType type);
@@ -33,7 +32,7 @@ namespace Finch
         bool Match(TokenType type);
         
         // Consumes the current Token and advances the Parser.
-        Ref<Token> Consume();
+        Token Consume();
 
     private:
         void FillLookAhead(int count);
@@ -41,7 +40,7 @@ namespace Finch
         ITokenSource & mTokens;
         
         // The 2 here is the maximum number of lookahead tokens.
-        Queue<Ref<Token>, 2> mRead;
+        Queue<Token, 2> mRead;
         
         NO_COPY(Parser);
     };

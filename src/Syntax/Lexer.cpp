@@ -6,11 +6,11 @@
 
 namespace Finch
 {
-    Ref<Token> Lexer::ReadToken()
+    Token Lexer::ReadToken()
     {
-        Ref<Token> token;
+        Token token;
         
-        while (token.IsNull())
+        while (token.Type() == TOKEN_NONE)
         {
             char c = mLine[mIndex];
             
@@ -55,7 +55,7 @@ namespace Finch
                             break;
                             
                         case '\0':
-                            token = Token::New(TOKEN_LINE);
+                            token = Token(TOKEN_LINE);
                             mState = LEX_NEED_LINE;
                             break;
                         
@@ -79,7 +79,7 @@ namespace Finch
                     else if (IsOperator(c)) ChangeState(LEX_IN_OPERATOR);
                     else
                     {
-                        token = Token::New(TOKEN_OPERATOR, "-");
+                        token = Token(TOKEN_OPERATOR, "-");
                         mState = LEX_DEFAULT;
                     }
                     break;
@@ -94,7 +94,7 @@ namespace Finch
                     {
                         String text = mLine.Substring(mTokenStart, mIndex - mTokenStart);
                         double number = atof(text.CString());
-                        token = Token::New(TOKEN_NUMBER, number);
+                        token = Token(TOKEN_NUMBER, number);
                         
                         mState = LEX_DEFAULT;
                     }
@@ -106,7 +106,7 @@ namespace Finch
                     {
                         String text = mLine.Substring(mTokenStart, mIndex - mTokenStart);
                         double number = atof(text.CString());
-                        token = Token::New(TOKEN_NUMBER, number);
+                        token = Token(TOKEN_NUMBER, number);
                         
                         mState = LEX_DEFAULT;
                     }
@@ -119,14 +119,14 @@ namespace Finch
                         Consume();
                         
                         String name = mLine.Substring(mTokenStart, mIndex - mTokenStart);
-                        token = Token::New(TOKEN_KEYWORD, name);
+                        token = Token(TOKEN_KEYWORD, name);
 
                         mState = LEX_DEFAULT;
                     }
                     else
                     {
                         String name = mLine.Substring(mTokenStart, mIndex - mTokenStart);
-                        token = Token::New(TOKEN_NAME, name);
+                        token = Token(TOKEN_NAME, name);
                         
                         mState = LEX_DEFAULT;
                     }
@@ -140,9 +140,9 @@ namespace Finch
                         String name = mLine.Substring(mTokenStart, mIndex - mTokenStart);
                         
                         // see if it's a reserved operator
-                        if (name == "<-") token = Token::New(TOKEN_ARROW);
-                        else if (name == "<--") token = Token::New(TOKEN_LONG_ARROW);
-                        else token = Token::New(TOKEN_OPERATOR, name);
+                        if (name == "<-") token = Token(TOKEN_ARROW);
+                        else if (name == "<--") token = Token(TOKEN_LONG_ARROW);
+                        else token = Token(TOKEN_OPERATOR, name);
                         
                         mState = LEX_DEFAULT;
                     }
@@ -152,7 +152,7 @@ namespace Finch
                     switch (c)
                     {
                         case '"':
-                            token = Token::New(TOKEN_STRING, mEscapedString);
+                            token = Token(TOKEN_STRING, mEscapedString);
                             ChangeState(LEX_DEFAULT);
                             break;
                             
@@ -178,7 +178,7 @@ namespace Finch
                         case '\0':
                             //### bob: need error-handling
                             std::cout << "Unterminated string" << std::endl;
-                            token = Token::New(TOKEN_LINE);
+                            token = Token(TOKEN_LINE);
                             mState = LEX_NEED_LINE;
                             break;
                             
@@ -195,14 +195,14 @@ namespace Finch
                 case LEX_IN_COMMENT:
                     if (c == '\0')
                     {
-                        token = Token::New(TOKEN_LINE);
+                        token = Token(TOKEN_LINE);
                         mState = LEX_NEED_LINE;
                     }
                     else Consume();
                     break;
                     
                 case LEX_DONE:
-                    token = Token::New(TOKEN_EOF);
+                    token = Token(TOKEN_EOF);
                     break;
                     
                 default:
@@ -232,10 +232,10 @@ namespace Finch
         }
     }
     
-    Ref<Token> Lexer::SingleToken(TokenType type)
+    Token Lexer::SingleToken(TokenType type)
     {
         mIndex++;
-        return Token::New(type);
+        return Token(type);
     }
     
     void Lexer::StartState(State state)

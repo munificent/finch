@@ -11,6 +11,8 @@ namespace Finch
     // The different types of Tokens that make up Finch source code.
     enum TokenType
     {
+        TOKEN_NONE,
+        
         TOKEN_LEFT_PAREN,
         TOKEN_RIGHT_PAREN,
         TOKEN_LEFT_BRACKET,
@@ -40,25 +42,39 @@ namespace Finch
     class Token
     {
     public:
-        // Factory methods to construct tokens of different types with
-        // different data.
-        static Ref<Token> New(TokenType type);
-        static Ref<Token> New(TokenType type, const String & text);
-        static Ref<Token> New(TokenType type, double number);
-        
-        TokenType           Type()   const { return mType; }
-        virtual String      Text()   const { return ""; }
-        virtual double      Number() const { return 0; }
-        
-        virtual ~Token() {}
-        
-    protected:
-        Token(TokenType type)
-        :   mType(type)
+        Token()
+        :   mType(TOKEN_NONE),
+            mNumber(0),
+            mText()
         {}
         
+        Token(TokenType type)
+        :   mType(type),
+            mNumber(0),
+            mText()
+        {}
+        
+        Token(TokenType type, double number)
+        :   mType(type),
+            mNumber(number),
+            mText()
+        {}
+        
+        Token(TokenType type, const String & text)
+        :   mType(type),
+            mNumber(0),
+            mText(text)
+        {}
+        
+        TokenType           Type()   const { return mType; }
+        virtual double      Number() const { return mNumber; }
+        virtual String      Text()   const { return mText; }
+        
+    protected:
     private:        
         TokenType   mType;
+        double      mNumber;
+        String      mText;
     };
     
     std::ostream& operator<<(std::ostream& cout, const Token & token);

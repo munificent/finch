@@ -69,7 +69,7 @@ namespace Finch
     {
         if (LookAhead(TOKEN_NAME, TOKEN_ARROW))
         {
-            String name = Consume()->Text();
+            String name = Consume().Text();
             
             Consume(); // the arrow
             
@@ -81,7 +81,7 @@ namespace Finch
         }
         else if (LookAhead(TOKEN_NAME, TOKEN_LONG_ARROW))
         {
-            String name = Consume()->Text();
+            String name = Consume().Text();
             
             Consume(); // the arrow
             
@@ -112,7 +112,7 @@ namespace Finch
         
         while (LookAhead(TOKEN_OPERATOR))
         {
-            String op = Consume()->Text();
+            String op = Consume().Text();
             Ref<Expr> arg = Unary();
             if (arg.IsNull()) return ParseError("Expect expression after operator.");
 
@@ -129,7 +129,7 @@ namespace Finch
         
         while (LookAhead(TOKEN_NAME))
         {
-            String message = Consume()->Text();
+            String message = Consume().Text();
             object = Ref<Expr>(new UnaryExpr(object, message));
         }
         
@@ -140,15 +140,15 @@ namespace Finch
     {
         if (LookAhead(TOKEN_NAME))
         {
-            return Ref<Expr>(new NameExpr(Consume()->Text()));
+            return Ref<Expr>(new NameExpr(Consume().Text()));
         }
         else if (LookAhead(TOKEN_NUMBER))
         {
-            return Ref<Expr>(new NumberExpr(Consume()->Number()));
+            return Ref<Expr>(new NumberExpr(Consume().Number()));
         }
         else if (LookAhead(TOKEN_STRING))
         {
-            return Ref<Expr>(new StringExpr(Consume()->Text()));
+            return Ref<Expr>(new StringExpr(Consume().Text()));
         }
         else if (LookAhead(TOKEN_KEYWORD))
         {
@@ -177,7 +177,7 @@ namespace Finch
             {
                 while (LookAhead(TOKEN_NAME))
                 {
-                    args.Add(Consume()->Text());
+                    args.Add(Consume().Text());
                 }
                 
                 if (!Match(TOKEN_PIPE)) return ParseError("Expect closing '|' after block arguments.");
@@ -205,7 +205,7 @@ namespace Finch
         
         while (LookAhead(TOKEN_KEYWORD))
         {
-            String keyword = Consume()->Text();
+            String keyword = Consume().Text();
             Ref<Expr> arg = Operator();
             if (arg.IsNull()) return ParseError("Expect argument after keyword.");
             
@@ -228,16 +228,7 @@ namespace Finch
     
     Ref<Expr> FinchParser::ParseError(const char * message)
     {
-        std::cout << message;
-        
-        if (Current().IsNull())
-        {
-            std::cout << " (got null token)" << std::endl;
-        }
-        else
-        {
-            std::cout << " (got: " << *Current() << ")" << std::endl;
-        }
+        std::cout << message << " (got: " << Current() << ")" << std::endl;
         
         return Ref<Expr>();
     }

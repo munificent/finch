@@ -10,15 +10,15 @@ namespace Finch
     {
         FillLookAhead(1);
         
-        return mRead[0]->Type() == type;
+        return mRead[0].Type() == type;
     }
     
     bool Parser::LookAhead(TokenType current, TokenType next)
     {
         FillLookAhead(2);
 
-        return (mRead[0]->Type() == current) &&
-               (mRead[1]->Type() == next);
+        return (mRead[0].Type() == current) &&
+               (mRead[1].Type() == next);
     }
 
     bool Parser::Match(TokenType type)
@@ -34,7 +34,7 @@ namespace Finch
         }
     }
     
-    Ref<Token> Parser::Consume()
+    Token Parser::Consume()
     {
         FillLookAhead(1);
         
