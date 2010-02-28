@@ -43,8 +43,12 @@ namespace Finch
     
     Ref<Expr> FinchParser::Sequence()
     {
+        Array<Ref<Expr> > expressions;
+        
         Ref<Expr> expression = Assignment();
         if (expression.IsNull()) return ParseError();
+        
+        expressions.Add(expression);
         
         while (Match(TOKEN_LINE))
         {
@@ -56,13 +60,16 @@ namespace Finch
             if (LookAhead(TOKEN_RIGHT_BRACE)) break;
             if (LookAhead(TOKEN_EOF)) break;
             
-            Ref<Expr> second = Assignment();
-            if (second.IsNull()) return ParseError("Expect expression after ';'.");
+            Ref<Expr> next = Assignment();
+            if (next.IsNull()) return ParseError("Expect expression after ';'.");
             
-            expression = Ref<Expr>(new SequenceExpr(expression, second));
+            expressions.Add(next);
         }
         
-        return expression;
+        // if there's just one, don't wrap it in a sequence
+        if (expressions.Count() == 1) return expressions[0];
+        
+        return Ref<Expr>(new SequenceExpr(expressions));
     }
     
     Ref<Expr> FinchParser::Assignment()
@@ -168,7 +175,16 @@ namespace Finch
             
             return expression;
         }
-        if (Match(TOKEN_LEFT_BRACE))
+        else if (Match(TOKEN_LEFT_BRACKET))
+        {
+            Ref<Expr> expression = ArrayContents();
+            if (expression.IsNull()) return ParseError("Expect array after '['.");
+            
+            if (!Match(TOKEN_RIGHT_BRACKET)) return ParseError("Expect closing ']'.");
+            
+            return expression;
+        }
+        else if (Match(TOKEN_LEFT_BRACE))
         {
             Array<String> args;
             
@@ -197,6 +213,12 @@ namespace Finch
         else return ParseError("Couldn't parse primary expression.");
     }
     
+    Ref<Expr> FinchParser::ArrayContents()
+    {
+        //### bob: not implemented yet
+        return Ref<Expr>();
+    }
+
     // Parses just the message send part of a keyword message: "foo: a bar: b"
     Ref<Expr> FinchParser::KeywordMessage(Ref<Expr> object)
     {

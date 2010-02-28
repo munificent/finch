@@ -115,12 +115,13 @@ namespace Finch
     
     void Compiler::Visit(const SequenceExpr & expr)
     {
-        expr.First()->Accept(*this);
-        
-        // discard the first expression's return value
-        mCode.Write(OP_POP);
-        
-        expr.Second()->Accept(*this);
+        for (int i = 0; i < expr.Expressions().Count(); i++)
+        {
+            expr.Expressions()[i]->Accept(*this);
+            
+            // discard all but the last expression's return value
+            if (i < expr.Expressions().Count() - 1) mCode.Write(OP_POP);
+        }
     }
     
     void Compiler::Visit(const SetExpr & expr)

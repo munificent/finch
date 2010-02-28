@@ -2,9 +2,10 @@
 
 #include <iostream>
 
-#include "Macros.h"
+#include "Array.h"
 #include "Expr.h"
 #include "IExprVisitor.h"
+#include "Macros.h"
 #include "Ref.h"
 #include "String.h"
 
@@ -14,25 +15,26 @@ namespace Finch
     
     // AST node for a pair of sequential expressions: "a b . c d"
     class SequenceExpr : public Expr
+    {
+    public:
+        SequenceExpr(const Array<Ref<Expr> > expressions)
+        :   mExpressions(expressions)
+        {}
+        
+        const Array<Ref<Expr> > & Expressions()  const { return mExpressions; }
+        
+        virtual void Trace(ostream & stream) const
         {
-        public:
-            SequenceExpr(Ref<Expr> first, Ref<Expr> second)
-            :   mFirst(first),
-                mSecond(second)
-            {}
-            
-            Ref<Expr> First()  const { return mFirst; }
-            Ref<Expr> Second() const { return mSecond; }
-            
-            virtual void Trace(ostream & stream) const
+            stream << mExpressions[0];
+            for (int i = 1; i < mExpressions.Count(); i++)
             {
-                stream << mFirst << "; " << mSecond;
+                stream << "; " << mExpressions[i];
             }
-                
-            EXPRESSION_VISITOR
+        }
+            
+        EXPRESSION_VISITOR
 
-        private:
-            Ref<Expr> mFirst;
-            Ref<Expr> mSecond;
-        };
+    private:
+        Array<Ref<Expr> > mExpressions;
+    };
 }
