@@ -51,8 +51,8 @@ namespace Finch
         void RuntimeError(const String & message);
         
     private:
-        static const int MAX_OPERANDS = 1024;
-        static const int STACK_SIZE   = 256;
+        static const int MAX_OPERANDS = 2048;
+        static const int STACK_SIZE   = 4096;
         
         struct CallFrame
         {

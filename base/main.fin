@@ -14,4 +14,13 @@ Ether addMethod: "from:to:do:" body: {
     from: start to: end step: 1 do: block
 }
 
+' a chained if/then/else
+
+Ether addMethod: "if:then:elseif:then:else:" body: {
+    |if1 then1 if2 then2 else|
+    if: if1 then: then1 else: {
+        if: if2 then: then2 else: else
+    }
+}
+
 writeLine: "Base library loaded."
