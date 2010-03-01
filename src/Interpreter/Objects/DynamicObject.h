@@ -49,7 +49,8 @@ namespace Finch
         virtual void Receive(Ref<Object> thisRef, Interpreter & interpreter,
                              String message, const Array<Ref<Object> > & args);
         
-        void AddMethod(Interpreter & interpreter, String name, Ref<Object> body);
+        void AddMethod(Ref<Object> thisRef, Interpreter & interpreter,
+                       String name, Ref<Object> body);
         
         void RegisterPrimitive(String message, PrimitiveMethod method);
         

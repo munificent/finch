@@ -19,11 +19,9 @@ namespace Finch
         Ref<Object> method;
         if (mMethods.Find(message, &method))
         {
-            BlockObject* block = method->AsBlock();
+            ASSERT_NOT_NULL(method->AsBlock());
             
-            ASSERT_NOT_NULL(block);
-            
-            interpreter.CallMethod(thisRef, *block, args);
+            interpreter.CallMethod(thisRef, method, args);
             return;
         }
         
@@ -41,7 +39,8 @@ namespace Finch
         Object::Receive(thisRef, interpreter, message, args);
     }
     
-    void DynamicObject::AddMethod(Interpreter & interpreter, String name, Ref<Object> body)
+    void DynamicObject::AddMethod(Ref<Object> thisRef, Interpreter & interpreter,
+                                  String name, Ref<Object> body)
     {
         if (name.Length() == 0)
         {
@@ -49,14 +48,25 @@ namespace Finch
             return;
         }
         
-        if (body->AsBlock() == NULL)
+        BlockObject * originalBlock = body->AsBlock();
+        if (originalBlock == NULL)
         {
             interpreter.RuntimeError("Body of method must be a block.");
             return;
         }
         
+        // copy the block since rebinding self mutates it
+        Ref<Object> blockCopy = Object::NewBlock(interpreter.GetEnvironment(),
+                                                 originalBlock->GetCode(),
+                                                 originalBlock->Closure(),
+                                                 originalBlock->Self());
+        BlockObject * block = blockCopy->AsBlock();
+
+        // rebind the block's self to this object
+        block->RebindSelf(thisRef);
+        
         // add the method
-        mMethods.Insert(name, body);
+        mMethods.Insert(name, blockCopy);
     }
     
     void DynamicObject::RegisterPrimitive(String message, PrimitiveMethod method)

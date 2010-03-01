@@ -15,9 +15,9 @@ namespace Finch
     class ArrayObject : public Object
     {
     public:
-        ArrayObject(Ref<Object> prototype, const Array<Ref<Object> > elements)
+        ArrayObject(Ref<Object> prototype)
         :   Object(prototype),
-            mElements(elements)
+            mElements()
         {}
         
         Array<Ref<Object> > & Elements() { return mElements; }

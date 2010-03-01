@@ -41,8 +41,10 @@ namespace Finch
         //### bob: should separate out Array factory object (with "new:with:"
         //         etc.) from Array prototype object (length, @, etc.)
         arrayObj->RegisterPrimitive("length",      ArrayLength);
+        arrayObj->RegisterPrimitive("add:",        ArrayAdd);
         arrayObj->RegisterPrimitive("@",           ArrayAt);
         arrayObj->RegisterPrimitive("at:put:",     ArrayAtPut);
+        arrayObj->RegisterPrimitive("new",         ArrayNew);
         arrayObj->RegisterPrimitive("new:with:",   ArrayNewWith);
         
         // define Block prototype

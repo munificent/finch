@@ -43,7 +43,12 @@ namespace Finch
             int id = interpreter.GetEnvironment().Blocks().Add(Array<String>(), *expr, interpreter.GetEnvironment());
             const CodeBlock & code = interpreter.GetEnvironment().Blocks().Find(id);
             
-            interpreter.Execute(code);
+            Ref<Object> block = Object::NewBlock(
+                    interpreter.GetEnvironment(),
+                    code, interpreter.GetEnvironment().Globals(), 
+                    interpreter.GetEnvironment().Nil());
+            
+            interpreter.Execute(block);
         }
         else
         {
@@ -74,10 +79,11 @@ namespace Finch
         {
             int id = interpreter.GetEnvironment().Blocks().Add(Array<String>(), *expr, interpreter.GetEnvironment());
             const CodeBlock & code = interpreter.GetEnvironment().Blocks().Find(id);
-            Ref<Object> block = Object::NewBlock(interpreter.GetEnvironment(), code, interpreter.GetEnvironment().Globals());
+            Ref<Object> block = Object::NewBlock(interpreter.GetEnvironment(), code,
+                interpreter.GetEnvironment().Globals(), interpreter.GetEnvironment().Nil());
             
             Array<Ref<Object> > noArgs;
-            interpreter.CallBlock(*(block->AsBlock()), noArgs);
+            interpreter.CallBlock(block, noArgs);
         }
         else
         {

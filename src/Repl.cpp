@@ -53,9 +53,10 @@ namespace Finch
             // create a block for the expression
             int id = env.Blocks().Add(Array<String>(), *expr, env);
             const CodeBlock & code = env.Blocks().Find(id);
+            Ref<Object> block = Object::NewBlock(env, code, env.Globals(), env.Nil());
             
             // and execute it
-            Ref<Object> result = interpreter.Execute(code);
+            Ref<Object> result = interpreter.Execute(block);
 
             // don't bother printing nil results
             if (result != env.Nil())

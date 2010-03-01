@@ -1,5 +1,6 @@
 #include <iostream>
 
+#include "ArrayObject.h"
 #include "BlockObject.h"
 #include "CodeBlock.h"
 #include "Environment.h"
@@ -27,17 +28,17 @@ namespace Finch
         mDiscardCode.Write(OP_END_BLOCK);
     }
 
-    Ref<Object> Interpreter::Execute(const CodeBlock & code)
+    Ref<Object> Interpreter::Execute(Ref<Object> block)
     {
         // push the starting block
-        mCallStack.Push(CallFrame(&code, mEnvironment.Globals(), mEnvironment.Nil()));
+        mCallStack.Push(CallFrame(mEnvironment.Globals(), block));
         
         // continue processing bytecode until the entire callstack has
         // completed
         while (mCallStack.Count() > 0)
         {
             CallFrame & frame = mCallStack.Peek();
-            const Instruction & instruction = (*frame.code)[frame.address];
+            const Instruction & instruction = frame.Block().GetCode()[frame.address];
             
             switch (instruction.op)
             {
@@ -60,29 +61,34 @@ namespace Finch
                     {
                         // capture the current scope
                         Ref<Scope> closure = mCallStack.Peek().scope;
+                        Ref<Object> self   = mCallStack.Peek().Block().Self();
                         
                         const CodeBlock & code = mEnvironment.Blocks().Find(instruction.arg.id);
-                        Ref<Object> block = Object::NewBlock(mEnvironment, code, closure);
+                        Ref<Object> block = Object::NewBlock(mEnvironment, code, closure, self);
                         PushOperand(block);
                     }
                     break;
                     
                 case OP_CREATE_ARRAY:
                     {
+                        // create the array
+                        Ref<Object> object = Object::NewArray(mEnvironment);
+                        ArrayObject * array = object->AsArray();
+                        
                         // pop the elements
                         Array<Ref<Object> > elements;
                         for (int i = 0; i < instruction.arg.id; i++)
                         {
-                            elements.Add(PopOperand());
+                            array->Elements().Add(PopOperand());
                         }
                         
                         // reverse them since the stack has them in order (so
                         // that elements are evaluated from left to right) and
                         // popping reverses the order
-                        elements.Reverse();
+                        array->Elements().Reverse();
                         
-                        // create the array
-                        Push(Object::NewArray(mEnvironment, elements));
+                        // return the array
+                        Push(object);
                     }
                     break;
                     
@@ -167,9 +173,10 @@ namespace Finch
                     {
                         String name = mEnvironment.Strings().Find(instruction.arg.id);
                         
+                        //### bob: make load self a different opcode
                         if (name == "self")
                         {
-                            PushOperand(mCallStack.Peek().self);
+                            PushOperand(Self());
                         }
                         else
                         {
@@ -287,6 +294,11 @@ namespace Finch
         return PopOperand();
     }
     
+    Ref<Object> Interpreter::Self()
+    {
+        return mCallStack.Peek().Block().Self();
+    }
+
     void Interpreter::Push(Ref<Object> object)
     {
         PushOperand(object);
@@ -312,24 +324,12 @@ namespace Finch
         Push(Object::NewString(mEnvironment, value));
     }
 
-    void Interpreter::CallBlock(const BlockObject & block,
-                                const Array<Ref<Object> > & args)
-    {
-        // continue using the current self object
-        Ref<Object> self = mEnvironment.Nil();
-        
-        if (mCallStack.Count() > 0)
-        {
-            self = mCallStack.Peek().self;
-        }
-        
-        CallMethod(self, block, args);
-    }
-    
     void Interpreter::CallMethod(Ref<Object> self,
-                                 const BlockObject & block,
+                                 Ref<Object> blockObj,
                                  const Array<Ref<Object> > & args)
     {
+        BlockObject & block = *(blockObj->AsBlock());
+        
         // make sure we have the right number of arguments
         //### bob: could change to ignore extra args and pad missing ones with
         // nil if we want to be "looser" about calling convention
@@ -350,8 +350,25 @@ namespace Finch
             scope->Define(block.Params()[i], args[i]);
         }
         
+        //### bob: there's something fishy here. this *should* cause a bug, but
+        //    i can't seem to get it to. when a method invokes, this binds the
+        //    block to the current receiver, but the previous receiver is never
+        //    restored after this call is done. that should mean that if you
+        //    call a method from one receiver, and within that, call the *same*
+        //    method from a *different* receiver, when that second call returns
+        //    the first call should still see the second receiver.
+        //    but, in my tests, that doesn't seem to happen. :(
+        block.RebindSelf(self);
+        
         // push the call onto the stack
-        mCallStack.Push(CallFrame(&block.GetCode(), scope, self));
+        mCallStack.Push(CallFrame(scope, blockObj));
+    }
+    
+    void Interpreter::CallBlock(Ref<Object> blockObj,
+                                const Array<Ref<Object> > & args)
+    {
+        BlockObject & block = *(blockObj->AsBlock());
+        CallMethod(block.Self(), blockObj, args);
     }
     
     void Interpreter::WhileLoop(Ref<Object> condition, Ref<Object> body)
@@ -360,14 +377,22 @@ namespace Finch
         Push(body);
         Push(condition);
         
+        Ref<Object> block = Object::NewBlock(mEnvironment, mLoopCode,
+                                             mCallStack.Peek().scope,
+                                             mCallStack.Peek().Block().Self());
+        
         // call our special loop "function"
-        mCallStack.Push(CallFrame(&mLoopCode, mCallStack.Peek().scope, mCallStack.Peek().self));
+        mCallStack.Push(CallFrame(mCallStack.Peek().scope, block));
     }
     
     void Interpreter::DiscardReturn()
     {
+        Ref<Object> block = Object::NewBlock(mEnvironment, mDiscardCode,
+                                             mCallStack.Peek().scope,
+                                             mCallStack.Peek().Block().Self());
+        
         // call our special pop "function"
-        mCallStack.Push(CallFrame(&mDiscardCode, mCallStack.Peek().scope, mCallStack.Peek().self));
+        mCallStack.Push(CallFrame(mCallStack.Peek().scope, block));
     }
 
     void Interpreter::RuntimeError(const String & message)

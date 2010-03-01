@@ -21,11 +21,11 @@ namespace Finch
         
         bool IsRunning() const { return mIsRunning; }
         
-        Ref<Object> Execute(const CodeBlock & code);
+        Ref<Object> Execute(Ref<Object> block);
         
         Environment & GetEnvironment() { return mEnvironment; }
         
-        Ref<Object> Self()         { return mCallStack.Peek().self; }
+        Ref<Object> Self();
 
         void StopRunning() { mIsRunning = false; }
         
@@ -36,13 +36,13 @@ namespace Finch
         void PushNumber(double value);
         void PushString(const String & value);
         
-        // Pushes the given block onto the call stack.
-        void CallBlock(const BlockObject & block, const Array<Ref<Object> > & args);
-        
-        // Pushes the given method onto the call stack.
         void CallMethod(Ref<Object> self,
-                        const BlockObject & block,
+                        Ref<Object> blockObj,
                         const Array<Ref<Object> > & args);
+        
+        // Pushes the given block onto the call stack.
+        void CallBlock(Ref<Object> blockObj,
+                       const Array<Ref<Object> > & args);
         
         void WhileLoop(Ref<Object> condition, Ref<Object> body);
         void DiscardReturn();
@@ -57,23 +57,22 @@ namespace Finch
         struct CallFrame
         {
             int               address;
-            const CodeBlock * code;
             Ref<Scope>        scope;
-            Ref<Object>       self;
-
+            Ref<Object>       block;
+            
             CallFrame()
             :   address(0),
-                code(NULL),
                 scope(),
-                self()
+                block()
             {}
             
-            CallFrame(const CodeBlock * code, Ref<Scope> scope, Ref<Object> self)
+            CallFrame(Ref<Scope> scope, Ref<Object> block)
             :   address(0),
-                code(code),
                 scope(scope),
-                self(self)
+                block(block)
             {}
+            
+            BlockObject & Block() { return *(block->AsBlock()); }
         };
         
         Ref<Scope>  CurrentScope() { return mCallStack.Peek().scope; }
@@ -86,7 +85,7 @@ namespace Finch
         Environment & mEnvironment;
         Stack<Ref<Object>, MAX_OPERANDS> mOperands; 
         Stack<CallFrame, STACK_SIZE>     mCallStack;
-
+        
         CodeBlock mLoopCode;
         CodeBlock mDiscardCode;
         

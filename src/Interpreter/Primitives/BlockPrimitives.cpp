@@ -9,9 +9,8 @@ namespace Finch
 {
     PRIMITIVE(BlockCall)
     {
-        BlockObject * block = thisRef->AsBlock();
-        ASSERT_NOT_NULL(block);
+        ASSERT_NOT_NULL(thisRef->AsBlock());
         
-        interpreter.CallBlock(*block, args);
+        interpreter.CallBlock(thisRef, args);
     }
 }

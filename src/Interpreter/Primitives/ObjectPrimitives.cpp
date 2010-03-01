@@ -1,5 +1,6 @@
 #include <iostream>
 
+#include "BlockObject.h"
 #include "ObjectPrimitives.h"
 #include "DynamicObject.h"
 #include "Environment.h"
@@ -36,8 +37,8 @@ namespace Finch
         Ref<Object> copy = Object::NewObject(thisRef);
         
         // run the initialization block
-        BlockObject * block = args[0]->AsBlock();
-        if (block == NULL)
+        BlockObject * originalBlock = args[0]->AsBlock();
+        if (originalBlock == NULL)
         {
             interpreter.RuntimeError("copyWith: must be passed a block argument.");
             interpreter.PushNil();
@@ -48,14 +49,32 @@ namespace Finch
             // return
             interpreter.Push(copy);
             
-            // tell the inrepreter to discard the return value of the next
+            // tell the interpreter to discard the return value of the next
             // called method. this will ditch the value returned by the
             // copyWith: block
             interpreter.DiscardReturn();
             
-            // call the copyWith: block as if it were a method on the new object
-            Array<Ref<Object> > noArgs;
-            interpreter.CallMethod(copy, *block, noArgs);
+            // clone the block and rebind it's self to be the copied object.
+            // this way, within the initialization block, it seems we're a
+            // method on the block
+            Ref<Object> blockCopy = Object::NewBlock(interpreter.GetEnvironment(),
+                                                     originalBlock->GetCode(),
+                                                     originalBlock->Closure(),
+                                                     originalBlock->Self());
+            BlockObject * block = blockCopy->AsBlock();
+            block->RebindSelf(copy);
+            
+            //### bob: note, we have to clone the block here because, in theory,
+            // you could reuse the block after passing it to copyWith:, like:
+            //
+            // b <- { writeLine: "self is " + self }
+            // c <- Object copyWith: b
+            // b call
+            // d <- Object copyWith: b
+            // b call
+            // since binding self mutates it, we have to copy it first
+            
+            interpreter.CallBlock(blockCopy, Array<Ref<Object> >());
         }
     }
     
@@ -67,7 +86,7 @@ namespace Finch
         String      name  = args[0]->AsString();
         Ref<Object> value = args[1];
         
-        object->AddMethod(interpreter, name, value);
+        object->AddMethod(thisRef, interpreter, name, value);
         interpreter.PushNil();
     }
 }

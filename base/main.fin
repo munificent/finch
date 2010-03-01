@@ -15,12 +15,29 @@ Ether addMethod: "from:to:do:" body: {
 }
 
 ' a chained if/then/else
-
 Ether addMethod: "if:then:elseif:then:else:" body: {
     |if1 then1 if2 then2 else|
     if: if1 then: then1 else: {
         if: if2 then: then2 else: else
     }
+}
+
+' array methods
+Array addMethod: "each:" body: {|block|
+    writeLine: "each, self = " + self
+    
+    from: 0 to: .length - 1 do: {|i|
+        block call: self @ i
+    }
+}
+
+Array addMethod: "map:" body: {|block|
+    writeLine: "map, self = " + self
+    
+    result <- Array new
+    
+    .each: {|element| result add: (block call: element) }
+    result
 }
 
 writeLine: "Base library loaded."

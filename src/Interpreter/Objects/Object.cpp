@@ -32,14 +32,15 @@ namespace Finch
         return Ref<Object>(new StringObject(env.StringPrototype(), value));
     }
     
-    Ref<Object> Object::NewArray(Environment & env, const Array<Ref<Object> > elements)
+    Ref<Object> Object::NewArray(Environment & env)
     {
-        return Ref<Object>(new ArrayObject(env.ArrayPrototype(), elements));
+        return Ref<Object>(new ArrayObject(env.ArrayPrototype()));
     }
 
-    Ref<Object> Object::NewBlock(Environment & env, const CodeBlock & code, Ref<Scope> closure)
+    Ref<Object> Object::NewBlock(Environment & env, const CodeBlock & code,
+                                 Ref<Scope> closure, Ref<Object> self)
     {
-        return Ref<Object>(new BlockObject(env.Block(), code, closure));
+        return Ref<Object>(new BlockObject(env.Block(), code, closure, self));
     }
     
     void Object::Receive(Ref<Object> thisRef, Interpreter & interpreter,
