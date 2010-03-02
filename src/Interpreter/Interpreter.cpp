@@ -72,7 +72,7 @@ namespace Finch
                 case OP_CREATE_ARRAY:
                     {
                         // create the array
-                        Ref<Object> object = Object::NewArray(mEnvironment);
+                        Ref<Object> object = Object::NewArray(mEnvironment, 0);
                         ArrayObject * array = object->AsArray();
                         
                         // pop the elements

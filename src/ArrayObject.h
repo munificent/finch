@@ -2,6 +2,7 @@
 
 #include <iostream>
 
+#include "Environment.h"
 #include "Macros.h"
 #include "Object.h"
 #include "Ref.h"
@@ -15,10 +16,16 @@ namespace Finch
     class ArrayObject : public Object
     {
     public:
-        ArrayObject(Ref<Object> prototype)
+        ArrayObject(Environment & environment, Ref<Object> prototype, int length)
         :   Object(prototype),
-            mElements()
-        {}
+            mElements(length)
+        {
+            // fill with nil
+            for (int i = 0; i < length; i++)
+            {
+                mElements.Add(environment.Nil());
+            }
+        }
         
         Array<Ref<Object> > & Elements() { return mElements; }
         

@@ -146,10 +146,13 @@ namespace Finch
             // implicit receiver keyword message
             return ParseKeyword(Ref<Expr>(new NameExpr("Ether")));
         }
+        //### getting rid of this for now to possibly free it up for some other
+        // use
+        /*
         else if (Match(TOKEN_DOT))
         {
             return Ref<Expr>(new NameExpr("self"));
-        }
+        }*/
         else if (Match(TOKEN_LEFT_PAREN))
         {
             Ref<Expr> expression = Expression();

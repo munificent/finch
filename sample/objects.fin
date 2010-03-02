@@ -4,16 +4,16 @@ def Car <- Object copyWith: {
     ' define the car prototype. all cars will derive from this
     def _prototype <- Object copyWith: {
         ' all cars have accessors for their make and model
-        .addMethod: "make" body: { _make }
-        .addMethod: "model" body: { _model }
+        self addMethod: "make" body: { _make }
+        self addMethod: "model" body: { _model }
         
-        .addMethod: "toString" body: {
+        self addMethod: "toString" body: {
             "This car is a " + _make + " " + _model + "."
         }
     }
     
     ' define a constructor method on the factory.
-    .addMethod: "make:model:" body: {
+    self addMethod: "make:model:" body: {
         |make model|
         
         ' the constructor simply derives a new car from the car
@@ -27,7 +27,7 @@ def Car <- Object copyWith: {
     }
     
     ' expose the prototype. this lets us add features to all cars
-    .addMethod: "prototype" body: { _prototype }
+    self addMethod: "prototype" body: { _prototype }
 }
 
 ' now lets make a car

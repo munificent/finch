@@ -33,7 +33,7 @@ namespace Finch
         static Ref<Object> NewObject(Ref<Object> prototype);
         static Ref<Object> NewNumber(Environment & env, double value);
         static Ref<Object> NewString(Environment & env, String value);
-        static Ref<Object> NewArray(Environment & env);
+        static Ref<Object> NewArray(Environment & env, int length);
         static Ref<Object> NewBlock(Environment & env, const CodeBlock & code, 
                                     Ref<Scope> closure, Ref<Object> self);
         

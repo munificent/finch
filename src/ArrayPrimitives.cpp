@@ -23,7 +23,7 @@ namespace Finch
         ASSERT_NOT_NULL(array);
         
         array->Elements().Add(args[0]);
-        interpreter.PushNil();
+        interpreter.Push(thisRef);
     }
     
     PRIMITIVE(ArrayAt)
@@ -33,7 +33,8 @@ namespace Finch
         
         int index = static_cast<int>(args[0]->AsNumber());
         
-        if ((index >= 0) && (index < array->Elements().Count()))
+        // allow negative indexes to index backwards from end
+        if ((index >= -array->Elements().Count()) && (index < array->Elements().Count()))
         {
             interpreter.Push(array->Elements()[index]);
         }
@@ -51,24 +52,25 @@ namespace Finch
         
         int index = static_cast<int>(args[0]->AsNumber());
         
-        if ((index >= 0) && (index < array->Elements().Count()))
+        // allow negative indexes to index backwards from end
+        if ((index >= -array->Elements().Count()) && (index < array->Elements().Count()))
         {
             array->Elements()[index] = args[1];
         }
 
-        interpreter.PushNil();
+        interpreter.Push(thisRef);
     }
     
     PRIMITIVE(ArrayNew)
     {
-        interpreter.Push(Object::NewArray(interpreter.GetEnvironment()));
+        interpreter.Push(Object::NewArray(interpreter.GetEnvironment(), args[0]->AsNumber()));
     }
     
     //### bob: this could be moved into base instead of being a primitive
     PRIMITIVE(ArrayNewWith)
     {
         // create the array
-        Ref<Object> object = Object::NewArray(interpreter.GetEnvironment());
+        Ref<Object> object = Object::NewArray(interpreter.GetEnvironment(), 0);
         ArrayObject * array = object->AsArray();
 
         // fill the elements

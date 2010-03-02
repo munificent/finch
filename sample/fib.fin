@@ -22,7 +22,6 @@ Ether addMethod: "from:to:do:" body: {
 }
 
 ' test
-from: 0 to: 20 do: {
-    |i|
+from: 0 to: 20 do: {|i|
     writeLine: "" + i + " fib = " + i fib
 }

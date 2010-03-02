@@ -4,12 +4,12 @@ Nil addMethod: "name" body: { "Nil" }
 
 Parent <- Object copyWith: {
     _name <- "parent"
-    .addMethod: "name" body: { _name }
+    self addMethod: "name" body: { _name }
     
-    .addMethod: "getName" body: { "parent" }
-    .addMethod: "calledName" body: { .getName }
+    self addMethod: "getName" body: { "parent" }
+    self addMethod: "calledName" body: { .getName }
     
-    .addMethod: "recursiveName:" body: {|depth|
+    self addMethod: "recursiveName:" body: {|depth|
         if: depth > 0 then: {
             _name + " " + (Parent recursiveName: 0) + " " +
             _name + " " + (Child recursiveName: 0) + " " +
@@ -21,7 +21,7 @@ Parent <- Object copyWith: {
 Child <- Parent copyWith: {
     _name <- "child"
 
-    .addMethod: "getName" body: { "child" }
+    self addMethod: "getName" body: { "child" }
 }
 
 ' basic just call a method on an object
@@ -35,9 +35,9 @@ writeLine: Child calledName + " (expect child)"
 writeLine: (Child recursiveName: 1) + " (expect child parent child child child)"
 
 Other <- Object copyWith: {
-    .addMethod: "name" body: { "Other" }
+    self addMethod: "name" body: { "Other" }
     
-    .addMethod: "callMe:" body: {|block|
+    self addMethod: "callMe:" body: {|block|
         block call
     }
 }
@@ -48,9 +48,9 @@ Other <- Object copyWith: {
 writeLine: (Other callMe: { .name }) + " (expect Nil)"
 
 Foo <- Object copyWith: {
-    .addMethod: "name" body: { "Foo" }
+    self addMethod: "name" body: { "Foo" }
     
-    .addMethod: "routeThroughOther" body: {
+    self addMethod: "routeThroughOther" body: {
         Other callMe: { .name }
     }
 }

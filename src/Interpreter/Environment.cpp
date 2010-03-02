@@ -39,13 +39,12 @@ namespace Finch
         
         DynamicObject* arrayObj = &static_cast<DynamicObject&>(*mArray);
         //### bob: should separate out Array factory object (with "new:with:"
-        //         etc.) from Array prototype object (length, @, etc.)
+        //         etc.) from Array prototype object (length, at:, etc.)
         arrayObj->RegisterPrimitive("length",      ArrayLength);
         arrayObj->RegisterPrimitive("add:",        ArrayAdd);
-        arrayObj->RegisterPrimitive("@",           ArrayAt);
+        arrayObj->RegisterPrimitive("at:",         ArrayAt);
         arrayObj->RegisterPrimitive("at:put:",     ArrayAtPut);
-        arrayObj->RegisterPrimitive("new",         ArrayNew);
-        arrayObj->RegisterPrimitive("new:with:",   ArrayNewWith);
+        arrayObj->RegisterPrimitive("new:",        ArrayNew);
         
         // define Block prototype
         mBlock = Object::NewObject(object, "Block");
@@ -99,7 +98,7 @@ namespace Finch
         DynamicObject* stringObj = &static_cast<DynamicObject&>(*mString);
         stringObj->RegisterPrimitive("+",           StringAdd);
         stringObj->RegisterPrimitive("length",      StringLength);
-        stringObj->RegisterPrimitive("@",           StringAt);
+        stringObj->RegisterPrimitive("at:",         StringAt);
         stringObj->RegisterPrimitive("=",           StringEquals);
         stringObj->RegisterPrimitive("!=",          StringNotEquals);
         stringObj->RegisterPrimitive("hashCode",    StringHashCode);

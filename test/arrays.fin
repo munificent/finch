@@ -1,0 +1,33 @@
+Test suite: "Arrays" is: {
+    Test test: "new" is: {
+        Test that: Array new length       equals: 0
+        Test that: (Array new: 5) length  equals: 5
+        Test that: ((Array new: 2) at: 0) equals: Nil
+    }
+    
+    Test test: "new:" is: {
+        Test that: (Array new: 5) length  equals: 5
+        Test that: ((Array new: 2) at: 0) equals: Nil
+    }
+    
+    Test test: "length" is: {
+        Test that: [] length        equals: 0
+        Test that: [2] length       equals: 1
+        Test that: [2; 3] length    equals: 2
+        Test that: [2; 3; 4] length equals: 3
+    }
+    
+    Test test: "add:" is: {
+        Test that: ([] add: 2) length    equals: 1
+        Test that: (([1] add: 2) at: 1)  equals: 2
+    }
+    
+    Test test: "add:" is: {
+        Test that: ([4; 5; 6] at: 0) equals: 4
+        Test that: ([4; 5; 6] at: 1) equals: 5
+        Test that: ([4; 5; 6] at: 2) equals: 6
+        Test that: ([4; 5; 6] at: -1) equals: 6
+        Test that: ([4; 5; 6] at: -2) equals: 5
+        Test that: ([4; 5; 6] at: -3) equals: 4
+    }
+}

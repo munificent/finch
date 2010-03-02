@@ -23,20 +23,25 @@ Ether addMethod: "if:then:elseif:then:else:" body: {
 }
 
 ' array methods
-Array addMethod: "each:" body: {|block|
-    writeLine: "each, self = " + self
+Array addMethod: "new" body: { self new: 0 }
+
+Array addMethod: "new:with:" body: {|count element|
+    result <- Array new
     
-    from: 0 to: .length - 1 do: {|i|
-        block call: self @ i
+    from: 1 to: count do: {|i| result add: element }
+    result
+}
+
+Array addMethod: "each:" body: {|block|
+    from: 0 to: self length - 1 do: {|i|
+        block call: (self at: i)
     }
 }
 
 Array addMethod: "map:" body: {|block|
-    writeLine: "map, self = " + self
-    
     result <- Array new
     
-    .each: {|element| result add: (block call: element) }
+    self each: {|element| result add: (block call: element) }
     result
 }
 

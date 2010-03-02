@@ -8,14 +8,14 @@ Test <- Object copyWith: {
     _tests      <- 0
     _failed     <- 0
     
-    .addMethod: "suite:is:" body: {
+    self addMethod: "suite:is:" body: {
         |name body|
         _suite <- name
         body call
         _suite <- ""
     }
 
-    .addMethod: "test:is:" body: {
+    self addMethod: "test:is:" body: {
         |name body|
         _test       <- name
         _tests      <- 0
@@ -32,32 +32,33 @@ Test <- Object copyWith: {
         _test <- ""
     }
 
-    .addMethod: "showHeader" body: {
+    self addMethod: "showHeader" body: {
         if: _testShown not then: {
             writeLine: _suite + " / " + _test
             _testShown <- True
         }
     }
 
-    .addMethod: "isTrue:" body: {
+    self addMethod: "isTrue:" body: {
         |actual|
         _tests <- _tests + 1
 
         if: actual not then: {
             _failed <- _failed + 1
-            .showHeader
+            self showHeader
             writeLine: "  Test " + _tests toString + " failed."
         }
     }
 
-    .addMethod: "that:equals:" body: {
+    self addMethod: "that:equals:" body: {
         |actual expected|
-        .isTrue: actual = expected
+        self isTrue: actual = expected
     }
 }
 
 ' run the test scripts
 '### bob: hack! path should be relative to this script's path!
+load: "../../test/arrays.fin"
 load: "../../test/arithmetic.fin"
 load: "../../test/literals.fin"
 load: "../../test/variables.fin"
