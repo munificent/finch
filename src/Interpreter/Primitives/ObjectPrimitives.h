@@ -14,5 +14,5 @@ namespace Finch
     PRIMITIVE(ObjectNotEquals);
     PRIMITIVE(ObjectCopy);
     PRIMITIVE(ObjectCopyWith);
-    PRIMITIVE(ObjectAddMethodValue);
+    PRIMITIVE(ObjectAddMethodBody);
 }

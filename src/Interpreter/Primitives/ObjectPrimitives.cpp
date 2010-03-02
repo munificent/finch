@@ -78,7 +78,7 @@ namespace Finch
         }
     }
     
-    PRIMITIVE(ObjectAddMethodValue)
+    PRIMITIVE(ObjectAddMethodBody)
     {
         DynamicObject * object = thisRef->AsDynamic();
         ASSERT_NOT_NULL(object);

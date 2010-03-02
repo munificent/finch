@@ -27,7 +27,7 @@ namespace Finch
         objectObj->RegisterPrimitive("copy",            ObjectCopy);
         objectObj->RegisterPrimitive("copyWith:",       ObjectCopyWith);
         objectObj->RegisterPrimitive("toString",        ObjectToString);
-        objectObj->RegisterPrimitive("addMethod:body:", ObjectAddMethodValue);
+        objectObj->RegisterPrimitive("addMethod:body:", ObjectAddMethodBody);
 
         // any non-true object is implicitly "false", so sending "not" to it
         // returns true
