@@ -1,0 +1,69 @@
+' tests various edges regarding self
+
+Nil addMethod: "name" body: { "Nil" }
+
+Parent <- Object copyWith: {
+    _name <- "parent"
+    .addMethod: "name" body: { _name }
+    
+    .addMethod: "getName" body: { "parent" }
+    .addMethod: "calledName" body: { .getName }
+    
+    .addMethod: "recursiveName:" body: {|depth|
+        if: depth > 0 then: {
+            _name + " " + (Parent recursiveName: 0) + " " +
+            _name + " " + (Child recursiveName: 0) + " " +
+            _name
+        } else: { _name }
+    }
+}
+
+Child <- Parent copyWith: {
+    _name <- "child"
+
+    .addMethod: "getName" body: { "child" }
+}
+
+' basic just call a method on an object
+writeLine: Parent name + " (expect parent)"
+writeLine: Parent calledName + " (expect parent)"
+writeLine: (Parent recursiveName: 1) + " (expect parent parent child parent parent)"
+
+' make sure calling an inherited method uses the child as self
+writeLine: Child name + " (expect child)"
+writeLine: Child calledName + " (expect child)"
+writeLine: (Child recursiveName: 1) + " (expect child parent child child child)"
+
+Other <- Object copyWith: {
+    .addMethod: "name" body: { "Other" }
+    
+    .addMethod: "callMe:" body: {|block|
+        block call
+    }
+}
+
+' passing a block to a method should *not* use the method's self
+' in this case, since the block is not defined in any object, self
+' should be nil
+writeLine: (Other callMe: { .name }) + " (expect Nil)"
+
+Foo <- Object copyWith: {
+    .addMethod: "name" body: { "Foo" }
+    
+    .addMethod: "routeThroughOther" body: {
+        Other callMe: { .name }
+    }
+}
+
+' passing a block to a method should *not* use the method's self
+' instead, should use the self where the block is declared. in this
+' case, that's inside Foo
+writeLine: Foo routeThroughOther + " (expect Foo)"
+
+Child addMethod: "getBlock" body: { { .name } }
+
+' returning a block from a method should keep the block bound to the
+' method's self
+b <- Child getBlock
+writeLine: b call + " (expect child)"
+writeLine: (Other callMe: b) + " (expect child)"

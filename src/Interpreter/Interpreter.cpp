@@ -172,18 +172,13 @@ namespace Finch
                 case OP_LOAD_LOCAL:
                     {
                         String name = mEnvironment.Strings().Find(instruction.arg.id);
-                        
-                        //### bob: make load self a different opcode
-                        if (name == "self")
-                        {
-                            PushOperand(Self());
-                        }
-                        else
-                        {
-                            Ref<Object> value = CurrentScope()->LookUp(name);
-                            PushOperand(value.IsNull() ? mEnvironment.Nil() : value);
-                        }
+                        Ref<Object> value = CurrentScope()->LookUp(name);
+                        PushOperand(value.IsNull() ? mEnvironment.Nil() : value);
                     }
+                    break;
+                    
+                case OP_LOAD_SELF:
+                    PushOperand(Self());
                     break;
                     
                 case OP_MESSAGE_0:

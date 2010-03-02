@@ -107,7 +107,14 @@ namespace Finch
                 break;
                 
             case NAMESCOPE_LOCAL:
-                mCode.Write(OP_LOAD_LOCAL, id);
+                if (expr.Name() == "self")
+                {
+                    mCode.Write(OP_LOAD_SELF);
+                }
+                else
+                {
+                    mCode.Write(OP_LOAD_LOCAL, id);
+                }
                 break;
         }
     }

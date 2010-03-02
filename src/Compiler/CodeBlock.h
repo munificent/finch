@@ -28,6 +28,7 @@ namespace Finch
         OP_LOAD_GLOBAL,     // id = string table id of identifier
         OP_LOAD_OBJECT,     // id = string table id of identifier
         OP_LOAD_LOCAL,      // id = string table id of identifier
+        OP_LOAD_SELF,       // (not used)
         
         OP_MESSAGE_0,       // id = string table id of message name
         OP_MESSAGE_1,       // id = string table id of message name
