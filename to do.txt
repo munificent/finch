@@ -16,13 +16,12 @@ there should be solid.
   - Don't allow alphanumerics in operators
 
 - Clean up
-  - Unify Dictionary, Scope, and DynamicObject somehow
   - Address and remove //### bob:
   - Get rid of unit tests (using script tests instead)
   
 - Application
-  - run script from command-line
   - makefile for Unix support
+  - use correct relative paths when interpreting "load:"
   
 - Interpreter features
   - Primitives
@@ -40,8 +39,7 @@ there should be solid.
   - Basic reflection
     - does-not-understand?
     - send-message?
-  + undef
-  - Bytecode compiler so we aren't abusing the C callstack
+  + Bytecode compiler so we aren't abusing the C callstack
   
 - Hosting
   - Finch should require a host object when being instantiated. This

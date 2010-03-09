@@ -50,6 +50,9 @@ namespace Finch
         
         virtual Ref<Scope> ObjectScope() const;
         
+        Ref<Object> GetPrototype() { return mPrototype; }
+        void        SetPrototype(Ref<Object> prototype) { mPrototype = prototype; }
+        
         virtual void Trace(ostream & stream) const = 0;
         
     protected:

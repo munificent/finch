@@ -28,6 +28,8 @@ namespace Finch
         objectObj->RegisterPrimitive("copyWith:",       ObjectCopyWith);
         objectObj->RegisterPrimitive("toString",        ObjectToString);
         objectObj->RegisterPrimitive("addMethod:body:", ObjectAddMethodBody);
+        objectObj->RegisterPrimitive("prototype",       ObjectGetPrototype);
+        objectObj->RegisterPrimitive("prototype:",      ObjectSetPrototype);
 
         // any non-true object is implicitly "false", so sending "not" to it
         // returns true

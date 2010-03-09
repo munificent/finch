@@ -89,4 +89,15 @@ namespace Finch
         object->AddMethod(thisRef, interpreter, name, value);
         interpreter.PushNil();
     }
+    
+    PRIMITIVE(ObjectGetPrototype)
+    {
+        interpreter.Push(thisRef->GetPrototype());
+    }
+    
+    PRIMITIVE(ObjectSetPrototype)
+    {
+        thisRef->SetPrototype(args[0]);
+        interpreter.PushNil();
+    }
 }
