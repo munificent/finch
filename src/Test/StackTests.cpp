@@ -12,10 +12,9 @@ namespace Finch
     
     void StackTests::TestPushPop()
     {
-        Stack<int, 3> stack;
+        Stack<int> stack;
         
         EXPECT_EQUAL(0, stack.Count());
-        EXPECT_EQUAL(3, stack.Capacity());
         
         stack.Push(2);
         
@@ -30,7 +29,7 @@ namespace Finch
     
     void StackTests::TestCount()
     {
-        Stack<int, 3> stack;
+        Stack<int> stack;
         
         EXPECT_EQUAL(0, stack.Count());
         stack.Push(1);
@@ -53,7 +52,7 @@ namespace Finch
     
     void StackTests::TestSubscript()
     {
-        Stack<int, 3> stack;
+        Stack<int> stack;
         
         stack.Push(5);
         stack.Push(6);

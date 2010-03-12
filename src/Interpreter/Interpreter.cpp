@@ -40,6 +40,9 @@ namespace Finch
             CallFrame & frame = mCallStack.Peek();
             const Instruction & instruction = frame.Block().GetCode()[frame.address];
             
+            // advance past the instruction
+            frame.address++;
+            
             switch (instruction.op)
             {
                 case OP_NOTHING:
@@ -60,8 +63,8 @@ namespace Finch
                 case OP_BLOCK_LITERAL:
                     {
                         // capture the current scope
-                        Ref<Scope> closure = mCallStack.Peek().scope;
-                        Ref<Object> self   = mCallStack.Peek().Block().Self();
+                        Ref<Scope> closure = frame.scope;
+                        Ref<Object> self   = frame.Block().Self();
                         
                         const CodeBlock & code = mEnvironment.Blocks().Find(instruction.arg.id);
                         Ref<Object> block = Object::NewBlock(mEnvironment, code, closure, self);
@@ -270,7 +273,7 @@ namespace Finch
                     PopOperand();
                     
                     // restart the loop
-                    frame.address = -1; // the ++ later will get us to 0
+                    mCallStack.Peek().address = 0;
                     break;
                     
                 case OP_END_BLOCK:
@@ -280,9 +283,6 @@ namespace Finch
                 default:
                     ASSERT(false, "Unknown op code.");
             }
-            
-            // advance to the next instruction
-            frame.address++;
         }
         
         // there should be one object left on the stack: the final return

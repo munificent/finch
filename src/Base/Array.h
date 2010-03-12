@@ -23,7 +23,7 @@ namespace Finch
             mCapacity(0),
             mItems(NULL)
         {
-            EnsureCapacity(mCapacity);
+            EnsureCapacity(capacity);
         }
         
         Array(const Array<T> & array)
@@ -78,7 +78,7 @@ namespace Finch
             ASSERT_INDEX(index, mCount);
             
             // shift items up
-            for (int i = index; i < mCount; i++)
+            for (int i = index; i < mCount - 1; i++)
             {
                 mItems[i] = mItems[i + 1];
             }
@@ -121,24 +121,24 @@ namespace Finch
         }
         
     private:
-        void EnsureCapacity(int capacity)
+        void EnsureCapacity(int desiredCapacity)
         {
             // early out if we have enough capacity
-            if (mCapacity >= capacity) return;
+            if (mCapacity >= desiredCapacity) return;
             
             // figure out the new array size
             // instead of growing to just the capacity we need, we'll grow by
             // a multiple of the current size. this ensures amortized O(n)
             // complexity on adding instead of O(n^2).
-            int newCapacity = mCapacity;
-            if (newCapacity < MIN_CAPACITY)
+            int capacity = mCapacity;
+            if (capacity < MIN_CAPACITY)
             {
-                newCapacity = MIN_CAPACITY;
+                capacity = MIN_CAPACITY;
             }
 
-            while (newCapacity < capacity)
+            while (capacity < desiredCapacity)
             {
-                newCapacity *= GROW_FACTOR;
+                capacity *= GROW_FACTOR;
             }
         
             // create the new array

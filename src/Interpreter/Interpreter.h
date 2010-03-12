@@ -51,9 +51,6 @@ namespace Finch
         void RuntimeError(const String & message);
         
     private:
-        static const int MAX_OPERANDS = 2048;
-        static const int STACK_SIZE   = 4096;
-        
         struct CallFrame
         {
             int               address;
@@ -72,7 +69,7 @@ namespace Finch
                 block(block)
             {}
             
-            BlockObject & Block() { return *(block->AsBlock()); }
+            const BlockObject & Block() const { return *(block->AsBlock()); }
         };
         
         Ref<Scope>  CurrentScope() { return mCallStack.Peek().scope; }
@@ -83,8 +80,8 @@ namespace Finch
         bool mIsRunning;
         
         Environment & mEnvironment;
-        Stack<Ref<Object>, MAX_OPERANDS> mOperands; 
-        Stack<CallFrame, STACK_SIZE>     mCallStack;
+        Stack<Ref<Object> > mOperands; 
+        Stack<CallFrame>    mCallStack;
         
         CodeBlock mLoopCode;
         CodeBlock mDiscardCode;

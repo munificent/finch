@@ -2,57 +2,51 @@
 
 #include <iostream>
 
+#include "Array.h"
 #include "Macros.h"
 
 namespace Finch
 {
-    // A simple stack of items with a fixed capacity. Implemented using a
-    // single array. Push and pop are O(1). Stack items must support a default
+    // A simple stack of items with a variable capacity. Implemented using a
+    // dynamic array. Push and pop are O(1). Stack items must support a default
     // constructor and copying.
-    template <class T, int Size>
+    template <class T>
     class Stack
     {
     public:
         Stack()
-        :   mCount(0)
+        :   mItems()
         {}
         
         // Gets the number of items currently in the stack.
-        int Count() const { return mCount; }
+        int Count() const { return mItems.Count(); }
         
         // Gets whether or not the stack is empty.
-        bool IsEmpty() const { return mCount == 0; }
-        
-        // Gets the maximum number of items the stack can hold.
-        int Capacity() const { return Size; }
+        bool IsEmpty() const { return mItems.IsEmpty(); }
         
         // Pushes the given item onto the top of the stack.
         void Push(const T & item)
         {
-            ASSERT(mCount < Capacity(), "Cannot push onto a full stack.");
-            
-            mItems[mCount++] = item;
+            mItems.Add(item);
         }
         
         // Pops the top item off the stack.
         T Pop()
         {
-            ASSERT(mCount > 0, "Cannot pop an empty stack.");
+            ASSERT(!IsEmpty(), "Cannot pop an empty stack.");
             
-            // clear the item from the stack
-            T popped = mItems[mCount - 1];
-            mItems[mCount - 1] = T();
+            T popped = mItems[-1];
+            mItems.Remove(-1);
             
-            mCount--;
             return popped;
         }
         
         // Returns the item on the top of the stack without removing it.
         T & Peek()
         {
-            ASSERT(mCount > 0, "Cannot peek an empty stack.");
+            ASSERT(!IsEmpty(), "Cannot peek an empty stack.");
             
-            return mItems[mCount - 1];
+            return mItems[-1];
         }
         
         // Gets the item at the given index in the stack. Index zero is the
@@ -60,14 +54,13 @@ namespace Finch
         // stack.
         T & operator[] (int index)
         {
-            ASSERT_INDEX(index, mCount);
+            ASSERT_INDEX(index, Count());
             
-            return mItems[mCount - 1 - index];
+            return mItems[-1 - index];
         }
         
     private:
-        int mCount;
-        T   mItems[Size];
+        Array<T> mItems;
         
         NO_COPY(Stack);
     };
