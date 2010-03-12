@@ -28,7 +28,10 @@ namespace Finch
         }
         
         string line;
-        getline(cin, line);
+        while (line.size() == 0)
+        {
+            getline(cin, line);
+        }
         
         return String(line.c_str());
     }

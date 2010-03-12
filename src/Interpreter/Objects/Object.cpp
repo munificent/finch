@@ -14,12 +14,20 @@ namespace Finch
     
     Ref<Object> Object::NewObject(Ref<Object> prototype, String name)
     {
-        return Ref<Object>(new DynamicObject(prototype, name));
+        Ref<Object> object = Ref<Object>(new DynamicObject(prototype, name));
+        
+        // if the object has no prototype, use itself as it
+        if (prototype.IsNull())
+        {
+            object->SetPrototype(object);
+        }
+        
+        return object;
     }
     
     Ref<Object> Object::NewObject(Ref<Object> prototype)
     {
-        return Ref<Object>(new DynamicObject(prototype));
+        return NewObject(prototype, "");
     }
     
     Ref<Object> Object::NewNumber(Environment & env, double value)
@@ -46,8 +54,9 @@ namespace Finch
     void Object::Receive(Ref<Object> thisRef, Interpreter & interpreter,
                                 String message, const Array<Ref<Object> > & args)
     {
-        // walk up the prototype chain
-        if (!mPrototype.IsNull())
+        // walk up the prototype chain until it loops back on itself at
+        // Object: the object from whence all others are born
+        if (&(*mPrototype) != this)
         {
             // we're using thisRef and not the prototype's own this reference
             // on purpose. this way, if you send a "copy" message to some
