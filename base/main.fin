@@ -1,3 +1,23 @@
+' create the factory object
+New <- Object copyWith: {
+    _array <- Object copyWith: {
+        self addMethod: "count:" body: {
+            |count|
+            Primitives__ newArrayCount: count
+        }
+
+        self addMethod: "count:fillWith:" body: {
+            |count element|
+            result <- []
+
+            from: 1 to: count do: {|i| result add: element }
+            result
+        }
+    }
+    
+    self addMethod: "array" body: { _array }
+}
+
 ' define a for-style loop
 Ether addMethod: "from:to:step:do:" body: {
     |start end step block|
@@ -23,15 +43,6 @@ Ether addMethod: "if:then:elseif:then:else:" body: {
 }
 
 ' array methods
-Array addMethod: "new" body: { self new: 0 }
-
-Array addMethod: "new:with:" body: {|count element|
-    result <- Array new
-    
-    from: 1 to: count do: {|i| result add: element }
-    result
-}
-
 Array addMethod: "each:" body: {|block|
     from: 0 to: self length - 1 do: {|i|
         block call: (self at: i)
@@ -39,8 +50,7 @@ Array addMethod: "each:" body: {|block|
 }
 
 Array addMethod: "map:" body: {|block|
-    result <- Array new
-    
+    result <- []
     self each: {|element| result add: (block call: element) }
     result
 }

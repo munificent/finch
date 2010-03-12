@@ -34,19 +34,16 @@ namespace Finch
         // any non-true object is implicitly "false", so sending "not" to it
         // returns true
         objectObj->RegisterPrimitive("not", BooleanTrue);
-        
+                
         // define Array prototype
         mArray = Object::NewObject(object, "Array");
         mGlobals->Define("Array", mArray);
         
         DynamicObject* arrayObj = &static_cast<DynamicObject&>(*mArray);
-        //### bob: should separate out Array factory object (with "new:with:"
-        //         etc.) from Array prototype object (length, at:, etc.)
         arrayObj->RegisterPrimitive("length",      ArrayLength);
         arrayObj->RegisterPrimitive("add:",        ArrayAdd);
         arrayObj->RegisterPrimitive("at:",         ArrayAt);
         arrayObj->RegisterPrimitive("at:put:",     ArrayAtPut);
-        arrayObj->RegisterPrimitive("new:",        ArrayNew);
         
         // define Block prototype
         mBlock = Object::NewObject(object, "Block");
@@ -133,5 +130,12 @@ namespace Finch
         etherObj->RegisterPrimitive("write:",         EtherWrite);
         etherObj->RegisterPrimitive("writeLine:",     EtherWriteLine);
         etherObj->RegisterPrimitive("load:",          EtherLoad);
+        
+        // define bare primitive object
+        Ref<Object> primitives = Object::NewObject(object);
+        mGlobals->Define("Primitives__", primitives);
+
+        DynamicObject* primitivesObj = primitives->AsDynamic();
+        primitivesObj->RegisterPrimitive("newArrayCount:", ArrayNew);
     }
 }
