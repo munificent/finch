@@ -25,6 +25,10 @@ namespace Finch
         
         OP_SET_LOCAL,       // id = string table id of identifier
         
+        OP_UNDEF_LOCAL,     // id = string table id of identifier
+        OP_UNDEF_OBJECT,    // id = string table id of identifier
+        OP_UNDEF_GLOBAL,    // id = string table id of identifier
+
         OP_LOAD_GLOBAL,     // id = string table id of identifier
         OP_LOAD_OBJECT,     // id = string table id of identifier
         OP_LOAD_LOCAL,      // id = string table id of identifier

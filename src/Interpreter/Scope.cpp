@@ -32,4 +32,9 @@ namespace Finch
         
         return variable;
     }
+    
+    void Scope::Undefine(String name)
+    {
+        mVariables.Remove(name);
+    }
 }

@@ -62,6 +62,8 @@
 
 /* Begin PBXFileReference section */
 		08FB7796FE84155DC02AAC07 /* main.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = main.cpp; sourceTree = "<group>"; };
+		29926D7F11CDC05E00C4FC95 /* UndefineExpr.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = UndefineExpr.h; sourceTree = "<group>"; };
+		2999443511CDC00F00417CC0 /* SelfExpr.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SelfExpr.h; sourceTree = "<group>"; };
 		8DD76F6C0486A84900D96B5E /* finch */ = {isa = PBXFileReference; explicitFileType = "compiled.mach-o.executable"; includeInIndex = 0; path = finch; sourceTree = BUILT_PRODUCTS_DIR; };
 		C4012A4410CA94580088B77F /* Repl.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Repl.h; sourceTree = "<group>"; };
 		C4012A4710CA948B0088B77F /* Repl.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = Repl.cpp; sourceTree = "<group>"; };
@@ -248,10 +250,12 @@
 				C4FC165110D4331C00E6ABD6 /* NameExpr.h */,
 				C4FC165310D4331C00E6ABD6 /* NumberExpr.h */,
 				C4FC165510D4331C00E6ABD6 /* OperatorExpr.h */,
+				2999443511CDC00F00417CC0 /* SelfExpr.h */,
 				C4FC165710D4331C00E6ABD6 /* SequenceExpr.h */,
 				C4FC165910D4331C00E6ABD6 /* SetExpr.h */,
 				C4CDF8BA10D88E43001C9D4A /* StringExpr.h */,
 				C4FC165D10D4331C00E6ABD6 /* UnaryExpr.h */,
+				29926D7F11CDC05E00C4FC95 /* UndefineExpr.h */,
 			);
 			name = AST;
 			sourceTree = "<group>";

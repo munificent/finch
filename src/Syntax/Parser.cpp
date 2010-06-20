@@ -21,6 +21,15 @@ namespace Finch
                (mRead[1].Type() == next);
     }
 
+    bool Parser::LookAhead(TokenType first, TokenType second, TokenType third)
+    {
+        FillLookAhead(3);
+        
+        return (mRead[0].Type() == first) &&
+               (mRead[1].Type() == second) &&
+               (mRead[2].Type() == third);
+    }
+
     bool Parser::Match(TokenType type)
     {
         if (LookAhead(type))

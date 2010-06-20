@@ -109,7 +109,7 @@ namespace Finch
                         // string table), then the global name scope doesn't need the
                         // actual string at all, just the id in the string table
                         String name = mEnvironment.Strings().Find(instruction.arg.id);
-                        mEnvironment.Globals()->Define(name, value);                        
+                        mEnvironment.Globals()->Define(name, value);
                     }
                     break;
                     
@@ -138,9 +138,36 @@ namespace Finch
                     }
                     break;
                     
+                case OP_UNDEF_GLOBAL:
+                    {
+                        String name = mEnvironment.Strings().Find(instruction.arg.id);
+                        mEnvironment.Globals()->Undefine(name);
+                        PushNil();
+                    }
+                    break;
+                    
+                case OP_UNDEF_OBJECT:
+                    {
+                        String name = mEnvironment.Strings().Find(instruction.arg.id);
+                        if (!Self().IsNull())
+                        {
+                            Self()->ObjectScope()->Undefine(name);
+                        }
+                        PushNil();
+                    }
+                    break;
+                    
+                case OP_UNDEF_LOCAL:
+                    {
+                        String name = mEnvironment.Strings().Find(instruction.arg.id);
+                        CurrentScope()->Undefine(name);
+                        PushNil();
+                    }
+                    break;
+                    
                 case OP_SET_LOCAL:
                     {
-                        // def returns the defined value, so instead of popping
+                        // set returns the defined value, so instead of popping
                         // and then pushing the value back on the stack, we'll
                         // just peek
                         Ref<Object> value = mOperands.Peek();
@@ -216,7 +243,7 @@ namespace Finch
                     }
                     break;
                     
-                    // these next for opcodes handle the one built-in loop
+                    // these next four opcodes handle the one built-in loop
                     // construct: "while". because a while loop must wait for
                     // the condition to be evaluated, and then later the body,
                     // it proceeds in stages, with an opcode for each stage.

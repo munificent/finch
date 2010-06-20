@@ -7,10 +7,12 @@
 #include "NameExpr.h"
 #include "NumberExpr.h"
 #include "OperatorExpr.h"
+#include "SelfExpr.h"
 #include "SequenceExpr.h"
 #include "SetExpr.h"
 #include "StringExpr.h"
 #include "UnaryExpr.h"
+#include "UndefineExpr.h"
 
 namespace Finch
 {
@@ -58,7 +60,16 @@ namespace Finch
     
     Ref<Expr> FinchParser::Assignment()
     {
-        if (LookAhead(TOKEN_NAME, TOKEN_ARROW))
+        if (LookAhead(TOKEN_NAME, TOKEN_ARROW, TOKEN_UNDEFINED))
+        {
+            String name = Consume().Text();
+            
+            Consume(); // the arrow
+            Consume(); // undefined
+            
+            return Ref<Expr>(new UndefineExpr(name));
+        }
+        else if (LookAhead(TOKEN_NAME, TOKEN_ARROW))
         {
             String name = Consume().Text();
             
@@ -153,6 +164,10 @@ namespace Finch
         {
             return Ref<Expr>(new NameExpr("self"));
         }*/
+        else if (Match(TOKEN_SELF))
+        {
+            return Ref<Expr>(new SelfExpr());
+        }
         else if (Match(TOKEN_LEFT_PAREN))
         {
             Ref<Expr> expression = Expression();

@@ -52,6 +52,18 @@ Test suite: "Variables" is: {
         Test that: a equals: "outer"
     }
     
+    Test test: "Unshadow" is: {
+        a <- "first"
+        
+        do: {
+            Test that: a equals: "first"
+            a <- "shadow"
+            Test that: a equals: "shadow"
+            a <- undefined
+            Test that: a equals: "first"
+        }
+    }
+    
     Test test: "Object Scope" is: {
         foo <- Object copy
         

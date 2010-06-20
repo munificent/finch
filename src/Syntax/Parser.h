@@ -27,6 +27,9 @@ namespace Finch
         // order).
         bool LookAhead(TokenType current, TokenType next);
         
+        // Returns true if the tokens are the given types, in order.
+        bool LookAhead(TokenType first, TokenType second, TokenType third);
+        
         // Consumes the current Token and returns true if it is the given type,
         // otherwise returns false.
         bool Match(TokenType type);
@@ -39,8 +42,8 @@ namespace Finch
         
         ITokenSource & mTokens;
         
-        // The 2 here is the maximum number of lookahead tokens.
-        Queue<Token, 2> mRead;
+        // The 3 here is the maximum number of lookahead tokens.
+        Queue<Token, 3> mRead;
         
         NO_COPY(Parser);
     };

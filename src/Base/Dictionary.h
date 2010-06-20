@@ -93,6 +93,7 @@ namespace Finch
             mTable[index].value = TValue();
             
             mCount--;
+            return true;
         }
         
         // Removes all items from the Dictionary.

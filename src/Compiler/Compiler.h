@@ -33,9 +33,11 @@ namespace Finch
         virtual void Visit(const NumberExpr & expr);
         virtual void Visit(const OperatorExpr & expr);
         virtual void Visit(const SequenceExpr & expr);
+        virtual void Visit(const SelfExpr & expr);
         virtual void Visit(const SetExpr & expr);
         virtual void Visit(const StringExpr & expr);
         virtual void Visit(const UnaryExpr & expr);
+        virtual void Visit(const UndefineExpr & expr);
         
         Environment & mEnvironment;
         CodeBlock & mCode;

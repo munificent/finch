@@ -9,10 +9,12 @@
 #include "NameExpr.h"
 #include "NumberExpr.h"
 #include "OperatorExpr.h"
+#include "SelfExpr.h"
 #include "SequenceExpr.h"
 #include "SetExpr.h"
 #include "StringExpr.h"
 #include "UnaryExpr.h"
+#include "UndefineExpr.h"
 
 namespace Finch
 {
@@ -98,24 +100,9 @@ namespace Finch
         int id = mEnvironment.Strings().Add(expr.Name());
         switch (Expr::GetNameScope(expr.Name()))
         {
-            case NAMESCOPE_GLOBAL:
-                mCode.Write(OP_LOAD_GLOBAL, id);
-                break;
-                
-            case NAMESCOPE_OBJECT:
-                mCode.Write(OP_LOAD_OBJECT, id);
-                break;
-                
-            case NAMESCOPE_LOCAL:
-                if (expr.Name() == "self")
-                {
-                    mCode.Write(OP_LOAD_SELF);
-                }
-                else
-                {
-                    mCode.Write(OP_LOAD_LOCAL, id);
-                }
-                break;
+            case NAMESCOPE_GLOBAL: mCode.Write(OP_LOAD_GLOBAL, id); break;
+            case NAMESCOPE_OBJECT: mCode.Write(OP_LOAD_OBJECT, id); break;
+            case NAMESCOPE_LOCAL:  mCode.Write(OP_LOAD_LOCAL, id); break;
         }
     }
     
@@ -133,6 +120,11 @@ namespace Finch
         mCode.Write(OP_MESSAGE_1, id);
     }
     
+    void Compiler::Visit(const SelfExpr & expr)
+    {
+        mCode.Write(OP_LOAD_SELF);
+    }
+
     void Compiler::Visit(const SequenceExpr & expr)
     {
         for (int i = 0; i < expr.Expressions().Count(); i++)
@@ -177,5 +169,16 @@ namespace Finch
         
         int id = mEnvironment.Strings().Add(expr.Message());
         mCode.Write(OP_MESSAGE_0, id);
+    }
+    
+    void Compiler::Visit(const UndefineExpr & expr)
+    {
+        int id = mEnvironment.Strings().Add(expr.Name());
+        switch (Expr::GetNameScope(expr.Name()))
+        {
+            case NAMESCOPE_GLOBAL: mCode.Write(OP_UNDEF_GLOBAL, id); break;
+            case NAMESCOPE_OBJECT: mCode.Write(OP_UNDEF_OBJECT, id); break;
+            case NAMESCOPE_LOCAL:  mCode.Write(OP_UNDEF_LOCAL, id); break;
+        }
     }
 }

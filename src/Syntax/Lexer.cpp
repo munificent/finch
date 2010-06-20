@@ -126,7 +126,11 @@ namespace Finch
                     else
                     {
                         String name = mLine.Substring(mTokenStart, mIndex - mTokenStart);
-                        token = Token(TOKEN_NAME, name);
+                        
+                        // see if it's a reserved word
+                        if (name == "self") token = Token(TOKEN_SELF);
+                        else if (name == "undefined") token = Token(TOKEN_UNDEFINED);
+                        else token = Token(TOKEN_NAME, name);
                         
                         mState = LEX_DEFAULT;
                     }

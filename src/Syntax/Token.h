@@ -24,6 +24,8 @@ namespace Finch
         
         TOKEN_ARROW,
         TOKEN_LONG_ARROW,
+        TOKEN_SELF,
+        TOKEN_UNDEFINED,
         
         TOKEN_NUMBER,
         TOKEN_STRING,
