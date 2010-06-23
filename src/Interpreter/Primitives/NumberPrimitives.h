@@ -16,6 +16,7 @@ namespace Finch
     PRIMITIVE(NumberAbs);
     PRIMITIVE(NumberNeg);
     
+    PRIMITIVE(NumberSqrt);
     PRIMITIVE(NumberSin);
     PRIMITIVE(NumberCos);
     PRIMITIVE(NumberTan);

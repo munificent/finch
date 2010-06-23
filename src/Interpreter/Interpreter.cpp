@@ -352,12 +352,12 @@ namespace Finch
     {
         BlockObject & block = *(blockObj->AsBlock());
         
-        // make sure we have the right number of arguments
-        //### bob: could change to ignore extra args and pad missing ones with
+        // make sure we have at least as many arguments as the block expects
+        //### bob: could change to pad missing ones with
         // nil if we want to be "looser" about calling convention
-        if (block.Params().Count() != args.Count())
+        if (block.Params().Count() > args.Count())
         {
-            RuntimeError(String::Format("Block expects %d arguments, but was passed %d.",
+            RuntimeError(String::Format("Block expects at least %d arguments, but was passed %d.",
                                         block.Params().Count(), args.Count()));
             PushNil();
             return;
@@ -367,7 +367,7 @@ namespace Finch
         Ref<Scope> scope = Ref<Scope>(new Scope(block.Closure()));
         
         // bind the arguments
-        for (int i = 0; i < args.Count(); i++)
+        for (int i = 0; i < block.Params().Count(); i++)
         {
             scope->Define(block.Params()[i], args[i]);
         }

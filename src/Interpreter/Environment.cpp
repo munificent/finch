@@ -72,6 +72,7 @@ namespace Finch
         numberObj->RegisterPrimitive("mod:", NumberMod);
         numberObj->RegisterPrimitive("floor", NumberFloor);
         numberObj->RegisterPrimitive("ceiling", NumberCeiling);
+        numberObj->RegisterPrimitive("sqrt",  NumberSqrt);
         numberObj->RegisterPrimitive("sin",   NumberSin);
         numberObj->RegisterPrimitive("cos",   NumberCos);
         numberObj->RegisterPrimitive("tan",   NumberTan);

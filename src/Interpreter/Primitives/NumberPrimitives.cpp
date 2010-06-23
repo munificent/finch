@@ -48,6 +48,11 @@ namespace Finch
         interpreter.PushNumber(-thisRef->AsNumber());
     }
     
+    PRIMITIVE(NumberSqrt)
+    {
+        interpreter.PushNumber(sqrt(thisRef->AsNumber()));
+    }
+    
     PRIMITIVE(NumberSin)
     {
         interpreter.PushNumber(sin(thisRef->AsNumber()));

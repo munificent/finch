@@ -27,6 +27,10 @@ Complex <- Object copyWith: {
             Complex new: (_real * right real) - (_imaginary * right imaginary) i:
                          (_imaginary * right real) + (_real * right imaginary) 
         }
+        
+        self addMethod: "magnitude" body: {
+            ((_real * _real) + (_imaginary * _imaginary)) sqrt
+        }
     }
     
     ' accessor for the prototype
