@@ -76,9 +76,9 @@ namespace Finch
 
     void DynamicObject::InitializeScope()
     {
-        if (!Prototype().IsNull())
+        if (!Parent().IsNull())
         {
-            mScope = Ref<Scope>(new Scope(Prototype()->ObjectScope()));
+            mScope = Ref<Scope>(new Scope(Parent()->ObjectScope()));
         }
         else
         {

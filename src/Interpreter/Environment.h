@@ -28,6 +28,11 @@ namespace Finch
         
         Ref<Scope>  Globals()       const { return mGlobals; }
 
+        //### bob: this needs to be cleaned up to make a distinction between the type objects
+        // and the prototypes. a type object ("String") is a singleton object that basically
+        // contain "static" methods on a type, including constructors. a prototype
+        // ("String prototype") is the prototypical object that new instances of a type use as
+        // their parent. 
         // Get the core built-in prototype objects.
         Ref<Object> Nil()               const { return mNil; }
         Ref<Object> ArrayPrototype()    const { return mArray; }

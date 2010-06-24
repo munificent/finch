@@ -16,8 +16,8 @@ namespace Finch
     class ArrayObject : public Object
     {
     public:
-        ArrayObject(Environment & environment, Ref<Object> prototype, int length)
-        :   Object(prototype),
+        ArrayObject(Environment & environment, Ref<Object> parent, int length)
+        :   Object(parent),
             mElements(length)
         {
             // fill with nil

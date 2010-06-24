@@ -28,8 +28,8 @@ namespace Finch
         objectObj->RegisterPrimitive("copyWith:",       ObjectCopyWith);
         objectObj->RegisterPrimitive("toString",        ObjectToString);
         objectObj->RegisterPrimitive("addMethod:body:", ObjectAddMethodBody);
-        objectObj->RegisterPrimitive("prototype",       ObjectGetPrototype);
-        objectObj->RegisterPrimitive("prototype:",      ObjectSetPrototype);
+        objectObj->RegisterPrimitive("parent",          ObjectGetParent);
+        objectObj->RegisterPrimitive("parent:",         ObjectSetParent);
 
         // any non-true object is implicitly "false", so sending "not" to it
         // returns true
@@ -45,7 +45,7 @@ namespace Finch
         arrayObj->RegisterPrimitive("at:",         ArrayAt);
         arrayObj->RegisterPrimitive("at:put:",     ArrayAtPut);
         
-        // define Block prototype
+        // define Block type object
         mBlock = Object::NewObject(object, "Block");
         mGlobals->Define("Block", mBlock);
         
@@ -62,7 +62,7 @@ namespace Finch
         blockObj->RegisterPrimitive("call:::::::::", BlockCall);
         blockObj->RegisterPrimitive("call::::::::::", BlockCall);
         
-        // define Number prototype
+        // define Number type object
         mNumber = Object::NewObject(object, "Number");
         mGlobals->Define("Number", mNumber);
         
@@ -91,7 +91,7 @@ namespace Finch
         numberObj->RegisterPrimitive("<=",  NumberLessThanOrEqual);
         numberObj->RegisterPrimitive(">=",  NumberGreaterThanOrEqual);
         
-        // define String prototype
+        // define String type object
         mString = Object::NewObject(object, "String");
         mGlobals->Define("String", mString);
         

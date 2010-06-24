@@ -25,15 +25,15 @@ namespace Finch
     class DynamicObject : public Object
     {
     public:
-        DynamicObject(Ref<Object> prototype, String name)
-        :   Object(prototype),
+        DynamicObject(Ref<Object> parent, String name)
+        :   Object(parent),
             mName(name)
         {
             InitializeScope();
         }
         
-        DynamicObject(Ref<Object> prototype)
-        :   Object(prototype),
+        DynamicObject(Ref<Object> parent)
+        :   Object(parent),
             mName("object")
         {
             InitializeScope();

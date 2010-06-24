@@ -40,7 +40,7 @@ namespace Finch
         // none. Looking up will defer to this scope if it couldn't be found in
         // this one. For local variable scopes, the parent will be the enclosing
         // lexical scope. For object variable scopes, the parent will be the
-        // prototype object.
+        // parent object.
         Ref<Scope> Parent() const { return mParent; }
         
     private:

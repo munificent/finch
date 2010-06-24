@@ -29,8 +29,8 @@ namespace Finch
     {
     public:
         // virtual constructors
-        static Ref<Object> NewObject(Ref<Object> prototype, String name);
-        static Ref<Object> NewObject(Ref<Object> prototype);
+        static Ref<Object> NewObject(Ref<Object> parent, String name);
+        static Ref<Object> NewObject(Ref<Object> parent);
         static Ref<Object> NewNumber(Environment & env, double value);
         static Ref<Object> NewString(Environment & env, String value);
         static Ref<Object> NewArray(Environment & env, int length);
@@ -50,19 +50,19 @@ namespace Finch
         
         virtual Ref<Scope> ObjectScope() const;
         
-        Ref<Object> GetPrototype() { return mPrototype; }
-        void        SetPrototype(Ref<Object> prototype) { mPrototype = prototype; }
+        Ref<Object> GetParent() { return mParent; }
+        void        SetParent(Ref<Object> parent) { mParent = parent; }
         
         virtual void Trace(ostream & stream) const = 0;
         
     protected:
-        Object() : mPrototype(Ref<Object>()) {}
-        Object(Ref<Object> prototype) : mPrototype(prototype) {}
+        Object() : mParent(Ref<Object>()) {}
+        Object(Ref<Object> parent) : mParent(parent) {}
         
-        Ref<Object> Prototype() const { return mPrototype; }
+        Ref<Object> Parent() const { return mParent; }
         
     private:
-        Ref<Object> mPrototype;
+        Ref<Object> mParent;
     };
     
     ostream & operator<<(ostream & cout, const Object & object);

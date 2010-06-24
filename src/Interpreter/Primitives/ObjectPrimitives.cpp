@@ -90,14 +90,14 @@ namespace Finch
         interpreter.PushNil();
     }
     
-    PRIMITIVE(ObjectGetPrototype)
+    PRIMITIVE(ObjectGetParent)
     {
-        interpreter.Push(thisRef->GetPrototype());
+        interpreter.Push(thisRef->GetParent());
     }
     
-    PRIMITIVE(ObjectSetPrototype)
+    PRIMITIVE(ObjectSetParent)
     {
-        thisRef->SetPrototype(args[0]);
+        thisRef->SetParent(args[0]);
         interpreter.PushNil();
     }
 }

@@ -19,9 +19,9 @@ namespace Finch
     class BlockObject : public Object
     {
     public:
-        BlockObject(Ref<Object> prototype, const CodeBlock & code,
+        BlockObject(Ref<Object> parent, const CodeBlock & code,
                     Ref<Scope> closure, Ref<Object> self)
-        :   Object(prototype),
+        :   Object(parent),
             mCode(code),
             mClosure(closure),
             mSelf(self)

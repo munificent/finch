@@ -15,6 +15,6 @@ namespace Finch
     PRIMITIVE(ObjectCopy);
     PRIMITIVE(ObjectCopyWith);
     PRIMITIVE(ObjectAddMethodBody);
-    PRIMITIVE(ObjectGetPrototype);
-    PRIMITIVE(ObjectSetPrototype);
+    PRIMITIVE(ObjectGetParent);
+    PRIMITIVE(ObjectSetParent);
 }

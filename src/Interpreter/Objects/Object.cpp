@@ -12,22 +12,22 @@ namespace Finch
 {
     using std::ostream;
     
-    Ref<Object> Object::NewObject(Ref<Object> prototype, String name)
+    Ref<Object> Object::NewObject(Ref<Object> parent, String name)
     {
-        Ref<Object> object = Ref<Object>(new DynamicObject(prototype, name));
+        Ref<Object> object = Ref<Object>(new DynamicObject(parent, name));
         
-        // if the object has no prototype, use itself as it
-        if (prototype.IsNull())
+        // if the object has no parent, use itself as it
+        if (parent.IsNull())
         {
-            object->SetPrototype(object);
+            object->SetParent(object);
         }
         
         return object;
     }
     
-    Ref<Object> Object::NewObject(Ref<Object> prototype)
+    Ref<Object> Object::NewObject(Ref<Object> parent)
     {
-        return NewObject(prototype, "");
+        return NewObject(parent, "");
     }
     
     Ref<Object> Object::NewNumber(Environment & env, double value)
@@ -54,16 +54,16 @@ namespace Finch
     void Object::Receive(Ref<Object> thisRef, Interpreter & interpreter,
                                 String message, const Array<Ref<Object> > & args)
     {
-        // walk up the prototype chain until it loops back on itself at
+        // walk up the parent chain until it loops back on itself at
         // Object: the object from whence all others are born
-        if (&(*mPrototype) != this)
+        if (&(*mParent) != this)
         {
-            // we're using thisRef and not the prototype's own this reference
+            // we're using thisRef and not the parent's own this reference
             // on purpose. this way, if you send a "copy" message to some
-            // object a few links down the prototype chain from Object, you'll
+            // object a few links down the parent chain from Object, you'll
             // get a copy of *that* object, and not Object itself where "copy"
             // is implemented.
-            mPrototype->Receive(thisRef, interpreter, message, args);
+            mParent->Receive(thisRef, interpreter, message, args);
         }
         else
         {
