@@ -68,9 +68,9 @@ namespace Finch
             mText(text)
         {}
         
-        TokenType           Type()   const { return mType; }
-        virtual double      Number() const { return mNumber; }
-        virtual String      Text()   const { return mText; }
+        TokenType   Type()   const { return mType; }
+        double      Number() const { return mNumber; }
+        String      Text()   const { return mText; }
         
     protected:
     private:        
