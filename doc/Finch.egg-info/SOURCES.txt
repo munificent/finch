@@ -1,0 +1,6 @@
+Finch.egg-info/PKG-INFO
+Finch.egg-info/SOURCES.txt
+Finch.egg-info/dependency_links.txt
+Finch.egg-info/entry_points.txt
+Finch.egg-info/top_level.txt
+finch/setup.py
