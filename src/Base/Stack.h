@@ -8,8 +8,8 @@
 namespace Finch
 {
     // A simple stack of items with a variable capacity. Implemented using a
-    // dynamic array. Push and pop are O(1). Stack items must support a default
-    // constructor and copying.
+    // dynamic array. Push and pop are O(1) (amortized). Stack items must
+	// support a default constructor and copying.
     template <class T>
     class Stack
     {

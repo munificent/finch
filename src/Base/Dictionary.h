@@ -8,7 +8,7 @@ namespace Finch
 {
     // A dictionary mapping keys to values. Uses a dynamically-grown hashtable.
     // Both TKey and TValue must have default constructors as well as support
-    // copying. TKey must all have a HashCode() method.
+    // copying. TKey must also have a HashCode() method.
     template <class TKey, class TValue>
     class Dictionary
     {
