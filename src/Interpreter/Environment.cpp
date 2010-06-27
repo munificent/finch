@@ -36,8 +36,7 @@ namespace Finch
         objectObj->RegisterPrimitive("not", BooleanTrue);
 		
         // define Array prototype
-        mArray = Object::NewObject(object, "Array");
-        mGlobals->Define("Array", mArray);
+        mArray = Object::NewObject(object, "array prototype");
         
         DynamicObject* arrayObj = &static_cast<DynamicObject&>(*mArray);
         arrayObj->RegisterPrimitive("length",      ArrayLength);
@@ -134,10 +133,10 @@ namespace Finch
         
         // define bare primitive object
         Ref<Object> primitives = Object::NewObject(object);
-        mGlobals->Define("Primitives__", primitives);
-
-        DynamicObject* primitivesObj = primitives->AsDynamic();
-        primitivesObj->RegisterPrimitive("newArrayCount:", ArrayNew);
+        mGlobals->Define("Prims**", primitives);
+		
+        DynamicObject* primsObj = &static_cast<DynamicObject&>(*primitives);
+        primsObj->RegisterPrimitive("arrayPrototype",   ArrayGetPrototype);
     }
 }
 

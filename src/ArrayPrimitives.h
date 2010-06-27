@@ -12,7 +12,6 @@ namespace Finch
     PRIMITIVE(ArrayAdd);
     PRIMITIVE(ArrayAt);
     PRIMITIVE(ArrayAtPut);
-    PRIMITIVE(ArrayNew);
-    PRIMITIVE(ArrayNewWith);
+	PRIMITIVE(ArrayGetPrototype);
 }
 
