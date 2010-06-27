@@ -14,3 +14,4 @@ namespace Finch
         interpreter.CallBlock(thisRef, args);
     }
 }
+

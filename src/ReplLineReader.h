@@ -26,3 +26,4 @@ namespace Finch
         bool mFirstLine;
     };
 }
+

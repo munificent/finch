@@ -21,3 +21,4 @@ namespace Finch
         static void TestSubstring();
     };
 }
+

@@ -113,3 +113,4 @@ namespace Finch
         EXPECT_EQUAL(8, queue[2]);
     }
 }
+

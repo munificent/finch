@@ -39,3 +39,4 @@ namespace Finch
         String mMessage;
     };
 }
+

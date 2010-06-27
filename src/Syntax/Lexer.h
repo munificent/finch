@@ -66,3 +66,4 @@ namespace Finch
         NO_COPY(Lexer);
     };
 }
+

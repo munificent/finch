@@ -38,3 +38,4 @@ namespace Finch
         mVariables.Remove(name);
     }
 }
+

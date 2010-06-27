@@ -48,3 +48,4 @@ namespace Finch
         Dictionary<String, Ref<Object> > mVariables;
     };
 }
+

@@ -20,3 +20,4 @@ namespace Finch
         return mStrings[id];
     }
 }
+

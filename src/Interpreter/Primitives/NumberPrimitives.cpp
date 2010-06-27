@@ -127,3 +127,4 @@ namespace Finch
         interpreter.PushBool(thisRef->AsNumber() >= args[0]->AsNumber());
     }
 }
+

@@ -60,3 +60,4 @@ namespace Finch
               Ref<Object> mSelf;
     };
 }
+

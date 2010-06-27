@@ -279,3 +279,4 @@ namespace Finch
                (strchr("-+=/<>?~!@#$%^&*", c) != NULL);
     }
 }
+

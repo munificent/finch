@@ -46,3 +46,4 @@ namespace Finch
         NO_COPY(FinchParser);
     };
 }
+

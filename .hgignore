@@ -1,14 +1,22 @@
 syntax: glob
 
-# mac desktop files
+# Mac desktop files
 **.DS_Store
 
-# revert backups
+# Revert backups
 **.orig
 
-# build files
+# XCode build files
 build/**
 
-# xcode user settings files
+# XCode user settings files
 src/finch.xcodeproj/*.mode1v3
 src/finch.xcodeproj/*.pbxuser
+
+# Makefile build files
+finch
+objects/**
+
+# Editor temp files
+.*.swp
+

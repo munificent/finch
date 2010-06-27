@@ -34,7 +34,7 @@ namespace Finch
         // any non-true object is implicitly "false", so sending "not" to it
         // returns true
         objectObj->RegisterPrimitive("not", BooleanTrue);
-                
+		
         // define Array prototype
         mArray = Object::NewObject(object, "Array");
         mGlobals->Define("Array", mArray);
@@ -140,3 +140,4 @@ namespace Finch
         primitivesObj->RegisterPrimitive("newArrayCount:", ArrayNew);
     }
 }
+

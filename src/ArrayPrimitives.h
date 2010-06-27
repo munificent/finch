@@ -15,3 +15,4 @@ namespace Finch
     PRIMITIVE(ArrayNew);
     PRIMITIVE(ArrayNewWith);
 }
+

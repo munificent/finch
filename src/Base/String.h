@@ -95,3 +95,4 @@ namespace Finch
     
     ostream & operator <<(ostream & cout, const String & string);
 }
+

@@ -181,3 +181,4 @@ namespace Finch
         NO_COPY(Dictionary);
     };
 }
+

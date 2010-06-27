@@ -63,7 +63,7 @@ namespace Finch
     
     PRIMITIVE(ArrayNew)
     {
-        interpreter.Push(Object::NewArray(interpreter.GetEnvironment(), args[0]->AsNumber()));
+        interpreter.Push(Object::NewArray(interpreter.GetEnvironment(), (int) args[0]->AsNumber()));
     }
     
     //### bob: this could be moved into base instead of being a primitive
@@ -84,3 +84,4 @@ namespace Finch
         interpreter.Push(object);
     }
 }
+

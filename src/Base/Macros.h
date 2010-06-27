@@ -31,3 +31,4 @@
     private:                                        \
         className(const className &);               \
         className& operator=(const className &)
+

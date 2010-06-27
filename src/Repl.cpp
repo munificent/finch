@@ -34,7 +34,12 @@ namespace Finch
         
         //### bob: hard-coded path here is a total hack
         // load the base library
-        Script::Execute("../../base/main.fin", interpreter);
+		#ifdef HACK_ROOT_BASE_PATH
+			const char* baseLibPath = "base/main.fin";
+		#else
+		const char* baseLibPath = "../../base/main.fin";
+		#endif
+        Script::Execute(baseLibPath, interpreter);
         
         while (interpreter.IsRunning())
         {
@@ -66,3 +71,4 @@ namespace Finch
         }
     }
 }
+

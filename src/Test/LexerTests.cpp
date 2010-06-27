@@ -162,3 +162,4 @@ namespace Finch
         va_end(args);
     }
 }
+

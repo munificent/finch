@@ -67,3 +67,4 @@ namespace Finch
         EXPECT_EQUAL(0, array.Count());
     }
 }
+

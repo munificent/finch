@@ -26,3 +26,4 @@ namespace Finch
         EXPRESSION_VISITOR
     };
 }
+

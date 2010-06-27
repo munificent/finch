@@ -16,3 +16,4 @@ namespace Finch
         static void TestLex(const char * text, ...);
     };
 }
+

@@ -81,3 +81,4 @@ namespace Finch
     
     std::ostream& operator<<(std::ostream& cout, const Token & token);
 }
+

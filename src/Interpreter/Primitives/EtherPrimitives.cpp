@@ -92,3 +92,4 @@ namespace Finch
         Script::Run(fileName, interpreter);
     }
 }
+

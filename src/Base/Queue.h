@@ -72,3 +72,4 @@ namespace Finch
         NO_COPY(Queue);
     };
 }
+

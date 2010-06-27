@@ -16,3 +16,4 @@ namespace Finch
         interpreter.PushBool(false);
     }
 }
+

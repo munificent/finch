@@ -22,3 +22,4 @@ namespace Finch
         Array<String> mStrings;
     };
 }
+

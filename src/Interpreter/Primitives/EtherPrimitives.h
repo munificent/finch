@@ -22,3 +22,4 @@ namespace Finch
     PRIMITIVE(EtherWriteLine);
     PRIMITIVE(EtherLoad);
 }
+

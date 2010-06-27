@@ -36,3 +36,4 @@ namespace Finch
     PRIMITIVE(NumberLessThanOrEqual);
     PRIMITIVE(NumberGreaterThanOrEqual);
 }
+

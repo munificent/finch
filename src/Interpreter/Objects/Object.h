@@ -67,3 +67,4 @@ namespace Finch
     
     ostream & operator<<(ostream & cout, const Object & object);
 }
+

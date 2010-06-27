@@ -66,3 +66,4 @@ namespace Finch
         interpreter.PushNumber(static_cast<double>(thisRef->AsString().HashCode()));
     }
 }
+

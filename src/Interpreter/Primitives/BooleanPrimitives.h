@@ -12,3 +12,4 @@ namespace Finch
     PRIMITIVE(BooleanTrue);
     PRIMITIVE(BooleanFalse);
 }
+

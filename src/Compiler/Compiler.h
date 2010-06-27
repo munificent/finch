@@ -45,3 +45,4 @@ namespace Finch
         NO_COPY(Compiler);
     };
 }
+

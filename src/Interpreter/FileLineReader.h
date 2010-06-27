@@ -24,3 +24,4 @@ namespace Finch
         ifstream mFile;
     };
 }
+

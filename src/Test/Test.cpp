@@ -16,3 +16,4 @@ namespace Finch
         cout << (sTests - sFailed) << " tests passed out of " << sTests << "." << endl;
     }
 }
+

@@ -159,3 +159,4 @@ namespace Finch
         EXPECT_EQUAL("bcd", a.Substring(-5, -2));
     }
 }
+

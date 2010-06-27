@@ -8,3 +8,4 @@ namespace Finch
         static void Run();
     };
 }
+

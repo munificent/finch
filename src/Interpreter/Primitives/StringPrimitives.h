@@ -16,3 +16,4 @@ namespace Finch
     PRIMITIVE(StringNotEquals);
     PRIMITIVE(StringHashCode);
 }
+

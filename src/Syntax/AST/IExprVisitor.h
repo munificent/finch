@@ -65,3 +65,4 @@ namespace Finch
         virtual void Visit(const UndefineExpr & expr) = 0;
     };
 }
+

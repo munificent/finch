@@ -72,3 +72,4 @@ namespace Finch
         EXPECT_EQUAL(5, stack[2]);
     }
 }
+

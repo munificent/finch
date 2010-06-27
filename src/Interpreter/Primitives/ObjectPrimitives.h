@@ -18,3 +18,4 @@ namespace Finch
     PRIMITIVE(ObjectGetParent);
     PRIMITIVE(ObjectSetParent);
 }
+
