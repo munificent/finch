@@ -34,6 +34,7 @@ namespace Finch
         // ("String prototype") is the prototypical object that new instances of a type use as
         // their parent. 
         // Get the core built-in prototype objects.
+        Ref<Object> ObjectPrototype()   const { return mObjectPrototype; }
         Ref<Object> Nil()               const { return mNil; }
         Ref<Object> ArrayPrototype()    const { return mArray; }
         Ref<Object> Block()             const { return mBlock; }
@@ -48,6 +49,7 @@ namespace Finch
         StringTable mStrings;
         
         Ref<Scope> mGlobals;
+		Ref<Object> mObjectPrototype;
         Ref<Object> mNil;
         Ref<Object> mArray;
         Ref<Object> mBlock;

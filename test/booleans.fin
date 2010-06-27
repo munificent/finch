@@ -1,0 +1,13 @@
+Test suite: "Booleans" is: {
+    Test test: "toString" is: {
+        Test that: True toString  equals: "true"
+        Test that: False toString equals: "false"
+    }
+
+    Test test: "not" is: {
+        Test that: True not  equals: False
+        Test that: False not equals: True
+        Test that: True not not  equals: True
+        Test that: False not not equals: False
+    }
+}

@@ -9,6 +9,11 @@
 
 namespace Finch
 {
+	PRIMITIVE(ObjectGetPrototype)
+	{
+		interpreter.Push(interpreter.GetEnvironment().ObjectPrototype());
+	}
+	
     PRIMITIVE(ObjectToString)
     {
         interpreter.PushString(thisRef->AsString());

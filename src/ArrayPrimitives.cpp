@@ -9,6 +9,11 @@
 
 namespace Finch
 {
+	PRIMITIVE(ArrayGetPrototype)
+	{
+		interpreter.Push(interpreter.GetEnvironment().ArrayPrototype());
+	}
+	
     PRIMITIVE(ArrayLength)
     {
         ArrayObject * array = thisRef->AsArray();
@@ -60,10 +65,5 @@ namespace Finch
 
         interpreter.Push(thisRef);
     }
-	
-	PRIMITIVE(ArrayGetPrototype)
-	{
-		interpreter.Push(interpreter.GetEnvironment().ArrayPrototype());
-	}
 }
 

@@ -19,9 +19,9 @@ namespace Finch
         mGlobals = Ref<Scope>(new Scope()); 
         
         // define Object prototype
-        Ref<Object> object = Object::NewObject(Ref<Object>(), "Object");
-        mGlobals->Define("Object", object);
-        DynamicObject* objectObj = &static_cast<DynamicObject&>(*object);
+        mObjectPrototype = Object::NewObject(Ref<Object>(), "object prototype");
+		
+        DynamicObject* objectObj = &static_cast<DynamicObject&>(*mObjectPrototype);
         objectObj->RegisterPrimitive("=",               ObjectEquals);
         objectObj->RegisterPrimitive("!=",              ObjectNotEquals);
         objectObj->RegisterPrimitive("copy",            ObjectCopy);
@@ -31,12 +31,8 @@ namespace Finch
         objectObj->RegisterPrimitive("parent",          ObjectGetParent);
         objectObj->RegisterPrimitive("parent:",         ObjectSetParent);
 
-        // any non-true object is implicitly "false", so sending "not" to it
-        // returns true
-        objectObj->RegisterPrimitive("not", BooleanTrue);
-		
         // define Array prototype
-        mArray = Object::NewObject(object, "array prototype");
+        mArray = Object::NewObject(mObjectPrototype, "array prototype");
         
         DynamicObject* arrayObj = &static_cast<DynamicObject&>(*mArray);
         arrayObj->RegisterPrimitive("length",      ArrayLength);
@@ -45,7 +41,7 @@ namespace Finch
         arrayObj->RegisterPrimitive("at:put:",     ArrayAtPut);
         
         // define Block type object
-        mBlock = Object::NewObject(object, "Block");
+        mBlock = Object::NewObject(mObjectPrototype, "Block");
         mGlobals->Define("Block", mBlock);
         
         DynamicObject* blockObj = &static_cast<DynamicObject&>(*mBlock);
@@ -62,7 +58,7 @@ namespace Finch
         blockObj->RegisterPrimitive("call::::::::::", BlockCall);
         
         // define Number type object
-        mNumber = Object::NewObject(object, "Number");
+        mNumber = Object::NewObject(mObjectPrototype, "Number");
         mGlobals->Define("Number", mNumber);
         
         DynamicObject* numberObj = &static_cast<DynamicObject&>(*mNumber);
@@ -91,7 +87,7 @@ namespace Finch
         numberObj->RegisterPrimitive(">=",  NumberGreaterThanOrEqual);
         
         // define String type object
-        mString = Object::NewObject(object, "String");
+        mString = Object::NewObject(mObjectPrototype, "String");
         mGlobals->Define("String", mString);
         
         DynamicObject* stringObj = &static_cast<DynamicObject&>(*mString);
@@ -103,21 +99,18 @@ namespace Finch
         stringObj->RegisterPrimitive("hashCode",    StringHashCode);
         
         // define nil
-        mNil = Object::NewObject(object, "Nil");
+        mNil = Object::NewObject(mObjectPrototype, "Nil");
         mGlobals->Define("Nil", mNil);
         
         // define true and false
-        mTrue = Object::NewObject(object, "True");
+        mTrue = Object::NewObject(mObjectPrototype, "true");
         mGlobals->Define("True", mTrue);
         
-        DynamicObject* trueObj = &static_cast<DynamicObject&>(*mTrue);
-        trueObj->RegisterPrimitive("not", BooleanFalse);
-        
-        mFalse = Object::NewObject(mNil, "False");
+        mFalse = Object::NewObject(mNil, "false");
         mGlobals->Define("False", mFalse);
 
         // define Ether
-        Ref<Object> ether = Object::NewObject(object, "Ether");
+        Ref<Object> ether = Object::NewObject(mObjectPrototype, "Ether");
         mGlobals->Define("Ether", ether);
         
         DynamicObject* etherObj = &static_cast<DynamicObject&>(*ether);
@@ -132,10 +125,11 @@ namespace Finch
         etherObj->RegisterPrimitive("load:",          EtherLoad);
         
         // define bare primitive object
-        Ref<Object> primitives = Object::NewObject(object);
+        Ref<Object> primitives = Object::NewObject(mObjectPrototype);
         mGlobals->Define("Prims**", primitives);
 		
         DynamicObject* primsObj = &static_cast<DynamicObject&>(*primitives);
+        primsObj->RegisterPrimitive("objectPrototype",  ObjectGetPrototype);
         primsObj->RegisterPrimitive("arrayPrototype",   ArrayGetPrototype);
     }
 }
