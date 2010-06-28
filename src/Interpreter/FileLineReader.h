@@ -4,7 +4,7 @@
 #include <iostream>
 
 #include "Macros.h"
-#include "String.h"
+#include "FinchString.h"
 #include "ILineReader.h"
 
 namespace Finch

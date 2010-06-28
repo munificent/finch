@@ -5,7 +5,7 @@
 #include "Array.h"
 #include "Macros.h"
 #include "Ref.h"
-#include "String.h"
+#include "FinchString.h"
 
 #define PRIMITIVE(name)                                             \
         void name(Ref<Object> thisRef, Interpreter & interpreter,   \

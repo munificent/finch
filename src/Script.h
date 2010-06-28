@@ -3,7 +3,7 @@
 #include "Macros.h"
 #include "Object.h"
 #include "Ref.h"
-#include "String.h"
+#include "FinchString.h"
 
 namespace Finch
 {

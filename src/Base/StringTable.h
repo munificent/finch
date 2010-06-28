@@ -1,7 +1,7 @@
 #pragma once
 
 #include "Array.h"
-#include "String.h"
+#include "FinchString.h"
 
 namespace Finch
 {

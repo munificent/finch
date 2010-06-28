@@ -2,7 +2,7 @@
 #include <stdarg.h>
 
 #include "Macros.h"
-#include "String.h"
+#include "FinchString.h"
 
 namespace Finch
 {

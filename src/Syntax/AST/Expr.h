@@ -5,7 +5,7 @@
 #include "Macros.h"
 #include "Object.h"
 #include "Ref.h"
-#include "String.h"
+#include "FinchString.h"
 
 #define EXPRESSION_VISITOR                                       \
         virtual Ref<Object> Accept(IExprVisitor & visitor) const \
