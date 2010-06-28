@@ -9,6 +9,7 @@
 namespace Finch
 {
     // Primitive methods for string objects.
+    PRIMITIVE(StringGetPrototype);
     PRIMITIVE(StringAdd);
     PRIMITIVE(StringLength);
     PRIMITIVE(StringAt);

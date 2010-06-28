@@ -27,7 +27,8 @@ Test <- Object copyWith: {
         header <- "--- "
         if: _failed > 0 then: { header <-- "XXX " }
 
-        writeLine: header + _suite + " / " + _test + " " + (_tests - _failed) + " / " + _tests + " tests passed"
+        writeLine: header + _suite + " / " + _test + " " + (_tests - _failed) +
+            " / " + _tests + " tests passed"
 
         _test <- ""
     }
@@ -59,6 +60,7 @@ Test <- Object copyWith: {
 ' run the test scripts
 '### bob: hack! path should be relative to this script's path!
 load: "../../test/arrays.fin"
+load: "../../test/booleans.fin"
 load: "../../test/arithmetic.fin"
 load: "../../test/literals.fin"
 load: "../../test/variables.fin"

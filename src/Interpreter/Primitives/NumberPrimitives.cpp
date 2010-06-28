@@ -7,6 +7,11 @@
 
 namespace Finch
 {
+    PRIMITIVE(NumberGetPrototype)
+    {
+		interpreter.Push(interpreter.GetEnvironment().NumberPrototype());
+    }
+	
     PRIMITIVE(NumberAdd)
     {
         interpreter.PushNumber(thisRef->AsNumber() + args[0]->AsNumber());

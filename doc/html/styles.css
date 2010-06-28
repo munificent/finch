@@ -1,0 +1,129 @@
+body {
+	color: #444;
+}
+
+h1 {
+  color: #d0c;
+  font: 24px Inconsolata, Consolas, Monaco, monospace;
+  margin: 0;
+  padding: 20px 0 10px 0;
+  border-bottom: solid 3px #ddd;
+}
+
+h2 {
+  color: #888;
+  font: 20px Inconsolata, Consolas, Monaco, monospace;
+  margin: 20px 0 0 0;
+  padding: 0;
+}
+
+h3 {
+  color: #888;
+  font: italic 17px Inconsolata, Consolas, Monaco, monospace;
+  margin: 20px 0 0 0;
+  padding: 0;
+}
+
+a {
+  color: #d0c;
+  text-decoration: none;
+}
+
+a:hover {
+  color: #d0c;
+  text-decoration: underline;
+}
+
+p {
+  font: 15px/22px Georgia, serif;
+  margin: 6px 0 6px 0;
+  padding: 0;
+}
+
+code, pre, tt {
+  color: #666;
+  font: 14px Inconsolata, Consolas, Monaco, monospace;
+}
+
+.content {
+  margin: 20px auto 20px auto;
+  width: 600px;
+}
+
+p.footer {
+  color: #999;
+  font: 13px Georgia, serif;
+  margin: 0;
+  padding: 10px 0 0 0;
+  border-top: solid 3px #ddd;
+}
+
+
+/* syntax highlighting */
+
+/* line comment */
+.codehilite pre span.c1 {
+  color: #999;
+}
+
+/* global variable */
+.codehilite pre span.vg {
+  color: #5d3a85;
+}
+
+/* instance variable */
+.codehilite pre span.vi
+{
+  color: #784bab;
+}
+
+/* keyword message */
+.codehilite pre span.k {
+  color: #008ac9;
+}
+
+/* punctuation ()[]{} */
+.codehilite pre span.p {
+  color: #777;
+}
+
+/* string */
+.codehilite pre span.s {
+  color: #f59f2f;
+}
+
+/* string escape */
+.codehilite pre span.se {
+  color: #f59f2f;
+  background: #fff4e5;
+}
+/* built-in name: self undefined */
+.codehilite pre span.nb {
+  color: #d0c;
+}
+
+/* built-in operator <- <-- */
+.codehilite pre span.o {
+  color: #d0c;
+}
+
+/* keyword declaration (arg list |) */
+.codehilite pre span.kd {
+  color: #8cd1b2;
+}
+
+/* argument name */
+.codehilite pre span.nv {
+  color: #24a36a;
+}
+
+/* user-defined operator */
+.codehilite pre span.ow {
+  color: #09c906;
+}
+
+/* number */
+.codehilite pre span.mi { }
+
+/* name */
+.codehilite pre span.n { }
