@@ -16,13 +16,11 @@ include_directories(
 
 add_library(Primitives_Obj
             BlockPrimitives.cpp
-            BooleanPrimitives.cpp
 			EtherPrimitives.cpp
 			NumberPrimitives.cpp
 			ObjectPrimitives.cpp 
 			StringPrimitives.cpp
 			BlockPrimitives.h
-			BooleanPrimitives.h
 			EtherPrimitives.h
 			NumberPrimitives.h
 			ObjectPrimitives.h
