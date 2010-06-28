@@ -1,6 +1,7 @@
 #pragma once
 
 #include <iostream>
+#include <cstdlib>
 
 #define ASSERT(condition, message)                      \
     if (!(condition)) {                                 \
