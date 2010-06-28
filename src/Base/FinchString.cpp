@@ -8,14 +8,14 @@ namespace Finch
 {
     const char * String::sEmptyString = "";
     
-    String String::Format(const String & format, ...)
+    String String::Format(const char* format, ...)
     {
         char result[FormattedStringMax];
         
         va_list args;
         va_start (args, format);
         
-        vsprintf(result, format.CString(), args);
+        vsprintf(result, format, args);
 
         va_end (args);
         
