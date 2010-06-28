@@ -24,7 +24,7 @@ Ether addMethod: "if:then:elseif:then:else:" body: {
     }
 }
 
-' object type object
+' object
 Object <- Prims** objectPrototype copy
 
 ' access the object prototype object
@@ -38,7 +38,29 @@ Object prototype addMethod: "not" body: {
     True
 }
 
-' array type object
+' block
+Block <- Object prototype copy
+
+' access the object prototype object
+Block addMethod: "prototype" body: {
+    Prims** blockPrototype
+}
+
+' number
+Number <- Object prototype copy
+
+Number addMethod: "prototype" body: {
+    Prims** numberPrototype
+}
+
+' string
+String <- Object prototype copy
+
+String addMethod: "prototype" body: {
+    Prims** stringPrototype
+}
+
+' array
 Array <- Object prototype copy
 
 ' access the array prototype object

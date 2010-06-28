@@ -32,7 +32,7 @@ namespace Finch
     
     Ref<Object> Object::NewNumber(Environment & env, double value)
     {
-        return Ref<Object>(new NumberObject(env.Number(), value));
+        return Ref<Object>(new NumberObject(env.NumberPrototype(), value));
     }
     
     Ref<Object> Object::NewString(Environment & env, String value)
@@ -48,7 +48,7 @@ namespace Finch
     Ref<Object> Object::NewBlock(Environment & env, const CodeBlock & code,
                                  Ref<Scope> closure, Ref<Object> self)
     {
-        return Ref<Object>(new BlockObject(env.Block(), code, closure, self));
+        return Ref<Object>(new BlockObject(env.BlockPrototype(), code, closure, self));
     }
     
     void Object::Receive(Ref<Object> thisRef, Interpreter & interpreter,

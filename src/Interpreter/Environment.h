@@ -28,18 +28,13 @@ namespace Finch
         
         Ref<Scope>  Globals()       const { return mGlobals; }
 
-        //### bob: this needs to be cleaned up to make a distinction between the type objects
-        // and the prototypes. a type object ("String") is a singleton object that basically
-        // contain "static" methods on a type, including constructors. a prototype
-        // ("String prototype") is the prototypical object that new instances of a type use as
-        // their parent. 
         // Get the core built-in prototype objects.
         Ref<Object> ObjectPrototype()   const { return mObjectPrototype; }
+        Ref<Object> ArrayPrototype()    const { return mArrayPrototype; }
+        Ref<Object> BlockPrototype()    const { return mBlockPrototype; }
+        Ref<Object> NumberPrototype()   const { return mNumberPrototype; }
+        Ref<Object> StringPrototype()   const { return mStringPrototype; }
         Ref<Object> Nil()               const { return mNil; }
-        Ref<Object> ArrayPrototype()    const { return mArray; }
-        Ref<Object> Block()             const { return mBlock; }
-        Ref<Object> Number()            const { return mNumber; }
-        Ref<Object> StringPrototype()   const { return mString; }
         Ref<Object> True()              const { return mTrue; }
         Ref<Object> False()             const { return mFalse; }
         
@@ -50,11 +45,11 @@ namespace Finch
         
         Ref<Scope> mGlobals;
 		Ref<Object> mObjectPrototype;
+        Ref<Object> mArrayPrototype;
+        Ref<Object> mBlockPrototype;
+        Ref<Object> mNumberPrototype;
+        Ref<Object> mStringPrototype;
         Ref<Object> mNil;
-        Ref<Object> mArray;
-        Ref<Object> mBlock;
-        Ref<Object> mNumber;
-        Ref<Object> mString;
         Ref<Object> mTrue;
         Ref<Object> mFalse;
         

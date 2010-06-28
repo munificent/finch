@@ -1,7 +1,6 @@
 #include "ArrayPrimitives.h"
 #include "BlockObject.h"
 #include "BlockPrimitives.h"
-#include "BooleanPrimitives.h"
 #include "DynamicObject.h"
 #include "Environment.h"
 #include "EtherPrimitives.h"
@@ -32,19 +31,18 @@ namespace Finch
         objectObj->RegisterPrimitive("parent:",         ObjectSetParent);
 
         // define Array prototype
-        mArray = Object::NewObject(mObjectPrototype, "array prototype");
+        mArrayPrototype = Object::NewObject(mObjectPrototype, "array prototype");
         
-        DynamicObject* arrayObj = &static_cast<DynamicObject&>(*mArray);
+        DynamicObject* arrayObj = &static_cast<DynamicObject&>(*mArrayPrototype);
         arrayObj->RegisterPrimitive("length",      ArrayLength);
         arrayObj->RegisterPrimitive("add:",        ArrayAdd);
         arrayObj->RegisterPrimitive("at:",         ArrayAt);
         arrayObj->RegisterPrimitive("at:put:",     ArrayAtPut);
         
         // define Block type object
-        mBlock = Object::NewObject(mObjectPrototype, "Block");
-        mGlobals->Define("Block", mBlock);
+        mBlockPrototype = Object::NewObject(mObjectPrototype, "block prototype");
         
-        DynamicObject* blockObj = &static_cast<DynamicObject&>(*mBlock);
+        DynamicObject* blockObj = &static_cast<DynamicObject&>(*mBlockPrototype);
         blockObj->RegisterPrimitive("call", BlockCall);
         blockObj->RegisterPrimitive("call:", BlockCall);
         blockObj->RegisterPrimitive("call::", BlockCall);
@@ -58,10 +56,9 @@ namespace Finch
         blockObj->RegisterPrimitive("call::::::::::", BlockCall);
         
         // define Number type object
-        mNumber = Object::NewObject(mObjectPrototype, "Number");
-        mGlobals->Define("Number", mNumber);
+        mNumberPrototype = Object::NewObject(mObjectPrototype, "number prototype");
         
-        DynamicObject* numberObj = &static_cast<DynamicObject&>(*mNumber);
+        DynamicObject* numberObj = &static_cast<DynamicObject&>(*mNumberPrototype);
         numberObj->RegisterPrimitive("abs", NumberAbs);
         numberObj->RegisterPrimitive("neg", NumberNeg);
         numberObj->RegisterPrimitive("mod:", NumberMod);
@@ -87,10 +84,9 @@ namespace Finch
         numberObj->RegisterPrimitive(">=",  NumberGreaterThanOrEqual);
         
         // define String type object
-        mString = Object::NewObject(mObjectPrototype, "String");
-        mGlobals->Define("String", mString);
+        mStringPrototype = Object::NewObject(mObjectPrototype, "string prototype");
         
-        DynamicObject* stringObj = &static_cast<DynamicObject&>(*mString);
+        DynamicObject* stringObj = &static_cast<DynamicObject&>(*mStringPrototype);
         stringObj->RegisterPrimitive("+",           StringAdd);
         stringObj->RegisterPrimitive("length",      StringLength);
         stringObj->RegisterPrimitive("at:",         StringAt);
@@ -130,6 +126,9 @@ namespace Finch
 		
         DynamicObject* primsObj = &static_cast<DynamicObject&>(*primitives);
         primsObj->RegisterPrimitive("objectPrototype",  ObjectGetPrototype);
+        primsObj->RegisterPrimitive("blockPrototype",   BlockGetPrototype);
+        primsObj->RegisterPrimitive("numberPrototype",  NumberGetPrototype);
+        primsObj->RegisterPrimitive("stringPrototype",  StringGetPrototype);
         primsObj->RegisterPrimitive("arrayPrototype",   ArrayGetPrototype);
     }
 }
