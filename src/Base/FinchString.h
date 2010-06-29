@@ -14,7 +14,7 @@ namespace Finch
     public:
         // Creates a new string using the given C-style format string and a
         // number of arguments to be formatted.
-        static String Format(const String & format, ...);
+        static String Format(const char* format, ...);
         
         String() {}
         

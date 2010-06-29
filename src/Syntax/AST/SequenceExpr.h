@@ -7,7 +7,7 @@
 #include "IExprVisitor.h"
 #include "Macros.h"
 #include "Ref.h"
-#include "String.h"
+#include "FinchString.h"
 
 namespace Finch
 {

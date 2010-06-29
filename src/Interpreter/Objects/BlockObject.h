@@ -8,7 +8,7 @@
 #include "Object.h"
 #include "Ref.h"
 #include "Scope.h"
-#include "String.h"
+#include "FinchString.h"
 
 namespace Finch
 {

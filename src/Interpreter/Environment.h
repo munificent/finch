@@ -7,7 +7,7 @@
 #include "Object.h"
 #include "Ref.h"
 #include "Scope.h"
-#include "String.h"
+#include "FinchString.h"
 #include "StringTable.h"
 
 namespace Finch

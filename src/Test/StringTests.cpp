@@ -1,5 +1,5 @@
 #include "StringTests.h"
-#include "String.h"
+#include "FinchString.h"
 
 namespace Finch
 {

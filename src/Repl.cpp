@@ -10,7 +10,7 @@
 #include "ReplLineReader.h"
 #include "Scope.h"
 #include "Script.h"
-#include "String.h"
+#include "FinchString.h"
 
 namespace Finch
 {

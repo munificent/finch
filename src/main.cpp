@@ -3,7 +3,7 @@
 #include "Ref.h"
 #include "Repl.h"
 #include "Script.h"
-#include "String.h"
+#include "FinchString.h"
 
 //#define UNIT_TESTS
 
