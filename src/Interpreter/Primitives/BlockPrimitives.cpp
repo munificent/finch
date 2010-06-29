@@ -9,9 +9,9 @@ namespace Finch
 {
     PRIMITIVE(BlockGetPrototype)
     {
-		interpreter.Push(interpreter.GetEnvironment().BlockPrototype());
+        interpreter.Push(interpreter.GetEnvironment().BlockPrototype());
     }
-	
+    
     PRIMITIVE(BlockCall)
     {
         ASSERT_NOT_NULL(thisRef->AsBlock());

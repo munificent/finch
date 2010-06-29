@@ -44,7 +44,7 @@ namespace Finch
         StringTable mStrings;
         
         Ref<Scope> mGlobals;
-		Ref<Object> mObjectPrototype;
+        Ref<Object> mObjectPrototype;
         Ref<Object> mArrayPrototype;
         Ref<Object> mBlockPrototype;
         Ref<Object> mNumberPrototype;

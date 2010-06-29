@@ -10,15 +10,15 @@ namespace Finch
     // Takes in a raw token stream including line tokens, and normalizes it by
     // discarding newlines that should be ignored. The rules are:
     //
-	// - Any leading newlines appearing at the beginning of the token stream are
-	//   discarded.
-	//
+    // - Any leading newlines appearing at the beginning of the token stream are
+    //   discarded.
+    //
     // - After a newline is emitted, any immediately following ones are
     //   discarded. This collapses duplicate newlines to a single one.
     //
     // - Any newlines after a token that cannot end an expression are discarded.
     //   Any newlines after a keyword, operator, "|", "<-", or "<--" will be
-	//   ignored.
+    //   ignored.
     //
     // - Any newlines after an opening group are discarded. This means newlines
     //   following a "(", "[", or "{" will be ignored.

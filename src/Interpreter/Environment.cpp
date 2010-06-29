@@ -19,7 +19,7 @@ namespace Finch
         
         // define Object prototype
         mObjectPrototype = Object::NewObject(Ref<Object>(), "object prototype");
-		
+        
         DynamicObject* objectObj = &static_cast<DynamicObject&>(*mObjectPrototype);
         objectObj->RegisterPrimitive("=",               ObjectEquals);
         objectObj->RegisterPrimitive("!=",              ObjectNotEquals);
@@ -123,7 +123,7 @@ namespace Finch
         // define bare primitive object
         Ref<Object> primitives = Object::NewObject(mObjectPrototype);
         mGlobals->Define("Prims**", primitives);
-		
+
         DynamicObject* primsObj = &static_cast<DynamicObject&>(*primitives);
         primsObj->RegisterPrimitive("objectPrototype",  ObjectGetPrototype);
         primsObj->RegisterPrimitive("blockPrototype",   BlockGetPrototype);

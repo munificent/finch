@@ -9,11 +9,11 @@
 
 namespace Finch
 {
-	PRIMITIVE(ArrayGetPrototype)
-	{
-		interpreter.Push(interpreter.GetEnvironment().ArrayPrototype());
-	}
-	
+    PRIMITIVE(ArrayGetPrototype)
+    {
+        interpreter.Push(interpreter.GetEnvironment().ArrayPrototype());
+    }
+    
     PRIMITIVE(ArrayLength)
     {
         ArrayObject * array = thisRef->AsArray();

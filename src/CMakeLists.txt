@@ -14,12 +14,12 @@ add_subdirectory(Syntax)
 include_directories(
             ${CMAKE_SOURCE_DIR}/src 
             ${CMAKE_SOURCE_DIR}/src/Base 
-			${CMAKE_SOURCE_DIR}/src/Compiler
-			${CMAKE_SOURCE_DIR}/src/Interpreter
-			${CMAKE_SOURCE_DIR}/src/Interpreter/Objects 
-			${CMAKE_SOURCE_DIR}/src/Interpreter/Primitives
-			${CMAKE_SOURCE_DIR}/src/Syntax
-			${CMAKE_SOURCE_DIR}/src/Syntax/AST)
+            ${CMAKE_SOURCE_DIR}/src/Compiler
+            ${CMAKE_SOURCE_DIR}/src/Interpreter
+            ${CMAKE_SOURCE_DIR}/src/Interpreter/Objects 
+            ${CMAKE_SOURCE_DIR}/src/Interpreter/Primitives
+            ${CMAKE_SOURCE_DIR}/src/Syntax
+            ${CMAKE_SOURCE_DIR}/src/Syntax/AST)
 
 # executable build for CMAKE main
 add_executable(finch

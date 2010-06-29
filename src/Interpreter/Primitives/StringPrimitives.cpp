@@ -10,9 +10,9 @@ namespace Finch
 {
     PRIMITIVE(StringGetPrototype)
     {
-		interpreter.Push(interpreter.GetEnvironment().StringPrototype());
+        interpreter.Push(interpreter.GetEnvironment().StringPrototype());
     }
-	
+    
     PRIMITIVE(StringAdd)
     {
         //### bob: need to figure out how a primitive can call a non-primitive function

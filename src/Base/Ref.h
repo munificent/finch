@@ -11,24 +11,24 @@ namespace Finch
     class Ref
     {
     public:
-		// Constructs a new null pointer.
+        // Constructs a new null pointer.
         Ref()
         :   mObj(NULL),
             mPrev(this),
             mNext(this)
         {}
-		
-		// Wraps the given raw pointer in a new smart pointer. This should only
-		// be used once for any given pointer (i.e. you wrap the raw pointer as
-		// soon as its allocated and then only access it through Ref<T> from
-		// that point on.
+
+        // Wraps the given raw pointer in a new smart pointer. This should only
+        // be used once for any given pointer (i.e. you wrap the raw pointer as
+        // soon as its allocated and then only access it through Ref<T> from
+        // that point on.
         explicit Ref(T * obj)
         :   mObj(obj),
             mPrev(this),
             mNext(this)
         {}
         
-		// Copies a reference. Both references will refer to the same object.
+        // Copies a reference. Both references will refer to the same object.
         Ref(const Ref<T> & other)
         :   mObj(NULL),
             mPrev(this),
@@ -45,22 +45,22 @@ namespace Finch
         T & operator *() const { return *mObj; }
         T * operator ->() const { return mObj; }
         
-		// Compares two references. References are equal if they refer to the
-		// same object.
+        // Compares two references. References are equal if they refer to the
+        // same object.
         bool operator ==(const Ref<T> & other) const
         {
             return mObj == other.mObj;
         }
         
-		// Compares two references. References are not equal if they refer to
-		// different objects.
+        // Compares two references. References are not equal if they refer to
+        // different objects.
         bool operator !=(const Ref<T> & other) const
         {
             return mObj != other.mObj;
         }
         
-		// Discards the currently referred to object and assigns the given
-		// reference to this one.
+        // Discards the currently referred to object and assigns the given
+        // reference to this one.
         Ref<T>& operator =(const Ref<T> & other)
         {
             if (&other != this)
@@ -72,11 +72,11 @@ namespace Finch
             return *this;
         }
         
-		// Gets whether or not this reference is pointing to null.
+        // Gets whether or not this reference is pointing to null.
         bool IsNull() const { return mObj == NULL; }
         
-		// Clears the reference. If this was the last reference to the referred
-		// object, it will be deallocated.
+        // Clears the reference. If this was the last reference to the referred
+        // object, it will be deallocated.
         void Clear()
         {
             if (mNext != this)
