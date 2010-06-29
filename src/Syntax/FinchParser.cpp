@@ -60,26 +60,25 @@ namespace Finch
     
     Ref<Expr> FinchParser::Assignment()
     {
-        if (LookAhead(TOKEN_NAME, TOKEN_ARROW, TOKEN_UNDEFINED))
-        {
-            String name = Consume().Text();
-            
-            Consume(); // the arrow
-            Consume(); // undefined
-            
-            return Ref<Expr>(new UndefineExpr(name));
-        }
-        else if (LookAhead(TOKEN_NAME, TOKEN_ARROW))
+        if (LookAhead(TOKEN_NAME, TOKEN_ARROW))
         {
             String name = Consume().Text();
             
             Consume(); // the arrow
             
-            // get the initial value
-            Ref<Expr> value = Keyword();
-            if (value.IsNull()) return ParseError();
-            
-            return Ref<Expr>(new DefExpr(name, value));
+            // handle assigning the special "undefined" value
+            if (Match(TOKEN_UNDEFINED))
+            {
+                return Ref<Expr>(new UndefineExpr(name));
+            }
+            else
+            {
+                // parse the assigned value
+                Ref<Expr> value = Keyword();
+                if (value.IsNull()) return ParseError();
+                
+                return Ref<Expr>(new DefExpr(name, value));
+            }
         }
         else if (LookAhead(TOKEN_NAME, TOKEN_LONG_ARROW))
         {
