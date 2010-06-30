@@ -14,7 +14,9 @@ src/finch.xcodeproj/*.mode1v3
 src/finch.xcodeproj/*.pbxuser
 
 # Makefile build files
-finch
+syntax: regexp
+^finch
+syntax: glob
 objects/**
 
 # Editor temp files

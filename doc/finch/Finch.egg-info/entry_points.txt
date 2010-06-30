@@ -1,0 +1,4 @@
+
+    [pygments.lexers]
+    finchlexer = finch:FinchLexer
+    
