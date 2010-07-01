@@ -4,10 +4,9 @@ body {
 
 h1 {
   color: #d0c;
-  font: 24px Inconsolata, Consolas, Monaco, monospace;
+  font: 48px 'Reenie Beanie', Verdana, sans-serif;
   margin: 0;
-  padding: 20px 0 10px 0;
-  border-bottom: solid 3px #ddd;
+  padding: 0;
 }
 
 h2 {
@@ -30,8 +29,7 @@ a {
 }
 
 a:hover {
-  color: #d0c;
-  text-decoration: underline;
+  color: #706;
 }
 
 p {
@@ -42,7 +40,7 @@ p {
 
 code, pre, tt {
   color: #666;
-  font: 14px Inconsolata, Consolas, Monaco, monospace;
+  font: 15px Inconsolata, Consolas, Monaco, monospace;
 }
 
 .content {
@@ -50,12 +48,21 @@ code, pre, tt {
   width: 600px;
 }
 
+.nav {
+  display: block;
+  background: #ddd;
+  color: #888;
+  padding: 5px;
+  margin: 10px 0 20px 0;
+  font: normal 16px Inconsolata, Consolas, Monaco, monospace;
+}
+
 p.footer {
-  color: #999;
-  font: 13px Georgia, serif;
-  margin: 0;
-  padding: 10px 0 0 0;
-  border-top: solid 3px #ddd;
+  background: #ddd;
+  color: #888;
+  padding: 5px;
+  margin: 20px 0;
+  font: normal 14px Inconsolata, Consolas, Monaco, monospace;
 }
 
 

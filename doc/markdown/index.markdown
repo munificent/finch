@@ -1,5 +1,7 @@
 ^title Welcome
 
+<span class="nav">Welcome | [Expressions](expressions.html)</span>
+
 Welcome and thanks for coming. You're here because, for some reason, you're interested in Finch, a little programming language of mine. Finch is still very early in development so the only people likely to be interested in it are language nerds. Thus, the docs here will tend to assume you're one of those.
 
 ## What is Finch?

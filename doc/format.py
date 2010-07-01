@@ -72,13 +72,13 @@ def formatfile(path):
         html = markdown.markdown(contents, ['def_list', 'codehilite'])
         out.write(html)
 
-        out.write('<p class="footer">Last modified on {0}</p>\n'.format(mod_str));
+        out.write('<p class="footer">Last modified on {0} | email = robert, domain = stuffwithstuff.com</p>\n'.format(mod_str));
         
         out.write('</div>\n')
         out.write('</body>\n')
         out.write('</html>')
         
-    print "converted ", basename
+    print "converted", basename
 
 
 # process each markdown file

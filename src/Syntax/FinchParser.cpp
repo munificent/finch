@@ -87,6 +87,7 @@ namespace Finch
             Consume(); // the arrow
             
             // get the initial value
+            //### bob: should call Assignment() here to allow chaining
             Ref<Expr> value = Keyword();
             if (value.IsNull()) return ParseError();
             

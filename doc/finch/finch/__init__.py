@@ -5,11 +5,7 @@ from pygments.formatters import HtmlFormatter
 from pygments.lexer import RegexLexer
 from pygments.token import *
 
-print 'loading'
-
 class FinchLexer(RegexLexer):
-    print 'constructed lexer'
-    
     name = 'Finch'
     aliases = ['finch']
     filenames = ['*.fin']
@@ -20,7 +16,7 @@ class FinchLexer(RegexLexer):
             
             # reserved words
             (r'(self|undefined)', Name.Builtin),
-            (r'(\<\-|\<\-\-|\.|;)', Operator),
+            (r'(\<\-\-|\<\-|\.|;)', Operator),
              
             # built-in operators and punctuation
             (r'[,()\\\[\]{}]', Punctuation),
@@ -64,5 +60,4 @@ class FinchLexer(RegexLexer):
     
     # bob: hack. i know i want it to guess finch
     def analyse_text(text):
-        print 'in analyze text'
         return 1.0
