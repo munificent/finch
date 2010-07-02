@@ -218,8 +218,40 @@
 
 
 <p>Arrays are objects like everything else, so they can be stored in variables, passed to methods, etc.</p>
+<h2>Method Binds</h2>
+<p>One thing you commonly do in Finch is bind methods to objects. Finch doesn't have "class declarations" or anything formal like that. To make an object that does stuff, you basically make an object and then slap a bunch of methods on it.</p>
+<p>Like everything else, you can do that by sending a message to the object. If we have some object <code>fred</code>, we can add a method to it like this:</p>
+<div class="codehilite"><pre><span class="n">fred</span> <span class="k">addMethod:</span> <span class="s">&quot;dance&quot;</span> <span class="k">body:</span> <span class="p">{</span> <span class="k">writeLine:</span> <span class="s">&quot;Sorry, I&#39;m too sexy.&quot;</span> <span class="p">}</span>
+</pre></div>
+
+
+<p>This also works for operators and keyword messages:</p>
+<div class="codehilite"><pre><span class="n">fred</span> <span class="k">addMethod:</span> <span class="s">&quot;?&quot;</span> <span class="k">body:</span> <span class="p">{</span><span class="kd">|</span><span class="nv">right</span><span class="kd">|</span>
+    <span class="k">writeLine:</span> <span class="s">&quot;What do I do with a &quot;</span> <span class="ow">+</span> <span class="n">right</span> <span class="ow">+</span> <span class="s">&quot;?&quot;</span>
+<span class="p">}</span>
+
+<span class="n">fred</span> <span class="k">addMethod:</span> <span class="s">&quot;give:to:&quot;</span> <span class="p">{</span><span class="kd">|</span><span class="nv">gift</span><span class="w"> </span><span class="nv">who</span><span class="kd">|</span>
+    <span class="k">writeLine:</span> <span class="s">&quot;Here, &quot;</span> <span class="ow">+</span> <span class="n">who</span> <span class="ow">+</span> <span class="s">&quot;, have a &quot;</span> <span class="ow">+</span> <span class="n">gift</span> <span class="ow">+</span> <span class="s">&quot;.&quot;</span>
+<span class="p">}</span>
+</pre></div>
+
+
+<p>It works, but it's a bit ugly. To make things a little nicer, Finch has a little syntactical sugar for binding methods. The above methods could also be bound like this:</p>
+<div class="codehilite"><pre><span class="n">fred</span> <span class="err">::</span> <span class="n">dance</span> <span class="p">{</span> <span class="k">writeLine:</span> <span class="s">&quot;Sorry, I&#39;m too sexy.&quot;</span> <span class="p">}</span>
+
+<span class="n">fred</span> <span class="err">::</span> <span class="ow">?</span> <span class="n">right</span> <span class="p">{</span>
+    <span class="k">writeLine:</span> <span class="s">&quot;What do I do with a &quot;</span> <span class="ow">+</span> <span class="n">right</span> <span class="ow">+</span> <span class="s">&quot;?&quot;</span>
+<span class="p">}</span>
+
+<span class="n">fred</span> <span class="err">::</span> <span class="k">give:</span> <span class="n">gift</span> <span class="k">to:</span> <span class="n">who</span> <span class="p">{</span>
+    <span class="k">writeLine:</span> <span class="s">&quot;Here, &quot;</span> <span class="ow">+</span> <span class="n">who</span> <span class="ow">+</span> <span class="s">&quot;, have a &quot;</span> <span class="ow">+</span> <span class="n">gift</span> <span class="ow">+</span> <span class="s">&quot;.&quot;</span>
+<span class="p">}</span>
+</pre></div>
+
+
+<p>It's cleaner, and it also makes sure you have the right number of arguments.</p>
 <h2>Combining Expressions: Precedence and Associativity</h2>
-<p>OK, so we've got the building blocks. Now let's talk about how they interact. The two keys parts are precedence and associativity. Precedence determines which expression binds "tighter" when different expression types are mixed together. From lowest (loosest) to highest, we have: sequences, assignment, keyword messages, operators, then unary messages. For example, given an expression like this:</p>
+<p>OK, so we've got the building blocks. Now let's talk about how they interact. The two keys parts are precedence and associativity. Precedence determines which expression binds "tighter" when different expression types are mixed together. From lowest (loosest) to highest, we have: binds, sequences, assignment, keyword messages, operators, then unary messages. For example, given an expression like this:</p>
 <div class="codehilite"><pre><span class="n">a</span> <span class="o">&lt;-</span> <span class="mi">8</span> <span class="ow">+</span> <span class="mi">2</span> <span class="n">neg</span> <span class="k">mod:</span> <span class="mi">4</span> <span class="ow">-</span> <span class="mi">2</span>
 <span class="k">write:</span> <span class="n">a</span>
 </pre></div>

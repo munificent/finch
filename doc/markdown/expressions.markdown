@@ -228,9 +228,44 @@ Finch has built-in support for resizable arrays. Most of the things you can do w
 
 Arrays are objects like everything else, so they can be stored in variables, passed to methods, etc.
 
+## Method Binds
+
+One thing you commonly do in Finch is bind methods to objects. Finch doesn't have "class declarations" or anything formal like that. To make an object that does stuff, you basically make an object and then slap a bunch of methods on it.
+
+Like everything else, you can do that by sending a message to the object. If we have some object `fred`, we can add a method to it like this:
+
+    :::finch
+    fred addMethod: "dance" body: { writeLine: "Sorry, I'm too sexy." }
+
+This also works for operators and keyword messages:
+
+    :::finch
+    fred addMethod: "?" body: {|right|
+        writeLine: "What do I do with a " + right + "?"
+    }
+    
+    fred addMethod: "give:to:" {|gift who|
+        writeLine: "Here, " + who + ", have a " + gift + "."
+    }
+
+It works, but it's a bit ugly. To make things a little nicer, Finch has a little syntactical sugar for binding methods. The above methods could also be bound like this:
+
+    :::finch
+    fred :: dance { writeLine: "Sorry, I'm too sexy." }
+    
+    fred :: ? right {
+        writeLine: "What do I do with a " + right + "?"
+    }
+    
+    fred :: give: gift to: who {
+        writeLine: "Here, " + who + ", have a " + gift + "."
+    }
+
+It's cleaner, and it also makes sure you have the right number of arguments.
+
 ## Combining Expressions: Precedence and Associativity
 
-OK, so we've got the building blocks. Now let's talk about how they interact. The two keys parts are precedence and associativity. Precedence determines which expression binds "tighter" when different expression types are mixed together. From lowest (loosest) to highest, we have: sequences, assignment, keyword messages, operators, then unary messages. For example, given an expression like this:
+OK, so we've got the building blocks. Now let's talk about how they interact. The two keys parts are precedence and associativity. Precedence determines which expression binds "tighter" when different expression types are mixed together. From lowest (loosest) to highest, we have: binds, sequences, assignment, keyword messages, operators, then unary messages. For example, given an expression like this:
 
     :::finch
     a <- 8 + 2 neg mod: 4 - 2

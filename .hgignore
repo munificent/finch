@@ -22,3 +22,5 @@ objects/**
 # Editor temp files
 .*.swp
 
+# Python temp files
+**.pyc
