@@ -37,6 +37,7 @@ namespace Finch
             LEX_IN_STRING,
             LEX_IN_STRING_ESCAPE,
             LEX_IN_COMMENT,
+            LEX_IN_COLON,
             LEX_DONE
         };
         

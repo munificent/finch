@@ -39,12 +39,13 @@ namespace Finch
                         case '{': token = SingleToken(TOKEN_LEFT_BRACE); break;
                         case '}': token = SingleToken(TOKEN_RIGHT_BRACE); break;
                         case '.': token = SingleToken(TOKEN_DOT); break;
-                        case ':': token = SingleToken(TOKEN_KEYWORD); break;
                         case ';': token = SingleToken(TOKEN_LINE); break;
                         case '\\': token = SingleToken(TOKEN_IGNORE_LINE); break;
                         case '|': token = SingleToken(TOKEN_PIPE); break;
                             
                         case '-': StartState(LEX_IN_MINUS); break;
+                        case ':': StartState(LEX_IN_COLON); break;
+                            
                         case '"':
                             mEscapedString = "";
                             StartState(LEX_IN_STRING);
@@ -205,6 +206,21 @@ namespace Finch
                     else Consume();
                     break;
                     
+                case LEX_IN_COLON:
+                    if (c == ':')
+                    {
+                        token = Token(TOKEN_BIND);
+                        ChangeState(LEX_DEFAULT);
+                    }
+                    else
+                    {
+                        // emit the first colon as a keyword
+                        token = Token(TOKEN_KEYWORD);
+                        // don't consume the character after the :
+                        mState = LEX_DEFAULT;
+                    }
+                    break;
+                    
                 case LEX_DONE:
                     token = Token(TOKEN_EOF);
                     break;
@@ -238,7 +254,7 @@ namespace Finch
     
     Token Lexer::SingleToken(TokenType type)
     {
-        mIndex++;
+        Consume();
         return Token(type);
     }
     

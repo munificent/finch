@@ -1,8 +1,7 @@
-True addMethod: "not" body: { False }
+True :: not { False }
 
 ' define a for-style loop
-Ether addMethod: "from:to:step:do:" body: {
-    |start end step block|
+Ether :: from: start to: end step: step do: block {
     i <- start
     
     while: { i <= end } do: {
@@ -11,14 +10,12 @@ Ether addMethod: "from:to:step:do:" body: {
     }
 }
 
-Ether addMethod: "from:to:do:" body: {
-    |start end block|
+Ether :: from: start to: end do: block {
     from: start to: end step: 1 do: block
 }
 
 ' a chained if/then/else
-Ether addMethod: "if:then:elseif:then:else:" body: {
-    |if1 then1 if2 then2 else|
+Ether :: if: if1 then: then1 elseif: if2 then: then2 else: else {
     if: if1 then: then1 else: {
         if: if2 then: then2 else: else
     }
@@ -28,54 +25,40 @@ Ether addMethod: "if:then:elseif:then:else:" body: {
 Object <- Prims** objectPrototype copy
 
 ' access the object prototype object
-Object addMethod: "prototype" body: {
-    Prims** objectPrototype
-}
+Object :: prototype { Prims** objectPrototype }
 
 ' any non-true object is implicitly "false", so sending "not" to it
 ' returns true
-Object prototype addMethod: "not" body: {
-    True
-}
+Object prototype :: not { True }
 
 ' block
 Block <- Object prototype copy
 
 ' access the object prototype object
-Block addMethod: "prototype" body: {
-    Prims** blockPrototype
-}
+Block :: prototype { Prims** blockPrototype }
 
 ' number
 Number <- Object prototype copy
 
-Number addMethod: "prototype" body: {
-    Prims** numberPrototype
-}
+Number :: prototype { Prims** numberPrototype }
 
 ' string
 String <- Object prototype copy
 
-String addMethod: "prototype" body: {
-    Prims** stringPrototype
-}
+String :: prototype { Prims** stringPrototype }
 
 ' array
 Array <- Object prototype copy
 
 ' access the array prototype object
-Array addMethod: "prototype" body: {
-    Prims** arrayPrototype
-}
+Array :: prototype { Prims** arrayPrototype }
 
 ' constructors
-Array addMethod: "count:" body: {
-    |count|
+Array :: count: count {
     self count: count fillWith: Nil
 }
 
-Array addMethod: "count:fillWith:" body: {
-    |count element|
+Array :: count: count fillWith: element {
     result <- []
 
     from: 1 to: count do: {|i| result add: element }
@@ -83,13 +66,24 @@ Array addMethod: "count:fillWith:" body: {
 }
 
 ' instance methods
-Array prototype addMethod: "each:" body: {|block|
+
+' concatenate two arrays
+Array prototype :: ++ right {
+    result <- []
+    
+    self each: {|e| result add: e }
+    right each: {|e| result add: e }
+    
+    result
+}
+
+Array prototype :: each: block {
     from: 0 to: self length - 1 do: {|i|
         block call: (self at: i)
     }
 }
 
-Array prototype addMethod: "map:" body: {|block|
+Array prototype :: map: block {
     result <- []
     self each: {|element| result add: (block call: element) }
     result

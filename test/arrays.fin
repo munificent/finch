@@ -65,4 +65,14 @@ Test suite: "Arrays" is: {
         Test that: (b at: 1) equals: 3
         Test that: (b at: 2) equals: 4
     }
+    
+    Test test: "++" is: {
+        a <- [1; 2] ++ [3; 4]
+        
+        Test that: a length equals: 4
+        Test that: (a at: 0) equals: 1
+        Test that: (a at: 1) equals: 2
+        Test that: (a at: 2) equals: 3
+        Test that: (a at: 3) equals: 4
+    }
 }

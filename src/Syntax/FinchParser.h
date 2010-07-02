@@ -1,9 +1,11 @@
 #pragma once
 
+#include "Array.h"
 #include "Macros.h"
 #include "Parser.h"
 #include "Expr.h"
 #include "Ref.h"
+#include "String.h"
 
 namespace Finch
 {
@@ -31,6 +33,7 @@ namespace Finch
         // The grammar productions, from lowest to highest precedence.
         Ref<Expr> Expression();
         Ref<Expr> Sequence();
+        Ref<Expr> Bind();
         Ref<Expr> Assignment();
         Ref<Expr> Keyword();
         Ref<Expr> Operator();
@@ -39,6 +42,8 @@ namespace Finch
         
         void ParseSequence(Array<Ref<Expr> > & expressions);
         Ref<Expr> ParseKeyword(Ref<Expr> object);
+        Ref<Expr> ParseBindBody(Ref<Expr> target, String name,
+                                const Array<String> & args);
         
         Ref<Expr> ParseError();
         Ref<Expr> ParseError(const char * message);

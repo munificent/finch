@@ -8,15 +8,13 @@ Test <- Object copyWith: {
     _tests      <- 0
     _failed     <- 0
     
-    self addMethod: "suite:is:" body: {
-        |name body|
+    self :: suite: name is: body {
         _suite <- name
         body call
         _suite <- ""
     }
 
-    self addMethod: "test:is:" body: {
-        |name body|
+    self :: test: name is: body {
         _test       <- name
         _tests      <- 0
         _failed     <- 0
@@ -33,15 +31,14 @@ Test <- Object copyWith: {
         _test <- ""
     }
 
-    self addMethod: "showHeader" body: {
+    self :: showHeader {
         if: _testShown not then: {
             writeLine: _suite + " / " + _test
             _testShown <- True
         }
     }
 
-    self addMethod: "isTrue:" body: {
-        |actual|
+    self :: isTrue: actual {
         _tests <- _tests + 1
 
         if: actual not then: {
@@ -51,8 +48,7 @@ Test <- Object copyWith: {
         }
     }
 
-    self addMethod: "that:equals:" body: {
-        |actual expected|
+    self :: that: actual equals: expected {
         self isTrue: actual = expected
     }
 }

@@ -20,6 +20,8 @@ namespace Finch
         Execute(fileName, interpreter);
     }
     
+    //### bob: these two functions are almost identical. merge:
+    
     void Script::Execute(String fileName, Interpreter & interpreter)
     {
         FileLineReader reader(fileName);
@@ -79,6 +81,7 @@ namespace Finch
         {
             int id = interpreter.GetEnvironment().Blocks().Add(Array<String>(), *expr, interpreter.GetEnvironment());
             const CodeBlock & code = interpreter.GetEnvironment().Blocks().Find(id);
+            
             Ref<Object> block = Object::NewBlock(interpreter.GetEnvironment(), code,
                 interpreter.GetEnvironment().Globals(), interpreter.GetEnvironment().Nil());
             

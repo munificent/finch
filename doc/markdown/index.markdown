@@ -94,8 +94,6 @@ If you built from a makefile, it's:
 
 ### Where to Go from Here
 
-I'm still hard at work on both the implementation and the docs, so you're in uncharted territory now. You can type expressions into the REPL and it will evaluate them. If you hunt through the [sample scripts](http://bitbucket.org/munificent/finch/src/tip/sample/) and the [tests](http://bitbucket.org/munificent/finch/src/tip/test/), that'll give you an idea of what Finch currently supports.
+You should be good to start hacking some Finch code now. The other docs here can help get you started. The [sample scripts](http://bitbucket.org/munificent/finch/src/tip/sample/) and the [tests](http://bitbucket.org/munificent/finch/src/tip/test/) will give you some ideas, along with the Finch-related posts on [my blog](http://journal.stuffwithstuff.com/category/finch/).
 
-You may be able to find some Finch-related posts on [my blog](http://journal.stuffwithstuff.com/category/finch/).
-
-If you have any questions or comments, holler at me. Email is `robert` and the domain is `stuffwithstuff.com`.
+If you have any questions or comments, holler at me.

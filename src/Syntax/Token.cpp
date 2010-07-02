@@ -17,6 +17,7 @@ namespace Finch
             case TOKEN_DOT:             cout << "dot"; break;
             case TOKEN_PIPE:            cout << "pipe"; break;
             case TOKEN_ARROW:           cout << "<-"; break;
+            case TOKEN_BIND:            cout << "::"; break;
             case TOKEN_LONG_ARROW:      cout << "<--"; break;
             case TOKEN_SELF:            cout << "self"; break;
             case TOKEN_UNDEFINED:       cout << "undefined"; break;

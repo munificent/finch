@@ -20,13 +20,20 @@ namespace Finch
     {
         // since expression includes sequence expressions, this will parse
         // as many lines as we have
-        return Expression();
+        Ref<Expr> expr = Expression();
+        
+        // we should have parsed the whole file
+        if (!LookAhead(TOKEN_EOF)) {
+            return ParseError("Parser ended unexpectedly before reaching end of file.");
+        }
+        
+        return expr;
     }
     
     Ref<Expr> FinchParser::ParseLine()
     {
         // skip past Sequence() otherwise we'll keep reading lines forever
-        Ref<Expr> expr = Assignment();
+        Ref<Expr> expr = Bind();
         
         // eat any trailing line
         Match(TOKEN_LINE);
@@ -56,6 +63,56 @@ namespace Finch
         if (expressions.Count() == 1) return expressions[0];
         
         return Ref<Expr>(new SequenceExpr(expressions));
+    }
+    
+    Ref<Expr> FinchParser::Bind()
+    {
+        Ref<Expr> target = Assignment();
+        if (target.IsNull()) return ParseError();
+        
+        if (Match(TOKEN_BIND))
+        {
+            Array<String> args;
+            
+            // figure out what kind of method we're binding
+            if (LookAhead(TOKEN_NAME))
+            {
+                // unary
+                String name = Consume().Text();
+                
+                return ParseBindBody(target, name, args);
+            }
+            else if (LookAhead(TOKEN_OPERATOR))
+            {
+                // binary
+                String name = Consume().Text();
+                
+                // one arg
+                if (!LookAhead(TOKEN_NAME)) return ParseError("Expect name after operator in a bind expression.");
+                args.Add(Consume().Text());
+                
+                return ParseBindBody(target, name, args);
+            }
+            else if (LookAhead(TOKEN_KEYWORD))
+            {
+                // keyword
+                String name;
+                while (LookAhead(TOKEN_KEYWORD))
+                {
+                    // build the full method name
+                    name += Consume().Text();
+                    
+                    // parse each keyword's arg
+                    if (!LookAhead(TOKEN_NAME)) return ParseError("Expect name after keyword in a bind expression.");
+                    args.Add(Consume().Text());
+                }
+                
+                return ParseBindBody(target, name, args);
+            }
+            else return ParseError("Expect message after '::'.");
+        }
+        
+        return target;
     }
     
     Ref<Expr> FinchParser::Assignment()
@@ -88,6 +145,7 @@ namespace Finch
             
             // get the initial value
             //### bob: should call Assignment() here to allow chaining
+            // need to make sure it's right-associative, though
             Ref<Expr> value = Keyword();
             if (value.IsNull()) return ParseError();
             
@@ -222,7 +280,7 @@ namespace Finch
     
     void FinchParser::ParseSequence(Array<Ref<Expr> > & expressions)
     {
-        Ref<Expr> expression = Assignment();
+        Ref<Expr> expression = Bind();
         //### bob: need error reporting
         if (expression.IsNull()) return;
         
@@ -238,7 +296,7 @@ namespace Finch
             if (LookAhead(TOKEN_RIGHT_BRACE)) break;
             if (LookAhead(TOKEN_EOF)) break;
             
-            Ref<Expr> next = Assignment();
+            Ref<Expr> next = Bind();
             //### bob: need error reporting
             if (next.IsNull()) return;
             
@@ -268,6 +326,33 @@ namespace Finch
         }
         
         return Ref<Expr>();
+    }
+    
+    Ref<Expr> FinchParser::ParseBindBody(Ref<Expr> target, String name,
+                                         const Array<String> & args)
+    {
+        // parse the block
+        if (!Match(TOKEN_LEFT_BRACE)) return ParseError("Expect '{' to begin bound block.");
+        
+        Ref<Expr> body = Expression();
+        if (body.IsNull()) return ParseError("Expect expression body inside block.");
+        
+        if (!Match(TOKEN_RIGHT_BRACE)) return ParseError("Expect '}' to close block.");
+        
+        // attach the block's arguments
+        Ref<Expr> block = Ref<Expr>(new BlockExpr(args, body));
+        
+        // desugar to the basic addMethod:body: form
+        Array<String>      addMethodKeywords;
+        Array<Ref<Expr> >  addMethodArgs;
+        
+        addMethodKeywords.Add("addMethod:");
+        addMethodArgs.Add(Ref<Expr>(new StringExpr(name)));
+        
+        addMethodKeywords.Add("body:");
+        addMethodArgs.Add(block);
+
+        return Ref<Expr>(new KeywordExpr(target, addMethodKeywords, addMethodArgs));
     }
     
     Ref<Expr> FinchParser::ParseError()
