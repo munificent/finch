@@ -4,6 +4,18 @@ Test suite: "Variables" is: {
         Test that: a equals: "something"
     }
     
+    Test test: "Chain" is: {
+        a <- b <- "something"
+        Test that: a equals: "something"
+        Test that: b equals: "something"
+    }
+
+    Test test: "In Expression" is: {
+        b <- "some" + (a <- "thing")
+        Test that: a equals: "thing"
+        Test that: b equals: "something"
+    }
+    
     Test test: "Redefinition" is: {
         a <- "before"
         Test that: a equals: "before"

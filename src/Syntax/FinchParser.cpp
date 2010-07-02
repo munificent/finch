@@ -131,7 +131,7 @@ namespace Finch
             else
             {
                 // parse the assigned value
-                Ref<Expr> value = Keyword();
+                Ref<Expr> value = Assignment();
                 if (value.IsNull()) return ParseError();
                 
                 return Ref<Expr>(new DefExpr(name, value));
@@ -144,9 +144,7 @@ namespace Finch
             Consume(); // the arrow
             
             // get the initial value
-            //### bob: should call Assignment() here to allow chaining
-            // need to make sure it's right-associative, though
-            Ref<Expr> value = Keyword();
+            Ref<Expr> value = Assignment();
             if (value.IsNull()) return ParseError();
             
             return Ref<Expr>(new SetExpr(name, value));
