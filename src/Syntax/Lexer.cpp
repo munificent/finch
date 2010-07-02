@@ -6,6 +6,13 @@
 
 namespace Finch
 {
+    void Lexer::Reset()
+    {
+        mState = LEX_NEED_LINE;
+        mIndex = 0;
+        mTokenStart = 0;
+    }
+    
     Token Lexer::ReadToken()
     {
         Token token;

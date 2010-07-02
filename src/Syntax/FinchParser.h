@@ -12,7 +12,7 @@ namespace Finch
     class ILineReader;
     
     // Parser for the Finch grammar.
-    class FinchParser : private Parser
+    class FinchParser : public Parser
     {
     public:
         FinchParser(ITokenSource & tokens)

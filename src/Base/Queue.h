@@ -27,6 +27,12 @@ namespace Finch
         // Gets the maximum number of items the queue can hold.
         int Capacity() const { return Size; }
         
+        // Clears the entire queue.
+        void Clear()
+        {
+            while (!IsEmpty()) Dequeue();
+        }
+        
         // Adds the given item to the head of the queue.
         void Enqueue(const T & item)
         {

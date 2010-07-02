@@ -37,7 +37,7 @@ namespace Finch
         #ifdef HACK_ROOT_BASE_PATH
             const char* baseLibPath = "base/main.fin";
         #else
-        const char* baseLibPath = "../../base/main.fin";
+            const char* baseLibPath = "../../base/main.fin";
         #endif
         Script::Execute(baseLibPath, interpreter);
         
@@ -49,7 +49,8 @@ namespace Finch
             
             if (expr.IsNull())
             {
-                cout << "parse error" << endl;
+                lexer.Reset();
+                parser.Reset();
                 continue;
             }
             

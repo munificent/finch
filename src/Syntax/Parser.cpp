@@ -6,6 +6,11 @@
 
 namespace Finch
 {
+    void Parser::Reset()
+    {
+        mRead.Clear();
+    }
+    
     bool Parser::LookAhead(TokenType type)
     {
         FillLookAhead(1);
