@@ -23,32 +23,14 @@ namespace Finch
     class UndefineExpr;
     class Object;
     
-    //### bob: having two classes here is a total hack. not being able to do
-    // template virtual functions is a drag. need to find a cleaner solution.
+    // Interface for a class that implements the visitor pattern on expression
+    // objects. Allows us to define new operations on expressions without
+    // putting the code into the expression classes themselves. Lets us
+    // separate out the compiler code from the AST.
     class IExprVisitor
     {
     public:
         virtual ~IExprVisitor() {}
-        
-        virtual Ref<Object> Visit(const ArrayExpr & expr) = 0;
-        virtual Ref<Object> Visit(const BlockExpr & expr) = 0;
-        virtual Ref<Object> Visit(const DefExpr & expr) = 0;
-        virtual Ref<Object> Visit(const KeywordExpr & expr) = 0;
-        virtual Ref<Object> Visit(const NameExpr & expr) = 0;
-        virtual Ref<Object> Visit(const NumberExpr & expr) = 0;
-        virtual Ref<Object> Visit(const OperatorExpr & expr) = 0;
-        virtual Ref<Object> Visit(const SequenceExpr & expr) = 0;
-        virtual Ref<Object> Visit(const SelfExpr & expr) = 0;
-        virtual Ref<Object> Visit(const SetExpr & expr) = 0;
-        virtual Ref<Object> Visit(const StringExpr & expr) = 0;
-        virtual Ref<Object> Visit(const UnaryExpr & expr) = 0;
-        virtual Ref<Object> Visit(const UndefineExpr & expr) = 0;
-    };
-    
-    class IExprVisitor2
-    {
-    public:
-        virtual ~IExprVisitor2() {}
         
         virtual void Visit(const ArrayExpr & expr) = 0;
         virtual void Visit(const BlockExpr & expr) = 0;

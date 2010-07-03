@@ -13,12 +13,15 @@ namespace Finch
 {
     class Environment;
     
-    //### bob: wip
-    // Compiles Finch ASTs to bytecode for execution by the interpreter.
-    class Compiler : private IExprVisitor2
+    // Compiles an expression AST to bytecode for execution by the interpreter.
+    class Compiler : private IExprVisitor
     {
     public:
-        static void Compile(Environment & environment, const Expr & expr, CodeBlock & code);
+        // Compiles the given expression in the given Environment and writes
+        // the bytecode into the given CodeBlock. Needs an Environment to have
+        // access to the string and code tables.
+        static void Compile(Environment & environment, const Expr & expr,
+                            CodeBlock & code);
         
     private:
         Compiler(Environment & environment, CodeBlock & code);

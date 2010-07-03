@@ -70,14 +70,19 @@ namespace Finch
         } arg;
     };
     
-    // A chunk of compiled bytecode.
+    // A block expression compiled to bytecode for a simple stack-based virtual
+    // machine. This is what the interpreter executes.
     class CodeBlock
     {
     public:
+        // Creates a new CodeBlock for a block that takes parameters with the
+        // given names.
         CodeBlock(const Array<String> & params);
         
+        // Gets the names of the parameters that this block expects.
         const Array<String> & Params() const { return mParams; }
         
+        // Gets the instruction at the given offset in the block.
         const Instruction & operator[](int i) const { return mInstructions[i]; }
 
         void Write(OpCode op);

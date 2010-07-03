@@ -12,7 +12,7 @@ namespace Finch
 {
     using std::ostream;
     
-    // AST node for variable declaration: "foo <- bar"
+    // AST node for variable definition: "foo <- bar"
     class DefExpr : public Expr
     {
     public:

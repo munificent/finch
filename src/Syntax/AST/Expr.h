@@ -8,11 +8,7 @@
 #include "FinchString.h"
 
 #define EXPRESSION_VISITOR                                       \
-        virtual Ref<Object> Accept(IExprVisitor & visitor) const \
-        {                                                        \
-            return visitor.Visit(*this);                         \
-        }                                                        \
-        virtual void Accept(IExprVisitor2 & visitor) const       \
+        virtual void Accept(IExprVisitor & visitor) const        \
         {                                                        \
             visitor.Visit(*this);                                \
         }
@@ -22,7 +18,6 @@ namespace Finch
     using std::ostream;
     
     class IExprVisitor;
-    class IExprVisitor2;
     class Object;
     
     enum NameScope
@@ -38,7 +33,7 @@ namespace Finch
         // If this Token is a name, this looks at the naming convention to
         // determine what scope a variable with this name will be declared in.
         // The conventions are:
-        // - InitialCapial      = global
+        // - InitialCapital     = global
         // - _leadingUnderscode = object
         // - anythingElse       = local
         static NameScope GetNameScope(String name)
@@ -54,10 +49,8 @@ namespace Finch
         
         virtual ~Expr() {}
         
-        //### bob: coupling ast to interpreter (object) here is gross.
-        // wish you could do template virtual methods. :(
-        virtual Ref<Object> Accept(IExprVisitor & visitor) const = 0;
-        virtual void Accept(IExprVisitor2 & visitor) const = 0;
+        // The visitor pattern.
+        virtual void Accept(IExprVisitor & visitor) const = 0;
         
         virtual void Trace(std::ostream & stream) const = 0;
     };

@@ -13,7 +13,7 @@ namespace Finch
 {
     using std::ostream;
     
-    // AST node for a pair of sequential expressions: "a b . c d"
+    // AST node for a sequence of expressions: "a b; c d; e f"
     class SequenceExpr : public Expr
     {
     public:
