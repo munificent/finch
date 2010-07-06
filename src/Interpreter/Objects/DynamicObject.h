@@ -17,7 +17,7 @@ namespace Finch
     class Interpreter;
     
     // Function pointer type for a primitive Finch method implemented in C++.
-    typedef void (*PrimitiveMethod)(Ref<Object> thisRef, Interpreter & interpreter,
+    typedef void (*PrimitiveMethod)(Ref<Object> thisRef, Process & process,
                                     String message, const Array<Ref<Object> > & args);
 
     // Object class for a "normal" full-featured object. Supports user-defined
@@ -46,10 +46,10 @@ namespace Finch
         
         virtual Ref<Scope> ObjectScope() const { return mScope; }
         
-        virtual void Receive(Ref<Object> thisRef, Interpreter & interpreter,
+        virtual void Receive(Ref<Object> thisRef, Process & process,
                              String message, const Array<Ref<Object> > & args);
         
-        void AddMethod(Ref<Object> thisRef, Interpreter & interpreter,
+        void AddMethod(Ref<Object> thisRef, Process & process,
                        String name, Ref<Object> body);
         
         void RegisterPrimitive(String message, PrimitiveMethod method);

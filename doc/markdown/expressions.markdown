@@ -70,7 +70,7 @@ Finch has no built-in operators. An expression like:
 Means "send a `+` message to `a`, passing in `b` as an argument." All operators have the same precedence and associate from left to right. This is unlike most other languages with hard-coded precedence levels. Parentheses are your friends here.
 
     1 + 2 * 3   ' evaluates to 9 in Finch
-    1 + (2 * 3) ' evaluates to 6
+    1 + (2 * 3) ' evaluates to 7
 
 Because there are no built-in operators, there are no unary operators in Finch. To negate an expression, instead of an unary `-` operator, send it the unary `neg` message:
 

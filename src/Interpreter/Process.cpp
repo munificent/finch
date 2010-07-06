@@ -4,14 +4,14 @@
 #include "BlockObject.h"
 #include "CodeBlock.h"
 #include "Environment.h"
-#include "Interpreter.h"
+#include "Process.h"
 
 namespace Finch
 {
     using std::cout;
     using std::endl;
     
-    Interpreter::Interpreter(Environment & environment)
+    Process::Process(Environment & environment)
     :   mIsRunning(true),
         mEnvironment(environment),
         mLoopCode(Array<String>()),
@@ -28,7 +28,7 @@ namespace Finch
         mDiscardCode.Write(OP_END_BLOCK);
     }
 
-    Ref<Object> Interpreter::Execute(Ref<Object> block)
+    Ref<Object> Process::Execute(Ref<Object> block)
     {
         // push the starting block
         mCallStack.Push(CallFrame(mEnvironment.Globals(), block));
@@ -257,10 +257,10 @@ namespace Finch
                     //           instruction pointer
                     //
                     // note that all of this is initiated by a call to
-                    // WhileLoop on the interpreter. that pushes a special
-                    // static CodeBlock that contains this sequence of opcodes.
-                    // we do this, instead of compiling a while loop directly
-                    // into the bytecode where it appears so that it's still
+                    // WhileLoop on the process. that pushes a special static
+                    // CodeBlock that contains this sequence of opcodes. we do
+                    // this, instead of compiling a while loop directly into
+                    // the bytecode where it appears so that it's still
                     // possible to overload while:do: at runtime.
                     
                 case OP_LOOP_1:
@@ -316,37 +316,37 @@ namespace Finch
         return PopOperand();
     }
     
-    Ref<Object> Interpreter::Self()
+    Ref<Object> Process::Self()
     {
         return mCallStack.Peek().Block().Self();
     }
 
-    void Interpreter::Push(Ref<Object> object)
+    void Process::Push(Ref<Object> object)
     {
         PushOperand(object);
     }
     
-    void Interpreter::PushNil()
+    void Process::PushNil()
     {
         Push(mEnvironment.Nil());
     }
 
-    void Interpreter::PushBool(bool value)
+    void Process::PushBool(bool value)
     {
         PushOperand(value ? mEnvironment.True() : mEnvironment.False());
     }
 
-    void Interpreter::PushNumber(double value)
+    void Process::PushNumber(double value)
     {
         Push(Object::NewNumber(mEnvironment, value));
     }
 
-    void Interpreter::PushString(const String & value)
+    void Process::PushString(const String & value)
     {
         Push(Object::NewString(mEnvironment, value));
     }
 
-    void Interpreter::CallMethod(Ref<Object> self,
+    void Process::CallMethod(Ref<Object> self,
                                  Ref<Object> blockObj,
                                  const Array<Ref<Object> > & args)
     {
@@ -386,14 +386,14 @@ namespace Finch
         mCallStack.Push(CallFrame(scope, blockObj));
     }
     
-    void Interpreter::CallBlock(Ref<Object> blockObj,
+    void Process::CallBlock(Ref<Object> blockObj,
                                 const Array<Ref<Object> > & args)
     {
         BlockObject & block = *(blockObj->AsBlock());
         CallMethod(block.Self(), blockObj, args);
     }
     
-    void Interpreter::WhileLoop(Ref<Object> condition, Ref<Object> body)
+    void Process::WhileLoop(Ref<Object> condition, Ref<Object> body)
     {
         // push the arguments onto the stack
         Push(body);
@@ -407,7 +407,7 @@ namespace Finch
         mCallStack.Push(CallFrame(mCallStack.Peek().scope, block));
     }
     
-    void Interpreter::DiscardReturn()
+    void Process::DiscardReturn()
     {
         Ref<Object> block = Object::NewBlock(mEnvironment, mDiscardCode,
                                              mCallStack.Peek().scope,
@@ -417,14 +417,14 @@ namespace Finch
         mCallStack.Push(CallFrame(mCallStack.Peek().scope, block));
     }
 
-    void Interpreter::RuntimeError(const String & message)
+    void Process::RuntimeError(const String & message)
     {
         //### bob: ideally, this should be programmatically configurable from
         // within Finch
         cout << "Runtime error: " << message << endl;
     }
     
-    void Interpreter::PushOperand(Ref<Object> object)
+    void Process::PushOperand(Ref<Object> object)
     {
         ASSERT(!object.IsNull(), "Cannot push a null object. (Should be Nil instead.)");
         
@@ -432,7 +432,7 @@ namespace Finch
         mOperands.Push(object);
     }
     
-    Ref<Object> Interpreter::PopOperand()
+    Ref<Object> Process::PopOperand()
     {
         Ref<Object> object = mOperands.Pop();
         

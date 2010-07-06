@@ -3,19 +3,19 @@
 #include "BlockPrimitives.h"
 #include "BlockObject.h"
 #include "Environment.h"
-#include "Interpreter.h"
+#include "Process.h"
 
 namespace Finch
 {
     PRIMITIVE(BlockGetPrototype)
     {
-        interpreter.Push(interpreter.GetEnvironment().BlockPrototype());
+        process.Push(process.GetEnvironment().BlockPrototype());
     }
     
     PRIMITIVE(BlockCall)
     {
         ASSERT_NOT_NULL(thisRef->AsBlock());
-        interpreter.CallBlock(thisRef, args);
+        process.CallBlock(thisRef, args);
     }
 }
 

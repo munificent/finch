@@ -27,7 +27,7 @@
 		C4C6979C1134B33A00662643 /* BlockTable.cpp in Sources */ = {isa = PBXBuildFile; fileRef = C4C697961134B33A00662643 /* BlockTable.cpp */; };
 		C4C6979D1134B33A00662643 /* CodeBlock.cpp in Sources */ = {isa = PBXBuildFile; fileRef = C4C697981134B33A00662643 /* CodeBlock.cpp */; };
 		C4C6979E1134B33A00662643 /* Compiler.cpp in Sources */ = {isa = PBXBuildFile; fileRef = C4C6979A1134B33A00662643 /* Compiler.cpp */; };
-		C4C697A11134B35200662643 /* Interpreter.cpp in Sources */ = {isa = PBXBuildFile; fileRef = C4C6979F1134B35200662643 /* Interpreter.cpp */; };
+		C4C697A11134B35200662643 /* Process.cpp in Sources */ = {isa = PBXBuildFile; fileRef = C4C6979F1134B35200662643 /* Process.cpp */; };
 		C4C697A61134B36F00662643 /* LexerTests.cpp in Sources */ = {isa = PBXBuildFile; fileRef = C4C697A21134B36F00662643 /* LexerTests.cpp */; };
 		C4C697A71134B36F00662643 /* StackTests.cpp in Sources */ = {isa = PBXBuildFile; fileRef = C4C697A41134B36F00662643 /* StackTests.cpp */; };
 		C4C698091134CA9900662643 /* ArrayTests.cpp in Sources */ = {isa = PBXBuildFile; fileRef = C4C698071134CA9900662643 /* ArrayTests.cpp */; };
@@ -103,8 +103,8 @@
 		C4C697991134B33A00662643 /* CodeBlock.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = CodeBlock.h; path = Compiler/CodeBlock.h; sourceTree = "<group>"; };
 		C4C6979A1134B33A00662643 /* Compiler.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = Compiler.cpp; path = Compiler/Compiler.cpp; sourceTree = "<group>"; };
 		C4C6979B1134B33A00662643 /* Compiler.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = Compiler.h; path = Compiler/Compiler.h; sourceTree = "<group>"; };
-		C4C6979F1134B35200662643 /* Interpreter.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = Interpreter.cpp; path = Interpreter/Interpreter.cpp; sourceTree = "<group>"; };
-		C4C697A01134B35200662643 /* Interpreter.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = Interpreter.h; path = Interpreter/Interpreter.h; sourceTree = "<group>"; };
+		C4C6979F1134B35200662643 /* Process.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = Process.cpp; path = Interpreter/Process.cpp; sourceTree = "<group>"; };
+		C4C697A01134B35200662643 /* Process.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = Process.h; path = Interpreter/Process.h; sourceTree = "<group>"; };
 		C4C697A21134B36F00662643 /* LexerTests.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = LexerTests.cpp; path = Test/LexerTests.cpp; sourceTree = "<group>"; };
 		C4C697A31134B36F00662643 /* LexerTests.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = LexerTests.h; path = Test/LexerTests.h; sourceTree = "<group>"; };
 		C4C697A41134B36F00662643 /* StackTests.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = StackTests.cpp; path = Test/StackTests.cpp; sourceTree = "<group>"; };
@@ -273,8 +273,8 @@
 		C4B9DB2F10CF3C19003C556D /* Interpreter */ = {
 			isa = PBXGroup;
 			children = (
-				C4C697A01134B35200662643 /* Interpreter.h */,
-				C4C6979F1134B35200662643 /* Interpreter.cpp */,
+				C4C697A01134B35200662643 /* Process.h */,
+				C4C6979F1134B35200662643 /* Process.cpp */,
 				C4CDF8B710D88E1F001C9D4A /* Environment.h */,
 				C4CDF8B810D88E1F001C9D4A /* Environment.cpp */,
 				C465890610DE874E007C4C3E /* FileLineReader.h */,
@@ -439,7 +439,7 @@
 				C4C6979C1134B33A00662643 /* BlockTable.cpp in Sources */,
 				C4C6979D1134B33A00662643 /* CodeBlock.cpp in Sources */,
 				C4C6979E1134B33A00662643 /* Compiler.cpp in Sources */,
-				C4C697A11134B35200662643 /* Interpreter.cpp in Sources */,
+				C4C697A11134B35200662643 /* Process.cpp in Sources */,
 				C4C697A61134B36F00662643 /* LexerTests.cpp in Sources */,
 				C4C697A71134B36F00662643 /* StackTests.cpp in Sources */,
 				C4C698091134CA9900662643 /* ArrayTests.cpp in Sources */,

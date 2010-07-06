@@ -4,36 +4,36 @@
 #include "ObjectPrimitives.h"
 #include "DynamicObject.h"
 #include "Environment.h"
-#include "Interpreter.h"
+#include "Process.h"
 #include "Object.h"
 
 namespace Finch
 {
     PRIMITIVE(ObjectGetPrototype)
     {
-        interpreter.Push(interpreter.GetEnvironment().ObjectPrototype());
+        process.Push(process.GetEnvironment().ObjectPrototype());
     }
     
     PRIMITIVE(ObjectToString)
     {
-        interpreter.PushString(thisRef->AsString());
+        process.PushString(thisRef->AsString());
     }
     
     PRIMITIVE(ObjectEquals)
     {
         // by default, objects compare using reference equality
-        interpreter.PushBool(thisRef == args[0]);
+        process.PushBool(thisRef == args[0]);
     }
     
     PRIMITIVE(ObjectNotEquals)
     {
         // by default, objects compare using reference equality
-        interpreter.PushBool(thisRef != args[0]);
+        process.PushBool(thisRef != args[0]);
     }
     
     PRIMITIVE(ObjectCopy)
     {
-        interpreter.Push(Object::NewObject(thisRef));
+        process.Push(Object::NewObject(thisRef));
     }
     
     PRIMITIVE(ObjectCopyWith)
@@ -45,24 +45,23 @@ namespace Finch
         BlockObject * originalBlock = args[0]->AsBlock();
         if (originalBlock == NULL)
         {
-            interpreter.RuntimeError("copyWith: must be passed a block argument.");
-            interpreter.PushNil();
+            process.RuntimeError("copyWith: must be passed a block argument.");
+            process.PushNil();
         }
         else
         {
             // push the new object. this is what copyWith: will ultimately
             // return
-            interpreter.Push(copy);
+            process.Push(copy);
             
-            // tell the interpreter to discard the return value of the next
-            // called method. this will ditch the value returned by the
-            // copyWith: block
-            interpreter.DiscardReturn();
+            // tell the process to discard the return value of the next called
+            // method. this will ditch the value returned by the copyWith: block
+            process.DiscardReturn();
             
             // clone the block and rebind it's self to be the copied object.
             // this way, within the initialization block, it seems we're a
             // method on the block
-            Ref<Object> blockCopy = Object::NewBlock(interpreter.GetEnvironment(),
+            Ref<Object> blockCopy = Object::NewBlock(process.GetEnvironment(),
                                                      originalBlock->GetCode(),
                                                      originalBlock->Closure(),
                                                      originalBlock->Self());
@@ -79,7 +78,7 @@ namespace Finch
             // b call
             // since binding self mutates it, we have to copy it first
             
-            interpreter.CallBlock(blockCopy, Array<Ref<Object> >());
+            process.CallBlock(blockCopy, Array<Ref<Object> >());
         }
     }
     
@@ -91,19 +90,19 @@ namespace Finch
         String      name  = args[0]->AsString();
         Ref<Object> value = args[1];
         
-        object->AddMethod(thisRef, interpreter, name, value);
-        interpreter.PushNil();
+        object->AddMethod(thisRef, process, name, value);
+        process.PushNil();
     }
     
     PRIMITIVE(ObjectGetParent)
     {
-        interpreter.Push(thisRef->GetParent());
+        process.Push(thisRef->GetParent());
     }
     
     PRIMITIVE(ObjectSetParent)
     {
         thisRef->SetParent(args[0]);
-        interpreter.PushNil();
+        process.PushNil();
     }
 }
 

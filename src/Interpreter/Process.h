@@ -13,11 +13,13 @@ namespace Finch
     class Environment;
     class Expr;
     
-    // Finch bytecode interpreter.
-    class Interpreter
+    // A single bytecode execution thread in the interpreter. A Process has a
+    // virtual callstack and is responsible for executing bytecode. In other
+    // words, it's where stuff actually happens.
+    class Process
     {
     public:
-        Interpreter(Environment & environment);
+        Process(Environment & environment);
         
         bool IsRunning() const { return mIsRunning; }
         
@@ -86,7 +88,7 @@ namespace Finch
         CodeBlock mLoopCode;
         CodeBlock mDiscardCode;
         
-        NO_COPY(Interpreter);
+        NO_COPY(Process);
     };
 }
 

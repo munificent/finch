@@ -5,7 +5,7 @@
 #include "Environment.h"
 #include "EtherPrimitives.h"
 #include "Expr.h"
-#include "Interpreter.h"
+#include "Process.h"
 #include "NumberPrimitives.h"
 #include "ObjectPrimitives.h"
 #include "StringPrimitives.h"

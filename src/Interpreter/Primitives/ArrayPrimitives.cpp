@@ -4,14 +4,14 @@
 #include "ArrayPrimitives.h"
 #include "DynamicObject.h"
 #include "Environment.h"
-#include "Interpreter.h"
+#include "Process.h"
 #include "Object.h"
 
 namespace Finch
 {
     PRIMITIVE(ArrayGetPrototype)
     {
-        interpreter.Push(interpreter.GetEnvironment().ArrayPrototype());
+        process.Push(process.GetEnvironment().ArrayPrototype());
     }
     
     PRIMITIVE(ArrayLength)
@@ -19,7 +19,7 @@ namespace Finch
         ArrayObject * array = thisRef->AsArray();
         ASSERT_NOT_NULL(array);
         
-        interpreter.PushNumber(array->Elements().Count());
+        process.PushNumber(array->Elements().Count());
     }
     
     PRIMITIVE(ArrayAdd)
@@ -28,7 +28,7 @@ namespace Finch
         ASSERT_NOT_NULL(array);
         
         array->Elements().Add(args[0]);
-        interpreter.Push(thisRef);
+        process.Push(thisRef);
     }
     
     PRIMITIVE(ArrayAt)
@@ -41,12 +41,12 @@ namespace Finch
         // allow negative indexes to index backwards from end
         if ((index >= -array->Elements().Count()) && (index < array->Elements().Count()))
         {
-            interpreter.Push(array->Elements()[index]);
+            process.Push(array->Elements()[index]);
         }
         else
         {
             // out of bounds
-            interpreter.PushNil();
+            process.PushNil();
         }
     }
     
@@ -63,7 +63,7 @@ namespace Finch
             array->Elements()[index] = args[1];
         }
 
-        interpreter.Push(thisRef);
+        process.Push(thisRef);
     }
 }
 

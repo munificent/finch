@@ -60,7 +60,7 @@ Array :: count: count {
 
 Array :: count: count fillWith: element {
     result <- []
-
+    
     from: 1 to: count do: {|i| result add: element }
     result
 }

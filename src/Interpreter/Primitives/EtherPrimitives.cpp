@@ -5,7 +5,7 @@
 #include "Environment.h"
 #include "EtherPrimitives.h"
 #include "Expr.h"
-#include "Interpreter.h"
+#include "Process.h"
 #include "Script.h"
 
 namespace Finch
@@ -17,57 +17,57 @@ namespace Finch
     using std::ios;
     
     // Calls the given object if it's a block, otherwise just returns it.
-    void CondtionallyEvaluate(Interpreter & interpreter, Ref<Object> object)
+    void CondtionallyEvaluate(Process & process, Ref<Object> object)
     {
         if (object->AsBlock() == NULL)
         {
-            interpreter.Push(object);
+            process.Push(object);
         }
         else
         {
             Array<Ref<Object> > noArgs;
-            object->Receive(object, interpreter, "call", noArgs);
+            object->Receive(object, process, "call", noArgs);
         }
     }
     
     PRIMITIVE(EtherQuit)
     {
-        interpreter.StopRunning();
-        interpreter.PushNil();
+        process.StopRunning();
+        process.PushNil();
     }
     
     PRIMITIVE(EtherDo)
     {
-        CondtionallyEvaluate(interpreter, args[0]);
+        CondtionallyEvaluate(process, args[0]);
     }
     
     PRIMITIVE(EtherIfThen)
     {
-        if (args[0] == interpreter.GetEnvironment().True())
+        if (args[0] == process.GetEnvironment().True())
         {
-            CondtionallyEvaluate(interpreter, args[1]);
+            CondtionallyEvaluate(process, args[1]);
         }
         else
         {
-            interpreter.PushNil();
+            process.PushNil();
         }
     }
     
     PRIMITIVE(EtherIfThenElse)
     {
-        if (args[0] == interpreter.GetEnvironment().True())
+        if (args[0] == process.GetEnvironment().True())
         {
-            CondtionallyEvaluate(interpreter, args[1]);
+            CondtionallyEvaluate(process, args[1]);
         }
         else
         {
-            CondtionallyEvaluate(interpreter, args[2]);
+            CondtionallyEvaluate(process, args[2]);
         }
     }
     
     PRIMITIVE(EtherWhileDo)
     {
-        interpreter.WhileLoop(args[0], args[1]);
+        process.WhileLoop(args[0], args[1]);
     }
     
     PRIMITIVE(EtherWrite)
@@ -75,7 +75,7 @@ namespace Finch
         String text = args[0]->AsString();
         cout << text;
         
-        interpreter.PushNil();
+        process.PushNil();
     }
     
     PRIMITIVE(EtherWriteLine)
@@ -83,13 +83,13 @@ namespace Finch
         String text = args[0]->AsString();
         cout << text << endl;
         
-        interpreter.PushNil();
+        process.PushNil();
     }
     
     PRIMITIVE(EtherLoad)
     {
         String fileName = args[0]->AsString();
-        Script::Run(fileName, interpreter);
+        Script::Run(fileName, process);
     }
 }
 

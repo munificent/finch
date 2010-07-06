@@ -3,14 +3,14 @@
 #include "StringPrimitives.h"
 #include "DynamicObject.h"
 #include "Environment.h"
-#include "Interpreter.h"
+#include "Process.h"
 #include "Object.h"
 
 namespace Finch
 {
     PRIMITIVE(StringGetPrototype)
     {
-        interpreter.Push(interpreter.GetEnvironment().StringPrototype());
+        process.Push(process.GetEnvironment().StringPrototype());
     }
     
     PRIMITIVE(StringAdd)
@@ -19,14 +19,14 @@ namespace Finch
         /*
          // dynamically convert the object to a string
          vector<Ref<Object> > noArgs;
-         Ref<Object> toString = args[0]->Receive(args[0], interpreter, "toString", noArgs);
+         Ref<Object> toString = args[0]->Receive(args[0], process, "toString", noArgs);
          */
-        interpreter.PushString(thisRef->AsString() + args[0]->AsString());
+        process.PushString(thisRef->AsString() + args[0]->AsString());
     }
     
     PRIMITIVE(StringLength)
     {
-        interpreter.PushNumber(thisRef->AsString().Length());
+        process.PushNumber(thisRef->AsString().Length());
     }
     
     PRIMITIVE(StringAt)
@@ -37,12 +37,12 @@ namespace Finch
         if ((index >= 0) && (index < thisString.Length()))
         {
             String substring = String(thisString[index]);
-            interpreter.PushString(substring);
+            process.PushString(substring);
         }
         else
         {
             // out of bounds
-            interpreter.PushNil();
+            process.PushNil();
         }
     }
 
@@ -51,9 +51,9 @@ namespace Finch
         /*
         // dynamically convert the object to a string
         vector<Ref<Object> > noArgs;
-        Ref<Object> toString = args[0]->Receive(args[0], interpreter, "toString", noArgs);
+        Ref<Object> toString = args[0]->Receive(args[0], process, "toString", noArgs);
         */
-        interpreter.PushBool(thisRef->AsString() == args[0]->AsString());
+        process.PushBool(thisRef->AsString() == args[0]->AsString());
     }
     
     PRIMITIVE(StringNotEquals)
@@ -61,14 +61,14 @@ namespace Finch
         /*
         // dynamically convert the object to a string
         vector<Ref<Object> > noArgs;
-        Ref<Object> toString = args[0]->Receive(args[0], interpreter, "toString", noArgs);
+        Ref<Object> toString = args[0]->Receive(args[0], process, "toString", noArgs);
         */
-        interpreter.PushBool(thisRef->AsString() != args[0]->AsString());
+        process.PushBool(thisRef->AsString() != args[0]->AsString());
     }
     
     PRIMITIVE(StringHashCode)
     {
-        interpreter.PushNumber(static_cast<double>(thisRef->AsString().HashCode()));
+        process.PushNumber(static_cast<double>(thisRef->AsString().HashCode()));
     }
 }
 

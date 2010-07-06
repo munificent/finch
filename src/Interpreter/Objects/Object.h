@@ -8,7 +8,7 @@
 #include "FinchString.h"
 
 #define PRIMITIVE(name)                                             \
-        void name(Ref<Object> thisRef, Interpreter & interpreter,   \
+        void name(Ref<Object> thisRef, Process & process,   \
              String message, const Array<Ref<Object> > & args)
 
 namespace Finch
@@ -22,7 +22,7 @@ namespace Finch
     class CodeBlock;
     class DynamicObject;
     class Environment;
-    class Interpreter;
+    class Process;
     
     // Base class for an object in Finch. All values in Finch inherit from this.
     class Object
@@ -39,7 +39,7 @@ namespace Finch
         
         virtual ~Object() {}
         
-        virtual void Receive(Ref<Object> thisRef, Interpreter & interpreter,
+        virtual void Receive(Ref<Object> thisRef, Process & process,
                              String message, const Array<Ref<Object> > & args);
         
         virtual double          AsNumber() const { return 0; }

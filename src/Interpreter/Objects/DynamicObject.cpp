@@ -1,7 +1,7 @@
 #include "DynamicObject.h"
 #include "BlockObject.h"
 #include "Environment.h"
-#include "Interpreter.h"
+#include "Process.h"
 
 namespace Finch
 {
@@ -12,7 +12,7 @@ namespace Finch
         stream << mName;
     }
     
-    void DynamicObject::Receive(Ref<Object> thisRef, Interpreter & interpreter, 
+    void DynamicObject::Receive(Ref<Object> thisRef, Process & process, 
                                 String message, const Array<Ref<Object> > & args)
     {        
         // see if it's a method call
@@ -21,7 +21,7 @@ namespace Finch
         {
             ASSERT_NOT_NULL(method->AsBlock());
             
-            interpreter.CallMethod(thisRef, method, args);
+            process.CallMethod(thisRef, method, args);
             return;
         }
         
@@ -31,32 +31,32 @@ namespace Finch
         {
             ASSERT_NOT_NULL(primitive);
             
-            primitive(thisRef, interpreter, message, args);
+            primitive(thisRef, process, message, args);
             return;
         }
         
         // if we got here, the message wasn't handled
-        Object::Receive(thisRef, interpreter, message, args);
+        Object::Receive(thisRef, process, message, args);
     }
     
-    void DynamicObject::AddMethod(Ref<Object> thisRef, Interpreter & interpreter,
+    void DynamicObject::AddMethod(Ref<Object> thisRef, Process & process,
                                   String name, Ref<Object> body)
     {
         if (name.Length() == 0)
         {
-            interpreter.RuntimeError("Cannot create a method with an empty name.");
+            process.RuntimeError("Cannot create a method with an empty name.");
             return;
         }
         
         BlockObject * originalBlock = body->AsBlock();
         if (originalBlock == NULL)
         {
-            interpreter.RuntimeError("Body of method must be a block.");
+            process.RuntimeError("Body of method must be a block.");
             return;
         }
         
         // copy the block since rebinding self mutates it
-        Ref<Object> blockCopy = Object::NewBlock(interpreter.GetEnvironment(),
+        Ref<Object> blockCopy = Object::NewBlock(process.GetEnvironment(),
                                                  originalBlock->GetCode(),
                                                  originalBlock->Closure(),
                                                  originalBlock->Self());

@@ -7,21 +7,21 @@
 
 namespace Finch
 {
-    class Interpreter;
     class Object;
+    class Process;
     
     // Static class for loading and executing Finch code stored in script files.
     class Script
     {
     public:
-        // Loads and runs the script at the given path in its own interpreter.
+        // Loads and runs the script at the given path in its own process.
         static void Run(String fileName);
         
-        static void Execute(String fileName, Interpreter & interpreter);
+        static void Execute(String fileName, Process & process);
         
         // Loads and runs the script at the given path in the given existing
-        // interpreter.
-        static void Run(String fileName, Interpreter & interpreter);
+        // process.
+        static void Run(String fileName, Process & process);
         
     private:
         // static class

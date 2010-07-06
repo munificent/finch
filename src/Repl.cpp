@@ -4,8 +4,8 @@
 #include "Compiler.h"
 #include "Environment.h"
 #include "FinchParser.h"
-#include "Interpreter.h"
 #include "LineNormalizer.h"
+#include "Process.h"
 #include "Repl.h"
 #include "ReplLineReader.h"
 #include "Scope.h"
@@ -27,7 +27,7 @@ namespace Finch
         LineNormalizer normalizer(lexer);
         FinchParser    parser(normalizer);
         
-        Interpreter    interpreter(env);
+        Process        process(env);
         
         cout << "Finch 0.0.0d" << endl;
         cout << "------------" << endl;
@@ -39,9 +39,9 @@ namespace Finch
         #else
             const char* baseLibPath = "../../base/main.fin";
         #endif
-        Script::Execute(baseLibPath, interpreter);
+        Script::Execute(baseLibPath, process);
         
-        while (interpreter.IsRunning())
+        while (process.IsRunning())
         {
             // ansi color: std::cout << "\033[0;32m";
             reader.Reset();
@@ -62,7 +62,7 @@ namespace Finch
             Ref<Object> block = Object::NewBlock(env, code, env.Globals(), env.Nil());
             
             // and execute it
-            Ref<Object> result = interpreter.Execute(block);
+            Ref<Object> result = process.Execute(block);
 
             // don't bother printing nil results
             if (result != env.Nil())
