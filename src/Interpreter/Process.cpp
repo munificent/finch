@@ -11,8 +11,9 @@ namespace Finch
     using std::cout;
     using std::endl;
     
-    Process::Process(Environment & environment)
+    Process::Process(Interpreter & interpreter, Environment & environment)
     :   mIsRunning(true),
+        mInterpreter(interpreter),
         mEnvironment(environment),
         mLoopCode(Array<String>()),
         mDiscardCode(Array<String>())

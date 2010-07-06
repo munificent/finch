@@ -5,6 +5,8 @@
 #include "Environment.h"
 #include "EtherPrimitives.h"
 #include "Expr.h"
+#include "FileLineReader.h"
+#include "Interpreter.h"
 #include "Process.h"
 #include "Script.h"
 
@@ -89,7 +91,17 @@ namespace Finch
     PRIMITIVE(EtherLoad)
     {
         String fileName = args[0]->AsString();
-        Script::Run(fileName, process);
+
+        FileLineReader reader(fileName);
+        
+        if (reader.EndOfLines())
+        {
+            // couldn't open
+            std::cout << "Couldn't open file \"" << fileName << "\"" << std::endl;
+            return;
+        }
+        
+        process.GetInterpreter().Execute(process, reader, true, true);
     }
 }
 

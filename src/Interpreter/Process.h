@@ -12,6 +12,7 @@ namespace Finch
     class CodeBlock;
     class Environment;
     class Expr;
+    class Interpreter;
     
     // A single bytecode execution thread in the interpreter. A Process has a
     // virtual callstack and is responsible for executing bytecode. In other
@@ -19,12 +20,13 @@ namespace Finch
     class Process
     {
     public:
-        Process(Environment & environment);
+        Process(Interpreter & interpreter, Environment & environment);
         
         bool IsRunning() const { return mIsRunning; }
         
         Ref<Object> Execute(Ref<Object> block);
         
+        Interpreter & GetInterpreter() { return mInterpreter; }
         Environment & GetEnvironment() { return mEnvironment; }
         
         Ref<Object> Self();
@@ -81,6 +83,7 @@ namespace Finch
         
         bool mIsRunning;
         
+        Interpreter & mInterpreter;
         Environment & mEnvironment;
         Stack<Ref<Object> > mOperands; 
         Stack<CallFrame>    mCallStack;

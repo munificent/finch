@@ -14,10 +14,9 @@ namespace Finch
     class ILineReader
     {
     public:
+        virtual ~ILineReader() {}
+        
         virtual bool EndOfLines() const = 0;
         virtual String NextLine() = 0;
-        
-        virtual ~ILineReader() {}
     };
 }
-

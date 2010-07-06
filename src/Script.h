@@ -7,6 +7,7 @@
 
 namespace Finch
 {
+    class Interpreter;
     class Object;
     class Process;
     
@@ -17,11 +18,7 @@ namespace Finch
         // Loads and runs the script at the given path in its own process.
         static void Run(String fileName);
         
-        static void Execute(String fileName, Process & process);
-        
-        // Loads and runs the script at the given path in the given existing
-        // process.
-        static void Run(String fileName, Process & process);
+        static void Execute(String fileName, Interpreter & interpreter);
         
     private:
         // static class
