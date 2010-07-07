@@ -8,6 +8,8 @@ namespace Finch
     class StandaloneInterpreterHost : public IInterpreterHost
     {
     public:
+        virtual void Output(const String & text) const;
+        virtual void Error(const String & message) const;
     };
 }
 

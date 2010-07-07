@@ -45,7 +45,7 @@ namespace Finch
         BlockObject * originalBlock = args[0]->AsBlock();
         if (originalBlock == NULL)
         {
-            process.RuntimeError("copyWith: must be passed a block argument.");
+            process.Error("copyWith: must be passed a block argument.");
             process.PushNil();
         }
         else

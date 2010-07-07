@@ -52,7 +52,7 @@ namespace Finch
         void DiscardReturn();
         
         // Displays a runtime error to the user.
-        void RuntimeError(const String & message);
+        void Error(const String & message);
         
     private:
         struct CallFrame

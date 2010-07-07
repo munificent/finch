@@ -7,8 +7,7 @@ namespace Finch
 {
     class IInterpreterHost;
     class ILineReader;
-    class Object;
-    //### bob: ideally, this wouldn't be in the public api for Interpreter.
+    //### bob: ideally, this stuff wouldn't be in the public api for Interpreter.
     class Process;
     
     // The main top-level class for a Finch virtual machine. To host a Finch
@@ -29,9 +28,12 @@ namespace Finch
         // in this interpreter.
         void InterpretSource(ILineReader & reader);
         
-        //### bob: name is wip
+        //### bob: temp. this should move out into standalone
         void EtherLoad(Process & process, String filePath);
         
+        //### bob: exposing the entire host here is a bit dirty.
+        IInterpreterHost & GetHost() { return mHost; }
+
     private:
         Ref<Expr> Parse(ILineReader & reader);
         bool      Execute(Ref<Expr> expr);

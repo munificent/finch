@@ -44,14 +44,14 @@ namespace Finch
     {
         if (name.Length() == 0)
         {
-            process.RuntimeError("Cannot create a method with an empty name.");
+            process.Error("Cannot create a method with an empty name.");
             return;
         }
         
         BlockObject * originalBlock = body->AsBlock();
         if (originalBlock == NULL)
         {
-            process.RuntimeError("Body of method must be a block.");
+            process.Error("Body of method must be a block.");
             return;
         }
         

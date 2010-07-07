@@ -6,6 +6,7 @@
 #include "EtherPrimitives.h"
 #include "Expr.h"
 #include "FileLineReader.h"
+#include "IInterpreterHost.h"
 #include "Interpreter.h"
 #include "Process.h"
 #include "Script.h"
@@ -75,7 +76,7 @@ namespace Finch
     PRIMITIVE(EtherWrite)
     {
         String text = args[0]->AsString();
-        cout << text;
+        process.GetInterpreter().GetHost().Output(text);
         
         process.PushNil();
     }
@@ -83,7 +84,8 @@ namespace Finch
     PRIMITIVE(EtherWriteLine)
     {
         String text = args[0]->AsString();
-        cout << text << endl;
+        process.GetInterpreter().GetHost().Output(text);
+        process.GetInterpreter().GetHost().Output("\n");
         
         process.PushNil();
     }

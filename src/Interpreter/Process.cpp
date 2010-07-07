@@ -4,6 +4,8 @@
 #include "BlockObject.h"
 #include "CodeBlock.h"
 #include "Environment.h"
+#include "IInterpreterHost.h"
+#include "Interpreter.h"
 #include "Process.h"
 
 namespace Finch
@@ -358,7 +360,7 @@ namespace Finch
         // nil if we want to be "looser" about calling convention
         if (block.Params().Count() > args.Count())
         {
-            RuntimeError(String::Format("Block expects at least %d arguments, but was passed %d.",
+            Error(String::Format("Block expects at least %d arguments, but was passed %d.",
                                         block.Params().Count(), args.Count()));
             PushNil();
             return;
@@ -418,11 +420,11 @@ namespace Finch
         mCallStack.Push(CallFrame(mCallStack.Peek().scope, block));
     }
 
-    void Process::RuntimeError(const String & message)
+    void Process::Error(const String & message)
     {
         //### bob: ideally, this should be programmatically configurable from
         // within Finch
-        cout << "Runtime error: " << message << endl;
+        mInterpreter.GetHost().Error(message);
     }
     
     void Process::PushOperand(Ref<Object> object)

@@ -1,5 +1,8 @@
+#include <sstream>
+
 #include "FileLineReader.h"
 #include "FinchParser.h"
+#include "IInterpreterHost.h"
 #include "Interpreter.h"
 #include "Lexer.h"
 #include "LineNormalizer.h"
@@ -83,8 +86,9 @@ namespace Finch
         // don't bother printing nil results
         if (result != mEnvironment.Nil())
         {
-            //### bob: should go through host to print
-            std::cout << *result << std::endl;
+            std::stringstream text;
+            text << *result << std::endl;
+            mHost.Output(String(text.str().c_str()));
         }
         
         return true;
