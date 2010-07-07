@@ -91,17 +91,7 @@ namespace Finch
     PRIMITIVE(EtherLoad)
     {
         String fileName = args[0]->AsString();
-
-        FileLineReader reader(fileName);
-        
-        if (reader.EndOfLines())
-        {
-            // couldn't open
-            std::cout << "Couldn't open file \"" << fileName << "\"" << std::endl;
-            return;
-        }
-        
-        process.GetInterpreter().Execute(process, reader, true, true);
+        process.GetInterpreter().EtherLoad(process, fileName);
     }
 }
 

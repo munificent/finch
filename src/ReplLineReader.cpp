@@ -9,6 +9,11 @@ namespace Finch
     using std::endl;
     using std::string;
     
+    bool ReplLineReader::IsInfinite() const
+    {
+        return true;
+    }
+
     bool ReplLineReader::EndOfLines() const
     {
         // we can always ask the user for more

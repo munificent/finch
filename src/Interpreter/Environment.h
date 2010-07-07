@@ -38,6 +38,7 @@ namespace Finch
         Ref<Object> True()              const { return mTrue; }
         Ref<Object> False()             const { return mFalse; }
         
+        Ref<Object> CreateBlock(Ref<Expr> expr);
     private:
         
         BlockTable  mBlocks;

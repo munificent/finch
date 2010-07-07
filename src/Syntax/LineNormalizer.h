@@ -54,6 +54,8 @@ namespace Finch
             mEatNewlines(true) // strip all leading newlines
         {}
         
+        virtual bool IsInfinite() const;
+        
         virtual Token ReadToken();
         
     private:

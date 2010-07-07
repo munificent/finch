@@ -9,6 +9,8 @@
 namespace Finch
 {
     // Primitive methods for the global Ether object.
+    //### bob: this should be moved out of core code into something the
+    // standalone provides.
     PRIMITIVE(EtherQuit);
     
     // Flow control
@@ -20,6 +22,8 @@ namespace Finch
     // Basic IO
     PRIMITIVE(EtherWrite);
     PRIMITIVE(EtherWriteLine);
+    //### bob: this should be moved out of core code into something the
+    // standalone provides.
     PRIMITIVE(EtherLoad);
 }
 

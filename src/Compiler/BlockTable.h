@@ -9,6 +9,8 @@ namespace Finch
     class Environment;
     class Expr;
     
+    //### bob: code is never removed from this, even if no longer needed.
+    //    eventually, it would be good to ref-count or gc the contents of this.
     // A table of CodeBlocks. The compiler adds compiled code to this so that
     // a block can be referenced by ID.
     class BlockTable

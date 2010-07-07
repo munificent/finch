@@ -1,3 +1,4 @@
+#include "FileLineReader.h"
 #include "FinchParser.h"
 #include "Interpreter.h"
 #include "Lexer.h"
@@ -6,59 +7,86 @@
 
 namespace Finch
 {
-    using std::cout;
-    using std::endl;
-    
-    void Interpreter::Execute(ILineReader & reader, bool parseFile, bool callBlock)
+    bool Interpreter::InterpretFile(String fileName)
     {
-        // spin up a process
-        Process process(*this, mEnvironment);
+        FileLineReader reader(fileName);
         
-        Execute(process, reader, parseFile, callBlock);
+        if (reader.EndOfLines())
+        {
+            // couldn't open
+            std::cout << "Couldn't open file \"" << fileName << "\"" << std::endl;
+            return false;
+        }
+        
+        return Execute(Parse(reader));
     }
     
-    void Interpreter::Execute(Process & process, ILineReader & reader,
-                              bool parseFile, bool callBlock)
+    void Interpreter::InterpretSource(ILineReader & reader)
     {
-        Lexer          lexer(reader);
-        LineNormalizer normalizer(lexer);
-        FinchParser    parser(normalizer);
+        Execute(Parse(reader));
+    }
+    
+    void Interpreter::EtherLoad(Process & process, String filePath)
+    {
+        FileLineReader reader(filePath);
         
-        // ansi color: std::cout << "\033[0;32m";
-        Ref<Expr> expr = parseFile ? parser.ParseFile() : parser.ParseLine();
+        if (reader.EndOfLines())
+        {
+            // couldn't open
+            std::cout << "Couldn't open file \"" << filePath << "\"" << std::endl;
+            return;
+        }
+        
+        Ref<Expr> expr = Parse(reader);
         
         // bail if we failed to parse
         //### bob: need better error handling here
         if (expr.IsNull())
         {
-            cout << "parse error" << endl;
+            std::cout << "parse error" << std::endl;
             return;
         }
         
         // create a block for the expression
-        int id = mEnvironment.Blocks().Add(Array<String>(), *expr, mEnvironment);
-        const CodeBlock & code = mEnvironment.Blocks().Find(id);
-        Ref<Object> block = Object::NewBlock(mEnvironment, code,
-                                             mEnvironment.Globals(),
-                                             mEnvironment.Nil());
+        Ref<Object> block = mEnvironment.CreateBlock(expr);
         
         // and execute the code
-        if (callBlock)
+        Array<Ref<Object> > noArgs;
+        process.CallBlock(block, noArgs);
+    }
+        
+    Ref<Expr> Interpreter::Parse(ILineReader & reader)
+    {
+        Lexer          lexer(reader);
+        LineNormalizer normalizer(lexer);
+        FinchParser    parser(normalizer);
+        
+        return parser.Parse();
+    }
+    
+    bool Interpreter::Execute(Ref<Expr> expr)
+    {        
+        // bail if we failed to parse
+        //### bob: need better error handling here
+        if (expr.IsNull())
         {
-            Array<Ref<Object> > noArgs;
-            process.CallBlock(block, noArgs);
+            std::cout << "parse error" << std::endl;
+            return false;
         }
-        else
+        
+        // create a block for the expression
+        Ref<Object> block = mEnvironment.CreateBlock(expr);
+        
+        Process process(*this, mEnvironment);
+        Ref<Object> result = process.Execute(block);
+        
+        // don't bother printing nil results
+        if (result != mEnvironment.Nil())
         {
-            Ref<Object> result = process.Execute(block);
-            
-            // don't bother printing nil results
-            if (result != mEnvironment.Nil())
-            {
-                //### bob: should go through host to print
-                cout << *result << endl;
-            }
+            //### bob: should go through host to print
+            std::cout << *result << std::endl;
         }
+        
+        return true;
     }
 }
-

@@ -6,13 +6,11 @@
 
 namespace Finch
 {
-    void Lexer::Reset()
+    bool Lexer::IsInfinite() const
     {
-        mState = LEX_NEED_LINE;
-        mIndex = 0;
-        mTokenStart = 0;
+        return mReader.IsInfinite();
     }
-    
+
     Token Lexer::ReadToken()
     {
         Token token;

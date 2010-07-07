@@ -13,6 +13,7 @@ namespace Finch
         : mLine(line)
         {}
         
+        virtual bool IsInfinite() const { return false; }
         virtual bool EndOfLines() const { return mLine == NULL; }
         
         virtual String NextLine()

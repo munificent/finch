@@ -5,6 +5,11 @@
 
 namespace Finch
 {
+    bool LineNormalizer::IsInfinite() const
+    {
+        return mTokens.IsInfinite();
+    }
+    
     Token LineNormalizer::ReadToken()
     {
         Token token;

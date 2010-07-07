@@ -15,13 +15,7 @@
 
 namespace Finch
 {
-    void Script::Run(String fileName)
-    {
-        StandaloneInterpreterHost host;
-        Interpreter interpreter(host);
-        Execute(fileName, interpreter);
-    }
-    
+    /*
     void Script::Execute(String fileName, Interpreter & interpreter)
     {
         FileLineReader reader(fileName);
@@ -34,6 +28,6 @@ namespace Finch
         }
         
         interpreter.Execute(reader, true, false);
-    }
+    }*/
 }
 

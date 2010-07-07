@@ -6,11 +6,11 @@
 
 namespace Finch
 {
-    void Parser::Reset()
+    bool Parser::IsInfinite() const
     {
-        mRead.Clear();
+        return mTokens.IsInfinite();
     }
-    
+
     bool Parser::LookAhead(TokenType type)
     {
         FillLookAhead(1);

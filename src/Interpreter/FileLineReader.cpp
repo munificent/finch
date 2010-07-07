@@ -12,7 +12,12 @@ namespace Finch
     {
         mFile.open(fileName.CString(), ios::in);
     }
-
+    
+    bool FileLineReader::IsInfinite() const
+    {
+        return false;
+    }
+    
     bool FileLineReader::EndOfLines() const
     {
         if (!mFile) return true;

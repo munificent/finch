@@ -33,22 +33,22 @@ It is written in C++ with a hand-written [lexer](http://bitbucket.org/munificent
 Here's a little example to get you going. This little program doesn't draw, but it will tell you what turns to make to draw a [dragon curve](http://en.wikipedia.org/wiki/Dragon_curve):
 
     :::finch
-    ' creates a single global Dragon object with a single "trace:" method for
-    ' outputting the series of left and right turns needed to draw a dragon
-    ' curve.
-    Dragon <- Object copyWith: {
-      self addMethod: "trace:" body: {|turns|
-        ' a local function
-        dragon <- {|n turn|
-          if: n > 0 then: {
-            dragon call: n - 1 : "R"
-            write: turn
-            dragon call: n - 1 : "L"
-          }
-        }
+    ' create a single global Dragon object
+    Dragon <- Object copy
     
-        dragon call: turns : "R"
-        writeLine: "" ' end the line
+    ' add a main "trace:" method for outputting the series of left and right 
+    ' turns needed to draw a dragon curve.
+    Dragon :: trace: depth {
+      self traceDepth: depth turn: "R"
+      writeLine: "" ' end the line
+    }
+    
+    ' add the main recursive method
+    Dragon :: traceDepth: n turn: turn {
+      if: n > 0 then: {
+        self traceDepth: n - 1 turn: "R"
+        write: turn
+        self traceDepth: n - 1 turn: "L"
       }
     }
     
@@ -85,12 +85,12 @@ Once you've got it built and running, you'll be at the main interpreter prompt. 
 Once you're in the REPL, you can load and execute a script using <code>load:</code>. The path must be relative to where the executable is. If you've built from XCode, you can run the tests like this:
 
     :::finch
-    >>> load: "../../test/test.fin"
+    >> load: "../../test/test.fin"
 
 If you built from a makefile, it's:
 
     :::finch
-    >>> load: "test/test.fin"
+    >> load: "test/test.fin"
 
 ### Where to Go from Here
 

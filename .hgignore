@@ -24,3 +24,6 @@ objects/**
 
 # Python temp files
 **.pyc
+
+# HTML documentation generated from the Markdown source
+doc/html/*.html

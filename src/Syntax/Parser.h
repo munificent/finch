@@ -12,15 +12,13 @@ namespace Finch
     // Base class for a generic recursive descent parser.
     class Parser
     {
-    public:
-        // Discards any Tokens in the queue and puts the parser back into a 
-        // blank state.
-        void Reset();
-        
     protected:
         Parser(ITokenSource & tokens)
         :   mTokens(tokens)
         {}
+        
+        // Gets whether or not the token source for this parser is infinite.
+        bool IsInfinite() const;
         
         // Gets the Token the parser is currently looking at.
         Token Current() { return mRead[0]; }

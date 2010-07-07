@@ -14,7 +14,7 @@ namespace Finch
         {}
         
         // Runs the REPL. This function will not return until the user quits.
-        void Run();
+        void Run(Interpreter & interpreter);
         
     private:
         NO_COPY(Repl);

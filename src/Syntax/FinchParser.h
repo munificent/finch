@@ -19,15 +19,10 @@ namespace Finch
         :   Parser(tokens)
         {}
         
-        // Parses a full file of source code. Will read as many lines as are
-        // available until the source is done.
-        // Returns a null reference if parsing failed.
-        Ref<Expr> ParseFile();
-        
-        // Parses a single line. Will stop once a complete terminated expression
-        // is reached.
-        // Returns a null reference if parsing failed.
-        Ref<Expr> ParseLine();
+        // Reads from the token source and returns the parsed expression. If
+        // this is an infinite source, it will return as soon as a complete
+        // expression is parsed. Otherwise, it will parse the entire source.
+        Ref<Expr> Parse();
 
     private:
         // The grammar productions, from lowest to highest precedence.

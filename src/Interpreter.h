@@ -7,6 +7,7 @@ namespace Finch
 {
     class IInterpreterHost;
     class ILineReader;
+    class Object;
     //### bob: ideally, this wouldn't be in the public api for Interpreter.
     class Process;
     
@@ -20,12 +21,21 @@ namespace Finch
         :   mHost(host)
         {}
         
-        //### bob: this is more or less temp
-        void Execute(ILineReader & reader, bool parseFile, bool callBlock);
-        void Execute(Process & process, ILineReader & reader, bool parseFile,
-                     bool callBlock);
+        // Reads the .fin file at the given path and executes its contents in
+        // a new process in this interpreter.
+        bool InterpretFile(String filePath);
+        
+        // Reads from the given source and executes the results in a new process
+        // in this interpreter.
+        void InterpretSource(ILineReader & reader);
+        
+        //### bob: name is wip
+        void EtherLoad(Process & process, String filePath);
         
     private:
+        Ref<Expr> Parse(ILineReader & reader);
+        bool      Execute(Ref<Expr> expr);
+
         IInterpreterHost & mHost;
         Environment        mEnvironment;
         

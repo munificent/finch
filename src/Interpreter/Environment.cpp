@@ -131,5 +131,17 @@ namespace Finch
         primsObj->RegisterPrimitive("stringPrototype",  StringGetPrototype);
         primsObj->RegisterPrimitive("arrayPrototype",   ArrayGetPrototype);
     }
+
+    Ref<Object> Environment::CreateBlock(Ref<Expr> expr)
+    {
+        // add it to the code table
+        int id = mBlocks.Add(Array<String>(), *expr, *this);
+        const CodeBlock & code = mBlocks.Find(id);
+        
+        // wrap it in an object
+        //### bob: should look for other places that call NewBlock and see if
+        // they can be consolidated with this.
+        return Object::NewBlock(*this, code, mGlobals, mNil);
+    }
 }
 

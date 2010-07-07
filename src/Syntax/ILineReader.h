@@ -16,6 +16,13 @@ namespace Finch
     public:
         virtual ~ILineReader() {}
         
+        // Gets whether or not this source can provide an infinite number of
+        // lines. This is true for lines coming from an interactive session
+        // (we can keep asking the user for more input), but false for files.
+        // The parser uses this to decide whether to parse as much as it can or
+        // to stop when it's reached a complete expression.
+        virtual bool IsInfinite() const = 0;
+        
         virtual bool EndOfLines() const = 0;
         virtual String NextLine() = 0;
     };

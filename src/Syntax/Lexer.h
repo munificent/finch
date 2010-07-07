@@ -20,10 +20,9 @@ namespace Finch
             mTokenStart(0)
         {}
         
-        // Puts the lexer back into its starting state. Useful to get it back
-        // into a known state after a parse error.
-        void Reset();
-        
+        // Will be true if the line reader is.
+        virtual bool IsInfinite() const;
+
         // Lexes and returns the next full Token read from the source. If the
         // ILineReader is out of lines, this will return an EOF Token.
         virtual Token ReadToken();

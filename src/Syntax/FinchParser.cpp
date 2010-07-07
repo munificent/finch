@@ -15,30 +15,32 @@
 #include "UndefineExpr.h"
 
 namespace Finch
-{
-    Ref<Expr> FinchParser::ParseFile()
+{    
+    Ref<Expr> FinchParser::Parse()
     {
-        // since expression includes sequence expressions, this will parse
-        // as many lines as we have
-        Ref<Expr> expr = Expression();
-        
-        // we should have parsed the whole file
-        if (!LookAhead(TOKEN_EOF)) {
-            return ParseError("Parser ended unexpectedly before reaching end of file.");
+        if (IsInfinite())
+        {
+            // skip past Sequence() otherwise we'll keep reading lines forever
+            Ref<Expr> expr = Bind();
+            
+            // eat any trailing line
+            Match(TOKEN_LINE);
+            
+            return expr;
         }
-        
-        return expr;
-    }
-    
-    Ref<Expr> FinchParser::ParseLine()
-    {
-        // skip past Sequence() otherwise we'll keep reading lines forever
-        Ref<Expr> expr = Bind();
-        
-        // eat any trailing line
-        Match(TOKEN_LINE);
-        
-        return expr;
+        else
+        {
+            // since expression includes sequence expressions, this will parse
+            // as many lines as we have
+            Ref<Expr> expr = Expression();
+            
+            // we should have parsed the whole file
+            if (!LookAhead(TOKEN_EOF)) {
+                return ParseError("Parser ended unexpectedly before reaching end of file.");
+            }
+            
+            return expr;
+        }
     }
     
     Ref<Expr> FinchParser::Expression()
