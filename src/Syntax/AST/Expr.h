@@ -40,10 +40,17 @@ namespace Finch
         {
             ASSERT(name.Length() > 0, "Cannot determine the scope of an empty name.");
             
-            char initial = name[0];
+            // find the first non-punctuation character
+            for (int i = 0; i < name.Length(); i++)
+            {
+                char initial = name[i];
+                
+                if ((initial >= 'A') && (initial <= 'Z')) return NAMESCOPE_GLOBAL;
+                if (initial == '_') return NAMESCOPE_OBJECT;
+                return NAMESCOPE_LOCAL;                
+            }
             
-            if ((initial >= 'A') && (initial <= 'Z')) return NAMESCOPE_GLOBAL;
-            if (initial == '_') return NAMESCOPE_OBJECT;
+            ASSERT(false, "Cannot determine the scope of a name with no letters.");
             return NAMESCOPE_LOCAL;
         }
         

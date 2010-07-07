@@ -1,5 +1,5 @@
 ' create an array of 100 closed doors
-doors <- Array new: 100 with: False
+doors <- Array count: 100 fillWith: False
 
 ' open and close them
 from: 1 to: 100 do: {|step|

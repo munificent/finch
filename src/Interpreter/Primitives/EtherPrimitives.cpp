@@ -9,7 +9,6 @@
 #include "IInterpreterHost.h"
 #include "Interpreter.h"
 #include "Process.h"
-#include "Script.h"
 
 namespace Finch
 {

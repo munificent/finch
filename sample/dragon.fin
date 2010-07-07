@@ -3,21 +3,22 @@
 ' of left and right turns required to draw a dragon curve with the
 ' given recursion depth.
 
-def Dragon <- Object clone
+Dragon <- Object copy
 
-Dragon addMethod: "turns:" body:
-{|iterations|
-    ' a local function
-    def dragon <-
-    {|n turn|
-        if: n != 0 then:
-        {
-            dragon value: n - 1 value: "R"
-            write: turn
-            dragon value: n - 1 value: "L"
-        }
-    }
-    
-    dragon value: iterations value: "R"
+Dragon :: generate: depth {
+    write: "dragon curve " + depth + " depth: "
+    self iterate: depth turn: "R"
     writeLine: "" ' end the line
 }
+
+' the inner recursive method
+Dragon :: iterate: depth turn: turn {
+    if: depth > 0 then: {
+        self iterate: depth - 1 turn: "R"
+        write: turn
+        self iterate: depth - 1 turn: "L"
+    }
+}
+
+' test it
+from: 1 to: 5 do: {|n| Dragon generate: n }

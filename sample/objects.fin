@@ -1,37 +1,35 @@
 ' define a singleton object for the Car "type". this object will be
 ' the factory for all other cars.
-def Car <- Object copyWith: {
+Car <- Object copyWith: {
     ' define the car prototype. all cars will derive from this
-    def _prototype <- Object copyWith: {
+    _prototype <- Object copyWith: {
         ' all cars have accessors for their make and model
-        self addMethod: "make" body: { _make }
-        self addMethod: "model" body: { _model }
+        self :: make { _make }
+        self :: model { _model }
         
-        self addMethod: "toString" body: {
+        self :: toString {
             "This car is a " + _make + " " + _model + "."
         }
     }
     
     ' define a constructor method on the factory.
-    self addMethod: "make:model:" body: {
-        |make model|
-        
+    self :: make: make model: model {
         ' the constructor simply derives a new car from the car
         ' prototype and then stores the make and model in it
         _prototype copyWith: {
-            def _make <- make
-            def _model <- model
+            _make <- make
+            _model <- model
         }
         ' like ruby, the last expression in the method is implicitly
         ' the returned value
     }
     
     ' expose the prototype. this lets us add features to all cars
-    self addMethod: "prototype" body: { _prototype }
+    self :: prototype { _prototype }
 }
 
 ' now lets make a car
-def jetta <- Car make: "volkswagen" model: "jetta"
+jetta <- Car make: "volkswagen" model: "jetta"
 
 ' and call a method on its prototype, which in turn references the
 ' specific car's state
@@ -42,7 +40,7 @@ writeLine: jetta toString
 writeLine: jetta shortName ' this should write Nil
 
 ' now we'll add a method to the prototype
-Car prototype addMethod: "shortName" body: { _make + " " + _model }
+Car prototype :: shortName { _make + " " + _model }
 
 ' now lets call it on jetta and see if we can find it
 writeLine: jetta shortName

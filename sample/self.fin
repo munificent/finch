@@ -4,12 +4,12 @@ Nil addMethod: "name" body: { "Nil" }
 
 Parent <- Object copyWith: {
     _name <- "parent"
-    self addMethod: "name" body: { _name }
+    self :: name { _name }
     
-    self addMethod: "getName" body: { "parent" }
-    self addMethod: "calledName" body: { .getName }
+    self :: getName { "parent" }
+    self :: calledName { self getName }
     
-    self addMethod: "recursiveName:" body: {|depth|
+    self :: recursiveName: depth {
         if: depth > 0 then: {
             _name + " " + (Parent recursiveName: 0) + " " +
             _name + " " + (Child recursiveName: 0) + " " +
@@ -21,7 +21,7 @@ Parent <- Object copyWith: {
 Child <- Parent copyWith: {
     _name <- "child"
 
-    self addMethod: "getName" body: { "child" }
+    self :: getName { "child" }
 }
 
 ' basic just call a method on an object
@@ -35,9 +35,9 @@ writeLine: Child calledName + " (expect child)"
 writeLine: (Child recursiveName: 1) + " (expect child parent child child child)"
 
 Other <- Object copyWith: {
-    self addMethod: "name" body: { "Other" }
+    self :: name { "Other" }
     
-    self addMethod: "callMe:" body: {|block|
+    self :: callMe: block {
         block call
     }
 }
@@ -45,13 +45,13 @@ Other <- Object copyWith: {
 ' passing a block to a method should *not* use the method's self
 ' in this case, since the block is not defined in any object, self
 ' should be nil
-writeLine: (Other callMe: { .name }) + " (expect Nil)"
+writeLine: (Other callMe: { self name }) + " (expect Nil)"
 
 Foo <- Object copyWith: {
-    self addMethod: "name" body: { "Foo" }
+    self :: name { "Foo" }
     
-    self addMethod: "routeThroughOther" body: {
-        Other callMe: { .name }
+    self :: routeThroughOther {
+        Other callMe: { self name }
     }
 }
 
@@ -60,7 +60,7 @@ Foo <- Object copyWith: {
 ' case, that's inside Foo
 writeLine: Foo routeThroughOther + " (expect Foo)"
 
-Child addMethod: "getBlock" body: { { .name } }
+Child :: getBlock { { self name } }
 
 ' returning a block from a method should keep the block bound to the
 ' method's self

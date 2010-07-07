@@ -9,7 +9,6 @@
 /* Begin PBXBuildFile section */
 		8DD76F650486A84900D96B5E /* main.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 08FB7796FE84155DC02AAC07 /* main.cpp */; settings = {ATTRIBUTES = (); }; };
 		8DD76F6A0486A84900D96B5E /* finch.1 in CopyFiles */ = {isa = PBXBuildFile; fileRef = C6859E8B029090EE04C91782 /* finch.1 */; };
-		C4012A4810CA948B0088B77F /* Repl.cpp in Sources */ = {isa = PBXBuildFile; fileRef = C4012A4710CA948B0088B77F /* Repl.cpp */; };
 		C414906711E31344006CE647 /* Interpreter.cpp in Sources */ = {isa = PBXBuildFile; fileRef = C414906611E31344006CE647 /* Interpreter.cpp */; };
 		C414906B11E3146E006CE647 /* StandaloneInterpreterHost.cpp in Sources */ = {isa = PBXBuildFile; fileRef = C414906A11E3146E006CE647 /* StandaloneInterpreterHost.cpp */; };
 		C424166210E5B70E001E7103 /* StringTests.cpp in Sources */ = {isa = PBXBuildFile; fileRef = C424165F10E5B70E001E7103 /* StringTests.cpp */; };
@@ -38,7 +37,6 @@
 		C4CDF8B310D88DF3001C9D4A /* NumberPrimitives.cpp in Sources */ = {isa = PBXBuildFile; fileRef = C4CDF8AC10D88DF3001C9D4A /* NumberPrimitives.cpp */; };
 		C4CDF8B610D88DF3001C9D4A /* BlockPrimitives.cpp in Sources */ = {isa = PBXBuildFile; fileRef = C4CDF8B210D88DF3001C9D4A /* BlockPrimitives.cpp */; };
 		C4CDF8B910D88E1F001C9D4A /* Environment.cpp in Sources */ = {isa = PBXBuildFile; fileRef = C4CDF8B810D88E1F001C9D4A /* Environment.cpp */; };
-		C4E0BAEC10E09F2800D04F42 /* Script.cpp in Sources */ = {isa = PBXBuildFile; fileRef = C4E0BAEB10E09F2800D04F42 /* Script.cpp */; };
 		C4E4C6E311D8EB7E00978630 /* ArrayPrimitives.cpp in Sources */ = {isa = PBXBuildFile; fileRef = C4E4C6E111D8EB7E00978630 /* ArrayPrimitives.cpp */; };
 		C4FC160610D4328300E6ABD6 /* Scope.cpp in Sources */ = {isa = PBXBuildFile; fileRef = C4FC15FD10D4328300E6ABD6 /* Scope.cpp */; };
 		C4FC166010D4331C00E6ABD6 /* Expr.cpp in Sources */ = {isa = PBXBuildFile; fileRef = C4FC164B10D4331C00E6ABD6 /* Expr.cpp */; };
@@ -64,8 +62,6 @@
 /* Begin PBXFileReference section */
 		08FB7796FE84155DC02AAC07 /* main.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = main.cpp; sourceTree = "<group>"; };
 		8DD76F6C0486A84900D96B5E /* finch */ = {isa = PBXFileReference; explicitFileType = "compiled.mach-o.executable"; includeInIndex = 0; path = finch; sourceTree = BUILT_PRODUCTS_DIR; };
-		C4012A4410CA94580088B77F /* Repl.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Repl.h; sourceTree = "<group>"; };
-		C4012A4710CA948B0088B77F /* Repl.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = Repl.cpp; sourceTree = "<group>"; };
 		C414906511E31344006CE647 /* Interpreter.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Interpreter.h; sourceTree = "<group>"; };
 		C414906611E31344006CE647 /* Interpreter.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = Interpreter.cpp; sourceTree = "<group>"; };
 		C414906811E313AD006CE647 /* IInterpreterHost.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = IInterpreterHost.h; sourceTree = "<group>"; };
@@ -133,8 +129,6 @@
 		C4CDF8B710D88E1F001C9D4A /* Environment.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = Environment.h; path = Interpreter/Environment.h; sourceTree = "<group>"; };
 		C4CDF8B810D88E1F001C9D4A /* Environment.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = Environment.cpp; path = Interpreter/Environment.cpp; sourceTree = "<group>"; };
 		C4CDF8BA10D88E43001C9D4A /* StringExpr.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = StringExpr.h; path = Syntax/AST/StringExpr.h; sourceTree = "<group>"; };
-		C4E0BAEA10E09F2800D04F42 /* Script.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Script.h; sourceTree = "<group>"; };
-		C4E0BAEB10E09F2800D04F42 /* Script.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = Script.cpp; sourceTree = "<group>"; };
 		C4E4C6E011D8EB6C00978630 /* ArrayObject.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = ArrayObject.h; path = Interpreter/Objects/ArrayObject.h; sourceTree = "<group>"; };
 		C4E4C6E111D8EB7E00978630 /* ArrayPrimitives.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = ArrayPrimitives.cpp; path = Interpreter/Primitives/ArrayPrimitives.cpp; sourceTree = "<group>"; };
 		C4E4C6E211D8EB7E00978630 /* ArrayPrimitives.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = ArrayPrimitives.h; path = Interpreter/Primitives/ArrayPrimitives.h; sourceTree = "<group>"; };
@@ -193,12 +187,8 @@
 			isa = PBXGroup;
 			children = (
 				08FB7796FE84155DC02AAC07 /* main.cpp */,
-				C4012A4410CA94580088B77F /* Repl.h */,
-				C4012A4710CA948B0088B77F /* Repl.cpp */,
 				C4A6F68610DC3B4400854074 /* ReplLineReader.h */,
 				C4A6F68710DC3B4400854074 /* ReplLineReader.cpp */,
-				C4E0BAEA10E09F2800D04F42 /* Script.h */,
-				C4E0BAEB10E09F2800D04F42 /* Script.cpp */,
 				C422D6B310E9047600980E01 /* Compiler */,
 				C4B9DB2F10CF3C19003C556D /* Interpreter */,
 				C4C514D410CB7A0C0045AA86 /* Syntax */,
@@ -422,7 +412,6 @@
 			buildActionMask = 2147483647;
 			files = (
 				8DD76F650486A84900D96B5E /* main.cpp in Sources */,
-				C4012A4810CA948B0088B77F /* Repl.cpp in Sources */,
 				C4FC160610D4328300E6ABD6 /* Scope.cpp in Sources */,
 				C4FC166010D4331C00E6ABD6 /* Expr.cpp in Sources */,
 				C4FC167110D4334800E6ABD6 /* FinchParser.cpp in Sources */,
@@ -444,7 +433,6 @@
 				C465893210DE8802007C4C3E /* Test.cpp in Sources */,
 				C465893310DE8802007C4C3E /* RefTests.cpp in Sources */,
 				C45102D410DF37DC0009E52E /* EtherPrimitives.cpp in Sources */,
-				C4E0BAEC10E09F2800D04F42 /* Script.cpp in Sources */,
 				C424166210E5B70E001E7103 /* StringTests.cpp in Sources */,
 				C424166310E5B70E001E7103 /* QueueTests.cpp in Sources */,
 				C4C697951134B2EF00662643 /* StringTable.cpp in Sources */,

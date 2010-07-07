@@ -6,38 +6,38 @@ Complex <- Object copyWith: {
         _imaginary <- 0
         
         ' accessors
-        self addMethod: "real" body: { _real }
-        self addMethod: "imaginary" body: { _imaginary }
+        self :: real { _real }
+        self :: imaginary { _imaginary }
         
         ' string conversion
-        self addMethod: "toString" body: {
+        self :: toString {
             _real toString + "+" + _imaginary + "i"
         }
         
         ' arithmetic
-        self addMethod: "+" body: {|right|
+        self :: + right {
             Complex new: _real + right real i: _imaginary + right imaginary
         }
 
-        self addMethod: "-" body: {|right|
+        self :: - right {
             Complex new: _real - right real i: _imaginary - right imaginary
         }
 
-        self addMethod: "*" body: {|right|
+        self :: * right {
             Complex new: (_real * right real) - (_imaginary * right imaginary) i:
                          (_imaginary * right real) + (_real * right imaginary) 
         }
         
-        self addMethod: "magnitude" body: {
+        self :: magnitude {
             ((_real * _real) + (_imaginary * _imaginary)) sqrt
         }
     }
     
     ' accessor for the prototype
-    self addMethod: "prototype" body: { _prototype }
+    self :: prototype { _prototype }
     
     ' constructor
-    self addMethod: "new:i:" body: {|real imaginary|
+    self :: new: real i: imaginary {
         _prototype copyWith: {
             _real <- real
             _imaginary <- imaginary
@@ -45,7 +45,15 @@ Complex <- Object copyWith: {
     }
 }
 
-' allow create complex numbers from normal ones
-Number addMethod: "i" body: {
-    Complex new: 0 i: self
-}
+' allow creating complex numbers from normal ones
+Number prototype :: i { Complex new: 0 i: self }
+
+' test it out a bit
+a <- 4 i
+b <- Complex new: 2 i: 3
+
+writeLine: "a = " + a toString
+writeLine: "b = " + b toString
+writeLine: "|b| = " + b magnitude toString
+writeLine: "a + b = " + (a + b) toString
+writeLine: "a * b = " + (a * b) toString

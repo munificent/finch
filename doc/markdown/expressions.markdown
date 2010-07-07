@@ -25,20 +25,23 @@ Finch currently supports two atomic types: numbers and strings. Numbers are doub
 
 ## Variables
 
-Variable names in Finch are more flexible than in most other languages. They must start with a letter or an underscore, but pretty much everything is fair game after that. All of these are valid variable names:
+Variable names in Finch are more flexible than in most other languages. They must contain a letter or an underscore somewhere in the name, but pretty much everything else is fair game. All of these are valid variable names:
 
     :::finch
     foo
     Bar
-    this2
-    andPunctuation@#$%^&*-_=+<>/?!
+    best-friends4eva
+    _
+    <<HO!HO!HO!>>
+    lotsOfPunctuation@#$%^&*-_=+<>/?!
     
-There are three kinds of variables in Finch: global, local, and object. Global variables start with a capital letter. Local variables start with a lowercase letter, and object variables start with an underscore:
+There are three kinds of variables in Finch: global, local, and object. If the first letter is capital, it's a global variable. If lowercase, it's local. If it's an underscore, it's an object variable. Any leading punctuation is ignored:
 
     :::finch
     Global
     local
     _object
+    $#$*AlsoGlobal
 
 ## Messages
 
