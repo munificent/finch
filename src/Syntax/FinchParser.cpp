@@ -204,10 +204,6 @@ namespace Finch
         return object;
     }
     
-    // 1 + 2 + 3
-    // (1 + 2) + 3
-    // (op) op
-    
     Ref<Expr> FinchParser::Operator()
     {
         PARSE_RULE(object, Unary());
