@@ -37,12 +37,11 @@ namespace Finch
         Ref<Expr> Unary();
         Ref<Expr> Primary();
         
-        void ParseSequence(Array<Ref<Expr> > & expressions);
+        Ref<Expr> ParseSequence(Array<Ref<Expr> > & expressions);
         Ref<Expr> ParseKeyword(Ref<Expr> object);
         Ref<Expr> ParseBindBody(Ref<Expr> target, String name,
                                 const Array<String> & args);
         
-        Ref<Expr> ParseError();
         Ref<Expr> ParseError(const char * message);
         
         IErrorReporter & mErrorReporter;

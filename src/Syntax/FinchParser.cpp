@@ -17,6 +17,54 @@
 #include "UnaryExpr.h"
 #include "UndefineExpr.h"
 
+// Recursive descent parsers are generally pretty straightforward to read. Each
+// grammar production is a function call and they call each other directly so
+// the code ends up looking pretty much like the grammar.
+//
+// The only trouble is when a parse error occurs. Since a recursive descent
+// parser uses the native callstack to maintain the parse state, we've got to
+// unwind the stack to get back to ground zero. This means either using
+// exceptions (which I'm not a fan of in C++) or having every call to a grammar
+// expression function check the return code for failure and return again. So,
+// instead of the nice:
+//
+//  Ref<Expr> Operator()
+//  {
+//      Ref<Expr> left = Unary();
+//      String op = Match(TOKEN_OPERATOR).Text();
+//      Ref<Expr> right = Unary();
+//      
+//      return Ref<Expr>(new OperatorExpr(left, op, right));
+//  }
+//
+// We end up having to do:
+//
+//  Ref<Expr> Operator()
+//  {
+//      Ref<Expr> left = Unary();
+//      if (left.IsNull()) return Ref<Expr>(); // unwind
+//      if (!Lookahead(TOKEN_OPERATOR)) return ParseError("Need operator.");
+//      String op = Match(TOKEN_OPERATOR).Text();
+//      Ref<Expr> right = Unary();
+//      if (right.IsNull()) return Ref<Expr>(); // unwind
+//      
+//      return Ref<Expr>(new OperatorExpr(left, op, right));
+//  }
+//
+// To get around that, we'll define some macros that do this checking and
+// unwinding for us. They're a little magical (hence this long explanation),
+// but should make the code easier to read.
+
+#define PARSE_RULE(_result, _func) \
+    Ref<Expr> _result = _func; \
+    if (_result.IsNull()) return _result;
+
+#define EXPECT(_token, _message) \
+    if (!LookAhead(_token)) return ParseError(_message);
+
+#define MATCH(_token, _message) \
+    if (!Match(_token)) return ParseError(_message);
+
 namespace Finch
 {    
     Ref<Expr> FinchParser::Parse()
@@ -24,7 +72,7 @@ namespace Finch
         if (IsInfinite())
         {
             // skip past Sequence() otherwise we'll keep reading lines forever
-            Ref<Expr> expr = Bind();
+            PARSE_RULE(expr, Bind());
             
             // eat any trailing line
             Match(TOKEN_LINE);
@@ -35,12 +83,9 @@ namespace Finch
         {
             // since expression includes sequence expressions, this will parse
             // as many lines as we have
-            Ref<Expr> expr = Expression();
+            PARSE_RULE(expr, Expression());
             
-            // we should have parsed the whole file
-            if (!LookAhead(TOKEN_EOF)) {
-                return ParseError("Parser ended unexpectedly before reaching end of file.");
-            }
+            EXPECT(TOKEN_EOF, "Parser ended unexpectedly before reaching end of file.");
             
             return expr;
         }
@@ -48,7 +93,7 @@ namespace Finch
     
     Ref<Expr> FinchParser::Expression()
     {
-        Ref<Expr> expr = Sequence();
+        PARSE_RULE(expr, Sequence());
         
         // eat any trailing line
         Match(TOKEN_LINE);
@@ -59,10 +104,7 @@ namespace Finch
     Ref<Expr> FinchParser::Sequence()
     {
         Array<Ref<Expr> > expressions;
-        
-        ParseSequence(expressions);
-        
-        if (expressions.Count() == 0) return ParseError("Expected sequence.");
+        PARSE_RULE(dummy, ParseSequence(expressions));
         
         // if there's just one, don't wrap it in a sequence
         if (expressions.Count() == 1) return expressions[0];
@@ -72,8 +114,7 @@ namespace Finch
     
     Ref<Expr> FinchParser::Bind()
     {
-        Ref<Expr> target = Assignment();
-        if (target.IsNull()) return ParseError();
+        PARSE_RULE(target, Assignment());
         
         if (Match(TOKEN_BIND))
         {
@@ -93,7 +134,7 @@ namespace Finch
                 String name = Consume().Text();
                 
                 // one arg
-                if (!LookAhead(TOKEN_NAME)) return ParseError("Expect name after operator in a bind expression.");
+                EXPECT(TOKEN_NAME, "Expect name after operator in a bind expression.");
                 args.Add(Consume().Text());
                 
                 return ParseBindBody(target, name, args);
@@ -108,7 +149,7 @@ namespace Finch
                     name += Consume().Text();
                     
                     // parse each keyword's arg
-                    if (!LookAhead(TOKEN_NAME)) return ParseError("Expect name after keyword in a bind expression.");
+                    EXPECT(TOKEN_NAME, "Expect name after keyword in a bind expression.");
                     args.Add(Consume().Text());
                 }
                 
@@ -135,10 +176,7 @@ namespace Finch
             }
             else
             {
-                // parse the assigned value
-                Ref<Expr> value = Assignment();
-                if (value.IsNull()) return ParseError();
-                
+                PARSE_RULE(value, Assignment());
                 return Ref<Expr>(new DefExpr(name, value));
             }
         }
@@ -149,8 +187,7 @@ namespace Finch
             Consume(); // the arrow
             
             // get the initial value
-            Ref<Expr> value = Assignment();
-            if (value.IsNull()) return ParseError();
+            PARSE_RULE(value, Assignment());
             
             return Ref<Expr>(new SetExpr(name, value));
         }
@@ -159,8 +196,7 @@ namespace Finch
     
     Ref<Expr> FinchParser::Keyword()
     {
-        Ref<Expr> object = Operator();
-        if (object.IsNull()) return ParseError();
+        PARSE_RULE(object, Operator());
         
         Ref<Expr> keyword = ParseKeyword(object);
         if (!keyword.IsNull()) return keyword;
@@ -168,16 +204,18 @@ namespace Finch
         return object;
     }
     
+    // 1 + 2 + 3
+    // (1 + 2) + 3
+    // (op) op
+    
     Ref<Expr> FinchParser::Operator()
     {
-        Ref<Expr> object = Unary();
-        if (object.IsNull()) return ParseError();
+        PARSE_RULE(object, Unary());
         
         while (LookAhead(TOKEN_OPERATOR))
         {
             String op = Consume().Text();
-            Ref<Expr> arg = Unary();
-            if (arg.IsNull()) return ParseError("Expect expression after operator.");
+            PARSE_RULE(arg, Unary());
 
             object = Ref<Expr>(new OperatorExpr(object, op, arg));
         }
@@ -187,8 +225,7 @@ namespace Finch
     
     Ref<Expr> FinchParser::Unary()
     {
-        Ref<Expr> object = Primary();
-        if (object.IsNull()) return ParseError();
+        PARSE_RULE(object, Primary());
         
         while (LookAhead(TOKEN_NAME))
         {
@@ -231,11 +268,8 @@ namespace Finch
         }
         else if (Match(TOKEN_LEFT_PAREN))
         {
-            Ref<Expr> expression = Expression();
-            if (expression.IsNull()) return ParseError("Expect expression after '('.");
-            
-            if (!Match(TOKEN_RIGHT_PAREN)) return ParseError("Expect closing ')'.");
-            
+            PARSE_RULE(expression, Expression());
+            MATCH(TOKEN_RIGHT_PAREN, "Expect closing ')'.");
             return expression;
         }
         else if (Match(TOKEN_LEFT_BRACKET))
@@ -245,10 +279,10 @@ namespace Finch
             // allow zero-element arrays
             if (!LookAhead(TOKEN_RIGHT_BRACKET))
             {
-                ParseSequence(expressions);
+                PARSE_RULE(dummy, ParseSequence(expressions));
             }
             
-            if (!Match(TOKEN_RIGHT_BRACKET)) return ParseError("Expect closing ']'.");
+            MATCH(TOKEN_RIGHT_BRACKET, "Expect closing ']'.");
             
             return Ref<Expr>(new ArrayExpr(expressions));
         }
@@ -264,29 +298,24 @@ namespace Finch
                     args.Add(Consume().Text());
                 }
                 
-                if (!Match(TOKEN_PIPE)) return ParseError("Expect closing '|' after block arguments.");
+                MATCH(TOKEN_PIPE, "Expect closing '|' after block arguments.");
                 
                 // if there were no named args, but there were pipes (||),
                 // use an automatic "it" arg
                 if (args.Count() == 0) args.Add("it");
             }
             
-            Ref<Expr> body = Expression();
-            if (body.IsNull()) return ParseError("Expect expression body inside block.");
-            
-            if (!Match(TOKEN_RIGHT_BRACE)) return ParseError("Expect closing '}' after block.");
+            PARSE_RULE(body, Expression());
+            MATCH(TOKEN_RIGHT_BRACE, "Expect closing '}' after block.");
             
             return Ref<Expr>(new BlockExpr(args, body));
         }
-        else return ParseError("Couldn't parse primary expression.");
+        else return ParseError("Unexpected token.");
     }
     
-    void FinchParser::ParseSequence(Array<Ref<Expr> > & expressions)
+    Ref<Expr> FinchParser::ParseSequence(Array<Ref<Expr> > & expressions)
     {
-        Ref<Expr> expression = Bind();
-        //### bob: need error reporting
-        if (expression.IsNull()) return;
-        
+        PARSE_RULE(expression, Bind());
         expressions.Add(expression);
         
         while (Match(TOKEN_LINE))
@@ -299,12 +328,12 @@ namespace Finch
             if (LookAhead(TOKEN_RIGHT_BRACE)) break;
             if (LookAhead(TOKEN_EOF)) break;
             
-            Ref<Expr> next = Bind();
-            //### bob: need error reporting
-            if (next.IsNull()) return;
-            
+            PARSE_RULE(next, Bind());
             expressions.Add(next);
         }
+        
+        // just return a random non-null expression to show success
+        return expressions[0];
     }
 
     // Parses just the message send part of a keyword message: "foo: a bar: b"
@@ -316,10 +345,9 @@ namespace Finch
         while (LookAhead(TOKEN_KEYWORD))
         {
             String keyword = Consume().Text();
-            Ref<Expr> arg = Operator();
-            if (arg.IsNull()) return ParseError("Expect argument after keyword.");
-            
             keywords.Add(keyword);
+            
+            PARSE_RULE(arg, Operator());
             args.Add(arg);
         }
         
@@ -335,12 +363,9 @@ namespace Finch
                                          const Array<String> & args)
     {
         // parse the block
-        if (!Match(TOKEN_LEFT_BRACE)) return ParseError("Expect '{' to begin bound block.");
-        
-        Ref<Expr> body = Expression();
-        if (body.IsNull()) return ParseError("Expect expression body inside block.");
-        
-        if (!Match(TOKEN_RIGHT_BRACE)) return ParseError("Expect '}' to close block.");
+        MATCH(TOKEN_LEFT_BRACE, "Expect '{' to begin bound block.");
+        PARSE_RULE(body, Expression());
+        MATCH(TOKEN_RIGHT_BRACE, "Expect '}' to close block.");
         
         // attach the block's arguments
         Ref<Expr> block = Ref<Expr>(new BlockExpr(args, body));
@@ -357,12 +382,7 @@ namespace Finch
 
         return Ref<Expr>(new KeywordExpr(target, addMethodKeywords, addMethodArgs));
     }
-    
-    Ref<Expr> FinchParser::ParseError()
-    {
-        return Ref<Expr>();
-    }
-    
+        
     Ref<Expr> FinchParser::ParseError(const char * message)
     {
         //### bob: using stringstream here is gross
