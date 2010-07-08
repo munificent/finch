@@ -1,7 +1,10 @@
+#include <sstream>
+
 #include "ArrayExpr.h"
 #include "BlockExpr.h"
 #include "DefExpr.h"
 #include "FinchParser.h"
+#include "IErrorReporter.h"
 #include "ILineReader.h"
 #include "KeywordExpr.h"
 #include "NameExpr.h"
@@ -362,8 +365,11 @@ namespace Finch
     
     Ref<Expr> FinchParser::ParseError(const char * message)
     {
-        std::cout << message << " (got: " << Current() << ")" << std::endl;
-        
+        //### bob: using stringstream here is gross
+        std::stringstream error;
+        error << "Parse error on " << Current() << ": " << message;
+        mErrorReporter.Error(String(error.str().c_str()));
+
         return Ref<Expr>();
     }
 }

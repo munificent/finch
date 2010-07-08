@@ -5,59 +5,65 @@ a minimal but "complete" Finch interpreter. Many high-level features
 (bytecode compilation, coroutines, etc.) will be missing, but what's
 there should be solid.
 
-- Codebase
-  - A well-defined error-handling strategy
-    - Lexer/parser errors
-    - Interpreter runtime errors
-    - Assertions
-  - Rename Ref and String to ref and string
+- Hosting
+  - Add support for registering external methods or objects so that Finch can
+    call into the host.
+  - Add API for sending a message to a Finch object from code outside the host.
+  - Move "load:" into an externally-provided method.
+  - Add quit method.
+  - Externalize memory allocation.
+  - Implement some kind of pimpl pattern to hide host's internal structure from
+    users.
+    
+- Documentation
+  - Write guide to hosting Finch inside another application.
+  - Document formal grammar?
+  - Write tutorials.
+  - Document base lib and primitives.
   
 - Syntax
-  - Don't allow alphanumerics in operators
-
-- Clean up
+  - Build real error-handling strategy into lexer and parser.
+  - Symbols?
+  - Tuple, records or some other simple object literal syntax?
+  
+- Testing and Quality
+  - Make unit tests optionally-compiled with a separate make target.
+  - Expand test suite.
+  - Add more code assertions.
+  - Document code.
+  - Figure out strategy for when to pass by value, reference, and pointer.
+    Apply strategy consistently.
   - Address and remove //### bob:
-  - Get rid of unit tests (using script tests instead)
-  
-- Application
-  - makefile for Unix support
-  - use correct relative paths when interpreting "load:"
-  
-- Interpreter features
-  - Primitives
-    - More string operations
-    - Boolean operators
-    - for loops
-    - eval
-    - mod
-    - A full suite of arithmetic operators
-  - Move IO out of Ether into separate primitive
-  - String conversion
-    Any object should be able to handle a "toString" message and
-    return a string. "write:" and other places that stringize an
-    object should go through that.
-  - Basic reflection
-    - does-not-understand?
-    - send-message?
-  + Bytecode compiler so we aren't abusing the C callstack
-  
-- Hosting
-  - Finch should require a host object when being instantiated. This
-    object will handle things like memory allocation, and unknown
-    global objects (so that Finch can talk to the outside world). This
-    way, it can be easily embedded in an existing app.
 
-- Help
-  A tutorial and a basic reference doc.
+- Miscellaneous
+  - Figure out how "load:" should handle paths.
+  - Figure out how relative path to base lib should work.
 
-- Documentation
-  - Comments for each class and non-private function.
-  - License
+- Builtins
+  - Add type test methods (number? string? etc.).
+  - Make write: call toString: on args.
+  - Add eval: primitive.
+  - Reflection API.
+    - Get messages object supports.
+    - Call message programmatically.
+    - Remove method.
+  - Ability to programmatically handle unhandled message.
+
+- Library
+  - Collections?
   
-- Examples
-  A decent number of sample Finch programs that do interesting or fun
-  stuff.
-
-- Test suite
-  A series of Finch scripts that will exercise the language features
-  by verifying against expected output.
+- Interpreter
+  - Support coroutines/continuations.
+  - Write garbage collector.
+  - Optimize closures to only close over and reference variables that are
+    actually used. Right now, we maintain a reference to the entire parent
+    scope chain which means that *nothing* is every really collected.
+  - Try to come up with something cleaner than the current while loop bytecode
+    stuff.
+    
+- Bigger Questions
+  - Figure out inheritance. Single prototype? Multiple? Mixins? Classes? None?
+    Something implemented at the library level?
+  - How can we share code across multiple types effectively? For example, a sort
+    method that can be sent to any of a variety of collection "types"?
+  - Get rid of globals?

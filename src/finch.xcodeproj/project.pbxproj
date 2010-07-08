@@ -95,6 +95,7 @@
 		C465892F10DE8802007C4C3E /* RefTests.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = RefTests.cpp; path = Test/RefTests.cpp; sourceTree = "<group>"; };
 		C483C8A411D9B44900C0BAA9 /* FinchString.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = FinchString.cpp; path = Base/FinchString.cpp; sourceTree = "<group>"; };
 		C483C8A511D9B44900C0BAA9 /* FinchString.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = FinchString.h; path = Base/FinchString.h; sourceTree = "<group>"; };
+		C49AB21E11E5A2A300BB9D45 /* IErrorReporter.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = IErrorReporter.h; sourceTree = "<group>"; };
 		C4A6F68610DC3B4400854074 /* ReplLineReader.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ReplLineReader.h; sourceTree = "<group>"; };
 		C4A6F68710DC3B4400854074 /* ReplLineReader.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = ReplLineReader.cpp; sourceTree = "<group>"; };
 		C4C697921134B2EF00662643 /* Stack.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = Stack.h; path = Base/Stack.h; sourceTree = "<group>"; };
@@ -311,6 +312,7 @@
 			children = (
 				C4FC166A10D4334800E6ABD6 /* FinchParser.h */,
 				C4FC166910D4334800E6ABD6 /* FinchParser.cpp */,
+				C49AB21E11E5A2A300BB9D45 /* IErrorReporter.h */,
 				C465890C10DE876C007C4C3E /* ILineReader.h */,
 				C465890B10DE876C007C4C3E /* ITokenSource.h */,
 				C4FC166C10D4334800E6ABD6 /* Lexer.h */,

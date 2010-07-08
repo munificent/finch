@@ -1,5 +1,6 @@
 #include <stdarg.h>
 
+#include "IErrorReporter.h"
 #include "ILineReader.h"
 #include "LexerTests.h"
 #include "Lexer.h"
@@ -27,6 +28,12 @@ namespace Finch
         
     private:
         const char * mLine;
+    };
+    
+    class DummyErrorReporter : public IErrorReporter
+    {
+    public:
+        virtual void Error(String message) {}
     };
     
     void LexerTests::Run()
@@ -139,7 +146,8 @@ namespace Finch
     Token LexerTests::LexOne(const char * text)
     {
         FixedLineReader reader(text);
-        Lexer lexer(reader);
+        DummyErrorReporter errorReporter;
+        Lexer lexer(reader, errorReporter);
         
         return lexer.ReadToken();
     }
@@ -147,7 +155,8 @@ namespace Finch
     void LexerTests::TestLex(const char * text, ...)
     {
         FixedLineReader reader(text);
-        Lexer lexer(reader);
+        DummyErrorReporter errorReporter;
+        Lexer lexer(reader, errorReporter);
         
         va_list args;
         va_start(args, text);

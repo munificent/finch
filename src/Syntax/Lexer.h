@@ -6,6 +6,7 @@
 
 namespace Finch
 {
+    class IErrorReporter;
     class ILineReader;
     
     // The Finch lexer. Reads a series of lines from an ILineReader and splits
@@ -13,8 +14,9 @@ namespace Finch
     class Lexer : public ITokenSource
     {
     public:
-        Lexer(ILineReader & reader)
+        Lexer(ILineReader & reader, IErrorReporter & errorReporter)
         :   mReader(reader),
+            mErrorReporter(errorReporter),
             mState(LEX_NEED_LINE),
             mIndex(0),
             mTokenStart(0)
@@ -58,7 +60,9 @@ namespace Finch
         bool IsDigit(char c) const;
         bool IsOperator(char c) const;
         
-        ILineReader & mReader;
+        ILineReader    & mReader;
+        IErrorReporter & mErrorReporter;
+        
         State         mState;
         
         String        mLine;

@@ -2,6 +2,7 @@
 #include <cstdlib>
 
 #include "Lexer.h"
+#include "IErrorReporter.h"
 #include "ILineReader.h"
 
 namespace Finch
@@ -73,8 +74,10 @@ namespace Finch
                             else if (IsOperator(c)) StartState(LEX_IN_OPERATOR);
                             else
                             {
-                                //### bob: need lexer error handling here
-                                std::cout << "unexpected char '" << c << "'\n";
+                                String message = String::Format("Unknown character '%c'.", c);
+                                mErrorReporter.Error(message);
+                                
+                                // just ignore the character and continue
                                 Consume();
                             }
                     }
@@ -170,6 +173,12 @@ namespace Finch
                             ChangeState(LEX_IN_STRING_ESCAPE);
                             break;
                             
+                        case '\0':
+                            mErrorReporter.Error("String is missing closing '\"'.");
+                            // just ditch the token and end the line
+                            mState = LEX_NEED_LINE;
+                            break;
+
                         default:
                             // allow other characters in string
                             mEscapedString += c;
@@ -184,18 +193,19 @@ namespace Finch
                         case '"':  EscapeCharacter('"'); break;
                         case 'n':  EscapeCharacter('\n'); break;
                         case '\\': EscapeCharacter('\\'); break;
-                                                        
+                        
                         case '\0':
-                            //### bob: need error-handling
-                            std::cout << "Unterminated string" << std::endl;
-                            token = Token(TOKEN_LINE);
+                            mErrorReporter.Error("String is missing escape code and closing '\"'.");
+                            
+                            // just ditch the token and end the line
                             mState = LEX_NEED_LINE;
                             break;
                             
                         default:
-                            //### bob: need error-handling
-                            // unrecognized escape sequence
-                            std::cout << "Unrecognized escape code " << c << std::endl;
+                            String message = String::Format("Unrecognized string escape code '\\%c'.", c);
+                            mErrorReporter.Error(message);
+
+                            // ignore the escape sequence and keep going
                             mState = LEX_IN_STRING;
                             Consume();
                             break;

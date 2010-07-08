@@ -9,14 +9,16 @@
 
 namespace Finch
 {
+    class IErrorReporter;
     class ILineReader;
     
     // Parser for the Finch grammar.
     class FinchParser : public Parser
     {
     public:
-        FinchParser(ITokenSource & tokens)
-        :   Parser(tokens)
+        FinchParser(ITokenSource & tokens, IErrorReporter & errorReporter)
+        :   Parser(tokens),
+            mErrorReporter(errorReporter)
         {}
         
         // Reads from the token source and returns the parsed expression. If
@@ -42,6 +44,8 @@ namespace Finch
         
         Ref<Expr> ParseError();
         Ref<Expr> ParseError(const char * message);
+        
+        IErrorReporter & mErrorReporter;
         
         NO_COPY(FinchParser);
     };

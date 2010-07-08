@@ -2,6 +2,7 @@
 
 #include "FileLineReader.h"
 #include "FinchParser.h"
+#include "IErrorReporter.h"
 #include "IInterpreterHost.h"
 #include "Interpreter.h"
 #include "Lexer.h"
@@ -10,6 +11,22 @@
 
 namespace Finch
 {
+    class InterpreterErrorReporter : public IErrorReporter
+    {
+    public:
+        InterpreterErrorReporter(Interpreter & interpreter)
+        :   mInterpreter(interpreter)
+        {}
+        
+        virtual void Error(String message)
+        {
+            mInterpreter.GetHost().Error(message);
+        }
+        
+    private:
+        Interpreter & mInterpreter;
+    };
+
     bool Interpreter::InterpretFile(String fileName)
     {
         FileLineReader reader(fileName);
@@ -43,12 +60,7 @@ namespace Finch
         Ref<Expr> expr = Parse(reader);
         
         // bail if we failed to parse
-        //### bob: need better error handling here
-        if (expr.IsNull())
-        {
-            std::cout << "parse error" << std::endl;
-            return;
-        }
+        if (expr.IsNull()) return;
         
         // create a block for the expression
         Ref<Object> block = mEnvironment.CreateBlock(expr);
@@ -60,9 +72,10 @@ namespace Finch
         
     Ref<Expr> Interpreter::Parse(ILineReader & reader)
     {
-        Lexer          lexer(reader);
+        InterpreterErrorReporter errorReporter(*this);
+        Lexer          lexer(reader, errorReporter);
         LineNormalizer normalizer(lexer);
-        FinchParser    parser(normalizer);
+        FinchParser    parser(normalizer, errorReporter);
         
         return parser.Parse();
     }
@@ -70,12 +83,7 @@ namespace Finch
     bool Interpreter::Execute(Ref<Expr> expr)
     {        
         // bail if we failed to parse
-        //### bob: need better error handling here
-        if (expr.IsNull())
-        {
-            std::cout << "parse error" << std::endl;
-            return false;
-        }
+        if (expr.IsNull()) return false;
         
         // create a block for the expression
         Ref<Object> block = mEnvironment.CreateBlock(expr);
