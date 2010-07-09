@@ -15,10 +15,6 @@ namespace Finch
     using std::ostream;
     
     class Interpreter;
-    
-    // Function pointer type for a primitive Finch method implemented in C++.
-    typedef void (*PrimitiveMethod)(Ref<Object> thisRef, Process & process,
-                                    String message, const Array<Ref<Object> > & args);
 
     // Object class for a "normal" full-featured object. Supports user-defined
     // fields and methods as well as primitive methods.

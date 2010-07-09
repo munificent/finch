@@ -24,6 +24,9 @@
         abort();                                        \
     }
 
+#define ASSERT_STRING_NOT_EMPTY(value)                  \
+    ASSERT(value.Length() > 0, "String " #value " cannot be empty.")
+
 // Use this inside a class declaration to prevent the compiler from creating
 // the default copy constructor and assignment operators for the class. Note
 // that starts a private section, so you should either use this at the end of

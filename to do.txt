@@ -22,7 +22,7 @@ there should be solid.
   - Document base lib and primitives.
   
 - Syntax
-  - Build real error-handling strategy into lexer and parser.
+  + Build real error-handling strategy into lexer and parser.
   - Symbols?
   - Tuple, records or some other simple object literal syntax?
   

@@ -1,6 +1,3 @@
-#include <iostream> // for debugging
-#include <cstdlib>
-
 #include "LineNormalizer.h"
 
 namespace Finch
@@ -60,8 +57,6 @@ namespace Finch
                     break;
             }
         }
-        
-        //std::cout << "norm " << *token << std::endl;
         
         return token;
     }

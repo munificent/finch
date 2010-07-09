@@ -20,7 +20,7 @@ namespace Finch
         // define Object prototype
         mObjectPrototype = Object::NewObject(Ref<Object>(), "object prototype");
         
-        DynamicObject* objectObj = &static_cast<DynamicObject&>(*mObjectPrototype);
+        DynamicObject* objectObj = mObjectPrototype->AsDynamic();
         objectObj->RegisterPrimitive("=",               ObjectEquals);
         objectObj->RegisterPrimitive("!=",              ObjectNotEquals);
         objectObj->RegisterPrimitive("copy",            ObjectCopy);
@@ -33,7 +33,7 @@ namespace Finch
         // define Array prototype
         mArrayPrototype = Object::NewObject(mObjectPrototype, "array prototype");
         
-        DynamicObject* arrayObj = &static_cast<DynamicObject&>(*mArrayPrototype);
+        DynamicObject* arrayObj = mArrayPrototype->AsDynamic();
         arrayObj->RegisterPrimitive("length",      ArrayLength);
         arrayObj->RegisterPrimitive("add:",        ArrayAdd);
         arrayObj->RegisterPrimitive("at:",         ArrayAt);
@@ -42,7 +42,7 @@ namespace Finch
         // define Block type object
         mBlockPrototype = Object::NewObject(mObjectPrototype, "block prototype");
         
-        DynamicObject* blockObj = &static_cast<DynamicObject&>(*mBlockPrototype);
+        DynamicObject* blockObj = mBlockPrototype->AsDynamic();
         blockObj->RegisterPrimitive("call", BlockCall);
         blockObj->RegisterPrimitive("call:", BlockCall);
         blockObj->RegisterPrimitive("call::", BlockCall);
@@ -58,7 +58,7 @@ namespace Finch
         // define Number type object
         mNumberPrototype = Object::NewObject(mObjectPrototype, "number prototype");
         
-        DynamicObject* numberObj = &static_cast<DynamicObject&>(*mNumberPrototype);
+        DynamicObject* numberObj = mNumberPrototype->AsDynamic();
         numberObj->RegisterPrimitive("abs", NumberAbs);
         numberObj->RegisterPrimitive("neg", NumberNeg);
         numberObj->RegisterPrimitive("mod:", NumberMod);
@@ -86,7 +86,7 @@ namespace Finch
         // define String type object
         mStringPrototype = Object::NewObject(mObjectPrototype, "string prototype");
         
-        DynamicObject* stringObj = &static_cast<DynamicObject&>(*mStringPrototype);
+        DynamicObject* stringObj = mStringPrototype->AsDynamic();
         stringObj->RegisterPrimitive("+",           StringAdd);
         stringObj->RegisterPrimitive("length",      StringLength);
         stringObj->RegisterPrimitive("at:",         StringAt);
@@ -109,7 +109,7 @@ namespace Finch
         Ref<Object> ether = Object::NewObject(mObjectPrototype, "Ether");
         mGlobals->Define("Ether", ether);
         
-        DynamicObject* etherObj = &static_cast<DynamicObject&>(*ether);
+        DynamicObject* etherObj = ether->AsDynamic();
         etherObj->RegisterPrimitive("quit",           EtherQuit);
         etherObj->RegisterPrimitive("do:",            EtherDo);
         etherObj->RegisterPrimitive("if:then:",       EtherIfThen);
@@ -118,13 +118,12 @@ namespace Finch
         etherObj->RegisterPrimitive("while:do:",      EtherWhileDo);
         etherObj->RegisterPrimitive("write:",         EtherWrite);
         etherObj->RegisterPrimitive("writeLine:",     EtherWriteLine);
-        etherObj->RegisterPrimitive("load:",          EtherLoad);
         
         // define bare primitive object
         Ref<Object> primitives = Object::NewObject(mObjectPrototype);
         mGlobals->Define("Prims**", primitives);
 
-        DynamicObject* primsObj = &static_cast<DynamicObject&>(*primitives);
+        DynamicObject* primsObj = primitives->AsDynamic();
         primsObj->RegisterPrimitive("objectPrototype",  ObjectGetPrototype);
         primsObj->RegisterPrimitive("blockPrototype",   BlockGetPrototype);
         primsObj->RegisterPrimitive("numberPrototype",  NumberGetPrototype);

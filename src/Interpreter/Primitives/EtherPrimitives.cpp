@@ -88,11 +88,5 @@ namespace Finch
         
         process.PushNil();
     }
-    
-    PRIMITIVE(EtherLoad)
-    {
-        String fileName = args[0]->AsString();
-        process.GetInterpreter().EtherLoad(process, fileName);
-    }
 }
 

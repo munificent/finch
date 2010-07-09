@@ -1,5 +1,3 @@
-#include <iostream>
-
 #include "Parser.h"
 #include "ILineReader.h"
 #include "ITokenSource.h"

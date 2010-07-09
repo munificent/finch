@@ -2,6 +2,7 @@
 
 #include "Environment.h"
 #include "Macros.h"
+#include "Object.h"
 
 namespace Finch
 {
@@ -20,20 +21,26 @@ namespace Finch
         :   mHost(host)
         {}
         
-        // Reads the .fin file at the given path and executes its contents in
-        // a new process in this interpreter.
-        bool InterpretFile(String filePath);
-        
         // Reads from the given source and executes the results in a new process
         // in this interpreter.
-        void InterpretSource(ILineReader & reader);
+        void Interpret(ILineReader & reader);
         
-        //### bob: temp. this should move out into standalone
-        void EtherLoad(Process & process, String filePath);
+        // Reads from the given source and executes the results as a block
+        // within the given process.
+        void Interpret(ILineReader & reader, Process & process);
         
         //### bob: exposing the entire host here is a bit dirty.
         IInterpreterHost & GetHost() { return mHost; }
 
+        // Binds an external function to a message handler for a named global
+        // object.
+        // - objectName The name of the global object to bind the method on.
+        // - message    The name of the message to bind the method to.
+        // - method     The function to call when the object receives the
+        //              message.
+        void BindMethod(String objectName, String message,
+                        PrimitiveMethod method);
+        
     private:
         Ref<Expr> Parse(ILineReader & reader);
         bool      Execute(Ref<Expr> expr);

@@ -22,8 +22,5 @@ namespace Finch
     // Basic IO
     PRIMITIVE(EtherWrite);
     PRIMITIVE(EtherWriteLine);
-    //### bob: this should be moved out of core code into something the
-    // standalone provides.
-    PRIMITIVE(EtherLoad);
 }
 

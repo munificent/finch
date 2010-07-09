@@ -22,7 +22,13 @@ namespace Finch
     class CodeBlock;
     class DynamicObject;
     class Environment;
+    class Object;
     class Process;
+    
+    // Function pointer type for a primitive Finch method implemented in C++.
+    //### bob: rename thisRef to self
+    typedef void (*PrimitiveMethod)(Ref<Object> thisRef, Process & process,
+                                    String message, const Array<Ref<Object> > & args);
     
     // Base class for an object in Finch. All values in Finch inherit from this.
     class Object

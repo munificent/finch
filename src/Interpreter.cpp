@@ -1,5 +1,6 @@
 #include <sstream>
 
+#include "DynamicObject.h"
 #include "FileLineReader.h"
 #include "FinchParser.h"
 #include "IErrorReporter.h"
@@ -11,6 +12,8 @@
 
 namespace Finch
 {
+    // Error reporter passed to the parser so that parse errors can be routed
+    // through the interpreter host.
     class InterpreterErrorReporter : public IErrorReporter
     {
     public:
@@ -26,37 +29,14 @@ namespace Finch
     private:
         Interpreter & mInterpreter;
     };
-
-    bool Interpreter::InterpretFile(String fileName)
-    {
-        FileLineReader reader(fileName);
-        
-        if (reader.EndOfLines())
-        {
-            // couldn't open
-            std::cout << "Couldn't open file \"" << fileName << "\"" << std::endl;
-            return false;
-        }
-        
-        return Execute(Parse(reader));
-    }
     
-    void Interpreter::InterpretSource(ILineReader & reader)
+    void Interpreter::Interpret(ILineReader & reader)
     {
         Execute(Parse(reader));
     }
     
-    void Interpreter::EtherLoad(Process & process, String filePath)
+    void Interpreter::Interpret(ILineReader & reader, Process & process)
     {
-        FileLineReader reader(filePath);
-        
-        if (reader.EndOfLines())
-        {
-            // couldn't open
-            std::cout << "Couldn't open file \"" << filePath << "\"" << std::endl;
-            return;
-        }
-        
         Ref<Expr> expr = Parse(reader);
         
         // bail if we failed to parse
@@ -100,5 +80,21 @@ namespace Finch
         }
         
         return true;
+    }
+    
+    void Interpreter::BindMethod(String objectName, String message,
+                                 PrimitiveMethod method)
+    {
+        ASSERT_STRING_NOT_EMPTY(objectName);
+        ASSERT_STRING_NOT_EMPTY(message);
+        ASSERT_NOT_NULL(method);
+        
+        Ref<Object> object = mEnvironment.Globals()->LookUp(objectName);
+        ASSERT(!object.IsNull(), "Must be an existing global variable.");
+
+        DynamicObject* dynamicObj = object->AsDynamic();
+        ASSERT_NOT_NULL(dynamicObj);
+        
+        dynamicObj->RegisterPrimitive(message, method);
     }
 }
