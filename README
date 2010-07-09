@@ -1,25 +1,114 @@
-Finch is two things simultaneously: a small C++ program for me to
-brush up on my low-level skills, and an interpreter for a simple
-dynamic prototype-based language. I'm going to guess that you care
-more about the latter, though the former may help explain some design
-choices in the code (i.e. why I seem to be reinventing so many 
-wheels).
+Finch is a simple bytecode interpreted, purely object-oriented,
+prototype-based, dynamically-typed programming language. It's mostly
+inspired by Smalltalk, Self, and Javascript.
 
-Finch the language is heavily inspired by the Self programming
-language. It's basically my attempt to take self and do two things to
-it:
+It is written in C++ with a hand-written lexer and parser. It has
+minimal dependencies. I want Finch to be:
 
-1. Make its syntax more familiar to someone coming from a typical
-   curly and semicolon programming background.
+* Syntactically expressive yet minimal. Your code should look 
+  beautiful and do what you want.
 
-2. Make it text friendly unlike most Smalltalk-derived languages.
+* An example of a small, clean C++ codebase for an interpreter. If you
+  can read C++ and want to learn more about programming languages, I 
+  hope Finch's code will be a good primer.
 
-In other words, Finch is a Smalltalk for the rest of us.
+* A language in the Smalltalk family that's friendly to people coming 
+  from a text file and curly brace background.
+
+* A minimal prototype-based dynamic language. I think prototypes are a 
+  really cool paradigm, but Self is too complex (and mostly dead), and 
+  Javascript is... well... Javascript.
+
+* Easily embeddable in other applications. I don't know if Finch ever 
+  will have real use, but if it does, it will likely be as a 
+  configuration or scripting language within a larger application, 
+  much like Lua.
 
 
---- A Taste ---------------------------------------------------------
+A Taste of the Language
+-----------------------
 
-To give you a flavor of what the language looks like, here's some
-samples:
+Here's a little example to get you going. This little program doesn't 
+draw, but it will tell you what turns to make to draw a dragon curve:
 
-    writeLine: "Hello, world!"
+  ' create a single global Dragon object
+  Dragon <- Object copy
+
+  ' add a main "trace:" method for outputting the series of left and
+  ' right turns needed to draw a dragon curve.
+  Dragon :: trace: depth {
+    self traceDepth: depth turn: "R"
+    writeLine: "" ' end the line
+  }
+
+  ' add the main recursive method
+  Dragon :: traceDepth: n turn: turn {
+    if: n > 0 then: {
+      self traceDepth: n - 1 turn: "R"
+      write: turn
+      self traceDepth: n - 1 turn: "L"
+    }
+  }
+
+  ' now lets try it
+  Dragon trace: 5
+
+This doesn't really give you the OOP flavor of the language, but it
+gives you the idea of the general look.
+
+
+Getting Started
+---------------
+
+Finch lives on bitbucket here: http://bitbucket.org/munificent/finch
+
+To play around with it, sync it down. There is both an XCode project and a makefile. Uœse whichever you prefer. I don't have anything set up for Windows yet, but I'm keen if someone wants to throw a VS solution at me.
+
+- Building on Mac OS X with XCode
+
+I mostly work on it in XCode. If you like that, here's how to get
+going:
+
+1. Open the XCode project at: src/finch.xcodeproject
+2. Build and run. Ta-da!
+
+- Building with make
+
+Thanks to Steve Folta, there is also a makefile for *nix users:
+
+1. cd to the root finch directory.
+2. make
+3. ./finch
+
+
+Running Finch
+-------------
+
+Once you've got it built and running, you'll be at the main
+interpreter prompt. Finch is a command-line app. If you run it without
+any arguments, it drops you into a REPL, an interactive session. You
+can type in chunks of code and it will interpret them immediately. (If
+you run it with a single argument, it expects that to be a path to a
+.fin script, and it will load and run that script.)
+
+Once you're in the REPL, you can load and execute a script using
+load:. The path must be relative to where the executable is. If you've
+built from XCode, you can run the tests like this:
+
+  >> load: "../../test/test.fin"
+
+If you built from a makefile, it's:
+
+  >> load: "test/test.fin"
+
+
+Where to Go from Here
+---------------------
+
+You should be good to start hacking some Finch code now. There is some
+documentation here:
+
+- http://finch.stuffwithstuff.com
+- http://journal.stuffwithstuff.com/category/finch/
+
+If you have any questions or comments, holler at me.
