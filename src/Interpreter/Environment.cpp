@@ -124,7 +124,6 @@ namespace Finch
         mGlobals->Define("#PRIM#", primitives);
 
         DynamicObject* primsObj = primitives->AsDynamic();
-        primsObj->RegisterPrimitive("write:",           EtherWrite);
         primsObj->RegisterPrimitive("arrayPrototype",       PrimitiveGetArrayPrototype);
         primsObj->RegisterPrimitive("blockPrototype",       PrimitiveGetBlockPrototype);
         primsObj->RegisterPrimitive("fiberPrototype",       PrimitiveGetFiberPrototype);
@@ -133,6 +132,7 @@ namespace Finch
         primsObj->RegisterPrimitive("stringPrototype",      PrimitiveGetStringPrototype);
         primsObj->RegisterPrimitive("stringConcat:and:",    PrimitiveStringConcat);
         primsObj->RegisterPrimitive("stringCompare:to:",    PrimitiveStringCompare);
+        primsObj->RegisterPrimitive("write:",               PrimitiveWrite);
         primsObj->RegisterPrimitive("newFiber:",            FiberNew);
         primsObj->RegisterPrimitive("fiberYield:",          FiberYield);
     }

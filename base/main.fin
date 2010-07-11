@@ -1,5 +1,8 @@
 True :: not { False }
 
+True :: boolean? { True }
+False :: boolean? { True }
+
 ' define a for-style loop
 Ether :: from: start to: end step: step do: block {
     i <- start
@@ -53,6 +56,14 @@ Object :: new {
 ' returns true
 Object prototype :: not { True }
 
+' type tests
+Object prototype :: array? { False }
+Object prototype :: block? { False }
+Object prototype :: boolean? { False }
+Object prototype :: fiber? { False }
+Object prototype :: number? { False }
+Object prototype :: string? { False }
+
 ' logical operators
 Object prototype :: and: right {
     ' ### bob: should check if self and right are blocks and handl
@@ -71,12 +82,16 @@ Block <- Object new
 
 Block :: prototype { #PRIM# blockPrototype }
 
+Block prototype :: block? { True }
+
 ' fiber
 Fiber <- Object new
 
 Fiber :: prototype { #PRIM# fiberPrototype }
 Fiber :: yield: value { #PRIM# fiberYield: value }
 Fiber :: yield { #PRIM# fiberYield: Nil }
+
+Fiber prototype :: fiber? { True }
 
 Fiber prototype :: run { self run: Nil }
 
@@ -94,10 +109,14 @@ Number <- Object new
 
 Number :: prototype { #PRIM# numberPrototype }
 
+Number prototype :: number? { True }
+
 ' string
 String <- Object new
 
 String :: prototype { #PRIM# stringPrototype }
+
+String prototype :: string? { True }
 
 String prototype :: + right {
     #PRIM# stringConcat: self toString and: right toString
@@ -142,6 +161,8 @@ Array :: count: count fillWith: element {
     from: 1 to: count do: {|i| result add: element }
     result
 }
+
+Array prototype :: array? { True }
 
 Array prototype :: ++ right {
     result <- []

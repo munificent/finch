@@ -4,6 +4,8 @@
 #include "ArrayPrimitives.h"
 #include "DynamicObject.h"
 #include "Environment.h"
+#include "Interpreter.h"
+#include "IInterpreterHost.h"
 #include "Primitives.h"
 #include "Process.h"
 #include "Object.h"
@@ -55,6 +57,13 @@ namespace Finch
     PRIMITIVE(PrimitiveStringCompare)
     {
         process.PushNumber(args[0]->AsString().CompareTo(args[1]->AsString()));
+    }
+    
+    PRIMITIVE(PrimitiveWrite)
+    {
+        String text = args[0]->AsString();
+        process.GetInterpreter().GetHost().Output(text);
+        process.PushNil();
     }
 }
 

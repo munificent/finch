@@ -65,13 +65,5 @@ namespace Finch
     {
         process.WhileLoop(args[0], args[1]);
     }
-    
-    PRIMITIVE(EtherWrite)
-    {
-        String text = args[0]->AsString();
-        process.GetInterpreter().GetHost().Output(text);
-        
-        process.PushNil();
-    }
 }
 

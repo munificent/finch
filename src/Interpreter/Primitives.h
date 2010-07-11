@@ -19,5 +19,7 @@ namespace Finch
     
     PRIMITIVE(PrimitiveStringConcat);
     PRIMITIVE(PrimitiveStringCompare);
+    
+    PRIMITIVE(PrimitiveWrite);
 }
 
