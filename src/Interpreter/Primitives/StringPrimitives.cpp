@@ -21,17 +21,17 @@ namespace Finch
          vector<Ref<Object> > noArgs;
          Ref<Object> toString = args[0]->Receive(args[0], process, "toString", noArgs);
          */
-        process.PushString(thisRef->AsString() + args[0]->AsString());
+        process.PushString(self->AsString() + args[0]->AsString());
     }
     
     PRIMITIVE(StringLength)
     {
-        process.PushNumber(thisRef->AsString().Length());
+        process.PushNumber(self->AsString().Length());
     }
     
     PRIMITIVE(StringAt)
     {
-        String thisString = thisRef->AsString();
+        String thisString = self->AsString();
         int    index      = static_cast<int>(args[0]->AsNumber());
         
         if ((index >= 0) && (index < thisString.Length()))
@@ -53,7 +53,7 @@ namespace Finch
         vector<Ref<Object> > noArgs;
         Ref<Object> toString = args[0]->Receive(args[0], process, "toString", noArgs);
         */
-        process.PushBool(thisRef->AsString() == args[0]->AsString());
+        process.PushBool(self->AsString() == args[0]->AsString());
     }
     
     PRIMITIVE(StringNotEquals)
@@ -63,12 +63,12 @@ namespace Finch
         vector<Ref<Object> > noArgs;
         Ref<Object> toString = args[0]->Receive(args[0], process, "toString", noArgs);
         */
-        process.PushBool(thisRef->AsString() != args[0]->AsString());
+        process.PushBool(self->AsString() != args[0]->AsString());
     }
     
     PRIMITIVE(StringHashCode)
     {
-        process.PushNumber(static_cast<double>(thisRef->AsString().HashCode()));
+        process.PushNumber(static_cast<double>(self->AsString().HashCode()));
     }
 }
 

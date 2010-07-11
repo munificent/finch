@@ -14,8 +14,8 @@ namespace Finch
     
     PRIMITIVE(BlockCall)
     {
-        ASSERT_NOT_NULL(thisRef->AsBlock());
-        process.CallBlock(thisRef, args);
+        ASSERT_NOT_NULL(self->AsBlock());
+        process.CallBlock(self, args);
     }
 }
 

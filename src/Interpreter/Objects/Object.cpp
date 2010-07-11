@@ -59,7 +59,7 @@ namespace Finch
                                            interpreter, block));
     }
 
-    void Object::Receive(Ref<Object> thisRef, Process & process,
+    void Object::Receive(Ref<Object> self, Process & process,
                                 String message, const Array<Ref<Object> > & args)
     {
         // walk up the parent chain until it loops back on itself at
@@ -71,13 +71,13 @@ namespace Finch
             // object a few links down the parent chain from Object, you'll
             // get a copy of *that* object, and not Object itself where "copy"
             // is implemented.
-            mParent->Receive(thisRef, process, message, args);
+            mParent->Receive(self, process, message, args);
         }
         else
         {
             //### bob: should do some sort of message not handled thing here
             String error = String::Format("Object '%s' did not handle message '%s'",
-                                          thisRef->AsString().CString(),
+                                          self->AsString().CString(),
                                           message.CString());
             process.Error(error);
             process.PushNil();

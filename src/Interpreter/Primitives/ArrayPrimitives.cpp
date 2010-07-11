@@ -16,7 +16,7 @@ namespace Finch
     
     PRIMITIVE(ArrayLength)
     {
-        ArrayObject * array = thisRef->AsArray();
+        ArrayObject * array = self->AsArray();
         ASSERT_NOT_NULL(array);
         
         process.PushNumber(array->Elements().Count());
@@ -24,16 +24,16 @@ namespace Finch
     
     PRIMITIVE(ArrayAdd)
     {
-        ArrayObject * array = thisRef->AsArray();
+        ArrayObject * array = self->AsArray();
         ASSERT_NOT_NULL(array);
         
         array->Elements().Add(args[0]);
-        process.Push(thisRef);
+        process.Push(self);
     }
     
     PRIMITIVE(ArrayAt)
     {
-        ArrayObject * array = thisRef->AsArray();
+        ArrayObject * array = self->AsArray();
         ASSERT_NOT_NULL(array);
         
         int index = static_cast<int>(args[0]->AsNumber());
@@ -52,7 +52,7 @@ namespace Finch
     
     PRIMITIVE(ArrayAtPut)
     {
-        ArrayObject * array = thisRef->AsArray();
+        ArrayObject * array = self->AsArray();
         ASSERT_NOT_NULL(array);
         
         int index = static_cast<int>(args[0]->AsNumber());
@@ -63,7 +63,7 @@ namespace Finch
             array->Elements()[index] = args[1];
         }
 
-        process.Push(thisRef);
+        process.Push(self);
     }
 }
 

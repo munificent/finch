@@ -8,7 +8,7 @@
 #include "FinchString.h"
 
 #define PRIMITIVE(name)                                             \
-        void name(Ref<Object> thisRef, Process & process,   \
+        void name(Ref<Object> self, Process & process,              \
              String message, const Array<Ref<Object> > & args)
 
 namespace Finch
@@ -28,8 +28,7 @@ namespace Finch
     class Process;
     
     // Function pointer type for a primitive Finch method implemented in C++.
-    //### bob: rename thisRef to self
-    typedef void (*PrimitiveMethod)(Ref<Object> thisRef, Process & process,
+    typedef void (*PrimitiveMethod)(Ref<Object> self, Process & process,
                                     String message, const Array<Ref<Object> > & args);
     
     // Base class for an object in Finch. All values in Finch inherit from this.
@@ -48,7 +47,7 @@ namespace Finch
         
         virtual ~Object() {}
         
-        virtual void Receive(Ref<Object> thisRef, Process & process,
+        virtual void Receive(Ref<Object> self, Process & process,
                              String message, const Array<Ref<Object> > & args);
         
         virtual double          AsNumber() const { return 0; }

@@ -42,10 +42,10 @@ namespace Finch
         
         virtual Ref<Scope> ObjectScope() const { return mScope; }
         
-        virtual void Receive(Ref<Object> thisRef, Process & process,
+        virtual void Receive(Ref<Object> self, Process & process,
                              String message, const Array<Ref<Object> > & args);
         
-        void AddMethod(Ref<Object> thisRef, Process & process,
+        void AddMethod(Ref<Object> self, Process & process,
                        String name, Ref<Object> body);
         
         void RegisterPrimitive(String message, PrimitiveMethod method);

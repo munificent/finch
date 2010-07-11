@@ -14,17 +14,17 @@ namespace Finch
     
     PRIMITIVE(NumberAdd)
     {
-        process.PushNumber(thisRef->AsNumber() + args[0]->AsNumber());
+        process.PushNumber(self->AsNumber() + args[0]->AsNumber());
     }
 
     PRIMITIVE(NumberSubtract)
     {
-        process.PushNumber(thisRef->AsNumber() - args[0]->AsNumber());
+        process.PushNumber(self->AsNumber() - args[0]->AsNumber());
     }
     
     PRIMITIVE(NumberMultiply)
     {
-        process.PushNumber(thisRef->AsNumber() * args[0]->AsNumber());
+        process.PushNumber(self->AsNumber() * args[0]->AsNumber());
     }
     
     PRIMITIVE(NumberDivide)
@@ -38,98 +38,98 @@ namespace Finch
         }
         else
         {
-            process.PushNumber(thisRef->AsNumber() / dividend);
+            process.PushNumber(self->AsNumber() / dividend);
         }
     }
 
     PRIMITIVE(NumberAbs)
     {
-        double number = thisRef->AsNumber();        
+        double number = self->AsNumber();        
         process.PushNumber((number < 0) ? -number : number);
     }
 
     PRIMITIVE(NumberNeg)
     {
-        process.PushNumber(-thisRef->AsNumber());
+        process.PushNumber(-self->AsNumber());
     }
     
     PRIMITIVE(NumberSqrt)
     {
-        process.PushNumber(sqrt(thisRef->AsNumber()));
+        process.PushNumber(sqrt(self->AsNumber()));
     }
     
     PRIMITIVE(NumberSin)
     {
-        process.PushNumber(sin(thisRef->AsNumber()));
+        process.PushNumber(sin(self->AsNumber()));
     }
     PRIMITIVE(NumberCos)
     {
-        process.PushNumber(cos(thisRef->AsNumber()));
+        process.PushNumber(cos(self->AsNumber()));
     }
     PRIMITIVE(NumberTan)
     {
-        process.PushNumber(tan(thisRef->AsNumber()));
+        process.PushNumber(tan(self->AsNumber()));
     }
     PRIMITIVE(NumberAsin)
     {
-        process.PushNumber(asin(thisRef->AsNumber()));
+        process.PushNumber(asin(self->AsNumber()));
     }
     PRIMITIVE(NumberAcos)
     {
-        process.PushNumber(acos(thisRef->AsNumber()));
+        process.PushNumber(acos(self->AsNumber()));
     }
     PRIMITIVE(NumberAtan)
     {
-        process.PushNumber(atan(thisRef->AsNumber()));
+        process.PushNumber(atan(self->AsNumber()));
     }
     PRIMITIVE(NumberAtan2)
     {
-        process.PushNumber(atan2(thisRef->AsNumber(), args[0]->AsNumber()));
+        process.PushNumber(atan2(self->AsNumber(), args[0]->AsNumber()));
     }
     
     PRIMITIVE(NumberMod)
     {
-        process.PushNumber(fmod(thisRef->AsNumber(), args[0]->AsNumber()));
+        process.PushNumber(fmod(self->AsNumber(), args[0]->AsNumber()));
     }
     
     PRIMITIVE(NumberFloor)
     {
-        process.PushNumber(floor(thisRef->AsNumber()));
+        process.PushNumber(floor(self->AsNumber()));
     }
     
     PRIMITIVE(NumberCeiling)
     {
-        process.PushNumber(ceil(thisRef->AsNumber()));
+        process.PushNumber(ceil(self->AsNumber()));
     }
     
     PRIMITIVE(NumberEquals)
     {
-        process.PushBool(thisRef->AsNumber() == args[0]->AsNumber());
+        process.PushBool(self->AsNumber() == args[0]->AsNumber());
     }
 
     PRIMITIVE(NumberNotEquals)
     {
-        process.PushBool(thisRef->AsNumber() != args[0]->AsNumber());
+        process.PushBool(self->AsNumber() != args[0]->AsNumber());
     }
     
     PRIMITIVE(NumberLessThan)
     {
-        process.PushBool(thisRef->AsNumber() < args[0]->AsNumber());
+        process.PushBool(self->AsNumber() < args[0]->AsNumber());
     }
     
     PRIMITIVE(NumberGreaterThan)
     {
-        process.PushBool(thisRef->AsNumber() > args[0]->AsNumber());
+        process.PushBool(self->AsNumber() > args[0]->AsNumber());
     }
     
     PRIMITIVE(NumberLessThanOrEqual)
     {
-        process.PushBool(thisRef->AsNumber() <= args[0]->AsNumber());
+        process.PushBool(self->AsNumber() <= args[0]->AsNumber());
     }
     
     PRIMITIVE(NumberGreaterThanOrEqual)
     {
-        process.PushBool(thisRef->AsNumber() >= args[0]->AsNumber());
+        process.PushBool(self->AsNumber() >= args[0]->AsNumber());
     }
 }
 

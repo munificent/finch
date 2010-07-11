@@ -16,30 +16,30 @@ namespace Finch
     
     PRIMITIVE(ObjectToString)
     {
-        process.PushString(thisRef->AsString());
+        process.PushString(self->AsString());
     }
     
     PRIMITIVE(ObjectEquals)
     {
         // by default, objects compare using reference equality
-        process.PushBool(thisRef == args[0]);
+        process.PushBool(self == args[0]);
     }
     
     PRIMITIVE(ObjectNotEquals)
     {
         // by default, objects compare using reference equality
-        process.PushBool(thisRef != args[0]);
+        process.PushBool(self != args[0]);
     }
     
     PRIMITIVE(ObjectCopy)
     {
-        process.Push(Object::NewObject(thisRef));
+        process.Push(Object::NewObject(self));
     }
     
     PRIMITIVE(ObjectCopyWith)
     {
         // create the object
-        Ref<Object> copy = Object::NewObject(thisRef);
+        Ref<Object> copy = Object::NewObject(self);
         
         // run the initialization block
         BlockObject * originalBlock = args[0]->AsBlock();
@@ -68,8 +68,8 @@ namespace Finch
             BlockObject * block = blockCopy->AsBlock();
             block->RebindSelf(copy);
             
-            //### bob: note, we have to clone the block here because, in theory,
-            // you could reuse the block after passing it to copyWith:, like:
+            // we have to clone the block here because, in theory, you could
+            // reuse the block after passing it to copyWith:, like:
             //
             // b <- { writeLine: "self is " + self }
             // c <- Object copyWith: b
@@ -84,24 +84,24 @@ namespace Finch
     
     PRIMITIVE(ObjectAddMethodBody)
     {
-        DynamicObject * object = thisRef->AsDynamic();
+        DynamicObject * object = self->AsDynamic();
         ASSERT_NOT_NULL(object);
         
         String      name  = args[0]->AsString();
         Ref<Object> value = args[1];
         
-        object->AddMethod(thisRef, process, name, value);
+        object->AddMethod(self, process, name, value);
         process.PushNil();
     }
     
     PRIMITIVE(ObjectGetParent)
     {
-        process.Push(thisRef->GetParent());
+        process.Push(self->GetParent());
     }
     
     PRIMITIVE(ObjectSetParent)
     {
-        thisRef->SetParent(args[0]);
+        self->SetParent(args[0]);
         process.PushNil();
     }
 }

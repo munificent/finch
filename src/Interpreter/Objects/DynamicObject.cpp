@@ -12,7 +12,7 @@ namespace Finch
         stream << mName;
     }
     
-    void DynamicObject::Receive(Ref<Object> thisRef, Process & process, 
+    void DynamicObject::Receive(Ref<Object> self, Process & process, 
                                 String message, const Array<Ref<Object> > & args)
     {        
         // see if it's a method call
@@ -21,7 +21,7 @@ namespace Finch
         {
             ASSERT_NOT_NULL(method->AsBlock());
             
-            process.CallMethod(thisRef, method, args);
+            process.CallMethod(self, method, args);
             return;
         }
         
@@ -31,15 +31,15 @@ namespace Finch
         {
             ASSERT_NOT_NULL(primitive);
             
-            primitive(thisRef, process, message, args);
+            primitive(self, process, message, args);
             return;
         }
         
         // if we got here, the message wasn't handled
-        Object::Receive(thisRef, process, message, args);
+        Object::Receive(self, process, message, args);
     }
     
-    void DynamicObject::AddMethod(Ref<Object> thisRef, Process & process,
+    void DynamicObject::AddMethod(Ref<Object> self, Process & process,
                                   String name, Ref<Object> body)
     {
         if (name.Length() == 0)
@@ -63,7 +63,7 @@ namespace Finch
         BlockObject * block = blockCopy->AsBlock();
 
         // rebind the block's self to this object
-        block->RebindSelf(thisRef);
+        block->RebindSelf(self);
         
         // add the method
         mMethods.Insert(name, blockCopy);

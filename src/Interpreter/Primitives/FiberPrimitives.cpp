@@ -11,20 +11,20 @@ namespace Finch
 {
     PRIMITIVE(FiberRunning)
     {
-        FiberObject * fiber = thisRef->AsFiber();
+        FiberObject * fiber = self->AsFiber();
         process.PushBool(fiber->GetProcess().IsRunning());
     }
     
     PRIMITIVE(FiberDone)
     {
-        FiberObject * fiber = thisRef->AsFiber();
+        FiberObject * fiber = self->AsFiber();
         process.PushBool(fiber->GetProcess().IsDone());
     }
     
     PRIMITIVE(FiberRun)
     {
         // get the fiber we're about switch to
-        FiberObject * fiber = thisRef->AsFiber();
+        FiberObject * fiber = self->AsFiber();
 
         // if you try to run a completed process, it does nothing
         if (fiber->GetProcess().IsDone())
@@ -41,7 +41,7 @@ namespace Finch
         fiber->GetProcess().Push(args[0]);
         
         // run the new fiber
-        process.GetInterpreter().SwitchToFiber(thisRef);
+        process.GetInterpreter().SwitchToFiber(self);
         
         // note that unlike other primitives, we are *not* pushing a result
         // onto the stack here. that's because this fiber is about to stop
