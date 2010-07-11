@@ -11,7 +11,8 @@ Ether :: from: start to: end step: step do: block {
 }
 
 Ether :: from: start to: end do: block {
-    from: start to: end step: 1 do: block
+    step <- (if: start < end then: 1 else: -1)
+    from: start to: end step: step do: block
 }
 
 ' a chained if/then/else
@@ -31,11 +32,41 @@ Object :: prototype { Prims** objectPrototype }
 ' returns true
 Object prototype :: not { True }
 
+' logical operators
+Object prototype :: and: right {
+    ' ### bob: should check if self and right are blocks and handl
+    ' short-circuiting
+    if: self then: right else: False
+}
+
+Object prototype :: or: right {
+    ' ### bob: should check if self and right are blocks and handl
+    ' short-circuiting
+    if: self then: True else: right
+}
+
 ' block
 Block <- Object prototype copy
 
-' access the object prototype object
 Block :: prototype { Prims** blockPrototype }
+
+' fiber
+Fiber <- Object prototype copy
+
+Fiber :: prototype { Prims** fiberPrototype }
+Fiber :: yield: value { Prims** fiberYield: value }
+Fiber :: yield { Prims** fiberYield: Nil }
+
+Fiber prototype :: run { self run: Nil }
+
+Fiber :: new: block { Prims** newFiber: block }
+
+Fiber :: spawn: block {
+    fiber <- Fiber new: block
+    ' immediately run it, discarding the first yielded result
+    fiber run
+    fiber
+}
 
 ' number
 Number <- Object prototype copy
@@ -50,10 +81,8 @@ String :: prototype { Prims** stringPrototype }
 ' array
 Array <- Object prototype copy
 
-' access the array prototype object
 Array :: prototype { Prims** arrayPrototype }
 
-' constructors
 Array :: count: count {
     self count: count fillWith: Nil
 }
@@ -65,9 +94,6 @@ Array :: count: count fillWith: element {
     result
 }
 
-' instance methods
-
-' concatenate two arrays
 Array prototype :: ++ right {
     result <- []
     

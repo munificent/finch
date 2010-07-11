@@ -32,12 +32,6 @@ namespace Finch
         }
     }
     
-    PRIMITIVE(EtherQuit)
-    {
-        process.StopRunning();
-        process.PushNil();
-    }
-    
     PRIMITIVE(EtherDo)
     {
         CondtionallyEvaluate(process, args[0]);

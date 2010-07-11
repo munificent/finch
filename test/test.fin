@@ -48,6 +48,8 @@ Test <- Object copyWith: {
         }
     }
 
+    self :: isFalse: actual { self isTrue: actual not }
+
     self :: that: actual equals: expected {
         self isTrue: actual = expected
     }
@@ -60,3 +62,4 @@ load: "../../test/booleans.fin"
 load: "../../test/arithmetic.fin"
 load: "../../test/literals.fin"
 load: "../../test/variables.fin"
+load: "../../test/fibers.fin"

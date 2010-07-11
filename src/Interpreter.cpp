@@ -1,6 +1,7 @@
 #include <sstream>
 
 #include "DynamicObject.h"
+#include "FiberObject.h"
 #include "FileLineReader.h"
 #include "FinchParser.h"
 #include "IErrorReporter.h"
@@ -49,7 +50,23 @@ namespace Finch
         Array<Ref<Object> > noArgs;
         process.CallBlock(block, noArgs);
     }
+    
+    Ref<Object> Interpreter::Run()
+    {
+        Ref<Object> result;
         
+        while (!mCurrentFiber.IsNull())
+        {
+            FiberObject * fiber = mCurrentFiber->AsFiber();
+            result = fiber->GetProcess().Execute();
+        }
+        
+        ASSERT(!result.IsNull(), "The last fiber should have completed and returned a value.");
+        
+        // the last fiber's result is the result of the entire execution
+        return result;
+    }
+    
     Ref<Expr> Interpreter::Parse(ILineReader & reader)
     {
         InterpreterErrorReporter errorReporter(*this);
@@ -68,8 +85,13 @@ namespace Finch
         // create a block for the expression
         Ref<Object> block = mEnvironment.CreateBlock(expr);
         
-        Process process(*this, mEnvironment);
-        Ref<Object> result = process.Execute(block);
+        mCurrentFiber = Object::NewFiber(*this, block);
+        /*
+        Process process(*this, block);
+        process.Execute();
+        Ref<Object> result = process.GetResult();
+        */
+        Ref<Object> result = Run();
         
         // don't bother printing nil results
         if (result != mEnvironment.Nil())
@@ -82,6 +104,19 @@ namespace Finch
         return true;
     }
     
+    void Interpreter::SwitchToFiber(Ref<Object> fiber)
+    {
+        // pause the current fiber
+        if (!mCurrentFiber.IsNull())
+        {
+            FiberObject * oldFiber = mCurrentFiber->AsFiber();
+            oldFiber->GetProcess().Pause();
+        }
+        
+        // jump to the new one
+        mCurrentFiber = fiber;
+    }
+
     void Interpreter::BindMethod(String objectName, String message,
                                  PrimitiveMethod method)
     {

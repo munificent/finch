@@ -2,36 +2,43 @@
 
 #include <iostream>
 
+#include "CodeBlock.h"
 #include "Macros.h"
 #include "Object.h"
 #include "Ref.h"
+#include "Scope.h"
 #include "Stack.h"
 
 namespace Finch
 {
-    class CodeBlock;
     class Environment;
     class Expr;
     class Interpreter;
     
+    //### bob: rename to Fiber
     // A single bytecode execution thread in the interpreter. A Process has a
     // virtual callstack and is responsible for executing bytecode. In other
     // words, it's where stuff actually happens.
     class Process
     {
     public:
-        Process(Interpreter & interpreter, Environment & environment);
+        Process(Interpreter & interpreter, Ref<Object> block);
         
-        bool IsRunning() const { return mIsRunning; }
+        bool IsRunning() const { return mIsRunning && !IsDone(); }
         
-        Ref<Object> Execute(Ref<Object> block);
+        bool IsDone() const;
+
+        Ref<Object> Execute();
         
         Interpreter & GetInterpreter() { return mInterpreter; }
         Environment & GetEnvironment() { return mEnvironment; }
         
         Ref<Object> Self();
 
-        void StopRunning() { mIsRunning = false; }
+        void Pause() { mIsRunning = false; }
+        
+        Ref<Object> GetCallingFiber() const { return mCallingFiber; }
+        void SetCallingFiber(Ref<Object> fiber) { mCallingFiber = fiber; }
         
         // Pushes the given value onto the operand stack.
         void Push(Ref<Object> object);
@@ -82,6 +89,7 @@ namespace Finch
         Ref<Object> PopOperand();
         
         bool mIsRunning;
+        Ref<Object> mCallingFiber;
         
         Interpreter & mInterpreter;
         Environment & mEnvironment;
@@ -90,6 +98,8 @@ namespace Finch
         
         CodeBlock mLoopCode;
         CodeBlock mDiscardCode;
+        
+        Ref<Object> mYieldValue;
         
         NO_COPY(Process);
     };

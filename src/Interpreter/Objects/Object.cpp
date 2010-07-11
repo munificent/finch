@@ -3,6 +3,8 @@
 #include "BlockObject.h"
 #include "Environment.h"
 #include "DynamicObject.h"
+#include "FiberObject.h"
+#include "Interpreter.h"
 #include "NumberObject.h"
 #include "Process.h"
 #include "Scope.h"
@@ -51,6 +53,12 @@ namespace Finch
         return Ref<Object>(new BlockObject(env.BlockPrototype(), code, closure, self));
     }
     
+    Ref<Object> Object::NewFiber(Interpreter & interpreter, Ref<Object> block)
+    {
+        return Ref<Object>(new FiberObject(interpreter.GetEnvironment().FiberPrototype(),
+                                           interpreter, block));
+    }
+
     void Object::Receive(Ref<Object> thisRef, Process & process,
                                 String message, const Array<Ref<Object> > & args)
     {

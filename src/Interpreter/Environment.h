@@ -32,6 +32,7 @@ namespace Finch
         Ref<Object> ObjectPrototype()   const { return mObjectPrototype; }
         Ref<Object> ArrayPrototype()    const { return mArrayPrototype; }
         Ref<Object> BlockPrototype()    const { return mBlockPrototype; }
+        Ref<Object> FiberPrototype()    const { return mFiberPrototype; }
         Ref<Object> NumberPrototype()   const { return mNumberPrototype; }
         Ref<Object> StringPrototype()   const { return mStringPrototype; }
         Ref<Object> Nil()               const { return mNil; }
@@ -48,6 +49,7 @@ namespace Finch
         Ref<Object> mObjectPrototype;
         Ref<Object> mArrayPrototype;
         Ref<Object> mBlockPrototype;
+        Ref<Object> mFiberPrototype;
         Ref<Object> mNumberPrototype;
         Ref<Object> mStringPrototype;
         Ref<Object> mNil;

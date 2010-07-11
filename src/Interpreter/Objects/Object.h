@@ -22,6 +22,8 @@ namespace Finch
     class CodeBlock;
     class DynamicObject;
     class Environment;
+    class FiberObject;
+    class Interpreter;
     class Object;
     class Process;
     
@@ -42,6 +44,7 @@ namespace Finch
         static Ref<Object> NewArray(Environment & env, int length);
         static Ref<Object> NewBlock(Environment & env, const CodeBlock & code, 
                                     Ref<Scope> closure, Ref<Object> self);
+        static Ref<Object> NewFiber(Interpreter & interpreter, Ref<Object> block);
         
         virtual ~Object() {}
         
@@ -53,6 +56,7 @@ namespace Finch
         virtual ArrayObject *   AsArray()        { return NULL; }
         virtual BlockObject *   AsBlock()        { return NULL; }
         virtual DynamicObject * AsDynamic()      { return NULL; }
+        virtual FiberObject *   AsFiber()        { return NULL; }
         
         virtual Ref<Scope> ObjectScope() const;
         

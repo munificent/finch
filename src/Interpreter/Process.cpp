@@ -4,6 +4,7 @@
 #include "BlockObject.h"
 #include "CodeBlock.h"
 #include "Environment.h"
+#include "FiberObject.h"
 #include "IInterpreterHost.h"
 #include "Interpreter.h"
 #include "Process.h"
@@ -13,10 +14,10 @@ namespace Finch
     using std::cout;
     using std::endl;
     
-    Process::Process(Interpreter & interpreter, Environment & environment)
-    :   mIsRunning(true),
+    Process::Process(Interpreter & interpreter, Ref<Object> block)
+    :   mIsRunning(false),
         mInterpreter(interpreter),
-        mEnvironment(environment),
+        mEnvironment(interpreter.GetEnvironment()),
         mLoopCode(Array<String>()),
         mDiscardCode(Array<String>())
     {
@@ -29,16 +30,24 @@ namespace Finch
         
         mDiscardCode.Write(OP_POP);
         mDiscardCode.Write(OP_END_BLOCK);
+        
+        // push the starting block
+        BlockObject * blockObj = block->AsBlock();
+        mCallStack.Push(CallFrame(blockObj->Closure(), block));
     }
 
-    Ref<Object> Process::Execute(Ref<Object> block)
+    bool Process::IsDone() const
     {
-        // push the starting block
-        mCallStack.Push(CallFrame(mEnvironment.Globals(), block));
+        return mCallStack.Count() == 0;
+    }
+
+    Ref<Object> Process::Execute()
+    {
+        mIsRunning = true;
         
         // continue processing bytecode until the entire callstack has
-        // completed
-        while (mCallStack.Count() > 0)
+        // completed or this process gets paused (to switch to another fiber)
+        while (mIsRunning && mCallStack.Count() > 0)
         {
             CallFrame & frame = mCallStack.Peek();
             const Instruction & instruction = frame.Block().GetCode()[frame.address];
@@ -315,8 +324,33 @@ namespace Finch
             }
         }
         
-        // there should be one object left on the stack: the final return
-        return PopOperand();
+        // by default, we'll just return an empty reference if this fiber is
+        // still alive.
+        Ref<Object> result;
+        
+        // if this process has completed, tell the interpreter to finish it
+        if (IsDone())
+        {
+            // see if we're returning to another fiber
+            if (!mCallingFiber.IsNull())
+            {
+                FiberObject * resumingFiber = mCallingFiber->AsFiber();
+                
+                // give the resuming fiber the yielded value
+                resumingFiber->GetProcess().PushNil();
+            }
+
+            // the last operation the process performed leaves its result on
+            // the stack. that's the result of executing the process's block.
+            result = PopOperand();
+            
+            // resume the old fiber (or simply clear out the last one)
+            // note: we *must* perform this step last since this will clear
+            // out the interpreter's reference to *this* object.
+            mInterpreter.SwitchToFiber(mCallingFiber);
+        }
+        
+        return result;
     }
     
     Ref<Object> Process::Self()

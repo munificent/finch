@@ -5,6 +5,7 @@
 #include "Environment.h"
 #include "EtherPrimitives.h"
 #include "Expr.h"
+#include "FiberPrimitives.h"
 #include "Process.h"
 #include "NumberPrimitives.h"
 #include "ObjectPrimitives.h"
@@ -32,7 +33,6 @@ namespace Finch
 
         // define Array prototype
         mArrayPrototype = Object::NewObject(mObjectPrototype, "array prototype");
-        
         DynamicObject* arrayObj = mArrayPrototype->AsDynamic();
         arrayObj->RegisterPrimitive("length",      ArrayLength);
         arrayObj->RegisterPrimitive("add:",        ArrayAdd);
@@ -41,7 +41,6 @@ namespace Finch
         
         // define Block type object
         mBlockPrototype = Object::NewObject(mObjectPrototype, "block prototype");
-        
         DynamicObject* blockObj = mBlockPrototype->AsDynamic();
         blockObj->RegisterPrimitive("call", BlockCall);
         blockObj->RegisterPrimitive("call:", BlockCall);
@@ -54,6 +53,13 @@ namespace Finch
         blockObj->RegisterPrimitive("call::::::::", BlockCall);
         blockObj->RegisterPrimitive("call:::::::::", BlockCall);
         blockObj->RegisterPrimitive("call::::::::::", BlockCall);
+        
+        // define Fiber prototype
+        mFiberPrototype = Object::NewObject(mObjectPrototype, "fiber prototype");
+        DynamicObject* fiberObj = mFiberPrototype->AsDynamic();
+        fiberObj->RegisterPrimitive("running?", FiberRunning);
+        fiberObj->RegisterPrimitive("done?", FiberDone);
+        fiberObj->RegisterPrimitive("run:", FiberRun);
         
         // define Number type object
         mNumberPrototype = Object::NewObject(mObjectPrototype, "number prototype");
@@ -83,7 +89,7 @@ namespace Finch
         numberObj->RegisterPrimitive("<=",  NumberLessThanOrEqual);
         numberObj->RegisterPrimitive(">=",  NumberGreaterThanOrEqual);
         
-        // define String type object
+        // define String prototype
         mStringPrototype = Object::NewObject(mObjectPrototype, "string prototype");
         
         DynamicObject* stringObj = mStringPrototype->AsDynamic();
@@ -110,7 +116,6 @@ namespace Finch
         mGlobals->Define("Ether", ether);
         
         DynamicObject* etherObj = ether->AsDynamic();
-        etherObj->RegisterPrimitive("quit",           EtherQuit);
         etherObj->RegisterPrimitive("do:",            EtherDo);
         etherObj->RegisterPrimitive("if:then:",       EtherIfThen);
         etherObj->RegisterPrimitive("if:then:else:",  EtherIfThenElse);
@@ -129,6 +134,9 @@ namespace Finch
         primsObj->RegisterPrimitive("numberPrototype",  NumberGetPrototype);
         primsObj->RegisterPrimitive("stringPrototype",  StringGetPrototype);
         primsObj->RegisterPrimitive("arrayPrototype",   ArrayGetPrototype);
+        primsObj->RegisterPrimitive("fiberPrototype",   FiberGetPrototype);
+        primsObj->RegisterPrimitive("newFiber:",        FiberNew);
+        primsObj->RegisterPrimitive("fiberYield:",      FiberYield);
     }
 
     Ref<Object> Environment::CreateBlock(Ref<Expr> expr)
