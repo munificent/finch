@@ -16,6 +16,5 @@ namespace Finch
     
     // Basic IO
     PRIMITIVE(EtherWrite);
-    PRIMITIVE(EtherWriteLine);
 }
 

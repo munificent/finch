@@ -9,7 +9,6 @@
 namespace Finch
 {
     // Primitive methods for numbers.
-    PRIMITIVE(NumberGetPrototype);
     PRIMITIVE(NumberAdd);
     PRIMITIVE(NumberSubtract);
     PRIMITIVE(NumberMultiply);

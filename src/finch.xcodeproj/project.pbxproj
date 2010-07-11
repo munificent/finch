@@ -38,6 +38,7 @@
 		C4CDF8B310D88DF3001C9D4A /* NumberPrimitives.cpp in Sources */ = {isa = PBXBuildFile; fileRef = C4CDF8AC10D88DF3001C9D4A /* NumberPrimitives.cpp */; };
 		C4CDF8B610D88DF3001C9D4A /* BlockPrimitives.cpp in Sources */ = {isa = PBXBuildFile; fileRef = C4CDF8B210D88DF3001C9D4A /* BlockPrimitives.cpp */; };
 		C4CDF8B910D88E1F001C9D4A /* Environment.cpp in Sources */ = {isa = PBXBuildFile; fileRef = C4CDF8B810D88E1F001C9D4A /* Environment.cpp */; };
+		C4DC5CF611EA444700CBD17D /* Primitives.cpp in Sources */ = {isa = PBXBuildFile; fileRef = C4DC5CF511EA444700CBD17D /* Primitives.cpp */; };
 		C4E4C6E311D8EB7E00978630 /* ArrayPrimitives.cpp in Sources */ = {isa = PBXBuildFile; fileRef = C4E4C6E111D8EB7E00978630 /* ArrayPrimitives.cpp */; };
 		C4FC160610D4328300E6ABD6 /* Scope.cpp in Sources */ = {isa = PBXBuildFile; fileRef = C4FC15FD10D4328300E6ABD6 /* Scope.cpp */; };
 		C4FC166010D4331C00E6ABD6 /* Expr.cpp in Sources */ = {isa = PBXBuildFile; fileRef = C4FC164B10D4331C00E6ABD6 /* Expr.cpp */; };
@@ -134,6 +135,8 @@
 		C4CDF8B710D88E1F001C9D4A /* Environment.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = Environment.h; path = Interpreter/Environment.h; sourceTree = "<group>"; };
 		C4CDF8B810D88E1F001C9D4A /* Environment.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = Environment.cpp; path = Interpreter/Environment.cpp; sourceTree = "<group>"; };
 		C4CDF8BA10D88E43001C9D4A /* StringExpr.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = StringExpr.h; path = Syntax/AST/StringExpr.h; sourceTree = "<group>"; };
+		C4DC5CF411EA444700CBD17D /* Primitives.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = Primitives.h; path = Interpreter/Primitives.h; sourceTree = "<group>"; };
+		C4DC5CF511EA444700CBD17D /* Primitives.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = Primitives.cpp; path = Interpreter/Primitives.cpp; sourceTree = "<group>"; };
 		C4E4C6E011D8EB6C00978630 /* ArrayObject.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = ArrayObject.h; path = Interpreter/Objects/ArrayObject.h; sourceTree = "<group>"; };
 		C4E4C6E111D8EB7E00978630 /* ArrayPrimitives.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = ArrayPrimitives.cpp; path = Interpreter/Primitives/ArrayPrimitives.cpp; sourceTree = "<group>"; };
 		C4E4C6E211D8EB7E00978630 /* ArrayPrimitives.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = ArrayPrimitives.h; path = Interpreter/Primitives/ArrayPrimitives.h; sourceTree = "<group>"; };
@@ -280,12 +283,14 @@
 		C4B9DB2F10CF3C19003C556D /* Interpreter */ = {
 			isa = PBXGroup;
 			children = (
-				C4C697A01134B35200662643 /* Process.h */,
-				C4C6979F1134B35200662643 /* Process.cpp */,
 				C4CDF8B710D88E1F001C9D4A /* Environment.h */,
 				C4CDF8B810D88E1F001C9D4A /* Environment.cpp */,
 				C465890610DE874E007C4C3E /* FileLineReader.h */,
 				C465890710DE874E007C4C3E /* FileLineReader.cpp */,
+				C4DC5CF411EA444700CBD17D /* Primitives.h */,
+				C4DC5CF511EA444700CBD17D /* Primitives.cpp */,
+				C4C697A01134B35200662643 /* Process.h */,
+				C4C6979F1134B35200662643 /* Process.cpp */,
 				C4FC15FE10D4328300E6ABD6 /* Scope.h */,
 				C4FC15FD10D4328300E6ABD6 /* Scope.cpp */,
 				C4CDF86D10D7CAAE001C9D4A /* Objects */,
@@ -457,6 +462,7 @@
 				C414906711E31344006CE647 /* Interpreter.cpp in Sources */,
 				C414906B11E3146E006CE647 /* StandaloneInterpreterHost.cpp in Sources */,
 				C41A132D11E9A54200E9924B /* FiberPrimitives.cpp in Sources */,
+				C4DC5CF611EA444700CBD17D /* Primitives.cpp in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

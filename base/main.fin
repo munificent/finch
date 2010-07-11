@@ -22,11 +22,32 @@ Ether :: if: if1 then: then1 elseif: if2 then: then2 else: else {
     }
 }
 
+' build the output methods in terms of the single primitive one
+Ether :: write: text {
+    ' make sure the argument is always converted to a string before
+    ' passing to the primitive version which can't do that.
+    #PRIM# write: text toString
+}
+
+Ether :: writeLine: text {
+    ' make sure the argument is always converted to a string before
+    ' passing to the primitive version which can't do that.
+    #PRIM# write: text toString + "\n"
+}
+
 ' object
-Object <- Prims** objectPrototype copy
+Object <- #PRIM# objectPrototype copy
 
 ' access the object prototype object
-Object :: prototype { Prims** objectPrototype }
+Object :: prototype { #PRIM# objectPrototype }
+
+Object prototype :: != right {
+    (self = right) not
+}
+
+Object :: new {
+    Object prototype copy
+}
 
 ' any non-true object is implicitly "false", so sending "not" to it
 ' returns true
@@ -46,20 +67,20 @@ Object prototype :: or: right {
 }
 
 ' block
-Block <- Object prototype copy
+Block <- Object new
 
-Block :: prototype { Prims** blockPrototype }
+Block :: prototype { #PRIM# blockPrototype }
 
 ' fiber
-Fiber <- Object prototype copy
+Fiber <- Object new
 
-Fiber :: prototype { Prims** fiberPrototype }
-Fiber :: yield: value { Prims** fiberYield: value }
-Fiber :: yield { Prims** fiberYield: Nil }
+Fiber :: prototype { #PRIM# fiberPrototype }
+Fiber :: yield: value { #PRIM# fiberYield: value }
+Fiber :: yield { #PRIM# fiberYield: Nil }
 
 Fiber prototype :: run { self run: Nil }
 
-Fiber :: new: block { Prims** newFiber: block }
+Fiber :: new: block { #PRIM# newFiber: block }
 
 Fiber :: spawn: block {
     fiber <- Fiber new: block
@@ -69,19 +90,47 @@ Fiber :: spawn: block {
 }
 
 ' number
-Number <- Object prototype copy
+Number <- Object new
 
-Number :: prototype { Prims** numberPrototype }
+Number :: prototype { #PRIM# numberPrototype }
 
 ' string
-String <- Object prototype copy
+String <- Object new
 
-String :: prototype { Prims** stringPrototype }
+String :: prototype { #PRIM# stringPrototype }
+
+String prototype :: + right {
+    #PRIM# stringConcat: self toString and: right toString
+}
+
+String prototype :: = right {
+    (#PRIM# stringCompare: self to: right) = 0
+}
+
+String prototype :: != right {
+    (self = right) not
+}
+
+String prototype :: < right {
+    (#PRIM# stringCompare: self to: right) < 0
+}
+
+String prototype :: > right {
+    (#PRIM# stringCompare: self to: right) > 0
+}
+
+String prototype :: <= right {
+    (#PRIM# stringCompare: self to: right) <= 0
+}
+
+String prototype :: >= right {
+    (#PRIM# stringCompare: self to: right) >= 0
+}
 
 ' array
-Array <- Object prototype copy
+Array <- Object new
 
-Array :: prototype { Prims** arrayPrototype }
+Array :: prototype { #PRIM# arrayPrototype }
 
 Array :: count: count {
     self count: count fillWith: Nil
@@ -116,3 +165,6 @@ Array prototype :: map: block {
 }
 
 writeLine: "Base library loaded."
+
+' ###bob: temp, run tests
+load: "../../test/test.fin"

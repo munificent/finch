@@ -9,11 +9,6 @@
 
 namespace Finch
 {
-    PRIMITIVE(ObjectGetPrototype)
-    {
-        process.Push(process.GetEnvironment().ObjectPrototype());
-    }
-    
     PRIMITIVE(ObjectToString)
     {
         process.PushString(self->AsString());
@@ -23,12 +18,6 @@ namespace Finch
     {
         // by default, objects compare using reference equality
         process.PushBool(self == args[0]);
-    }
-    
-    PRIMITIVE(ObjectNotEquals)
-    {
-        // by default, objects compare using reference equality
-        process.PushBool(self != args[0]);
     }
     
     PRIMITIVE(ObjectCopy)

@@ -112,6 +112,11 @@ namespace Finch
         return mData->hashCode;
     }
 
+    int String::CompareTo(const String & other) const
+    {
+        return strcmp(CString(), other.CString());
+    }
+
     String String::Substring(int startIndex) const
     {
         if (startIndex < 0)

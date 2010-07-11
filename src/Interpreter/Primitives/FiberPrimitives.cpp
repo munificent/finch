@@ -51,11 +51,6 @@ namespace Finch
         // up and completes the run method.
     }
     
-    PRIMITIVE(FiberGetPrototype)
-    {
-        process.Push(process.GetEnvironment().FiberPrototype());
-    }
-    
     PRIMITIVE(FiberNew)
     {
         // get block arg

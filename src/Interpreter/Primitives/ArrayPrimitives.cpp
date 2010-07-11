@@ -9,11 +9,6 @@
 
 namespace Finch
 {
-    PRIMITIVE(ArrayGetPrototype)
-    {
-        process.Push(process.GetEnvironment().ArrayPrototype());
-    }
-    
     PRIMITIVE(ArrayLength)
     {
         ArrayObject * array = self->AsArray();

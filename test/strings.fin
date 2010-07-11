@@ -1,0 +1,48 @@
+Test suite: "Strings" is: {
+    ' make a couple of objects that implement toString
+    apple <- Object copy
+    apple :: toString { "apple" }
+
+    banana <- Object copy
+    banana :: toString { "banana" }
+    
+    Test test: "toString" is: {
+        Test that: 123 toString        equals: "123"
+        Test that: "foo" toString      equals: "foo"
+        Test that: [1; 2; 3] toString  equals: "[1; 2; 3]"
+        Test that: apple toString      equals: "apple"
+    }
+    
+    Test test: "Concatenation" is: {
+        Test that: "a" + 1 + 2     equals: "a12"
+        Test that: 1 + "a" + 2     equals: 3
+        Test that: "left" + apple  equals: "leftapple"
+    }
+    
+    Test test: "Comparison" is: {
+        Test isTrue: "a" = "a"
+        Test isFalse: "a" = "b"
+
+        Test isFalse: "a" != "a"
+        Test isTrue: "a" != "b"
+
+        Test isTrue: "a" < "b"
+        Test isFalse: "b" < "a"
+        Test isFalse: "a" < "a"
+
+        Test isFalse: "a" > "b"
+        Test isTrue: "b" > "a"
+        Test isFalse: "a" > "a"
+
+        Test isTrue: "a" <= "b"
+        Test isFalse: "b" <= "a"
+        Test isTrue: "a" <= "a"
+
+        Test isFalse: "a" >= "b"
+        Test isTrue: "b" >= "a"
+        Test isTrue: "a" >= "a"
+        
+        ' equality is *strict* and doesn't implicitly convert
+        Test isFalse: "apple" = apple
+    }
+}

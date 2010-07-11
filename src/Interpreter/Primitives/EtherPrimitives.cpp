@@ -73,14 +73,5 @@ namespace Finch
         
         process.PushNil();
     }
-    
-    PRIMITIVE(EtherWriteLine)
-    {
-        String text = args[0]->AsString();
-        process.GetInterpreter().GetHost().Output(text);
-        process.GetInterpreter().GetHost().Output("\n");
-        
-        process.PushNil();
-    }
 }
 

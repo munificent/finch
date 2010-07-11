@@ -6,6 +6,7 @@
 #include "EtherPrimitives.h"
 #include "Expr.h"
 #include "FiberPrimitives.h"
+#include "Primitives.h"
 #include "Process.h"
 #include "NumberPrimitives.h"
 #include "ObjectPrimitives.h"
@@ -23,7 +24,6 @@ namespace Finch
         
         DynamicObject* objectObj = mObjectPrototype->AsDynamic();
         objectObj->RegisterPrimitive("=",               ObjectEquals);
-        objectObj->RegisterPrimitive("!=",              ObjectNotEquals);
         objectObj->RegisterPrimitive("copy",            ObjectCopy);
         objectObj->RegisterPrimitive("copyWith:",       ObjectCopyWith);
         objectObj->RegisterPrimitive("toString",        ObjectToString);
@@ -93,11 +93,8 @@ namespace Finch
         mStringPrototype = Object::NewObject(mObjectPrototype, "string prototype");
         
         DynamicObject* stringObj = mStringPrototype->AsDynamic();
-        stringObj->RegisterPrimitive("+",           StringAdd);
         stringObj->RegisterPrimitive("length",      StringLength);
         stringObj->RegisterPrimitive("at:",         StringAt);
-        stringObj->RegisterPrimitive("=",           StringEquals);
-        stringObj->RegisterPrimitive("!=",          StringNotEquals);
         stringObj->RegisterPrimitive("hashCode",    StringHashCode);
         
         // define nil
@@ -121,22 +118,23 @@ namespace Finch
         etherObj->RegisterPrimitive("if:then:else:",  EtherIfThenElse);
         
         etherObj->RegisterPrimitive("while:do:",      EtherWhileDo);
-        etherObj->RegisterPrimitive("write:",         EtherWrite);
-        etherObj->RegisterPrimitive("writeLine:",     EtherWriteLine);
         
         // define bare primitive object
         Ref<Object> primitives = Object::NewObject(mObjectPrototype);
-        mGlobals->Define("Prims**", primitives);
+        mGlobals->Define("#PRIM#", primitives);
 
         DynamicObject* primsObj = primitives->AsDynamic();
-        primsObj->RegisterPrimitive("objectPrototype",  ObjectGetPrototype);
-        primsObj->RegisterPrimitive("blockPrototype",   BlockGetPrototype);
-        primsObj->RegisterPrimitive("numberPrototype",  NumberGetPrototype);
-        primsObj->RegisterPrimitive("stringPrototype",  StringGetPrototype);
-        primsObj->RegisterPrimitive("arrayPrototype",   ArrayGetPrototype);
-        primsObj->RegisterPrimitive("fiberPrototype",   FiberGetPrototype);
-        primsObj->RegisterPrimitive("newFiber:",        FiberNew);
-        primsObj->RegisterPrimitive("fiberYield:",      FiberYield);
+        primsObj->RegisterPrimitive("write:",           EtherWrite);
+        primsObj->RegisterPrimitive("arrayPrototype",       PrimitiveGetArrayPrototype);
+        primsObj->RegisterPrimitive("blockPrototype",       PrimitiveGetBlockPrototype);
+        primsObj->RegisterPrimitive("fiberPrototype",       PrimitiveGetFiberPrototype);
+        primsObj->RegisterPrimitive("numberPrototype",      PrimitiveGetNumberPrototype);
+        primsObj->RegisterPrimitive("objectPrototype",      PrimitiveGetObjectPrototype);
+        primsObj->RegisterPrimitive("stringPrototype",      PrimitiveGetStringPrototype);
+        primsObj->RegisterPrimitive("stringConcat:and:",    PrimitiveStringConcat);
+        primsObj->RegisterPrimitive("stringCompare:to:",    PrimitiveStringCompare);
+        primsObj->RegisterPrimitive("newFiber:",            FiberNew);
+        primsObj->RegisterPrimitive("fiberYield:",          FiberYield);
     }
 
     Ref<Object> Environment::CreateBlock(Ref<Expr> expr)

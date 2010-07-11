@@ -11,7 +11,6 @@ namespace Finch
     PRIMITIVE(FiberRunning);
     PRIMITIVE(FiberDone);
     PRIMITIVE(FiberRun);
-    PRIMITIVE(FiberGetPrototype);
     PRIMITIVE(FiberNew);
     PRIMITIVE(FiberYield);
 }

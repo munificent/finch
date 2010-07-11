@@ -7,11 +7,6 @@
 
 namespace Finch
 {
-    PRIMITIVE(BlockGetPrototype)
-    {
-        process.Push(process.GetEnvironment().BlockPrototype());
-    }
-    
     PRIMITIVE(BlockCall)
     {
         ASSERT_NOT_NULL(self->AsBlock());

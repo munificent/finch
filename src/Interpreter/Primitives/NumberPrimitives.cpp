@@ -7,11 +7,6 @@
 
 namespace Finch
 {
-    PRIMITIVE(NumberGetPrototype)
-    {
-        process.Push(process.GetEnvironment().NumberPrototype());
-    }
-    
     PRIMITIVE(NumberAdd)
     {
         process.PushNumber(self->AsNumber() + args[0]->AsNumber());

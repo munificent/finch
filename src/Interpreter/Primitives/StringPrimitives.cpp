@@ -8,22 +8,6 @@
 
 namespace Finch
 {
-    PRIMITIVE(StringGetPrototype)
-    {
-        process.Push(process.GetEnvironment().StringPrototype());
-    }
-    
-    PRIMITIVE(StringAdd)
-    {
-        //### bob: need to figure out how a primitive can call a non-primitive function
-        /*
-         // dynamically convert the object to a string
-         vector<Ref<Object> > noArgs;
-         Ref<Object> toString = args[0]->Receive(args[0], process, "toString", noArgs);
-         */
-        process.PushString(self->AsString() + args[0]->AsString());
-    }
-    
     PRIMITIVE(StringLength)
     {
         process.PushNumber(self->AsString().Length());
@@ -46,26 +30,6 @@ namespace Finch
         }
     }
 
-    PRIMITIVE(StringEquals)
-    {
-        /*
-        // dynamically convert the object to a string
-        vector<Ref<Object> > noArgs;
-        Ref<Object> toString = args[0]->Receive(args[0], process, "toString", noArgs);
-        */
-        process.PushBool(self->AsString() == args[0]->AsString());
-    }
-    
-    PRIMITIVE(StringNotEquals)
-    {
-        /*
-        // dynamically convert the object to a string
-        vector<Ref<Object> > noArgs;
-        Ref<Object> toString = args[0]->Receive(args[0], process, "toString", noArgs);
-        */
-        process.PushBool(self->AsString() != args[0]->AsString());
-    }
-    
     PRIMITIVE(StringHashCode)
     {
         process.PushNumber(static_cast<double>(self->AsString().HashCode()));

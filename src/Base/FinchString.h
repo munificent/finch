@@ -51,6 +51,8 @@ namespace Finch
         // Gets the hash code for the string.
         unsigned int HashCode() const;
         
+        int CompareTo(const String & other) const;
+        
         String Substring(int startIndex) const;
         String Substring(int startIndex, int count) const;
         
