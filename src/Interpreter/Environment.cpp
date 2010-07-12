@@ -111,14 +111,7 @@ namespace Finch
         // define Ether
         Ref<Object> ether = Object::NewObject(mObjectPrototype, "Ether");
         mGlobals->Define("Ether", ether);
-        
-        DynamicObject* etherObj = ether->AsDynamic();
-        etherObj->RegisterPrimitive("do:",            EtherDo);
-        etherObj->RegisterPrimitive("if:then:",       EtherIfThen);
-        etherObj->RegisterPrimitive("if:then:else:",  EtherIfThenElse);
-        
-        etherObj->RegisterPrimitive("while:do:",      EtherWhileDo);
-        
+                
         // define bare primitive object
         Ref<Object> primitives = Object::NewObject(mObjectPrototype);
         mGlobals->Define("#PRIM#", primitives);
@@ -133,6 +126,8 @@ namespace Finch
         primsObj->RegisterPrimitive("stringConcat:and:",    PrimitiveStringConcat);
         primsObj->RegisterPrimitive("stringCompare:to:",    PrimitiveStringCompare);
         primsObj->RegisterPrimitive("write:",               PrimitiveWrite);
+        primsObj->RegisterPrimitive("if:then:else:",        PrimitiveIfThenElse);
+        primsObj->RegisterPrimitive("while:do:",            PrimitiveWhileDo);
         primsObj->RegisterPrimitive("newFiber:",            FiberNew);
         primsObj->RegisterPrimitive("fiberYield:",          FiberYield);
     }

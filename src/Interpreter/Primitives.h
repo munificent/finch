@@ -21,5 +21,8 @@ namespace Finch
     PRIMITIVE(PrimitiveStringCompare);
     
     PRIMITIVE(PrimitiveWrite);
+    
+    PRIMITIVE(PrimitiveIfThenElse);
+    PRIMITIVE(PrimitiveWhileDo);
 }
 

@@ -18,11 +18,30 @@ Ether :: from: start to: end do: block {
     from: start to: end step: step do: block
 }
 
+' do
+Ether :: do: block {
+    block call
+}
+
+' if then
+Ether :: if: condition then: then {
+    #PRIM# if: condition then: then else: Nil
+}
+
+Ether :: if: condition then: then else: else {
+    #PRIM# if: condition then: then else: else
+}
+
 ' a chained if/then/else
 Ether :: if: if1 then: then1 elseif: if2 then: then2 else: else {
     if: if1 then: then1 else: {
         if: if2 then: then2 else: else
     }
+}
+
+' while
+Ether :: while: condition do: block {
+    #PRIM# while: condition do: block
 }
 
 ' build the output methods in terms of the single primitive one

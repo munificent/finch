@@ -65,5 +65,33 @@ namespace Finch
         process.GetInterpreter().GetHost().Output(text);
         process.PushNil();
     }
+    
+    // Primitive flow control. All flow control operations can be implemented
+    // in terms of conditionally jumping forward (if) and/or back (while).
+    
+    PRIMITIVE(PrimitiveIfThenElse)
+    {
+        // figure out which branch to take
+        bool condition = (args[0] == process.GetEnvironment().True());
+        Ref<Object> receiver = condition ? args[1] : args[2];
+        
+        // evaluate the branch
+        if (receiver->AsBlock() == NULL)
+        {
+            // the branch isn't a block, so just push its value directly
+            process.Push(receiver);
+        }
+        else
+        {
+            // it's a block, so evaluate it
+            Array<Ref<Object> > noArgs;
+            receiver->Receive(receiver, process, "call", noArgs);
+        }
+    }
+    
+    PRIMITIVE(PrimitiveWhileDo)
+    {
+        process.WhileLoop(args[0], args[1]);
+    }
 }
 

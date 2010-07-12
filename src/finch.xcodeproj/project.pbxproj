@@ -14,7 +14,6 @@
 		C41A132D11E9A54200E9924B /* FiberPrimitives.cpp in Sources */ = {isa = PBXBuildFile; fileRef = C41A132B11E9A54200E9924B /* FiberPrimitives.cpp */; };
 		C424166210E5B70E001E7103 /* StringTests.cpp in Sources */ = {isa = PBXBuildFile; fileRef = C424165F10E5B70E001E7103 /* StringTests.cpp */; };
 		C424166310E5B70E001E7103 /* QueueTests.cpp in Sources */ = {isa = PBXBuildFile; fileRef = C424166110E5B70E001E7103 /* QueueTests.cpp */; };
-		C45102D410DF37DC0009E52E /* EtherPrimitives.cpp in Sources */ = {isa = PBXBuildFile; fileRef = C45102D310DF37DC0009E52E /* EtherPrimitives.cpp */; };
 		C46588D110DE847F007C4C3E /* StringPrimitives.cpp in Sources */ = {isa = PBXBuildFile; fileRef = C46588CE10DE847F007C4C3E /* StringPrimitives.cpp */; };
 		C46588D210DE847F007C4C3E /* ObjectPrimitives.cpp in Sources */ = {isa = PBXBuildFile; fileRef = C46588D010DE847F007C4C3E /* ObjectPrimitives.cpp */; };
 		C465890810DE874E007C4C3E /* FileLineReader.cpp in Sources */ = {isa = PBXBuildFile; fileRef = C465890710DE874E007C4C3E /* FileLineReader.cpp */; };
@@ -77,8 +76,6 @@
 		C424166010E5B70E001E7103 /* QueueTests.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = QueueTests.h; path = Test/QueueTests.h; sourceTree = "<group>"; };
 		C424166110E5B70E001E7103 /* QueueTests.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = QueueTests.cpp; path = Test/QueueTests.cpp; sourceTree = "<group>"; };
 		C424166410E5B71D001E7103 /* Queue.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = Queue.h; path = Base/Queue.h; sourceTree = "<group>"; };
-		C45102D210DF37DC0009E52E /* EtherPrimitives.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = EtherPrimitives.h; path = Interpreter/Primitives/EtherPrimitives.h; sourceTree = "<group>"; };
-		C45102D310DF37DC0009E52E /* EtherPrimitives.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = EtherPrimitives.cpp; path = Interpreter/Primitives/EtherPrimitives.cpp; sourceTree = "<group>"; };
 		C46588CD10DE847F007C4C3E /* StringPrimitives.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = StringPrimitives.h; path = Interpreter/Primitives/StringPrimitives.h; sourceTree = "<group>"; };
 		C46588CE10DE847F007C4C3E /* StringPrimitives.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = StringPrimitives.cpp; path = Interpreter/Primitives/StringPrimitives.cpp; sourceTree = "<group>"; };
 		C46588CF10DE847F007C4C3E /* ObjectPrimitives.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = ObjectPrimitives.h; path = Interpreter/Primitives/ObjectPrimitives.h; sourceTree = "<group>"; };
@@ -344,8 +341,6 @@
 				C4E4C6E111D8EB7E00978630 /* ArrayPrimitives.cpp */,
 				C4CDF8B110D88DF3001C9D4A /* BlockPrimitives.h */,
 				C4CDF8B210D88DF3001C9D4A /* BlockPrimitives.cpp */,
-				C45102D210DF37DC0009E52E /* EtherPrimitives.h */,
-				C45102D310DF37DC0009E52E /* EtherPrimitives.cpp */,
 				C41A132C11E9A54200E9924B /* FiberPrimitives.h */,
 				C41A132B11E9A54200E9924B /* FiberPrimitives.cpp */,
 				C4CDF8AB10D88DF3001C9D4A /* NumberPrimitives.h */,
@@ -446,7 +441,6 @@
 				C465893110DE8802007C4C3E /* TestMain.cpp in Sources */,
 				C465893210DE8802007C4C3E /* Test.cpp in Sources */,
 				C465893310DE8802007C4C3E /* RefTests.cpp in Sources */,
-				C45102D410DF37DC0009E52E /* EtherPrimitives.cpp in Sources */,
 				C424166210E5B70E001E7103 /* StringTests.cpp in Sources */,
 				C424166310E5B70E001E7103 /* QueueTests.cpp in Sources */,
 				C4C697951134B2EF00662643 /* StringTable.cpp in Sources */,
