@@ -94,17 +94,6 @@ namespace Finch
         stringObj->RegisterPrimitive("length",      StringLength);
         stringObj->RegisterPrimitive("at:",         StringAt);
         stringObj->RegisterPrimitive("hashCode",    StringHashCode);
-        
-        // define nil
-        mNil = Object::NewObject(mObjectPrototype, "Nil");
-        mGlobals->Define("Nil", mNil);
-        
-        // define true and false
-        mTrue = Object::NewObject(mObjectPrototype, "true");
-        mGlobals->Define("True", mTrue);
-        
-        mFalse = Object::NewObject(mNil, "false");
-        mGlobals->Define("False", mFalse);
 
         // define Ether
         Ref<Object> ether = Object::NewObject(mObjectPrototype, "Ether");
@@ -129,6 +118,11 @@ namespace Finch
         primsObj->RegisterPrimitive("newFiber:",                PrimitiveNewFiber);
         primsObj->RegisterPrimitive("currentFiber",             PrimitiveGetCurrentFiber);
         primsObj->RegisterPrimitive("switchToFiber:passing:",   PrimitiveSwitchToFiber);
+        
+        // make the special values
+        mNil = MakeGlobal("Nil");
+        mTrue = MakeGlobal("True");
+        mFalse = MakeGlobal("False");
     }
 
     Ref<Object> Environment::CreateBlock(Ref<Expr> expr)
@@ -141,6 +135,14 @@ namespace Finch
         //### bob: should look for other places that call NewBlock and see if
         // they can be consolidated with this.
         return Object::NewBlock(*this, code, mGlobals, mNil);
+    }
+    
+    Ref<Object> Environment::MakeGlobal(const char * name)
+    {
+        Ref<Object> global = Object::NewObject(mObjectPrototype, name);
+        mGlobals->Define(name, global);
+        
+        return global;
     }
 }
 

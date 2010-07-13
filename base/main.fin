@@ -63,12 +63,12 @@ Object <- #PRIM# objectPrototype copy
 ' access the object prototype object
 Object :: prototype { #PRIM# objectPrototype }
 
-Object prototype :: != right {
-    (self = right) not
-}
-
 Object :: new {
     Object prototype copy
+}
+
+Object prototype :: != right {
+    (self = right) not
 }
 
 ' any non-true object is implicitly "false", so sending "not" to it
@@ -82,19 +82,6 @@ Object prototype :: boolean? { False }
 Object prototype :: fiber? { False }
 Object prototype :: number? { False }
 Object prototype :: string? { False }
-
-' logical operators
-Object prototype :: and: right {
-    ' ### bob: should check if self and right are blocks and handl
-    ' short-circuiting
-    if: self then: right else: False
-}
-
-Object prototype :: or: right {
-    ' ### bob: should check if self and right are blocks and handl
-    ' short-circuiting
-    if: self then: True else: right
-}
 
 ' block
 Block <- Object new
@@ -216,6 +203,32 @@ Array prototype :: map: block {
     result <- []
     self each: {|element| result add: (block call: element) }
     result
+}
+
+' truthiness: only two things are true: the True global object, and
+' blocks that evaluate to it.
+Object prototype :: true? { False }
+True :: true? { True }
+
+Block prototype :: true? { self call true? }
+
+' logical operators
+
+' by default, all objects are implicitly "false"
+Object prototype :: and: right {
+    if: self true? then: {
+        right true?
+    } else: {
+        False
+    }
+}
+
+Object prototype :: or: right {
+    if: self true? then: {
+        True
+    } else: {
+        right true?
+    }
 }
 
 writeLine: "Base library loaded."

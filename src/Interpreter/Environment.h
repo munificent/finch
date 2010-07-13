@@ -56,6 +56,8 @@ namespace Finch
         Ref<Object> mTrue;
         Ref<Object> mFalse;
         
+        Ref<Object> MakeGlobal(const char * name);
+        
         NO_COPY(Environment);
     };
 }
