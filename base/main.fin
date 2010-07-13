@@ -106,14 +106,6 @@ Block prototype :: block? { True }
 ' fiber
 Fiber <- Object new
 
-Fiber :: prototype { #PRIM# fiberPrototype }
-Fiber :: yield: value { #PRIM# fiberYield: value }
-Fiber :: yield { #PRIM# fiberYield: Nil }
-
-Fiber prototype :: fiber? { True }
-
-Fiber prototype :: run { self run: Nil }
-
 Fiber :: new: block { #PRIM# newFiber: block }
 
 Fiber :: spawn: block {
@@ -122,6 +114,28 @@ Fiber :: spawn: block {
     fiber run
     fiber
 }
+
+Fiber :: current { #PRIM# currentFiber }
+
+Fiber :: yield: value {
+  #PRIM# switchToFiber: Fiber current runBy passing: value
+}
+
+Fiber :: yield { Fiber yield: Nil }
+
+Fiber :: prototype { #PRIM# fiberPrototype }
+
+Fiber prototype :: fiber? { True }
+
+Fiber prototype :: run: value {
+  _runBy <- Fiber current
+  #PRIM# switchToFiber: self passing: value
+}
+
+Fiber prototype :: run { self run: Nil }
+
+Fiber prototype :: runBy { _runBy }
+
 
 ' number
 Number <- Object new

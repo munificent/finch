@@ -37,9 +37,6 @@ namespace Finch
 
         void Pause() { mIsRunning = false; }
         
-        Ref<Object> GetCallingFiber() const { return mCallingFiber; }
-        void SetCallingFiber(Ref<Object> fiber) { mCallingFiber = fiber; }
-        
         // Pushes the given value onto the operand stack.
         void Push(Ref<Object> object);
         void PushNil();
@@ -89,7 +86,6 @@ namespace Finch
         Ref<Object> PopOperand();
         
         bool mIsRunning;
-        Ref<Object> mCallingFiber;
         
         Interpreter & mInterpreter;
         Environment & mEnvironment;
@@ -98,8 +94,6 @@ namespace Finch
         
         CodeBlock mLoopCode;
         CodeBlock mDiscardCode;
-        
-        Ref<Object> mYieldValue;
         
         NO_COPY(Process);
     };

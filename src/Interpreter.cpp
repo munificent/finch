@@ -59,6 +59,25 @@ namespace Finch
         {
             FiberObject * fiber = mCurrentFiber->AsFiber();
             result = fiber->GetProcess().Execute();
+            
+            // if we finished the fiber, the automatically transfer control
+            // back to the previous one
+            if (fiber->GetProcess().IsDone())
+            {
+                // forget the old fiber completely
+                mCurrentFiber = Ref<Object>();
+                
+                // and switch back to the previous one
+                if (!mLastFiber.IsNull())
+                {
+                    // since the fiber we're returning from didn't yield a
+                    // value, we'll push one here. that way, the call to "run:"
+                    // in this fiber has a return value.
+                    mLastFiber->AsFiber()->GetProcess().PushNil();
+                    
+                    SwitchToFiber(mLastFiber);
+                }
+            }
         }
         
         ASSERT(!result.IsNull(), "The last fiber should have completed and returned a value.");
@@ -106,6 +125,8 @@ namespace Finch
     
     void Interpreter::SwitchToFiber(Ref<Object> fiber)
     {
+        mLastFiber = mCurrentFiber;
+        
         // pause the current fiber
         if (!mCurrentFiber.IsNull())
         {

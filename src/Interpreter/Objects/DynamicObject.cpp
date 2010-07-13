@@ -73,17 +73,5 @@ namespace Finch
     {
         mPrimitives.Insert(message, method);
     }
-
-    void DynamicObject::InitializeScope()
-    {
-        if (!Parent().IsNull())
-        {
-            mScope = Ref<Scope>(new Scope(Parent()->ObjectScope()));
-        }
-        else
-        {
-            mScope = Ref<Scope>(new Scope());
-        }
-    }
 }
 

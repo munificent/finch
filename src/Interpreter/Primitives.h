@@ -24,5 +24,9 @@ namespace Finch
     
     PRIMITIVE(PrimitiveIfThenElse);
     PRIMITIVE(PrimitiveWhileDo);
+
+    PRIMITIVE(PrimitiveNewFiber);
+    PRIMITIVE(PrimitiveGetCurrentFiber);
+    PRIMITIVE(PrimitiveSwitchToFiber);
 }
 
