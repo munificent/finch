@@ -24,8 +24,12 @@ there should be solid.
 - Syntax
   + Build real error-handling strategy into lexer and parser.
   - Symbols?
-  - Tuple, records or some other simple object literal syntax?
-  
+  - Records or some other simple object literal syntax?
+  - Message cascading
+  - Figure out if . should be used for 'self' alias, or if it supports 
+    implicit self calls. If implicit self calls are supported, Ether stuff will
+    have to get moved into Object prototype.
+    
 - Testing and Quality
   - Make unit tests optionally-compiled with a separate make target.
   - Expand test suite.
@@ -40,8 +44,8 @@ there should be solid.
   - Figure out how relative path to base lib should work.
 
 - Builtins
-  - Add type test methods (number? string? etc.).
-  - Make write: call toString: on args.
+  + Add type test methods (number? string? etc.).
+  + Make write: call toString: on args.
   - Add eval: primitive.
   - Reflection API.
     - Get messages object supports.
@@ -53,7 +57,7 @@ there should be solid.
   - Collections?
   
 - Interpreter
-  - Support coroutines/continuations.
+  + Support coroutines/continuations.
   - Write garbage collector.
   - Optimize closures to only close over and reference variables that are
     actually used. Right now, we maintain a reference to the entire parent
