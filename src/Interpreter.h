@@ -57,6 +57,7 @@ namespace Finch
         IInterpreterHost & mHost;
         Environment        mEnvironment;
         
+        Ref<Object> mLastFiber;
         Ref<Object> mCurrentFiber;
         
         NO_COPY(Interpreter);

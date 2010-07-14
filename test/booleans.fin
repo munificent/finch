@@ -10,4 +10,42 @@ Test suite: "Booleans" is: {
         Test that: True not not  equals: True
         Test that: False not not equals: False
     }
+
+    Test test: "and:" is: {
+        ' should work with values
+        Test isTrue:  (True and: True)
+        Test isFalse: (True and: False)
+        Test isFalse: (False and: True)
+        Test isFalse: (False and: False)
+
+        ' and blocks
+        Test isTrue:  ({ True } and: { True })
+        Test isFalse: ({ True } and: { False })
+        Test isFalse: ({ False } and: { True })
+        Test isFalse: ({ False } and: { False })
+        
+        ' should short-circuit
+        shorted <- True
+        Test isFalse: ({ False } and: { shorted <-- False; True })
+        Test isTrue: shorted
+    }
+
+    Test test: "or:" is: {
+        ' should work with values
+        Test isTrue:  (True or: True)
+        Test isTrue:  (True or: False)
+        Test isTrue:  (False or: True)
+        Test isFalse: (False or: False)
+
+        ' and blocks
+        Test isTrue:  ({ True } or: { True })
+        Test isTrue:  ({ True } or: { False })
+        Test isTrue:  ({ False } or: { True })
+        Test isFalse: ({ False } or: { False })
+        
+        ' should short-circuit
+        shorted <- True
+        Test isTrue: ({ True } or: { shorted <-- False; False })
+        Test isTrue: shorted
+    }
 }

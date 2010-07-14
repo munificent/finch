@@ -3,7 +3,6 @@
 #include "BlockPrimitives.h"
 #include "DynamicObject.h"
 #include "Environment.h"
-#include "EtherPrimitives.h"
 #include "Expr.h"
 #include "FiberPrimitives.h"
 #include "Primitives.h"
@@ -59,7 +58,6 @@ namespace Finch
         DynamicObject* fiberObj = mFiberPrototype->AsDynamic();
         fiberObj->RegisterPrimitive("running?", FiberRunning);
         fiberObj->RegisterPrimitive("done?", FiberDone);
-        fiberObj->RegisterPrimitive("run:", FiberRun);
         
         // define Number type object
         mNumberPrototype = Object::NewObject(mObjectPrototype, "number prototype");
@@ -96,17 +94,6 @@ namespace Finch
         stringObj->RegisterPrimitive("length",      StringLength);
         stringObj->RegisterPrimitive("at:",         StringAt);
         stringObj->RegisterPrimitive("hashCode",    StringHashCode);
-        
-        // define nil
-        mNil = Object::NewObject(mObjectPrototype, "Nil");
-        mGlobals->Define("Nil", mNil);
-        
-        // define true and false
-        mTrue = Object::NewObject(mObjectPrototype, "true");
-        mGlobals->Define("True", mTrue);
-        
-        mFalse = Object::NewObject(mNil, "false");
-        mGlobals->Define("False", mFalse);
 
         // define Ether
         Ref<Object> ether = Object::NewObject(mObjectPrototype, "Ether");
@@ -117,19 +104,25 @@ namespace Finch
         mGlobals->Define("#PRIM#", primitives);
 
         DynamicObject* primsObj = primitives->AsDynamic();
-        primsObj->RegisterPrimitive("arrayPrototype",       PrimitiveGetArrayPrototype);
-        primsObj->RegisterPrimitive("blockPrototype",       PrimitiveGetBlockPrototype);
-        primsObj->RegisterPrimitive("fiberPrototype",       PrimitiveGetFiberPrototype);
-        primsObj->RegisterPrimitive("numberPrototype",      PrimitiveGetNumberPrototype);
-        primsObj->RegisterPrimitive("objectPrototype",      PrimitiveGetObjectPrototype);
-        primsObj->RegisterPrimitive("stringPrototype",      PrimitiveGetStringPrototype);
-        primsObj->RegisterPrimitive("stringConcat:and:",    PrimitiveStringConcat);
-        primsObj->RegisterPrimitive("stringCompare:to:",    PrimitiveStringCompare);
-        primsObj->RegisterPrimitive("write:",               PrimitiveWrite);
-        primsObj->RegisterPrimitive("if:then:else:",        PrimitiveIfThenElse);
-        primsObj->RegisterPrimitive("while:do:",            PrimitiveWhileDo);
-        primsObj->RegisterPrimitive("newFiber:",            FiberNew);
-        primsObj->RegisterPrimitive("fiberYield:",          FiberYield);
+        primsObj->RegisterPrimitive("arrayPrototype",           PrimitiveGetArrayPrototype);
+        primsObj->RegisterPrimitive("blockPrototype",           PrimitiveGetBlockPrototype);
+        primsObj->RegisterPrimitive("fiberPrototype",           PrimitiveGetFiberPrototype);
+        primsObj->RegisterPrimitive("numberPrototype",          PrimitiveGetNumberPrototype);
+        primsObj->RegisterPrimitive("objectPrototype",          PrimitiveGetObjectPrototype);
+        primsObj->RegisterPrimitive("stringPrototype",          PrimitiveGetStringPrototype);
+        primsObj->RegisterPrimitive("stringConcat:and:",        PrimitiveStringConcat);
+        primsObj->RegisterPrimitive("stringCompare:to:",        PrimitiveStringCompare);
+        primsObj->RegisterPrimitive("write:",                   PrimitiveWrite);
+        primsObj->RegisterPrimitive("if:then:else:",            PrimitiveIfThenElse);
+        primsObj->RegisterPrimitive("while:do:",                PrimitiveWhileDo);
+        primsObj->RegisterPrimitive("newFiber:",                PrimitiveNewFiber);
+        primsObj->RegisterPrimitive("currentFiber",             PrimitiveGetCurrentFiber);
+        primsObj->RegisterPrimitive("switchToFiber:passing:",   PrimitiveSwitchToFiber);
+        
+        // make the special values
+        mNil = MakeGlobal("Nil");
+        mTrue = MakeGlobal("True");
+        mFalse = MakeGlobal("False");
     }
 
     Ref<Object> Environment::CreateBlock(Ref<Expr> expr)
@@ -142,6 +135,14 @@ namespace Finch
         //### bob: should look for other places that call NewBlock and see if
         // they can be consolidated with this.
         return Object::NewBlock(*this, code, mGlobals, mNil);
+    }
+    
+    Ref<Object> Environment::MakeGlobal(const char * name)
+    {
+        Ref<Object> global = Object::NewObject(mObjectPrototype, name);
+        mGlobals->Define(name, global);
+        
+        return global;
     }
 }
 

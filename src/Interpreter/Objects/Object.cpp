@@ -63,7 +63,7 @@ namespace Finch
                                 String message, const Array<Ref<Object> > & args)
     {
         // walk up the parent chain until it loops back on itself at
-        // Object: the object from whence all others are born
+        // the prototype object: the object from whence all others are born
         if (&(*mParent) != this)
         {
             // we're using thisRef and not the parent's own this reference
@@ -84,9 +84,24 @@ namespace Finch
         }
     }
     
-    Ref<Scope> Object::ObjectScope() const
+    Ref<Scope> Object::ObjectScope()
     {
-        return Ref<Scope>();
+        // lazy initialize
+        if (mScope.IsNull())
+        {
+            // walk up the parent chain until it loops back on itself at
+            // the prototype object: the object from whence all others are born
+            if (&(*mParent) != this)
+            {
+                mScope = Ref<Scope>(new Scope(mParent->ObjectScope()));
+            }
+            else
+            {
+                mScope = Ref<Scope>(new Scope());
+            }
+        }
+        
+        return mScope;
     }
 
     ostream & operator<<(ostream & cout, const Object & object)

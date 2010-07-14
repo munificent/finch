@@ -6,6 +6,7 @@
 #include "Macros.h"
 #include "Ref.h"
 #include "FinchString.h"
+#include "Scope.h"
 
 #define PRIMITIVE(name)                                             \
         void name(Ref<Object> self, Process & process,              \
@@ -16,7 +17,6 @@ namespace Finch
     using std::ostream;
     
     class Expr;
-    class Scope;
     class ArrayObject;
     class BlockObject;
     class CodeBlock;
@@ -57,7 +57,7 @@ namespace Finch
         virtual DynamicObject * AsDynamic()      { return NULL; }
         virtual FiberObject *   AsFiber()        { return NULL; }
         
-        virtual Ref<Scope> ObjectScope() const;
+        Ref<Scope> ObjectScope();
         
         Ref<Object> GetParent() { return mParent; }
         void        SetParent(Ref<Object> parent) { mParent = parent; }
@@ -72,6 +72,7 @@ namespace Finch
         
     private:
         Ref<Object> mParent;
+        Ref<Scope>  mScope;
     };
     
     ostream & operator<<(ostream & cout, const Object & object);

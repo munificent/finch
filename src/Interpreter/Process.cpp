@@ -134,6 +134,8 @@ namespace Finch
                         String name = mEnvironment.Strings().Find(instruction.arg.id);
                         if (!Self().IsNull())
                         {
+                            Ref<Object> self = Self();
+                            Ref<Scope> scope = Self()->ObjectScope();
                             Self()->ObjectScope()->Define(name, value);
                         }
                     }
@@ -324,33 +326,14 @@ namespace Finch
             }
         }
         
-        // by default, we'll just return an empty reference if this fiber is
-        // still alive.
-        Ref<Object> result;
-        
-        // if this process has completed, tell the interpreter to finish it
+        // the last operation the process performed leaves its result on
+        // the stack. that's the result of executing the process's block.
         if (IsDone())
         {
-            // see if we're returning to another fiber
-            if (!mCallingFiber.IsNull())
-            {
-                FiberObject * resumingFiber = mCallingFiber->AsFiber();
-                
-                // give the resuming fiber the yielded value
-                resumingFiber->GetProcess().PushNil();
-            }
-
-            // the last operation the process performed leaves its result on
-            // the stack. that's the result of executing the process's block.
-            result = PopOperand();
-            
-            // resume the old fiber (or simply clear out the last one)
-            // note: we *must* perform this step last since this will clear
-            // out the interpreter's reference to *this* object.
-            mInterpreter.SwitchToFiber(mCallingFiber);
+            return PopOperand();
         }
         
-        return result;
+        return Ref<Object>();
     }
     
     Ref<Object> Process::Self()

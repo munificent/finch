@@ -25,22 +25,18 @@ namespace Finch
         :   Object(parent),
             mName(name)
         {
-            InitializeScope();
         }
         
         DynamicObject(Ref<Object> parent)
         :   Object(parent),
             mName("object")
         {
-            InitializeScope();
         }
         
         virtual void Trace(ostream & stream) const;
         
         virtual String AsString() const     { return mName; }
         virtual DynamicObject * AsDynamic() { return this; }
-        
-        virtual Ref<Scope> ObjectScope() const { return mScope; }
         
         virtual void Receive(Ref<Object> self, Process & process,
                              String message, const Array<Ref<Object> > & args);
@@ -56,8 +52,6 @@ namespace Finch
         String                              mName; //### bob: hack temp
         Dictionary<String, Ref<Object> >    mMethods;
         Dictionary<String, PrimitiveMethod> mPrimitives;
-        
-        Ref<Scope> mScope;
     };    
 }
 
