@@ -372,24 +372,15 @@ namespace Finch
     {
         BlockObject & block = *(blockObj->AsBlock());
         
-        // make sure we have at least as many arguments as the block expects
-        //### bob: could change to pad missing ones with
-        // nil if we want to be "looser" about calling convention
-        if (block.Params().Count() > args.Count())
-        {
-            Error(String::Format("Block expects at least %d arguments, but was passed %d.",
-                                        block.Params().Count(), args.Count()));
-            PushNil();
-            return;
-        }
-        
         // create a new local scope for the block
         Ref<Scope> scope = Ref<Scope>(new Scope(block.Closure()));
         
-        // bind the arguments
+        // bind the arguments to the parameters. missing arguments will be
+        // filled with Nil, and extra arguments will be ignored.
         for (int i = 0; i < block.Params().Count(); i++)
         {
-            scope->Define(block.Params()[i], args[i]);
+            Ref<Object> arg = (i < args.Count()) ? args[i] : mEnvironment.Nil();
+            scope->Define(block.Params()[i], arg);
         }
         
         //### bob: there's something fishy here. this *should* cause a bug, but

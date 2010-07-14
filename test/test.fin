@@ -8,6 +8,9 @@ Test <- Object copyWith: {
     _tests      <- 0
     _failed     <- 0
     
+    _totalTests <- 0
+    _totalFails <- 0
+    
     self :: suite: name is: body {
         _suite <- name
         body call
@@ -22,12 +25,10 @@ Test <- Object copyWith: {
 
         body call
 
-        header <- "--- "
-        if: _failed > 0 then: { header <-- "XXX " }
-
-        writeLine: header + _suite + " / " + _test + " " + (_tests - _failed) +
-            " / " + _tests + " tests passed"
-
+        if: _failed > 0 then: {
+            writeLine: "XXX " + _suite + " / " + _test + " failed " + _failed +
+                " / " + _tests + " tests"
+        }
         _test <- ""
     }
 
@@ -40,28 +41,47 @@ Test <- Object copyWith: {
 
     self :: isTrue: actual {
         _tests <- _tests + 1
-
+        _totalTests <- _totalTests + 1
+        
         if: actual not then: {
             _failed <- _failed + 1
+            _totalFails <- _totalFails + 1
+            
             self showHeader
             writeLine: "  Test " + _tests toString + " failed."
         }
     }
+    
+    self :: isNil: actual { self that: actual equals: Nil }
 
     self :: isFalse: actual { self isTrue: actual not }
 
     self :: that: actual equals: expected {
         self isTrue: actual = expected
     }
+    
+    self :: complete {
+        writeLine: ""
+        if: _totalFails = 0 then: {
+            writeLine: "All " + _totalTests + " tests passed."
+        } else: {
+            writeLine: _totalFails toString + " out of " + _totalTests +
+                " tests failed."
+        }
+        writeLine: ""
+    }
 }
 
 ' run the test scripts
 '### bob: hack! path should be relative to this script's path!
+load: "../../test/arithmetic.fin"
 load: "../../test/arrays.fin"
 load: "../../test/booleans.fin"
-load: "../../test/arithmetic.fin"
-load: "../../test/literals.fin"
-load: "../../test/variables.fin"
 load: "../../test/fibers.fin"
-load: "../../test/strings.fin"
+load: "../../test/literals.fin"
+load: "../../test/messages.fin"
 load: "../../test/objects.fin"
+load: "../../test/strings.fin"
+load: "../../test/variables.fin"
+
+Test complete
