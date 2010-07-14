@@ -25,6 +25,21 @@ namespace Finch
         {
             EnsureCapacity(capacity);
         }
+
+        Array(int size, const T & fillWith)
+        :   mCount(0),
+            mCapacity(0),
+            mItems(NULL)
+        {
+            EnsureCapacity(size);
+            
+            for (int i = 0; i < size; i++)
+            {
+                mItems[i] = fillWith;
+            }
+            
+            mCount = size;
+        }
         
         Array(const Array<T> & array)
         :   mCount(0),

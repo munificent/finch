@@ -2,6 +2,7 @@
 
 #include "ArrayObject.h"
 #include "ArrayPrimitives.h"
+#include "BlockObject.h"
 #include "DynamicObject.h"
 #include "Environment.h"
 #include "FiberObject.h"
@@ -45,6 +46,43 @@ namespace Finch
         process.Push(process.GetEnvironment().StringPrototype());
     }
     
+    // Primitive object operations.
+    
+    PRIMITIVE(PrimitiveCopy)
+    {
+        process.Push(Object::NewObject(args[0]));
+    }
+    
+    PRIMITIVE(PrimitiveRunWithin)
+    {
+        // make sure we have a block
+        BlockObject * originalBlock = args[0]->AsBlock();
+        if (originalBlock == NULL)
+        {
+            process.Error("run:within: must be passed a block argument.");
+            process.PushNil();
+            return;
+        }
+        
+        // bind the block's "self" to the given target.
+        Ref<Object> blockCopy = Object::NewBlock(process.GetEnvironment(),
+                                                 originalBlock->GetCode(),originalBlock->Closure(),
+                                                 args[1]);
+        
+        // we copy the block here because, in theory, you could reuse the block after passing it to
+        // copyWith:, like:
+        //
+        // b <- { writeLine: "self is " + self }
+        // c <- Object copyWith: b
+        // b call
+        // d <- Object copyWith: b
+        // b call
+        // since binding self mutates it, we have to copy it first
+        
+        // now call the block
+        process.CallBlock(blockCopy, Array<Ref<Object> >());
+    }
+
     // Primitive string operators. Note that these get wrapped in the base
     // library so that the arguments can have toString called on them before
     // passing them to the primitives which expect them to already be in string

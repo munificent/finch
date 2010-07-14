@@ -55,15 +55,10 @@ namespace Finch
             return;
         }
         
-        // copy the block since rebinding self mutates it
+        // make a copy of the block bound to our self
         Ref<Object> blockCopy = Object::NewBlock(process.GetEnvironment(),
                                                  originalBlock->GetCode(),
-                                                 originalBlock->Closure(),
-                                                 originalBlock->Self());
-        BlockObject * block = blockCopy->AsBlock();
-
-        // rebind the block's self to this object
-        block->RebindSelf(self);
+                                                 originalBlock->Closure(), self);
         
         // add the method
         mMethods.Insert(name, blockCopy);

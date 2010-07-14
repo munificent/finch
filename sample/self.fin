@@ -25,14 +25,14 @@ Child <- Parent copyWith: {
 }
 
 ' basic just call a method on an object
-writeLine: Parent name + " (expect parent)"
-writeLine: Parent calledName + " (expect parent)"
-writeLine: (Parent recursiveName: 1) + " (expect parent parent child parent parent)"
+writeLine: Parent name + " (expect: parent)"
+writeLine: Parent calledName + " (expect: parent)"
+writeLine: (Parent recursiveName: 1) + " (expect: parent parent parent child parent)"
 
 ' make sure calling an inherited method uses the child as self
-writeLine: Child name + " (expect child)"
-writeLine: Child calledName + " (expect child)"
-writeLine: (Child recursiveName: 1) + " (expect child parent child child child)"
+writeLine: Child name + " (expect: child)"
+writeLine: Child calledName + " (expect: child)"
+writeLine: (Child recursiveName: 1) + " (expect: child parent child child child)"
 
 Other <- Object copyWith: {
     self :: name { "Other" }

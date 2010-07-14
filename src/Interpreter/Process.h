@@ -32,8 +32,6 @@ namespace Finch
         
         Interpreter & GetInterpreter() { return mInterpreter; }
         Environment & GetEnvironment() { return mEnvironment; }
-        
-        Ref<Object> Self();
 
         void Pause() { mIsRunning = false; }
         
@@ -53,17 +51,23 @@ namespace Finch
                        const Array<Ref<Object> > & args);
         
         void WhileLoop(Ref<Object> condition, Ref<Object> body);
-        void DiscardReturn();
         
         // Displays a runtime error to the user.
         void Error(const String & message);
         
     private:
+        // A single stack frame on the virtual callstack.
         struct CallFrame
         {
-            int               address;
-            Ref<Scope>        scope;
-            Ref<Object>       block;
+            // The instruction pointer. Stores the index of the current bytecode instruction in the
+            // block of code for this frame.
+            int         address;
+            
+            // The local variable scope.
+            Ref<Scope>  scope;
+            
+            // The block of code being executed by this frame.
+            Ref<Object> block;
             
             CallFrame()
             :   address(0),
@@ -77,9 +81,11 @@ namespace Finch
                 block(block)
             {}
             
+            // Gets the code object for this frame.
             const BlockObject & Block() const { return *(block->AsBlock()); }
         };
         
+        Ref<Object> Self();
         Ref<Scope>  CurrentScope() { return mCallStack.Peek().scope; }
         
         void PushOperand(Ref<Object> object);
@@ -93,7 +99,6 @@ namespace Finch
         Stack<CallFrame>    mCallStack;
         
         CodeBlock mLoopCode;
-        CodeBlock mDiscardCode;
         
         NO_COPY(Process);
     };

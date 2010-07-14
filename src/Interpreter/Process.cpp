@@ -18,8 +18,7 @@ namespace Finch
     :   mIsRunning(false),
         mInterpreter(interpreter),
         mEnvironment(interpreter.GetEnvironment()),
-        mLoopCode(Array<String>()),
-        mDiscardCode(Array<String>())
+        mLoopCode(Array<String>())
     {
         // build the special "while loop" chunk of bytecode
         mLoopCode.Write(OP_LOOP_1);
@@ -27,9 +26,6 @@ namespace Finch
         mLoopCode.Write(OP_LOOP_3);
         mLoopCode.Write(OP_LOOP_4);
         mLoopCode.Write(OP_END_BLOCK);
-        
-        mDiscardCode.Write(OP_POP);
-        mDiscardCode.Write(OP_END_BLOCK);
         
         // push the starting block
         BlockObject * blockObj = block->AsBlock();
@@ -237,17 +233,17 @@ namespace Finch
                 case OP_MESSAGE_9:
                 case OP_MESSAGE_10:
                     {
-                        // pop the arguments
-                        Array<Ref<Object> > args;
-                        for (int i = 0; i < instruction.op - OP_MESSAGE_0; i++)
-                        {
-                            args.Add(PopOperand());
-                        }
+                        int numArgs = instruction.op - OP_MESSAGE_0;
                         
-                        // reverse them since the stack has them in order (so
-                        // that arguments are evaluated from left to right) and
-                        // popping reverses the order
-                        args.Reverse();
+                        // pop the arguments. note that we fill the array from back to front
+                        // because the arguments are on the stack from first to last (so that they
+                        // were correctly evaluates from left to right) and now we're popping them
+                        // off from last to first.
+                        Array<Ref<Object> > args(numArgs, mEnvironment.Nil());
+                        for (int i = numArgs - 1; i >= 0; i--)
+                        {
+                            args[i] = PopOperand();
+                        }
                         
                         // send the message
                         String string = mEnvironment.Strings().Find(instruction.arg.id);
@@ -335,11 +331,6 @@ namespace Finch
         
         return Ref<Object>();
     }
-    
-    Ref<Object> Process::Self()
-    {
-        return mCallStack.Peek().Block().Self();
-    }
 
     void Process::Push(Ref<Object> object)
     {
@@ -366,8 +357,7 @@ namespace Finch
         Push(Object::NewString(mEnvironment, value));
     }
 
-    void Process::CallMethod(Ref<Object> self,
-                                 Ref<Object> blockObj,
+    void Process::CallMethod(Ref<Object> self, Ref<Object> blockObj,
                                  const Array<Ref<Object> > & args)
     {
         BlockObject & block = *(blockObj->AsBlock());
@@ -417,22 +407,15 @@ namespace Finch
         // call our special loop "function"
         mCallStack.Push(CallFrame(mCallStack.Peek().scope, block));
     }
-    
-    void Process::DiscardReturn()
-    {
-        Ref<Object> block = Object::NewBlock(mEnvironment, mDiscardCode,
-                                             mCallStack.Peek().scope,
-                                             mCallStack.Peek().Block().Self());
-        
-        // call our special pop "function"
-        mCallStack.Push(CallFrame(mCallStack.Peek().scope, block));
-    }
 
     void Process::Error(const String & message)
     {
-        //### bob: ideally, this should be programmatically configurable from
-        // within Finch
         mInterpreter.GetHost().Error(message);
+    }
+    
+    Ref<Object> Process::Self()
+    {
+        return mCallStack.Peek().Block().Self();
     }
     
     void Process::PushOperand(Ref<Object> object)

@@ -23,8 +23,6 @@ namespace Finch
         
         DynamicObject* objectObj = mObjectPrototype->AsDynamic();
         objectObj->RegisterPrimitive("=",               ObjectEquals);
-        objectObj->RegisterPrimitive("copy",            ObjectCopy);
-        objectObj->RegisterPrimitive("copyWith:",       ObjectCopyWith);
         objectObj->RegisterPrimitive("toString",        ObjectToString);
         objectObj->RegisterPrimitive("addMethod:body:", ObjectAddMethodBody);
         objectObj->RegisterPrimitive("parent",          ObjectGetParent);
@@ -110,6 +108,8 @@ namespace Finch
         primsObj->RegisterPrimitive("numberPrototype",          PrimitiveGetNumberPrototype);
         primsObj->RegisterPrimitive("objectPrototype",          PrimitiveGetObjectPrototype);
         primsObj->RegisterPrimitive("stringPrototype",          PrimitiveGetStringPrototype);
+        primsObj->RegisterPrimitive("copy:",                    PrimitiveCopy);
+        primsObj->RegisterPrimitive("run:within:",              PrimitiveRunWithin);
         primsObj->RegisterPrimitive("stringConcat:and:",        PrimitiveStringConcat);
         primsObj->RegisterPrimitive("stringCompare:to:",        PrimitiveStringCompare);
         primsObj->RegisterPrimitive("write:",                   PrimitiveWrite);

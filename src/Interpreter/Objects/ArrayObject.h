@@ -18,13 +18,8 @@ namespace Finch
     public:
         ArrayObject(Environment & environment, Ref<Object> parent, int length)
         :   Object(parent),
-            mElements(length)
+            mElements(length, environment.Nil())
         {
-            // fill with nil
-            for (int i = 0; i < length; i++)
-            {
-                mElements.Add(environment.Nil());
-            }
         }
         
         Array<Ref<Object> > & Elements() { return mElements; }

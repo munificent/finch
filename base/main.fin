@@ -1,3 +1,39 @@
+' object
+Object <- #PRIM# copy: objectPrototype
+
+' access the object prototype object
+Object :: prototype { #PRIM# objectPrototype }
+
+Object prototype :: copy {
+  #PRIM# copy: self
+}
+
+Object prototype :: copyWith: block {
+  copy <- #PRIM# copy: self
+  #PRIM# run: block within: copy
+  copy
+}
+
+Object :: new {
+    Object prototype copy
+}
+
+Object prototype :: != right {
+    (self = right) not
+}
+
+' any non-true object is implicitly "false", so sending "not" to it
+' returns true
+Object prototype :: not { True }
+
+' type tests
+Object prototype :: array? { False }
+Object prototype :: block? { False }
+Object prototype :: boolean? { False }
+Object prototype :: fiber? { False }
+Object prototype :: number? { False }
+Object prototype :: string? { False }
+
 True :: not { False }
 
 True :: boolean? { True }
@@ -59,32 +95,6 @@ Ether :: writeLine: text {
     ' passing to the primitive version which can't do that.
     #PRIM# write: text toString + "\n"
 }
-
-' object
-Object <- #PRIM# objectPrototype copy
-
-' access the object prototype object
-Object :: prototype { #PRIM# objectPrototype }
-
-Object :: new {
-    Object prototype copy
-}
-
-Object prototype :: != right {
-    (self = right) not
-}
-
-' any non-true object is implicitly "false", so sending "not" to it
-' returns true
-Object prototype :: not { True }
-
-' type tests
-Object prototype :: array? { False }
-Object prototype :: block? { False }
-Object prototype :: boolean? { False }
-Object prototype :: fiber? { False }
-Object prototype :: number? { False }
-Object prototype :: string? { False }
 
 ' block
 Block <- Object new
