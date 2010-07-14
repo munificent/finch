@@ -42,6 +42,20 @@ Test suite: "Fibers" is: {
         Test isTrue: fiber done?
     }
 
+    Test test: "last run returns block value" is: {
+        fiber <- Fiber new: {
+            Fiber yield: 123
+            345
+        }
+        
+        result1 <- fiber run
+        result2 <- fiber run
+        
+        Test that: result1 equals: 123
+        Test that: result2 equals: 345
+        Test isFalse: fiber running?
+    }
+
     Test test: "run returns Nil after last yield" is: {
         fiber <- Fiber new: {
             Fiber yield: 123

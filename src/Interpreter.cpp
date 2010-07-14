@@ -60,8 +60,7 @@ namespace Finch
             FiberObject * fiber = mCurrentFiber->AsFiber();
             result = fiber->GetProcess().Execute();
             
-            // if we finished the fiber, the automatically transfer control
-            // back to the previous one
+            // if we finished the fiber, then switch back to the previous one
             if (fiber->GetProcess().IsDone())
             {
                 // forget the old fiber completely
@@ -70,10 +69,10 @@ namespace Finch
                 // and switch back to the previous one
                 if (!mLastFiber.IsNull())
                 {
-                    // since the fiber we're returning from didn't yield a
-                    // value, we'll push one here. that way, the call to "run:"
-                    // in this fiber has a return value.
-                    mLastFiber->AsFiber()->GetProcess().PushNil();
+                    // push the ending fiber's final value to the fiber we're
+                    // switching to. this lets the dying fiber pass its result
+                    // as the resuming fiber's return value from "run".
+                    mLastFiber->AsFiber()->GetProcess().Push(result);
                     
                     SwitchToFiber(mLastFiber);
                 }
@@ -101,15 +100,11 @@ namespace Finch
         // bail if we failed to parse
         if (expr.IsNull()) return false;
         
-        // create a block for the expression
+        // create a starting fiber for the expression
         Ref<Object> block = mEnvironment.CreateBlock(expr);
-        
         mCurrentFiber = Object::NewFiber(*this, block);
-        /*
-        Process process(*this, block);
-        process.Execute();
-        Ref<Object> result = process.GetResult();
-        */
+        
+        // run the interpreter
         Ref<Object> result = Run();
         
         // don't bother printing nil results

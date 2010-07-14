@@ -3,6 +3,9 @@ True :: not { False }
 True :: boolean? { True }
 False :: boolean? { True }
 
+True :: toString { "true" }
+False :: toString { "false" }
+
 ' define a for-style loop
 Ether :: from: start to: end step: step do: block {
     i <- start

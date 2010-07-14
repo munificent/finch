@@ -6,10 +6,10 @@ a minimal but "complete" Finch interpreter. Many high-level features
 there should be solid.
 
 - Hosting
-  - Add support for registering external methods or objects so that Finch can
+  + Add support for registering external methods or objects so that Finch can
     call into the host.
-  - Add API for sending a message to a Finch object from code outside the host.
-  - Move "load:" into an externally-provided method.
+  + Add API for sending a message to a Finch object from code outside the host.
+  + Move "load:" into an externally-provided method.
   - Add quit method.
   - Externalize memory allocation.
   - Implement some kind of pimpl pattern to hide host's internal structure from
@@ -29,7 +29,8 @@ there should be solid.
   - Figure out if . should be used for 'self' alias, or if it supports 
     implicit self calls. If implicit self calls are supported, Ether stuff will
     have to get moved into Object prototype.
-    
+  - Better array/indexer syntax?
+
 - Testing and Quality
   - Make unit tests optionally-compiled with a separate make target.
   - Expand test suite.
