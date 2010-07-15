@@ -64,6 +64,7 @@ namespace Finch
             return;
         }
         
+        //### bob: update docs
         // bind the block's "self" to the given target.
         Ref<Object> blockCopy = Object::NewBlock(process.GetEnvironment(),
                                                  originalBlock->GetCode(),originalBlock->Closure(),
@@ -80,7 +81,7 @@ namespace Finch
         // since binding self mutates it, we have to copy it first
         
         // now call the block
-        process.CallBlock(blockCopy, Array<Ref<Object> >());
+        process.CallMethod(args[1], blockCopy, Array<Ref<Object> >());
     }
 
     // Primitive string operators. Note that these get wrapped in the base

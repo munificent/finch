@@ -38,16 +38,11 @@ namespace Finch
         // Gets the object owning the method enclosing the definition of this
         // block.
         Ref<Object> Self() const { return mSelf; }
-        
+
         // Gets the compiled bytecode for the block.
         const CodeBlock & GetCode() const { return mCode; } 
         
         virtual BlockObject * AsBlock() { return this; }
-        
-        void RebindSelf(Ref<Object> self)
-        {
-            mSelf = self;
-        }
         
         virtual void Trace(ostream & stream) const
         {

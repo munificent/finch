@@ -30,6 +30,9 @@ namespace Finch
         // push the starting block
         BlockObject * blockObj = block->AsBlock();
         mCallStack.Push(CallFrame(blockObj->Closure(), block));
+        
+        // if not in any method, self is Nil
+        mReceivers.Push(mEnvironment.Nil());
     }
 
     bool Process::IsDone() const
@@ -72,10 +75,11 @@ namespace Finch
                     {
                         // capture the current scope
                         Ref<Scope> closure = frame.scope;
-                        Ref<Object> self   = frame.Block().Self();
                         
                         const CodeBlock & code = mEnvironment.Blocks().Find(instruction.arg.id);
-                        Ref<Object> block = Object::NewBlock(mEnvironment, code, closure, self);
+                        Ref<Object> block = Object::NewBlock(mEnvironment, code,
+                                closure, mReceivers.Peek());
+                        
                         PushOperand(block);
                     }
                     break;
@@ -315,6 +319,7 @@ namespace Finch
                     
                 case OP_END_BLOCK:
                     mCallStack.Pop();
+                    mReceivers.Pop();
                     break;
                     
                 default:
@@ -373,18 +378,9 @@ namespace Finch
             scope->Define(block.Params()[i], arg);
         }
         
-        //### bob: there's something fishy here. this *should* cause a bug, but
-        //    i can't seem to get it to. when a method invokes, this binds the
-        //    block to the current receiver, but the previous receiver is never
-        //    restored after this call is done. that should mean that if you
-        //    call a method from one receiver, and within that, call the *same*
-        //    method from a *different* receiver, when that second call returns
-        //    the first call should still see the second receiver.
-        //    but, in my tests, that doesn't seem to happen. :(
-        block.RebindSelf(self);
-        
         // push the call onto the stack
         mCallStack.Push(CallFrame(scope, blockObj));
+        mReceivers.Push(self);
     }
     
     void Process::CallBlock(Ref<Object> blockObj,
@@ -402,9 +398,11 @@ namespace Finch
         
         Ref<Object> block = Object::NewBlock(mEnvironment, mLoopCode,
                                              mCallStack.Peek().scope,
-                                             mCallStack.Peek().Block().Self());
+                                             Self());
         
         // call our special loop "function"
+        //### bob: we don't just do CallBlock here because while does some
+        // funky stuff with the callstack. it would be good to clean that up
         mCallStack.Push(CallFrame(mCallStack.Peek().scope, block));
     }
 
@@ -415,7 +413,7 @@ namespace Finch
     
     Ref<Object> Process::Self()
     {
-        return mCallStack.Peek().Block().Self();
+        return mReceivers.Peek();
     }
     
     void Process::PushOperand(Ref<Object> object)

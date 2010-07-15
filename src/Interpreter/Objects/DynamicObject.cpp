@@ -55,6 +55,7 @@ namespace Finch
             return;
         }
         
+        //### bob: update doc
         // make a copy of the block bound to our self
         Ref<Object> blockCopy = Object::NewBlock(process.GetEnvironment(),
                                                  originalBlock->GetCode(),

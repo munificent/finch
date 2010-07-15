@@ -97,6 +97,7 @@ namespace Finch
         Environment & mEnvironment;
         Stack<Ref<Object> > mOperands; 
         Stack<CallFrame>    mCallStack;
+        Stack<Ref<Object> > mReceivers;
         
         CodeBlock mLoopCode;
         
