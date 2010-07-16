@@ -24,7 +24,6 @@ namespace Finch
         mLoopCode.Write(OP_LOOP_1);
         mLoopCode.Write(OP_LOOP_2);
         mLoopCode.Write(OP_LOOP_3);
-        mLoopCode.Write(OP_LOOP_4);
         mLoopCode.Write(OP_END_BLOCK);
         
         // push the starting block
@@ -264,9 +263,8 @@ namespace Finch
                     //
                     // OP_LOOP_1 begins evaluating the condition expression
                     // OP_LOOP_2 checks the result of that and either ends the
-                    //           loop or continues
-                    // OP_LOOP_3 begins evaluating the body
-                    // OP_LOOP_4 discards the result of that and loops back to
+                    //           loop or evalutes the body
+                    // OP_LOOP_3 discards the result of that and loops back to
                     //           the beginning by explicitly changing the
                     //           instruction pointer
                     //
@@ -299,9 +297,7 @@ namespace Finch
                         // every expression must return something
                         PushNil();
                     }
-                    break;
-                    
-                case OP_LOOP_3:
+                    else
                     {
                         // evaluate the body
                         Ref<Object> body = mOperands[1];
@@ -309,7 +305,7 @@ namespace Finch
                     }
                     break;
                     
-                case OP_LOOP_4:
+                case OP_LOOP_3:
                     // discard the body's return value
                     PopOperand();
                     

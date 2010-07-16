@@ -136,7 +136,6 @@ Fiber prototype :: run { self run: Nil }
 
 Fiber prototype :: runBy { _runBy }
 
-
 ' number
 Number <- Object new
 

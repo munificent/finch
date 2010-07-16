@@ -49,7 +49,6 @@ namespace Finch
         OP_LOOP_1,          // (not used)
         OP_LOOP_2,          // (not used)
         OP_LOOP_3,          // (not used)
-        OP_LOOP_4,          // (not used)
         
         OP_END_BLOCK        // (not used)
     };
