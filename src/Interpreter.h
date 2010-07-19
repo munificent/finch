@@ -10,7 +10,7 @@ namespace Finch
     class ILineReader;
     //### bob: ideally, this stuff wouldn't be in the public api for Interpreter.
     class Object;
-    class Process;
+    class Fiber;
     
     // The main top-level class for a Finch virtual machine. To host a Finch
     // interpreter from within your application, you will instantiate one of
@@ -22,13 +22,13 @@ namespace Finch
         :   mHost(host)
         {}
         
-        // Reads from the given source and executes the results in a new process
+        // Reads from the given source and executes the results in a new fiber
         // in this interpreter.
         void Interpret(ILineReader & reader);
         
         // Reads from the given source and executes the results as a block
-        // within the given process.
-        void Interpret(ILineReader & reader, Process & process);
+        // within the given fiber.
+        void Interpret(ILineReader & reader, Fiber & fiber);
         
         // Gets the Environment owned by this Interpreter.
         Environment & GetEnvironment() { return mEnvironment; }

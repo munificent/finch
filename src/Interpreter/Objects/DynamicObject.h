@@ -38,10 +38,10 @@ namespace Finch
         virtual String AsString() const     { return mName; }
         virtual DynamicObject * AsDynamic() { return this; }
         
-        virtual void Receive(Ref<Object> self, Process & process,
+        virtual void Receive(Ref<Object> self, Fiber & fiber,
                              String message, const Array<Ref<Object> > & args);
         
-        void AddMethod(Ref<Object> self, Process & process,
+        void AddMethod(Ref<Object> self, Fiber & fiber,
                        String name, Ref<Object> body);
         
         void RegisterPrimitive(String message, PrimitiveMethod method);

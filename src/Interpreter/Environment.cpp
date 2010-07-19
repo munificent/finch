@@ -6,7 +6,7 @@
 #include "Expr.h"
 #include "FiberPrimitives.h"
 #include "Primitives.h"
-#include "Process.h"
+#include "Fiber.h"
 #include "NumberPrimitives.h"
 #include "ObjectPrimitives.h"
 #include "StringPrimitives.h"

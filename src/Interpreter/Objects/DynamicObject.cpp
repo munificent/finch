@@ -1,7 +1,7 @@
 #include "DynamicObject.h"
 #include "BlockObject.h"
 #include "Environment.h"
-#include "Process.h"
+#include "Fiber.h"
 
 namespace Finch
 {
@@ -12,7 +12,7 @@ namespace Finch
         stream << mName;
     }
     
-    void DynamicObject::Receive(Ref<Object> self, Process & process, 
+    void DynamicObject::Receive(Ref<Object> self, Fiber & fiber, 
                                 String message, const Array<Ref<Object> > & args)
     {        
         // see if it's a method call
@@ -21,7 +21,7 @@ namespace Finch
         {
             ASSERT_NOT_NULL(method->AsBlock());
             
-            process.CallMethod(self, method, args);
+            fiber.CallMethod(self, method, args);
             return;
         }
         
@@ -31,33 +31,33 @@ namespace Finch
         {
             ASSERT_NOT_NULL(primitive);
             
-            primitive(self, process, message, args);
+            primitive(self, fiber, message, args);
             return;
         }
         
         // if we got here, the message wasn't handled
-        Object::Receive(self, process, message, args);
+        Object::Receive(self, fiber, message, args);
     }
     
-    void DynamicObject::AddMethod(Ref<Object> self, Process & process,
+    void DynamicObject::AddMethod(Ref<Object> self, Fiber & fiber,
                                   String name, Ref<Object> body)
     {
         if (name.Length() == 0)
         {
-            process.Error("Cannot create a method with an empty name.");
+            fiber.Error("Cannot create a method with an empty name.");
             return;
         }
         
         BlockObject * originalBlock = body->AsBlock();
         if (originalBlock == NULL)
         {
-            process.Error("Body of method must be a block.");
+            fiber.Error("Body of method must be a block.");
             return;
         }
         
         //### bob: update doc
         // make a copy of the block bound to our self
-        Ref<Object> blockCopy = Object::NewBlock(process.GetEnvironment(),
+        Ref<Object> blockCopy = Object::NewBlock(fiber.GetEnvironment(),
                                                  originalBlock->GetCode(),
                                                  originalBlock->Closure(), self);
         

@@ -3,23 +3,23 @@
 #include "NumberPrimitives.h"
 #include "NumberObject.h"
 #include "Environment.h"
-#include "Process.h"
+#include "Fiber.h"
 
 namespace Finch
 {
     PRIMITIVE(NumberAdd)
     {
-        process.PushNumber(self->AsNumber() + args[0]->AsNumber());
+        fiber.PushNumber(self->AsNumber() + args[0]->AsNumber());
     }
 
     PRIMITIVE(NumberSubtract)
     {
-        process.PushNumber(self->AsNumber() - args[0]->AsNumber());
+        fiber.PushNumber(self->AsNumber() - args[0]->AsNumber());
     }
     
     PRIMITIVE(NumberMultiply)
     {
-        process.PushNumber(self->AsNumber() * args[0]->AsNumber());
+        fiber.PushNumber(self->AsNumber() * args[0]->AsNumber());
     }
     
     PRIMITIVE(NumberDivide)
@@ -29,102 +29,102 @@ namespace Finch
         // check for divide by zero
         if (dividend == 0)
         {
-            process.PushNil();
+            fiber.PushNil();
         }
         else
         {
-            process.PushNumber(self->AsNumber() / dividend);
+            fiber.PushNumber(self->AsNumber() / dividend);
         }
     }
 
     PRIMITIVE(NumberAbs)
     {
         double number = self->AsNumber();        
-        process.PushNumber((number < 0) ? -number : number);
+        fiber.PushNumber((number < 0) ? -number : number);
     }
 
     PRIMITIVE(NumberNeg)
     {
-        process.PushNumber(-self->AsNumber());
+        fiber.PushNumber(-self->AsNumber());
     }
     
     PRIMITIVE(NumberSqrt)
     {
-        process.PushNumber(sqrt(self->AsNumber()));
+        fiber.PushNumber(sqrt(self->AsNumber()));
     }
     
     PRIMITIVE(NumberSin)
     {
-        process.PushNumber(sin(self->AsNumber()));
+        fiber.PushNumber(sin(self->AsNumber()));
     }
     PRIMITIVE(NumberCos)
     {
-        process.PushNumber(cos(self->AsNumber()));
+        fiber.PushNumber(cos(self->AsNumber()));
     }
     PRIMITIVE(NumberTan)
     {
-        process.PushNumber(tan(self->AsNumber()));
+        fiber.PushNumber(tan(self->AsNumber()));
     }
     PRIMITIVE(NumberAsin)
     {
-        process.PushNumber(asin(self->AsNumber()));
+        fiber.PushNumber(asin(self->AsNumber()));
     }
     PRIMITIVE(NumberAcos)
     {
-        process.PushNumber(acos(self->AsNumber()));
+        fiber.PushNumber(acos(self->AsNumber()));
     }
     PRIMITIVE(NumberAtan)
     {
-        process.PushNumber(atan(self->AsNumber()));
+        fiber.PushNumber(atan(self->AsNumber()));
     }
     PRIMITIVE(NumberAtan2)
     {
-        process.PushNumber(atan2(self->AsNumber(), args[0]->AsNumber()));
+        fiber.PushNumber(atan2(self->AsNumber(), args[0]->AsNumber()));
     }
     
     PRIMITIVE(NumberMod)
     {
-        process.PushNumber(fmod(self->AsNumber(), args[0]->AsNumber()));
+        fiber.PushNumber(fmod(self->AsNumber(), args[0]->AsNumber()));
     }
     
     PRIMITIVE(NumberFloor)
     {
-        process.PushNumber(floor(self->AsNumber()));
+        fiber.PushNumber(floor(self->AsNumber()));
     }
     
     PRIMITIVE(NumberCeiling)
     {
-        process.PushNumber(ceil(self->AsNumber()));
+        fiber.PushNumber(ceil(self->AsNumber()));
     }
     
     PRIMITIVE(NumberEquals)
     {
-        process.PushBool(self->AsNumber() == args[0]->AsNumber());
+        fiber.PushBool(self->AsNumber() == args[0]->AsNumber());
     }
 
     PRIMITIVE(NumberNotEquals)
     {
-        process.PushBool(self->AsNumber() != args[0]->AsNumber());
+        fiber.PushBool(self->AsNumber() != args[0]->AsNumber());
     }
     
     PRIMITIVE(NumberLessThan)
     {
-        process.PushBool(self->AsNumber() < args[0]->AsNumber());
+        fiber.PushBool(self->AsNumber() < args[0]->AsNumber());
     }
     
     PRIMITIVE(NumberGreaterThan)
     {
-        process.PushBool(self->AsNumber() > args[0]->AsNumber());
+        fiber.PushBool(self->AsNumber() > args[0]->AsNumber());
     }
     
     PRIMITIVE(NumberLessThanOrEqual)
     {
-        process.PushBool(self->AsNumber() <= args[0]->AsNumber());
+        fiber.PushBool(self->AsNumber() <= args[0]->AsNumber());
     }
     
     PRIMITIVE(NumberGreaterThanOrEqual)
     {
-        process.PushBool(self->AsNumber() >= args[0]->AsNumber());
+        fiber.PushBool(self->AsNumber() >= args[0]->AsNumber());
     }
 }
 

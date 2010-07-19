@@ -9,7 +9,7 @@
 #include "Interpreter.h"
 #include "Lexer.h"
 #include "LineNormalizer.h"
-#include "Process.h"
+#include "Fiber.h"
 
 namespace Finch
 {
@@ -36,7 +36,7 @@ namespace Finch
         Execute(Parse(reader));
     }
     
-    void Interpreter::Interpret(ILineReader & reader, Process & process)
+    void Interpreter::Interpret(ILineReader & reader, Fiber & fiber)
     {
         Ref<Expr> expr = Parse(reader);
         
@@ -48,7 +48,7 @@ namespace Finch
         
         // and execute the code
         Array<Ref<Object> > noArgs;
-        process.CallBlock(block, noArgs);
+        fiber.CallBlock(block, noArgs);
     }
     
     Ref<Object> Interpreter::Run()
@@ -58,10 +58,10 @@ namespace Finch
         while (!mCurrentFiber.IsNull())
         {
             FiberObject * fiber = mCurrentFiber->AsFiber();
-            result = fiber->GetProcess().Execute();
+            result = fiber->GetFiber().Execute();
             
             // if we finished the fiber, then switch back to the previous one
-            if (fiber->GetProcess().IsDone())
+            if (fiber->GetFiber().IsDone())
             {
                 // forget the old fiber completely
                 mCurrentFiber = Ref<Object>();
@@ -72,7 +72,7 @@ namespace Finch
                     // push the ending fiber's final value to the fiber we're
                     // switching to. this lets the dying fiber pass its result
                     // as the resuming fiber's return value from "run".
-                    mLastFiber->AsFiber()->GetProcess().Push(result);
+                    mLastFiber->AsFiber()->GetFiber().Push(result);
                     
                     SwitchToFiber(mLastFiber);
                 }
@@ -126,7 +126,7 @@ namespace Finch
         if (!mCurrentFiber.IsNull())
         {
             FiberObject * oldFiber = mCurrentFiber->AsFiber();
-            oldFiber->GetProcess().Pause();
+            oldFiber->GetFiber().Pause();
         }
         
         // jump to the new one

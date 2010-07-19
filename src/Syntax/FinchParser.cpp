@@ -59,11 +59,19 @@
     Ref<Expr> _result = _func; \
     if (_result.IsNull()) return _result;
 
+// Check that the next token is the expected type, but don't consume it. Bail
+// with an error if the type doesn't match.
 #define EXPECT(_token, _message) \
     if (!LookAhead(_token)) return ParseError(_message);
 
-#define MATCH(_token, _message) \
+// Consume the next token of a required type. Bail and return an error if the
+// token doesn't match the expected type.
+#define CONSUME(_token, _message) \
     if (!Match(_token)) return ParseError(_message);
+
+// Consume and discard the next token if it's the given type. Lets us eat
+// optional tokens.
+#define IGNORE(_token) Match(_token);
 
 namespace Finch
 {    
@@ -73,9 +81,7 @@ namespace Finch
         {
             // skip past Sequence() otherwise we'll keep reading lines forever
             PARSE_RULE(expr, Bind());
-            
-            // eat any trailing line
-            Match(TOKEN_LINE);
+            IGNORE(TOKEN_LINE);
             
             return expr;
         }
@@ -84,7 +90,6 @@ namespace Finch
             // since expression includes sequence expressions, this will parse
             // as many lines as we have
             PARSE_RULE(expr, Expression());
-            
             EXPECT(TOKEN_EOF, "Parser ended unexpectedly before reaching end of file.");
             
             return expr;
@@ -94,9 +99,7 @@ namespace Finch
     Ref<Expr> FinchParser::Expression()
     {
         PARSE_RULE(expr, Sequence());
-        
-        // eat any trailing line
-        Match(TOKEN_LINE);
+        IGNORE(TOKEN_LINE);
         
         return expr;
     }
@@ -193,7 +196,7 @@ namespace Finch
         }
         else return Keyword();
     }
-    
+        
     Ref<Expr> FinchParser::Keyword()
     {
         PARSE_RULE(object, Operator());
@@ -265,7 +268,7 @@ namespace Finch
         else if (Match(TOKEN_LEFT_PAREN))
         {
             PARSE_RULE(expression, Expression());
-            MATCH(TOKEN_RIGHT_PAREN, "Expect closing ')'.");
+            CONSUME(TOKEN_RIGHT_PAREN, "Expect closing ')'.");
             return expression;
         }
         else if (Match(TOKEN_LEFT_BRACKET))
@@ -278,7 +281,7 @@ namespace Finch
                 PARSE_RULE(dummy, ParseSequence(expressions));
             }
             
-            MATCH(TOKEN_RIGHT_BRACKET, "Expect closing ']'.");
+            CONSUME(TOKEN_RIGHT_BRACKET, "Expect closing ']'.");
             
             return Ref<Expr>(new ArrayExpr(expressions));
         }
@@ -294,7 +297,7 @@ namespace Finch
                     args.Add(Consume().Text());
                 }
                 
-                MATCH(TOKEN_PIPE, "Expect closing '|' after block arguments.");
+                CONSUME(TOKEN_PIPE, "Expect closing '|' after block arguments.");
                 
                 // if there were no named args, but there were pipes (||),
                 // use an automatic "it" arg
@@ -302,7 +305,7 @@ namespace Finch
             }
             
             PARSE_RULE(body, Expression());
-            MATCH(TOKEN_RIGHT_BRACE, "Expect closing '}' after block.");
+            CONSUME(TOKEN_RIGHT_BRACE, "Expect closing '}' after block.");
             
             return Ref<Expr>(new BlockExpr(args, body));
         }
@@ -359,9 +362,9 @@ namespace Finch
                                          const Array<String> & args)
     {
         // parse the block
-        MATCH(TOKEN_LEFT_BRACE, "Expect '{' to begin bound block.");
+        CONSUME(TOKEN_LEFT_BRACE, "Expect '{' to begin bound block.");
         PARSE_RULE(body, Expression());
-        MATCH(TOKEN_RIGHT_BRACE, "Expect '}' to close block.");
+        CONSUME(TOKEN_RIGHT_BRACE, "Expect '}' to close block.");
         
         // attach the block's arguments
         Ref<Expr> block = Ref<Expr>(new BlockExpr(args, body));

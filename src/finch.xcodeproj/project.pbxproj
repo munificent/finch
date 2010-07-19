@@ -28,7 +28,7 @@
 		C4C6979C1134B33A00662643 /* BlockTable.cpp in Sources */ = {isa = PBXBuildFile; fileRef = C4C697961134B33A00662643 /* BlockTable.cpp */; };
 		C4C6979D1134B33A00662643 /* CodeBlock.cpp in Sources */ = {isa = PBXBuildFile; fileRef = C4C697981134B33A00662643 /* CodeBlock.cpp */; };
 		C4C6979E1134B33A00662643 /* Compiler.cpp in Sources */ = {isa = PBXBuildFile; fileRef = C4C6979A1134B33A00662643 /* Compiler.cpp */; };
-		C4C697A11134B35200662643 /* Process.cpp in Sources */ = {isa = PBXBuildFile; fileRef = C4C6979F1134B35200662643 /* Process.cpp */; };
+		C4C697A11134B35200662643 /* Fiber.cpp in Sources */ = {isa = PBXBuildFile; fileRef = C4C6979F1134B35200662643 /* Fiber.cpp */; };
 		C4C697A61134B36F00662643 /* LexerTests.cpp in Sources */ = {isa = PBXBuildFile; fileRef = C4C697A21134B36F00662643 /* LexerTests.cpp */; };
 		C4C697A71134B36F00662643 /* StackTests.cpp in Sources */ = {isa = PBXBuildFile; fileRef = C4C697A41134B36F00662643 /* StackTests.cpp */; };
 		C4C698091134CA9900662643 /* ArrayTests.cpp in Sources */ = {isa = PBXBuildFile; fileRef = C4C698071134CA9900662643 /* ArrayTests.cpp */; };
@@ -109,8 +109,8 @@
 		C4C697991134B33A00662643 /* CodeBlock.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = CodeBlock.h; path = Compiler/CodeBlock.h; sourceTree = "<group>"; };
 		C4C6979A1134B33A00662643 /* Compiler.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = Compiler.cpp; path = Compiler/Compiler.cpp; sourceTree = "<group>"; };
 		C4C6979B1134B33A00662643 /* Compiler.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = Compiler.h; path = Compiler/Compiler.h; sourceTree = "<group>"; };
-		C4C6979F1134B35200662643 /* Process.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = Process.cpp; path = Interpreter/Process.cpp; sourceTree = "<group>"; };
-		C4C697A01134B35200662643 /* Process.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = Process.h; path = Interpreter/Process.h; sourceTree = "<group>"; };
+		C4C6979F1134B35200662643 /* Fiber.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = Fiber.cpp; path = Interpreter/Fiber.cpp; sourceTree = "<group>"; };
+		C4C697A01134B35200662643 /* Fiber.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = Fiber.h; path = Interpreter/Fiber.h; sourceTree = "<group>"; };
 		C4C697A21134B36F00662643 /* LexerTests.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = LexerTests.cpp; path = Test/LexerTests.cpp; sourceTree = "<group>"; };
 		C4C697A31134B36F00662643 /* LexerTests.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = LexerTests.h; path = Test/LexerTests.h; sourceTree = "<group>"; };
 		C4C697A41134B36F00662643 /* StackTests.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = StackTests.cpp; path = Test/StackTests.cpp; sourceTree = "<group>"; };
@@ -286,8 +286,8 @@
 				C465890710DE874E007C4C3E /* FileLineReader.cpp */,
 				C4DC5CF411EA444700CBD17D /* Primitives.h */,
 				C4DC5CF511EA444700CBD17D /* Primitives.cpp */,
-				C4C697A01134B35200662643 /* Process.h */,
-				C4C6979F1134B35200662643 /* Process.cpp */,
+				C4C697A01134B35200662643 /* Fiber.h */,
+				C4C6979F1134B35200662643 /* Fiber.cpp */,
 				C4FC15FE10D4328300E6ABD6 /* Scope.h */,
 				C4FC15FD10D4328300E6ABD6 /* Scope.cpp */,
 				C4CDF86D10D7CAAE001C9D4A /* Objects */,
@@ -447,7 +447,7 @@
 				C4C6979C1134B33A00662643 /* BlockTable.cpp in Sources */,
 				C4C6979D1134B33A00662643 /* CodeBlock.cpp in Sources */,
 				C4C6979E1134B33A00662643 /* Compiler.cpp in Sources */,
-				C4C697A11134B35200662643 /* Process.cpp in Sources */,
+				C4C697A11134B35200662643 /* Fiber.cpp in Sources */,
 				C4C697A61134B36F00662643 /* LexerTests.cpp in Sources */,
 				C4C697A71134B36F00662643 /* StackTests.cpp in Sources */,
 				C4C698091134CA9900662643 /* ArrayTests.cpp in Sources */,
@@ -515,8 +515,15 @@
 			buildSettings = {
 				ARCHS = "$(ARCHS_STANDARD_32_BIT)";
 				GCC_C_LANGUAGE_STANDARD = c99;
+				GCC_ENABLE_CPP_EXCEPTIONS = NO;
+				GCC_ENABLE_OBJC_EXCEPTIONS = NO;
 				GCC_OPTIMIZATION_LEVEL = 0;
+				GCC_WARN_ABOUT_MISSING_NEWLINE = YES;
+				GCC_WARN_ABOUT_MISSING_PROTOTYPES = YES;
 				GCC_WARN_ABOUT_RETURN_TYPE = YES;
+				GCC_WARN_CHECK_SWITCH_STATEMENTS = YES;
+				GCC_WARN_MISSING_PARENTHESES = YES;
+				GCC_WARN_SIGN_COMPARE = YES;
 				GCC_WARN_UNUSED_VARIABLE = YES;
 				ONLY_ACTIVE_ARCH = YES;
 				PREBINDING = NO;

@@ -16,13 +16,13 @@ namespace Finch
     class Interpreter;
     
     //### bob: rename to Fiber
-    // A single bytecode execution thread in the interpreter. A Process has a
+    // A single bytecode execution thread in the interpreter. A Fiber has a
     // virtual callstack and is responsible for executing bytecode. In other
     // words, it's where stuff actually happens.
-    class Process
+    class Fiber
     {
     public:
-        Process(Interpreter & interpreter, Ref<Object> block);
+        Fiber(Interpreter & interpreter, Ref<Object> block);
         
         bool IsRunning() const { return mIsRunning && !IsDone(); }
         
@@ -101,7 +101,7 @@ namespace Finch
         
         CodeBlock mLoopCode;
         
-        NO_COPY(Process);
+        NO_COPY(Fiber);
     };
 }
 

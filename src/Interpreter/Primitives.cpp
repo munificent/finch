@@ -9,7 +9,7 @@
 #include "Interpreter.h"
 #include "IInterpreterHost.h"
 #include "Primitives.h"
-#include "Process.h"
+#include "Fiber.h"
 #include "Object.h"
 
 namespace Finch
@@ -18,39 +18,39 @@ namespace Finch
     
     PRIMITIVE(PrimitiveGetArrayPrototype)
     {
-        process.Push(process.GetEnvironment().ArrayPrototype());
+        fiber.Push(fiber.GetEnvironment().ArrayPrototype());
     }
 
     PRIMITIVE(PrimitiveGetBlockPrototype)
     {
-        process.Push(process.GetEnvironment().BlockPrototype());
+        fiber.Push(fiber.GetEnvironment().BlockPrototype());
     }
     
     PRIMITIVE(PrimitiveGetFiberPrototype)
     {
-        process.Push(process.GetEnvironment().FiberPrototype());
+        fiber.Push(fiber.GetEnvironment().FiberPrototype());
     }
 
     PRIMITIVE(PrimitiveGetNumberPrototype)
     {
-        process.Push(process.GetEnvironment().NumberPrototype());
+        fiber.Push(fiber.GetEnvironment().NumberPrototype());
     }
     
     PRIMITIVE(PrimitiveGetObjectPrototype)
     {
-        process.Push(process.GetEnvironment().ObjectPrototype());
+        fiber.Push(fiber.GetEnvironment().ObjectPrototype());
     }
     
     PRIMITIVE(PrimitiveGetStringPrototype)
     {
-        process.Push(process.GetEnvironment().StringPrototype());
+        fiber.Push(fiber.GetEnvironment().StringPrototype());
     }
     
     // Primitive object operations.
     
     PRIMITIVE(PrimitiveCopy)
     {
-        process.Push(Object::NewObject(args[0]));
+        fiber.Push(Object::NewObject(args[0]));
     }
     
     PRIMITIVE(PrimitiveRunWithin)
@@ -59,14 +59,14 @@ namespace Finch
         BlockObject * originalBlock = args[0]->AsBlock();
         if (originalBlock == NULL)
         {
-            process.Error("run:within: must be passed a block argument.");
-            process.PushNil();
+            fiber.Error("run:within: must be passed a block argument.");
+            fiber.PushNil();
             return;
         }
         
         //### bob: update docs
         // bind the block's "self" to the given target.
-        Ref<Object> blockCopy = Object::NewBlock(process.GetEnvironment(),
+        Ref<Object> blockCopy = Object::NewBlock(fiber.GetEnvironment(),
                                                  originalBlock->GetCode(),originalBlock->Closure(),
                                                  args[1]);
         
@@ -81,7 +81,7 @@ namespace Finch
         // since binding self mutates it, we have to copy it first
         
         // now call the block
-        process.CallMethod(args[1], blockCopy, Array<Ref<Object> >());
+        fiber.CallMethod(args[1], blockCopy, Array<Ref<Object> >());
     }
 
     // Primitive string operators. Note that these get wrapped in the base
@@ -91,19 +91,19 @@ namespace Finch
     
     PRIMITIVE(PrimitiveStringConcat)
     {
-        process.PushString(args[0]->AsString() + args[1]->AsString());
+        fiber.PushString(args[0]->AsString() + args[1]->AsString());
     }
     
     PRIMITIVE(PrimitiveStringCompare)
     {
-        process.PushNumber(args[0]->AsString().CompareTo(args[1]->AsString()));
+        fiber.PushNumber(args[0]->AsString().CompareTo(args[1]->AsString()));
     }
     
     PRIMITIVE(PrimitiveWrite)
     {
         String text = args[0]->AsString();
-        process.GetInterpreter().GetHost().Output(text);
-        process.PushNil();
+        fiber.GetInterpreter().GetHost().Output(text);
+        fiber.PushNil();
     }
     
     // Primitive flow control. All flow control operations can be implemented
@@ -112,26 +112,26 @@ namespace Finch
     PRIMITIVE(PrimitiveIfThenElse)
     {
         // figure out which branch to take
-        bool condition = (args[0] == process.GetEnvironment().True());
+        bool condition = (args[0] == fiber.GetEnvironment().True());
         Ref<Object> receiver = condition ? args[1] : args[2];
         
         // evaluate the branch
         if (receiver->AsBlock() == NULL)
         {
             // the branch isn't a block, so just push its value directly
-            process.Push(receiver);
+            fiber.Push(receiver);
         }
         else
         {
             // it's a block, so evaluate it
             Array<Ref<Object> > noArgs;
-            receiver->Receive(receiver, process, "call", noArgs);
+            receiver->Receive(receiver, fiber, "call", noArgs);
         }
     }
     
     PRIMITIVE(PrimitiveWhileDo)
     {
-        process.WhileLoop(args[0], args[1]);
+        fiber.WhileLoop(args[0], args[1]);
     }
     
     // Primitives for manipulating fibers.
@@ -142,36 +142,36 @@ namespace Finch
         BlockObject * block = args[0]->AsBlock();
         if (block == NULL)
         {
-            process.Error("Must pass in a block object to create a new fiber.");
-            process.PushNil();
+            fiber.Error("Must pass in a block object to create a new fiber.");
+            fiber.PushNil();
             return;
         }
         
-        process.Push(Object::NewFiber(process.GetInterpreter(), args[0]));
+        fiber.Push(Object::NewFiber(fiber.GetInterpreter(), args[0]));
     }
     
     PRIMITIVE(PrimitiveGetCurrentFiber)
     {
-        process.Push(process.GetInterpreter().GetCurrentFiber());
+        fiber.Push(fiber.GetInterpreter().GetCurrentFiber());
     }
     
     PRIMITIVE(PrimitiveSwitchToFiber)
     {
         // get the fiber we're about switch to
-        FiberObject * fiber = args[0]->AsFiber();
+        FiberObject * fiberObj = args[0]->AsFiber();
         
         // if you try to run a completed fiber, it does nothing
-        if (fiber->GetProcess().IsDone())
+        if (fiberObj->GetFiber().IsDone())
         {
-            process.PushNil();
+            fiber.PushNil();
             return;
         }
         
         // pass the value to the new fiber
-        fiber->GetProcess().Push(args[1]);
+        fiberObj->GetFiber().Push(args[1]);
         
         // run the new fiber
-        process.GetInterpreter().SwitchToFiber(args[0]);
+        fiber.GetInterpreter().SwitchToFiber(args[0]);
         
         // note that unlike other primitives, we are *not* pushing a result
         // onto the stack of the calling fiber here. when we switch back to

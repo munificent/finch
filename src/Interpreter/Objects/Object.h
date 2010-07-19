@@ -9,7 +9,7 @@
 #include "Scope.h"
 
 #define PRIMITIVE(name)                                             \
-        void name(Ref<Object> self, Process & process,              \
+        void name(Ref<Object> self, Fiber & fiber,              \
              String message, const Array<Ref<Object> > & args)
 
 namespace Finch
@@ -25,10 +25,10 @@ namespace Finch
     class FiberObject;
     class Interpreter;
     class Object;
-    class Process;
+    class Fiber;
     
     // Function pointer type for a primitive Finch method implemented in C++.
-    typedef void (*PrimitiveMethod)(Ref<Object> self, Process & process,
+    typedef void (*PrimitiveMethod)(Ref<Object> self, Fiber & fiber,
                                     String message, const Array<Ref<Object> > & args);
     
     // Base class for an object in Finch. All values in Finch inherit from this.
@@ -47,7 +47,7 @@ namespace Finch
         
         virtual ~Object() {}
         
-        virtual void Receive(Ref<Object> self, Process & process,
+        virtual void Receive(Ref<Object> self, Fiber & fiber,
                              String message, const Array<Ref<Object> > & args);
         
         virtual double          AsNumber() const { return 0; }

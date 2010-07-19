@@ -4,21 +4,21 @@
 #include "FiberObject.h"
 #include "Environment.h"
 #include "Interpreter.h"
-#include "Process.h"
+#include "Fiber.h"
 #include "Object.h"
 
 namespace Finch
 {
     PRIMITIVE(FiberRunning)
     {
-        FiberObject * fiber = self->AsFiber();
-        process.PushBool(fiber->GetProcess().IsRunning());
+        FiberObject * fiberObj = self->AsFiber();
+        fiber.PushBool(fiberObj->GetFiber().IsRunning());
     }
     
     PRIMITIVE(FiberDone)
     {
-        FiberObject * fiber = self->AsFiber();
-        process.PushBool(fiber->GetProcess().IsDone());
+        FiberObject * fiberObj = self->AsFiber();
+        fiber.PushBool(fiberObj->GetFiber().IsDone());
     }
 
 }

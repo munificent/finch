@@ -3,7 +3,7 @@
 #include <iostream>
 
 #include "Macros.h"
-#include "Process.h"
+#include "Fiber.h"
 #include "Object.h"
 #include "Ref.h"
 
@@ -17,11 +17,11 @@ namespace Finch
     public:
         FiberObject(Ref<Object> parent, Interpreter & interpreter, Ref<Object> block)
         :   Object(parent),
-            mProcess(interpreter, block)        {}
+            mFiber(interpreter, block)        {}
         
         virtual FiberObject * AsFiber() { return this; }
         
-        Process & GetProcess() { return mProcess; }
+        Fiber & GetFiber() { return mFiber; }
         
         virtual void Trace(ostream & stream) const
         {
@@ -29,7 +29,7 @@ namespace Finch
         }
         
     private:
-        Process mProcess;
+        Fiber mFiber;
     };
 }
 

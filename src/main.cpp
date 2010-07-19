@@ -3,10 +3,9 @@
 #include "FileLineReader.h"
 #include "FinchString.h"
 #include "Interpreter.h"
-#include "Process.h"
+#include "Fiber.h"
 #include "Ref.h"
 #include "ReplLineReader.h"
-#include "Script.h"
 #include "StandaloneInterpreterHost.h"
 
 //#define UNIT_TESTS
@@ -51,7 +50,7 @@ PRIMITIVE(LoadFile)
     String filePath = args[0]->AsString();
     Ref<ILineReader> reader = OpenFile(filePath);
     
-    process.GetInterpreter().Interpret(*reader, process);
+    fiber.GetInterpreter().Interpret(*reader, fiber);
 }
 
 int main (int argc, char * const argv[])

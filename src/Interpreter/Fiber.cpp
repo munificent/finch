@@ -7,14 +7,14 @@
 #include "FiberObject.h"
 #include "IInterpreterHost.h"
 #include "Interpreter.h"
-#include "Process.h"
+#include "Fiber.h"
 
 namespace Finch
 {
     using std::cout;
     using std::endl;
     
-    Process::Process(Interpreter & interpreter, Ref<Object> block)
+    Fiber::Fiber(Interpreter & interpreter, Ref<Object> block)
     :   mIsRunning(false),
         mInterpreter(interpreter),
         mEnvironment(interpreter.GetEnvironment()),
@@ -34,17 +34,17 @@ namespace Finch
         mReceivers.Push(mEnvironment.Nil());
     }
 
-    bool Process::IsDone() const
+    bool Fiber::IsDone() const
     {
         return mCallStack.Count() == 0;
     }
 
-    Ref<Object> Process::Execute()
+    Ref<Object> Fiber::Execute()
     {
         mIsRunning = true;
         
-        // continue processing bytecode until the entire callstack has
-        // completed or this process gets paused (to switch to another fiber)
+        // continue processing bytecode until the entire callstack has completed
+        // or this fiber gets paused (to switch to another fiber)
         while (mIsRunning && mCallStack.Count() > 0)
         {
             CallFrame & frame = mCallStack.Peek();
@@ -269,7 +269,7 @@ namespace Finch
                     //           instruction pointer
                     //
                     // note that all of this is initiated by a call to
-                    // WhileLoop on the process. that pushes a special static
+                    // WhileLoop on the fiber. that pushes a special static
                     // CodeBlock that contains this sequence of opcodes. we do
                     // this, instead of compiling a while loop directly into
                     // the bytecode where it appears so that it's still
@@ -323,8 +323,8 @@ namespace Finch
             }
         }
         
-        // the last operation the process performed leaves its result on
-        // the stack. that's the result of executing the process's block.
+        // the last operation the fiber performed leaves its result on
+        // the stack. that's the result of executing the fiber's block.
         if (IsDone())
         {
             return PopOperand();
@@ -333,32 +333,32 @@ namespace Finch
         return Ref<Object>();
     }
 
-    void Process::Push(Ref<Object> object)
+    void Fiber::Push(Ref<Object> object)
     {
         PushOperand(object);
     }
     
-    void Process::PushNil()
+    void Fiber::PushNil()
     {
         Push(mEnvironment.Nil());
     }
 
-    void Process::PushBool(bool value)
+    void Fiber::PushBool(bool value)
     {
         PushOperand(value ? mEnvironment.True() : mEnvironment.False());
     }
 
-    void Process::PushNumber(double value)
+    void Fiber::PushNumber(double value)
     {
         Push(Object::NewNumber(mEnvironment, value));
     }
 
-    void Process::PushString(const String & value)
+    void Fiber::PushString(const String & value)
     {
         Push(Object::NewString(mEnvironment, value));
     }
 
-    void Process::CallMethod(Ref<Object> self, Ref<Object> blockObj,
+    void Fiber::CallMethod(Ref<Object> self, Ref<Object> blockObj,
                                  const Array<Ref<Object> > & args)
     {
         BlockObject & block = *(blockObj->AsBlock());
@@ -379,14 +379,14 @@ namespace Finch
         mReceivers.Push(self);
     }
     
-    void Process::CallBlock(Ref<Object> blockObj,
+    void Fiber::CallBlock(Ref<Object> blockObj,
                                 const Array<Ref<Object> > & args)
     {
         BlockObject & block = *(blockObj->AsBlock());
         CallMethod(block.Self(), blockObj, args);
     }
     
-    void Process::WhileLoop(Ref<Object> condition, Ref<Object> body)
+    void Fiber::WhileLoop(Ref<Object> condition, Ref<Object> body)
     {
         // push the arguments onto the stack
         Push(body);
@@ -402,17 +402,17 @@ namespace Finch
         mCallStack.Push(CallFrame(mCallStack.Peek().scope, block));
     }
 
-    void Process::Error(const String & message)
+    void Fiber::Error(const String & message)
     {
         mInterpreter.GetHost().Error(message);
     }
     
-    Ref<Object> Process::Self()
+    Ref<Object> Fiber::Self()
     {
         return mReceivers.Peek();
     }
     
-    void Process::PushOperand(Ref<Object> object)
+    void Fiber::PushOperand(Ref<Object> object)
     {
         ASSERT(!object.IsNull(), "Cannot push a null object. (Should be Nil instead.)");
         
@@ -420,7 +420,7 @@ namespace Finch
         mOperands.Push(object);
     }
     
-    Ref<Object> Process::PopOperand()
+    Ref<Object> Fiber::PopOperand()
     {
         Ref<Object> object = mOperands.Pop();
         

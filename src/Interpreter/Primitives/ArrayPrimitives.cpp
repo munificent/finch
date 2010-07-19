@@ -1,10 +1,8 @@
-#include <iostream>
-
 #include "ArrayObject.h"
 #include "ArrayPrimitives.h"
 #include "DynamicObject.h"
 #include "Environment.h"
-#include "Process.h"
+#include "Fiber.h"
 #include "Object.h"
 
 namespace Finch
@@ -14,7 +12,7 @@ namespace Finch
         ArrayObject * array = self->AsArray();
         ASSERT_NOT_NULL(array);
         
-        process.PushNumber(array->Elements().Count());
+        fiber.PushNumber(array->Elements().Count());
     }
     
     PRIMITIVE(ArrayAdd)
@@ -23,7 +21,7 @@ namespace Finch
         ASSERT_NOT_NULL(array);
         
         array->Elements().Add(args[0]);
-        process.Push(self);
+        fiber.Push(self);
     }
     
     PRIMITIVE(ArrayAt)
@@ -36,12 +34,12 @@ namespace Finch
         // allow negative indexes to index backwards from end
         if ((index >= -array->Elements().Count()) && (index < array->Elements().Count()))
         {
-            process.Push(array->Elements()[index]);
+            fiber.Push(array->Elements()[index]);
         }
         else
         {
             // out of bounds
-            process.PushNil();
+            fiber.PushNil();
         }
     }
     
@@ -58,7 +56,7 @@ namespace Finch
             array->Elements()[index] = args[1];
         }
 
-        process.Push(self);
+        fiber.Push(self);
     }
 }
 

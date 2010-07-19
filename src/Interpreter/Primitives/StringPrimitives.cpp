@@ -3,14 +3,14 @@
 #include "StringPrimitives.h"
 #include "DynamicObject.h"
 #include "Environment.h"
-#include "Process.h"
+#include "Fiber.h"
 #include "Object.h"
 
 namespace Finch
 {
     PRIMITIVE(StringLength)
     {
-        process.PushNumber(self->AsString().Length());
+        fiber.PushNumber(self->AsString().Length());
     }
     
     PRIMITIVE(StringAt)
@@ -21,18 +21,18 @@ namespace Finch
         if ((index >= 0) && (index < thisString.Length()))
         {
             String substring = String(thisString[index]);
-            process.PushString(substring);
+            fiber.PushString(substring);
         }
         else
         {
             // out of bounds
-            process.PushNil();
+            fiber.PushNil();
         }
     }
 
     PRIMITIVE(StringHashCode)
     {
-        process.PushNumber(static_cast<double>(self->AsString().HashCode()));
+        fiber.PushNumber(static_cast<double>(self->AsString().HashCode()));
     }
 }
 

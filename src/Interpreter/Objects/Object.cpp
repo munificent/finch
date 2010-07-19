@@ -6,7 +6,7 @@
 #include "FiberObject.h"
 #include "Interpreter.h"
 #include "NumberObject.h"
-#include "Process.h"
+#include "Fiber.h"
 #include "Scope.h"
 #include "StringObject.h"
 
@@ -59,7 +59,7 @@ namespace Finch
                                            interpreter, block));
     }
 
-    void Object::Receive(Ref<Object> self, Process & process,
+    void Object::Receive(Ref<Object> self, Fiber & fiber,
                                 String message, const Array<Ref<Object> > & args)
     {
         // walk up the parent chain until it loops back on itself at
@@ -71,7 +71,7 @@ namespace Finch
             // object a few links down the parent chain from Object, you'll
             // get a copy of *that* object, and not Object itself where "copy"
             // is implemented.
-            mParent->Receive(self, process, message, args);
+            mParent->Receive(self, fiber, message, args);
         }
         else
         {
@@ -79,8 +79,8 @@ namespace Finch
             String error = String::Format("Object '%s' did not handle message '%s'",
                                           self->AsString().CString(),
                                           message.CString());
-            process.Error(error);
-            process.PushNil();
+            fiber.Error(error);
+            fiber.PushNil();
         }
     }
     
