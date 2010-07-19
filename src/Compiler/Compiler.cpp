@@ -5,15 +5,13 @@
 #include "Compiler.h"
 #include "DefExpr.h"
 #include "Environment.h"
-#include "KeywordExpr.h"
+#include "MessageExpr.h"
 #include "NameExpr.h"
 #include "NumberExpr.h"
-#include "OperatorExpr.h"
 #include "SelfExpr.h"
 #include "SequenceExpr.h"
 #include "SetExpr.h"
 #include "StringExpr.h"
-#include "UnaryExpr.h"
 #include "UndefineExpr.h"
 
 namespace Finch
@@ -72,26 +70,19 @@ namespace Finch
         }
     }
     
-    void Compiler::Visit(const KeywordExpr & expr)
+    void Compiler::Visit(const MessageExpr & expr)
     {
         expr.Receiver()->Accept(*this);
         
         // compile the arguments
-        for (int i = 0; i < expr.Keywords().Count(); i++)
+        for (int i = 0; i < expr.Arguments().Count(); i++)
         {
             expr.Arguments()[i]->Accept(*this);
         }
         
-        // get the keyword's full name
-        String fullName;
-        for (int i = 0; i < expr.Keywords().Count(); i++)
-        {
-            fullName += expr.Keywords()[i];
-        }
-        
-        int id = mEnvironment.Strings().Add(fullName);
-        OpCode op = static_cast<OpCode>(OP_MESSAGE_0 + expr.Keywords().Count());
-        
+        // compile the message send
+        int id = mEnvironment.Strings().Add(expr.Message());
+        OpCode op = static_cast<OpCode>(OP_MESSAGE_0 + expr.Arguments().Count());
         mCode.Write(op, id);
     }
     
@@ -109,15 +100,6 @@ namespace Finch
     void Compiler::Visit(const NumberExpr & expr)
     {
         mCode.Write(OP_NUMBER_LITERAL, expr.Value());
-    }
-    
-    void Compiler::Visit(const OperatorExpr & expr)
-    {
-        expr.Receiver()->Accept(*this);
-        expr.Argument()->Accept(*this);
-        
-        int id = mEnvironment.Strings().Add(expr.Operator());
-        mCode.Write(OP_MESSAGE_1, id);
     }
     
     void Compiler::Visit(const SelfExpr & expr)
@@ -161,14 +143,6 @@ namespace Finch
         // push string
         int id = mEnvironment.Strings().Add(expr.Value());
         mCode.Write(OP_STRING_LITERAL, id);
-    }
-    
-    void Compiler::Visit(const UnaryExpr & expr)
-    {
-        expr.Receiver()->Accept(*this);
-        
-        int id = mEnvironment.Strings().Add(expr.Message());
-        mCode.Write(OP_MESSAGE_0, id);
     }
     
     void Compiler::Visit(const UndefineExpr & expr)

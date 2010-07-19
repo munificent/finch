@@ -13,43 +13,41 @@ namespace Finch
 {
     using std::ostream;
     
-    // AST node for a keyword message send: "obj do: thing with: other"
-    class KeywordExpr : public Expr
+    // AST node for a message send. Handles unary, binary, and keyword messages.
+    class MessageExpr : public Expr
     {
     public:
-        KeywordExpr(Ref<Expr> receiver, const Array<String> & keywords,
-                    const Array<Ref<Expr> > & args)
+        MessageExpr(Ref<Expr> receiver, String message, const Array<Ref<Expr> > & args)
         :   mReceiver(receiver),
-            mKeywords(keywords),
+            mMessage(message),
             mArgs(args)
         {
-            ASSERT(mKeywords.Count() == mArgs.Count(),
-                   "Must have same number of keywords and arguments.");
         }
         
         Ref<Expr>                 Receiver()  const { return mReceiver; }
-        
-        const Array<String> &     Keywords()  const { return mKeywords; }
+        String                    Message()   const { return mMessage; }
         const Array<Ref<Expr> > & Arguments() const { return mArgs; }
         
         virtual void Trace(ostream & stream) const
         {
-            stream << mReceiver;
+            stream << mReceiver << " " << mMessage << " [";
             
-            for (int i = 0; i < mKeywords.Count(); i++)
+            if (mArgs.Count() > 0) stream << mArgs[0];
+            for (int i = 1; i < mArgs.Count(); i++)
             {
-                stream << " " << mKeywords[i] << " " << mArgs[i];
+                stream << "; " << mArgs[i];
             }
+            stream << "]";
         }
-            
+        
         EXPRESSION_VISITOR
-
+        
     private:
         // the object receiving the message
         Ref<Expr> mReceiver;
         
-        // the names of the keywords
-        Array<String> mKeywords;
+        // the name of the message
+        String mMessage;
         
         // the arguments being passed
         Array<Ref<Expr> > mArgs;

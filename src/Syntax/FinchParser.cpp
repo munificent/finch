@@ -6,15 +6,13 @@
 #include "FinchParser.h"
 #include "IErrorReporter.h"
 #include "ILineReader.h"
-#include "KeywordExpr.h"
+#include "MessageExpr.h"
 #include "NameExpr.h"
 #include "NumberExpr.h"
-#include "OperatorExpr.h"
 #include "SelfExpr.h"
 #include "SequenceExpr.h"
 #include "SetExpr.h"
 #include "StringExpr.h"
-#include "UnaryExpr.h"
 #include "UndefineExpr.h"
 
 // Recursive descent parsers are generally pretty straightforward to read. Each
@@ -213,7 +211,10 @@ namespace Finch
             String op = Consume().Text();
             PARSE_RULE(arg, Unary());
 
-            object = Ref<Expr>(new OperatorExpr(object, op, arg));
+            Array<Ref<Expr> > args;
+            args.Add(arg);
+            
+            object = Ref<Expr>(new MessageExpr(object, op, args));
         }
         
         return object;
@@ -226,7 +227,9 @@ namespace Finch
         while (LookAhead(TOKEN_NAME))
         {
             String message = Consume().Text();
-            object = Ref<Expr>(new UnaryExpr(object, message));
+            Array<Ref<Expr> > args;
+            
+            object = Ref<Expr>(new MessageExpr(object, message, args));
         }
         
         return object;
@@ -335,21 +338,20 @@ namespace Finch
     // Parses just the message send part of a keyword message: "foo: a bar: b"
     Ref<Expr> FinchParser::ParseKeyword(Ref<Expr> object)
     {
-        Array<String>      keywords;
+        String             message;
         Array<Ref<Expr> >  args;
         
         while (LookAhead(TOKEN_KEYWORD))
         {
-            String keyword = Consume().Text();
-            keywords.Add(keyword);
+            message += Consume().Text();
             
             PARSE_RULE(arg, Operator());
             args.Add(arg);
         }
         
-        if (keywords.Count() > 0)
+        if (message.Length() > 0)
         {
-            return Ref<Expr>(new KeywordExpr(object, keywords, args));
+            return Ref<Expr>(new MessageExpr(object, message, args));
         }
         
         return Ref<Expr>();
@@ -367,16 +369,11 @@ namespace Finch
         Ref<Expr> block = Ref<Expr>(new BlockExpr(args, body));
         
         // desugar to the basic addMethod:body: form
-        Array<String>      addMethodKeywords;
         Array<Ref<Expr> >  addMethodArgs;
-        
-        addMethodKeywords.Add("addMethod:");
         addMethodArgs.Add(Ref<Expr>(new StringExpr(name)));
-        
-        addMethodKeywords.Add("body:");
         addMethodArgs.Add(block);
 
-        return Ref<Expr>(new KeywordExpr(target, addMethodKeywords, addMethodArgs));
+        return Ref<Expr>(new MessageExpr(target, "addMethod:body:", addMethodArgs));
     }
         
     Ref<Expr> FinchParser::ParseError(const char * message)
