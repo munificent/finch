@@ -177,5 +177,10 @@ namespace Finch
         // onto the stack of the calling fiber here. when we switch back to
         // this fiber, we'll push the passed value on to the stack then.
     }
+    
+    PRIMITIVE(PrimitiveGetCallstackDepth)
+    {
+        fiber.PushNumber(fiber.GetCallstackDepth());
+    }
 }
 

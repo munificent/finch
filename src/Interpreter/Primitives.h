@@ -31,5 +31,6 @@ namespace Finch
     PRIMITIVE(PrimitiveNewFiber);
     PRIMITIVE(PrimitiveGetCurrentFiber);
     PRIMITIVE(PrimitiveSwitchToFiber);
+    PRIMITIVE(PrimitiveGetCallstackDepth);
 }
 

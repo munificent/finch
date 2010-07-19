@@ -374,6 +374,19 @@ namespace Finch
             scope->Define(block.Params()[i], arg);
         }
         
+        // perform tail call optimization. we've already advanced the
+        // instruction on the current call frame to the next instruction. before
+        // we push a new callframe, we'll check if the current callframe is now
+        // done. if so, we can discard it now instead of waiting for the new
+        // callframe to return to it.
+        CallFrame & frame = mCallStack.Peek();
+        const Instruction & instruction = frame.Block().GetCode()[frame.address];
+        if (instruction.op == OP_END_BLOCK)
+        {
+            mCallStack.Pop();
+            mReceivers.Pop();
+        }
+
         // push the call onto the stack
         mCallStack.Push(CallFrame(scope, blockObj));
         mReceivers.Push(self);
@@ -405,6 +418,11 @@ namespace Finch
     void Fiber::Error(const String & message)
     {
         mInterpreter.GetHost().Error(message);
+    }
+    
+    int Fiber::GetCallstackDepth() const
+    {
+        return mCallStack.Count();
     }
     
     Ref<Object> Fiber::Self()

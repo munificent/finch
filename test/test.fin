@@ -83,6 +83,7 @@ load: "../../test/messages.fin"
 load: "../../test/objects.fin"
 load: "../../test/self.fin"
 load: "../../test/strings.fin"
+load: "../../test/tco.fin"
 load: "../../test/variables.fin"
 
 Test complete

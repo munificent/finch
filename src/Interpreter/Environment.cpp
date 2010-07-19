@@ -118,6 +118,7 @@ namespace Finch
         primsObj->RegisterPrimitive("newFiber:",                PrimitiveNewFiber);
         primsObj->RegisterPrimitive("currentFiber",             PrimitiveGetCurrentFiber);
         primsObj->RegisterPrimitive("switchToFiber:passing:",   PrimitiveSwitchToFiber);
+        primsObj->RegisterPrimitive("callstackDepth",           PrimitiveGetCallstackDepth);
         
         // make the special values
         mNil = MakeGlobal("Nil");
