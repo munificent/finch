@@ -72,18 +72,41 @@ namespace Finch
     
     void Compiler::Visit(const MessageExpr & expr)
     {
+        // push the first copy of the receiver onto the stack
         expr.Receiver()->Accept(*this);
         
-        // compile the arguments
-        for (int i = 0; i < expr.Arguments().Count(); i++)
+        // compile each of the message sends
+        int messageCount = expr.Messages().Count();
+        for (int i = 0; i < messageCount; i++)
         {
-            expr.Arguments()[i]->Accept(*this);
+            // push another copy of the receiver on the stack for the this
+            // message send to use so that the first copy is still there for
+            // the next send.
+            if (i < messageCount - 1)
+            {
+                mCode.Write(OP_DUP);
+            }
+            
+            const MessageSend & message = expr.Messages()[i];
+            
+            // compile the arguments
+            for (int arg = 0; arg < message.GetArguments().Count(); arg++)
+            {
+                message.GetArguments()[arg]->Accept(*this);
+            }
+            
+            // compile the message send
+            int id = mEnvironment.Strings().Add(message.GetName());
+            OpCode op = static_cast<OpCode>(OP_MESSAGE_0 + message.GetArguments().Count());
+            mCode.Write(op, id);
+
+            // if we're cascading and have another send coming, discard the
+            // return of this message.
+            if (i < messageCount - 1)
+            {
+                mCode.Write(OP_POP);
+            }
         }
-        
-        // compile the message send
-        int id = mEnvironment.Strings().Add(expr.Message());
-        OpCode op = static_cast<OpCode>(OP_MESSAGE_0 + expr.Arguments().Count());
-        mCode.Write(op, id);
     }
     
     void Compiler::Visit(const NameExpr & expr)

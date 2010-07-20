@@ -110,6 +110,10 @@ namespace Finch
                     PopOperand();
                     break;
                     
+                case OP_DUP:
+                    PushOperand(mOperands.Peek());
+                    break;
+                    
                 case OP_DEF_GLOBAL:
                     {
                         // def returns the defined value, so instead of popping

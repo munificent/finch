@@ -18,6 +18,7 @@ namespace Finch
         OP_CREATE_ARRAY,    // id = number of elements to pop
         
         OP_POP,             // (not used)
+        OP_DUP,             // (not used)
         
         OP_DEF_GLOBAL,      // id = string table id of identifier
         OP_DEF_OBJECT,      // id = string table id of identifier

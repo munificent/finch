@@ -32,9 +32,10 @@ namespace Finch
         Ref<Expr> Sequence();
         Ref<Expr> Bind();
         Ref<Expr> Assignment();
-        Ref<Expr> Keyword();
-        Ref<Expr> Operator();
-        Ref<Expr> Unary();
+        Ref<Expr> Cascade();
+        Ref<Expr> Keyword(bool & isMessage);
+        Ref<Expr> Operator(bool & isMessage);
+        Ref<Expr> Unary(bool & isMessage);
         Ref<Expr> Primary();
         
         Ref<Expr> ParseSequence(Array<Ref<Expr> > & expressions);

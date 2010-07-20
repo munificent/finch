@@ -1,0 +1,34 @@
+Test suite: "Strings" is: {
+    called <- ""
+    ' make a couple of objects that implement toString
+    obj <- Object copy
+    obj :: foo { called <-- called + "foo" }
+    obj :: bar { called <-- called + "bar" }
+    obj :: baz { called <-- called + "baz" }
+    obj :: + other { called <-- called + other }
+    obj :: add: a and: b { called <-- called + a + b }
+    
+    Test test: "Unary" is: {
+        called <-- ""
+        obj foo, bar, baz
+        Test that: called equals: "foobarbaz"
+    }
+    
+    Test test: "Binary" is: {
+        called <-- ""
+        obj + "foo", + "bar", + "baz"
+        Test that: called equals: "foobarbaz"
+    }
+    
+    Test test: "Keyword" is: {
+        called <-- ""
+        obj add: "foo" and: "bar", add: "bar" and: "baz", add: "baz" and: "bop"
+        Test that: called equals: "foobarbarbazbazbop"
+    }
+    
+    Test test: "Mixed" is: {
+        called <-- ""
+        obj add: "foo" + "bar" and: "baz", + "bar", bar
+        Test that: called equals: "foobarbazbarbar"
+    }
+}

@@ -51,7 +51,7 @@ namespace Finch
         
         ~Array()
         {
-            if (mItems != NULL) delete [] mItems;
+            Clear();
         }
         
         // Gets the number of items currently in the array.
@@ -84,6 +84,14 @@ namespace Finch
             }
         }
         
+        // Removes all items from the array.
+        void Clear()
+        {
+            if (mItems != NULL) delete [] mItems;
+            mCount = 0;
+            mCapacity = 0;
+        }
+        
         // Removes the item at the given index. Indexes are zero-based from the
         // beginning of the array. Negative indexes are from the end of the
         // array and go forward, so that -1 is the last item in the array.
@@ -100,6 +108,19 @@ namespace Finch
             
             mItems[mCount - 1] = T(); // clear the copy of the last item
             mCount--;
+        }
+        
+        // Assigns the contents of the given array to this one. Clears this
+        // array and refills it with the contents of the other.
+        Array & operator=(const Array & other)
+        {
+            // Early out of self-assignment.
+            if (&other == this) return *this;
+            
+            Clear();
+            Add(other);
+            
+            return *this;
         }
         
         // Gets the item at the given index. Indexes are zero-based from the
