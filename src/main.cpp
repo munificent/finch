@@ -21,6 +21,10 @@ using namespace Finch;
 using std::cout;
 using std::endl;
 
+Ref<ILineReader> OpenFile(String filePath);
+bool InterpretFile(Interpreter & interpreter, String filePath);
+PRIMITIVE(LoadFile);
+
 //### bob: should move this stuff into a "standalone" class
 Ref<ILineReader> OpenFile(String filePath)
 {

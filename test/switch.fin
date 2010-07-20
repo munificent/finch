@@ -1,0 +1,41 @@
+Test suite: "Switch" is: {
+    Test test: "Match value" is: {
+        found <- False
+        
+'        2 switch \
+'        case: 1 do: { Test fail },
+'        case: 2 do: { found <-- True },
+'        case: 3 do: { Test fail }
+        
+        Test isTrue: found
+    }
+
+    Test test: "No match" is: {
+        Nil
+'        2 switch \
+'        case: 1 do: { Test fail },
+'        case: 3 do: { Test fail }
+    }
+
+    Test test: "Default match" is: {
+        found <- False
+'        5 switch \
+'        case: 1 do: { Test fail },
+'        case: 3 do: { Test fail },
+'        default: { found <-- True }
+        
+        Test isTrue: found
+    }
+
+    Test test: "Match predicate" is: {
+        found <- False
+'        2 switch \
+'        case: {|i| i < 2 } do: { Test fail },
+'        case: {|i| i = 2 } do: { found <-- True },
+'        case: {|i| i > 2 } do: { Test fail }
+        
+        Test isTrue: found
+    }
+    
+    ' need to test returning values from a switch
+}

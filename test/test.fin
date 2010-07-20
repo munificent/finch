@@ -39,6 +39,9 @@ Test <- Object copyWith: {
         }
     }
 
+    self :: fail { self isTrue: False }
+    self :: pass { self isTrue: True }
+    
     self :: isTrue: actual {
         _tests <- _tests + 1
         _totalTests <- _totalTests + 1
@@ -84,6 +87,7 @@ load: "../../test/messages.fin"
 load: "../../test/objects.fin"
 load: "../../test/self.fin"
 load: "../../test/strings.fin"
+load: "../../test/switch.fin"
 load: "../../test/tco.fin"
 load: "../../test/variables.fin"
 

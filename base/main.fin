@@ -18,6 +18,10 @@ Object :: new {
     Object prototype copy
 }
 
+Object :: new: block {
+    Object prototype copyWith: block
+}
+
 Object prototype :: != right {
     (self = right) not
 }
@@ -242,6 +246,53 @@ Object prototype :: or: right {
         right true?
     }
 }
+
+' switch/case construct. usage looks like:
+' c switch \
+'     case: "{" do: { "foo" },
+'     case: "}" do: { "blah" },
+'     default: { "argh" }
+Object prototype :: switch {
+    Switch prototype copyWith: {
+        _value <- self
+        _done  <- False
+    }
+}
+
+Switch <- Object new: {
+    _prototype <- Object new: {
+        self :: case: case do: block {
+            ' if this switch has already matched a case, just do nothing 
+            if: _done? not then: {
+                ' if the case is a block, then it's a predicate so evaluate it, otherwise
+                ' it's a value, so compare it to the value being switched
+                matched <- if: case block? then: {
+                    case call: _value
+                } else: {
+                    _value = case
+                }
+
+                if: matched then: {
+                    ' execute the block
+                    block call
+                    _done? <- True
+                }
+            }
+        }
+        
+        self :: default: block {
+            ' if this switch has already matched a case, just do nothing 
+            if: _done? not then: {
+                ' execute the block
+                block call
+                _done? <- True
+            }
+        }
+    }
+    
+    self :: prototype { _prototype }
+}
+
 
 writeLine: "Base library loaded."
 
