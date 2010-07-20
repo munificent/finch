@@ -11,15 +11,13 @@ namespace Finch
     class ArrayExpr;
     class BlockExpr;
     class DefExpr;
-    class KeywordExpr;
+    class MessageExpr;
     class NameExpr;
     class NumberExpr;
-    class OperatorExpr;
     class SelfExpr;
     class SequenceExpr;
     class SetExpr;
     class StringExpr;
-    class UnaryExpr;
     class UndefineExpr;
     class Object;
     
@@ -35,15 +33,13 @@ namespace Finch
         virtual void Visit(const ArrayExpr & expr) = 0;
         virtual void Visit(const BlockExpr & expr) = 0;
         virtual void Visit(const DefExpr & expr) = 0;
-        virtual void Visit(const KeywordExpr & expr) = 0;
+        virtual void Visit(const MessageExpr & expr) = 0;
         virtual void Visit(const NameExpr & expr) = 0;
         virtual void Visit(const NumberExpr & expr) = 0;
-        virtual void Visit(const OperatorExpr & expr) = 0;
         virtual void Visit(const SequenceExpr & expr) = 0;
         virtual void Visit(const SelfExpr & expr) = 0;
         virtual void Visit(const SetExpr & expr) = 0;
         virtual void Visit(const StringExpr & expr) = 0;
-        virtual void Visit(const UnaryExpr & expr) = 0;
         virtual void Visit(const UndefineExpr & expr) = 0;
     };
 }
