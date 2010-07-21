@@ -256,8 +256,9 @@ Object prototype :: switch {
     ' ### bob: having to do this is lame. :(
     outerSelf <- self
     Switch prototype copyWith: {
-        _value <- outerSelf
-        _done  <- False
+        _value  <- outerSelf
+        _done   <- False
+        _result <- Nil
     }
 }
 
@@ -276,19 +277,25 @@ Switch <- Object new: {
 
                 if: matched then: {
                     ' execute the block
-                    block call
+                    _result <- block call
                     _done? <- True
                 }
             }
+            
+            ' always return the result. if we haven't matched yet, this will
+            ' just be Nil. once we've matched, it will be the matched value.
+            _result
         }
         
         self :: default: block {
             ' if this switch has already matched a case, just do nothing 
             if: _done? not then: {
                 ' execute the block
-                block call
+                _result <- block call
                 _done? <- True
             }
+            
+            _result;
         }
     }
     

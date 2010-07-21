@@ -35,6 +35,15 @@ Test suite: "Switch" is: {
         
         Test isTrue: found
     }
+
+    Test test: "Returns value" is: {
+        result <- 2 switch \
+            case: 1 do: { "one" },
+            case: 2 do: { "two" },
+            case: 3 do: { "three" }
+        
+        Test that: result equals: "two"
+    }
     
     ' need to test returning values from a switch
 }
