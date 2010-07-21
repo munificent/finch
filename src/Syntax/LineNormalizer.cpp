@@ -44,6 +44,7 @@ namespace Finch
                 case TOKEN_PIPE:
                 case TOKEN_ARROW:
                 case TOKEN_LONG_ARROW:
+                case TOKEN_COMMA:
 
                 // discard newlines after open group
                 case TOKEN_LEFT_PAREN:

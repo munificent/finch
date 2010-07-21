@@ -5,6 +5,7 @@ Test suite: "Strings" is: {
     obj :: foo { called <-- called + "foo" }
     obj :: bar { called <-- called + "bar" }
     obj :: baz { called <-- called + "baz" }
+    obj :: me { self }
     obj :: + other { called <-- called + other }
     obj :: add: a and: b { called <-- called + a + b }
     
@@ -28,7 +29,7 @@ Test suite: "Strings" is: {
     
     Test test: "Mixed" is: {
         called <-- ""
-        obj add: "foo" + "bar" and: "baz", + "bar", bar
+        obj me add: "foo" + "bar" and: "baz", + "bar", bar
         Test that: called equals: "foobarbazbarbar"
     }
 }

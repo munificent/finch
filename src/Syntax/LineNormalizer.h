@@ -17,8 +17,8 @@ namespace Finch
     //   discarded. This collapses duplicate newlines to a single one.
     //
     // - Any newlines after a token that cannot end an expression are discarded.
-    //   Any newlines after a keyword, operator, "|", "<-", or "<--" will be
-    //   ignored.
+    //   Any newlines after a keyword, operator, "|", "<-", "<--", or "," will
+    //   be ignored.
     //
     // - Any newlines after an opening group are discarded. This means newlines
     //   following a "(", "[", or "{" will be ignored.

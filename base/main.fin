@@ -253,8 +253,10 @@ Object prototype :: or: right {
 '     case: "}" do: { "blah" },
 '     default: { "argh" }
 Object prototype :: switch {
+    ' ### bob: having to do this is lame. :(
+    outerSelf <- self
     Switch prototype copyWith: {
-        _value <- self
+        _value <- outerSelf
         _done  <- False
     }
 }
