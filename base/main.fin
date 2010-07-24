@@ -38,6 +38,23 @@ Object prototype :: fiber? { False }
 Object prototype :: number? { False }
 Object prototype :: string? { False }
 
+Object prototype :: ifTrue: then else: else { else call }
+
+' calling a non-block like a block just returns the value
+Object prototype :: call { self }
+Object prototype :: call: a { self }
+Object prototype :: call: a : b { self }
+Object prototype :: call: a : b : c { self }
+Object prototype :: call: a : b : c : d { self }
+Object prototype :: call: a : b : c : d : e { self }
+Object prototype :: call: a : b : c : d : e : f { self }
+Object prototype :: call: a : b : c : d : e : f { self }
+Object prototype :: call: a : b : c : d : e : f : g { self }
+Object prototype :: call: a : b : c : d : e : f : g : h { self }
+Object prototype :: call: a : b : c : d : e : f : g : h : i { self }
+Object prototype :: call: a : b : c : d : e : f : g : h : i : j { self }
+
+
 True :: not { False }
 
 True :: boolean? { True }
@@ -45,6 +62,8 @@ False :: boolean? { True }
 
 True :: toString { "true" }
 False :: toString { "false" }
+
+True :: ifTrue: then else: else { then call }
 
 ' define a for-style loop
 Ether :: from: start to: end step: step do: block {
@@ -68,11 +87,11 @@ Ether :: do: block {
 
 ' if then
 Ether :: if: condition then: then {
-    #PRIM# if: condition then: then else: Nil
+    condition ifTrue: then else: { Nil }
 }
 
 Ether :: if: condition then: then else: else {
-    #PRIM# if: condition then: then else: else
+    condition ifTrue: then else: else
 }
 
 ' a chained if/then/else
@@ -84,7 +103,17 @@ Ether :: if: if1 then: then1 elseif: if2 then: then2 else: else {
 
 ' while
 Ether :: while: condition do: block {
-    #PRIM# while: condition do: block
+    ' set up a tail recursive block that evaluates the condition and does one
+    ' pass through the loop before calling itself
+    rec <- {
+        if: condition call then: {
+            block call
+            rec call
+        }
+    }
+    
+    ' start the iteration
+    rec call
 }
 
 ' build the output methods in terms of the single primitive one
@@ -277,7 +306,7 @@ Switch <- Object new: {
 
                 if: matched then: {
                     ' execute the block
-                    _result <- block call
+                    _result <- block call: _value
                     _done? <- True
                 }
             }
@@ -291,7 +320,7 @@ Switch <- Object new: {
             ' if this switch has already matched a case, just do nothing 
             if: _done? not then: {
                 ' execute the block
-                _result <- block call
+                _result <- block call: _value
                 _done? <- True
             }
             

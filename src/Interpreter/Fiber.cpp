@@ -17,15 +17,8 @@ namespace Finch
     Fiber::Fiber(Interpreter & interpreter, Ref<Object> block)
     :   mIsRunning(false),
         mInterpreter(interpreter),
-        mEnvironment(interpreter.GetEnvironment()),
-        mLoopCode(Array<String>())
+        mEnvironment(interpreter.GetEnvironment())
     {
-        // build the special "while loop" chunk of bytecode
-        mLoopCode.Write(OP_LOOP_1);
-        mLoopCode.Write(OP_LOOP_2);
-        mLoopCode.Write(OP_LOOP_3);
-        mLoopCode.Write(OP_END_BLOCK);
-        
         // push the starting block
         BlockObject * blockObj = block->AsBlock();
         mCallStack.Push(CallFrame(blockObj->Closure(), block));
@@ -259,64 +252,7 @@ namespace Finch
                         receiver->Receive(receiver, *this, string, args);
                     }
                     break;
-                    
-                    // these next four opcodes handle the one built-in loop
-                    // construct: "while". because a while loop must wait for
-                    // the condition to be evaluated, and then later the body,
-                    // it proceeds in stages, with an opcode for each stage.
-                    //
-                    // OP_LOOP_1 begins evaluating the condition expression
-                    // OP_LOOP_2 checks the result of that and either ends the
-                    //           loop or evalutes the body
-                    // OP_LOOP_3 discards the result of that and loops back to
-                    //           the beginning by explicitly changing the
-                    //           instruction pointer
-                    //
-                    // note that all of this is initiated by a call to
-                    // WhileLoop on the fiber. that pushes a special static
-                    // CodeBlock that contains this sequence of opcodes. we do
-                    // this, instead of compiling a while loop directly into
-                    // the bytecode where it appears so that it's still
-                    // possible to overload while:do: at runtime.
-                    
-                case OP_LOOP_1:
-                    {
-                        // evaluate the conditional (while leaving it on the stack)
-                        Ref<Object> condition = mOperands.Peek();
-                        condition->Receive(condition, *this, "call", Array<Ref<Object> >());
-                    }
-                    break;
-
-                case OP_LOOP_2:
-                    // if the condition is false, end the loop
-                    if (PopOperand() != mEnvironment.True())
-                    {
-                        // pop the condition and body blocks
-                        PopOperand();
-                        PopOperand();
-                        
-                        // end the loop
-                        mCallStack.Pop();
-                        
-                        // every expression must return something
-                        PushNil();
-                    }
-                    else
-                    {
-                        // evaluate the body
-                        Ref<Object> body = mOperands[1];
-                        body->Receive(body, *this, "call", Array<Ref<Object> >());
-                    }
-                    break;
-                    
-                case OP_LOOP_3:
-                    // discard the body's return value
-                    PopOperand();
-                    
-                    // restart the loop
-                    mCallStack.Peek().address = 0;
-                    break;
-                    
+                                        
                 case OP_END_BLOCK:
                     mCallStack.Pop();
                     mReceivers.Pop();
@@ -401,22 +337,6 @@ namespace Finch
     {
         BlockObject & block = *(blockObj->AsBlock());
         CallMethod(block.Self(), blockObj, args);
-    }
-    
-    void Fiber::WhileLoop(Ref<Object> condition, Ref<Object> body)
-    {
-        // push the arguments onto the stack
-        Push(body);
-        Push(condition);
-        
-        Ref<Object> block = Object::NewBlock(mEnvironment, mLoopCode,
-                                             mCallStack.Peek().scope,
-                                             Self());
-        
-        // call our special loop "function"
-        //### bob: we don't just do CallBlock here because while does some
-        // funky stuff with the callstack. it would be good to clean that up
-        mCallStack.Push(CallFrame(mCallStack.Peek().scope, block));
     }
 
     void Fiber::Error(const String & message)

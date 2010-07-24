@@ -50,8 +50,6 @@ namespace Finch
         void CallBlock(Ref<Object> blockObj,
                        const Array<Ref<Object> > & args);
         
-        void WhileLoop(Ref<Object> condition, Ref<Object> body);
-        
         // Displays a runtime error to the user.
         void Error(const String & message);
         
@@ -102,8 +100,6 @@ namespace Finch
         Stack<Ref<Object> > mOperands; 
         Stack<CallFrame>    mCallStack;
         Stack<Ref<Object> > mReceivers;
-        
-        CodeBlock mLoopCode;
         
         NO_COPY(Fiber);
     };

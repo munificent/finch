@@ -52,8 +52,8 @@ Number prototype :: i { Complex new: 0 i: self }
 a <- 4 i
 b <- Complex new: 2 i: 3
 
-writeLine: "a = " + a toString
-writeLine: "b = " + b toString
-writeLine: "|b| = " + b magnitude toString
-writeLine: "a + b = " + (a + b) toString
-writeLine: "a * b = " + (a * b) toString
+writeLine: "a = " + a
+writeLine: "b = " + b
+writeLine: "|b| = " + b magnitude
+writeLine: "a + b = " + (a + b)
+writeLine: "a * b = " + (a * b)

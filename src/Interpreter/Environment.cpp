@@ -113,8 +113,6 @@ namespace Finch
         primsObj->RegisterPrimitive("stringConcat:and:",        PrimitiveStringConcat);
         primsObj->RegisterPrimitive("stringCompare:to:",        PrimitiveStringCompare);
         primsObj->RegisterPrimitive("write:",                   PrimitiveWrite);
-        primsObj->RegisterPrimitive("if:then:else:",            PrimitiveIfThenElse);
-        primsObj->RegisterPrimitive("while:do:",                PrimitiveWhileDo);
         primsObj->RegisterPrimitive("newFiber:",                PrimitiveNewFiber);
         primsObj->RegisterPrimitive("currentFiber",             PrimitiveGetCurrentFiber);
         primsObj->RegisterPrimitive("switchToFiber:passing:",   PrimitiveSwitchToFiber);

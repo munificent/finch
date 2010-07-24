@@ -47,10 +47,6 @@ namespace Finch
         OP_MESSAGE_9,       // id = string table id of message name
         OP_MESSAGE_10,      // id = string table id of message name
         
-        OP_LOOP_1,          // (not used)
-        OP_LOOP_2,          // (not used)
-        OP_LOOP_3,          // (not used)
-        
         OP_END_BLOCK        // (not used)
     };
     

@@ -106,34 +106,6 @@ namespace Finch
         fiber.PushNil();
     }
     
-    // Primitive flow control. All flow control operations can be implemented
-    // in terms of conditionally jumping forward (if) and/or back (while).
-    
-    PRIMITIVE(PrimitiveIfThenElse)
-    {
-        // figure out which branch to take
-        bool condition = (args[0] == fiber.GetEnvironment().True());
-        Ref<Object> receiver = condition ? args[1] : args[2];
-        
-        // evaluate the branch
-        if (receiver->AsBlock() == NULL)
-        {
-            // the branch isn't a block, so just push its value directly
-            fiber.Push(receiver);
-        }
-        else
-        {
-            // it's a block, so evaluate it
-            Array<Ref<Object> > noArgs;
-            receiver->Receive(receiver, fiber, "call", noArgs);
-        }
-    }
-    
-    PRIMITIVE(PrimitiveWhileDo)
-    {
-        fiber.WhileLoop(args[0], args[1]);
-    }
-    
     // Primitives for manipulating fibers.
     
     PRIMITIVE(PrimitiveNewFiber)
