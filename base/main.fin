@@ -103,17 +103,10 @@ Ether :: if: if1 then: then1 elseif: if2 then: then2 else: else {
 
 ' while
 Ether :: while: condition do: block {
-    ' set up a tail recursive block that evaluates the condition and does one
-    ' pass through the loop before calling itself
-    rec <- {
-        if: condition call then: {
-            block call
-            rec call
-        }
-    }
-    
-    ' start the iteration
-    rec call
+    if: condition call then: {  
+        block call  
+        while: condition do: block  
+    }  
 }
 
 ' build the output methods in terms of the single primitive one
