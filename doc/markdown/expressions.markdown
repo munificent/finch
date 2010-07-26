@@ -199,7 +199,7 @@ An example will clarify:
     do: {
         a <- "inside"
     }
-    write: "a"
+    write: a
 
 This chunk of code will display "outside". The assignment inside the `do:` block creates a new `a` variable local to that block. When the block ends, that `a` is discarded and the outer one remains. Let's change it to use long assignment:
 
@@ -208,7 +208,7 @@ This chunk of code will display "outside". The assignment inside the `do:` block
     do: {
         a <-- "inside"
     }
-    write: "a"
+    write: a
 
 Now this code will print "inside". The `a <-- "inside"` line now means "walk up the scope chain looking for an *existing* variable named `a` and assign to it." (If it fails to find a previously declared variable to assign to, it just does nothing.)
 
