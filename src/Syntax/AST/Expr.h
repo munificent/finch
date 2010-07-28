@@ -1,5 +1,6 @@
 #pragma once
 
+#include <cctype>
 #include <iostream>
 
 #include "Macros.h"
@@ -45,9 +46,9 @@ namespace Finch
             {
                 char initial = name[i];
                 
+                if ((initial >= 'a') && (initial <= 'z')) return NAMESCOPE_GLOBAL;
                 if ((initial >= 'A') && (initial <= 'Z')) return NAMESCOPE_GLOBAL;
                 if (initial == '_') return NAMESCOPE_OBJECT;
-                return NAMESCOPE_LOCAL;                
             }
             
             ASSERT(false, "Cannot determine the scope of a name with no letters.");
