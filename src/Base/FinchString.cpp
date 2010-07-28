@@ -1,5 +1,6 @@
 #include <stdio.h>
 #include <stdarg.h>
+#include <cstring>
 
 #include "Macros.h"
 #include "FinchString.h"
@@ -7,6 +8,13 @@
 namespace Finch
 {
     const char * String::sEmptyString = "";
+    
+    String::StringData::StringData(const char * text)
+    :   chars(text)
+    {
+        length = strlen(text);
+        hashCode = Fnv1Hash(text);
+    }
     
     String String::Format(const char* format, ...)
     {

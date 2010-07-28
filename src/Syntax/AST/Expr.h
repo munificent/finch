@@ -46,7 +46,7 @@ namespace Finch
             {
                 char initial = name[i];
                 
-                if ((initial >= 'a') && (initial <= 'z')) return NAMESCOPE_GLOBAL;
+                if ((initial >= 'a') && (initial <= 'z')) return NAMESCOPE_LOCAL;
                 if ((initial >= 'A') && (initial <= 'Z')) return NAMESCOPE_GLOBAL;
                 if (initial == '_') return NAMESCOPE_OBJECT;
             }

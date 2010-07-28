@@ -61,12 +61,7 @@ namespace Finch
     private:
         struct StringData
         {
-            StringData(const char * text)
-            :   chars(text)
-            {
-                length = strlen(text);
-                hashCode = Fnv1Hash(text);
-            }
+            StringData(const char * text);
             
             int          length;
             const char * chars;
