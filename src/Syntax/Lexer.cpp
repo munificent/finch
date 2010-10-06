@@ -254,20 +254,6 @@ namespace Finch
         mIndex++;
     }
     
-    void Lexer::StartLine()
-    {
-        if (mReader.EndOfLines())
-        {
-            mState = LEX_DONE;
-        }
-        else
-        {
-            mLine = mReader.NextLine();
-            mIndex = 0;
-            mState = LEX_DEFAULT;
-        }
-    }
-    
     Token Lexer::SingleToken(TokenType type)
     {
         Consume();

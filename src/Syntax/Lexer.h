@@ -46,8 +46,6 @@ namespace Finch
             LEX_DONE
         };
         
-        void StartLine();
-        
         void Consume();
         
         Token SingleToken(TokenType type);
