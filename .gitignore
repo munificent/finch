@@ -1,5 +1,3 @@
-syntax: glob
-
 # Mac desktop files
 **.DS_Store
 
@@ -7,17 +5,14 @@ syntax: glob
 **.orig
 
 # XCode build files
-build/**
+build/
 
 # XCode user settings files
 src/finch.xcodeproj/*.mode1v3
 src/finch.xcodeproj/*.pbxuser
 
 # Makefile build files
-syntax: regexp
-^finch
-syntax: glob
-objects/**
+objects/
 
 # Editor temp files
 .*.swp
