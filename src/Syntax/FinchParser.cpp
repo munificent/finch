@@ -2,7 +2,6 @@
 
 #include "ArrayExpr.h"
 #include "BlockExpr.h"
-#include "DefExpr.h"
 #include "FinchParser.h"
 #include "IErrorReporter.h"
 #include "ILineReader.h"
@@ -14,6 +13,7 @@
 #include "SetExpr.h"
 #include "StringExpr.h"
 #include "UndefineExpr.h"
+#include "VarExpr.h"
 
 // Recursive descent parsers are generally pretty straightforward to read. Each
 // grammar production is a function call and they call each other directly so
@@ -159,7 +159,7 @@ namespace Finch
             else
             {
                 PARSE_RULE(value, Assignment());
-                return Ref<Expr>(new DefExpr(name, value));
+                return Ref<Expr>(new VarExpr(name, value));
             }
         }
         else if (LookAhead(TOKEN_NAME, TOKEN_LONG_ARROW))

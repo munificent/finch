@@ -13,7 +13,7 @@ It is written in C++ with a hand-written [lexer](http://bitbucket.org/munificent
 *   Syntactically expressive yet minimal. Your code should look beautiful and
     do what you want.
 
-*   An example of a small, clean C++ codebase for an interpreter. If you can 
+*   An example of a small, clean C++ codebase for an interpreter. If you can
     read C++ and want to learn more about programming languages, I hope Finch's
     code will be a good primer.
 
@@ -35,14 +35,14 @@ Here's a little example to get you going. This little program doesn't draw, but 
     :::finch
     ' create a single global Dragon object
     Dragon <- Object copy
-    
-    ' add a main "trace:" method for outputting the series of left and right 
+
+    ' add a main "trace:" method for outputting the series of left and right
     ' turns needed to draw a dragon curve.
     Dragon :: trace: depth {
       self traceDepth: depth turn: "R"
       writeLine: "" ' end the line
     }
-    
+
     ' add the main recursive method
     Dragon :: traceDepth: n turn: turn {
       if: n > 0 then: {
@@ -51,7 +51,7 @@ Here's a little example to get you going. This little program doesn't draw, but 
         self traceDepth: n - 1 turn: "L"
       }
     }
-    
+
     ' now lets try it
     Dragon trace: 5
 

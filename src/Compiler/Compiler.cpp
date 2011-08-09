@@ -3,7 +3,6 @@
 #include "ArrayExpr.h"
 #include "BlockExpr.h"
 #include "Compiler.h"
-#include "DefExpr.h"
 #include "Environment.h"
 #include "MessageExpr.h"
 #include "NameExpr.h"
@@ -13,6 +12,7 @@
 #include "SetExpr.h"
 #include "StringExpr.h"
 #include "UndefineExpr.h"
+#include "VarExpr.h"
 
 namespace Finch
 {
@@ -47,27 +47,6 @@ namespace Finch
     {
         int id = mEnvironment.Blocks().Add(expr.Params(), *expr.Body(), mEnvironment);
         mCode.Write(OP_BLOCK_LITERAL, id);
-    }
-    
-    void Compiler::Visit(const DefExpr & expr)
-    {
-        expr.Value()->Accept(*this);
-        
-        int id = mEnvironment.Strings().Add(expr.Name());
-        switch (Expr::GetNameScope(expr.Name()))
-        {
-            case NAMESCOPE_GLOBAL:
-                mCode.Write(OP_DEF_GLOBAL, id);
-                break;
-                
-            case NAMESCOPE_OBJECT:
-                mCode.Write(OP_DEF_OBJECT, id);
-                break;
-                
-            case NAMESCOPE_LOCAL:
-                mCode.Write(OP_DEF_LOCAL, id);
-                break;
-        }
     }
     
     void Compiler::Visit(const MessageExpr & expr)
@@ -176,6 +155,27 @@ namespace Finch
             case NAMESCOPE_GLOBAL: mCode.Write(OP_UNDEF_GLOBAL, id); break;
             case NAMESCOPE_OBJECT: mCode.Write(OP_UNDEF_OBJECT, id); break;
             case NAMESCOPE_LOCAL:  mCode.Write(OP_UNDEF_LOCAL, id); break;
+        }
+    }
+    
+    void Compiler::Visit(const VarExpr & expr)
+    {
+        expr.Value()->Accept(*this);
+        
+        int id = mEnvironment.Strings().Add(expr.Name());
+        switch (Expr::GetNameScope(expr.Name()))
+        {
+            case NAMESCOPE_GLOBAL:
+                mCode.Write(OP_DEF_GLOBAL, id);
+                break;
+                
+            case NAMESCOPE_OBJECT:
+                mCode.Write(OP_DEF_OBJECT, id);
+                break;
+                
+            case NAMESCOPE_LOCAL:
+                mCode.Write(OP_DEF_LOCAL, id);
+                break;
         }
     }
 }

@@ -13,10 +13,10 @@ namespace Finch
     using std::ostream;
     
     // AST node for variable definition: "foo <- bar"
-    class DefExpr : public Expr
+    class VarExpr : public Expr
     {
     public:
-        DefExpr(String name, Ref<Expr> value)
+        VarExpr(String name, Ref<Expr> value)
         :   mName(name),
             mValue(value)
         {}
