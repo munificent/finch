@@ -14,22 +14,51 @@ there should be solid.
   - Externalize memory allocation.
   - Implement some kind of pimpl pattern to hide host's internal structure from
     users.
-    
+
 - Documentation
   - Write guide to hosting Finch inside another application.
   - Document formal grammar?
   - Write tutorials.
   - Document base lib and primitives.
-  
+
 - Syntax
   + Build real error-handling strategy into lexer and parser.
   - Symbols?
   - Records or some other simple object literal syntax?
   - Message cascading
-  - Figure out if . should be used for 'self' alias, or if it supports 
+  - Figure out if . should be used for 'self' alias, or if it supports
     implicit self calls. If implicit self calls are supported, Ether stuff will
     have to get moved into Object prototype.
   - Better array/indexer syntax?
+  - Multiple bind:
+
+    String prototype :: (
+        < right { (#PRIM# stringCompare: self to: right) < 0 }
+        > right { (#PRIM# stringCompare: self to: right) > 0 }
+        <= right { (#PRIM# stringCompare: self to: right) <= 0 }
+        >= right { (#PRIM# stringCompare: self to: right) >= 0 }
+    )
+
+    A "(" after "::" indicates multiple bind.
+
+  - Object literals. Essentially combines copy and multiple bind:
+
+    Array <- (|Object|
+        prototype { #PRIM# arrayPrototype }
+
+        count: count {
+            self count: count fillWith: Nil
+        }
+
+        count: count fillWith: element {
+            result <- []
+
+            from: 1 to: count do: {|i| result add: element }
+            result
+        }
+    )
+
+    A "(" "|" starts an object literal.
 
 - Testing and Quality
   - Make unit tests optionally-compiled with a separate make target.
@@ -56,7 +85,7 @@ there should be solid.
 
 - Library
   - Collections?
-  
+
 - Interpreter
   + Support coroutines/continuations.
   - Write garbage collector.
@@ -65,7 +94,7 @@ there should be solid.
     scope chain which means that *nothing* is every really collected.
   - Try to come up with something cleaner than the current while loop bytecode
     stuff.
-    
+
 - Bigger Questions
   - Figure out inheritance. Single prototype? Multiple? Mixins? Classes? None?
     Something implemented at the library level?
