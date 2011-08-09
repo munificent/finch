@@ -22,15 +22,15 @@ Object :: new: block {
     Object prototype copyWith: block
 }
 
-Object prototype :: != right {
-    (self = right) not
-}
-
-' any non-true object is implicitly "false", so sending "not" to it
-' returns true
-Object prototype :: not { True }
-
 Object prototype :: (
+    != right {
+        (self = right) not
+    }
+
+    ' any non-true object is implicitly "false", so sending "not" to it
+    ' returns true
+    not { True }
+
     ' type tests
     array?   { False }
     block?   { False }
