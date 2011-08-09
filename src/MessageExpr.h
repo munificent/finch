@@ -54,6 +54,11 @@ namespace Finch
     class MessageExpr : public Expr
     {
     public:
+        MessageExpr(Ref<Expr> receiver)
+        :   mReceiver(receiver)
+        {
+        }
+        
         MessageExpr(Ref<Expr> receiver, String message, const Array<Ref<Expr> > & args)
         :   mReceiver(receiver)
         {

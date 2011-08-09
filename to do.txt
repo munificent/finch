@@ -20,6 +20,8 @@ there should be solid.
   - Document formal grammar?
   - Write tutorials.
   - Document base lib and primitives.
+  - Document multiple bind.
+  - Document object literal.
 
 - Syntax
   + Build real error-handling strategy into lexer and parser.
@@ -30,17 +32,7 @@ there should be solid.
     implicit self calls. If implicit self calls are supported, Ether stuff will
     have to get moved into Object prototype.
   - Better array/indexer syntax?
-  - Multiple bind:
-
-    String prototype :: (
-        < right { (#PRIM# stringCompare: self to: right) < 0 }
-        > right { (#PRIM# stringCompare: self to: right) > 0 }
-        <= right { (#PRIM# stringCompare: self to: right) <= 0 }
-        >= right { (#PRIM# stringCompare: self to: right) >= 0 }
-    )
-
-    A "(" after "::" indicates multiple bind.
-
+  + Multiple bind.
   - Object literals. Essentially combines copy and multiple bind:
 
     Array <- (|Object|

@@ -11,6 +11,7 @@ namespace Finch
 {
     class IErrorReporter;
     class ILineReader;
+    class MessageExpr;
     
     // Parser for the Finch grammar.
     class FinchParser : public Parser
@@ -39,12 +40,13 @@ namespace Finch
         Ref<Expr> Primary();
         
         Ref<Expr> ParseSequence(Array<Ref<Expr> > & expressions);
-        Ref<Expr> ParseKeyword(Ref<Expr> object);
-        Ref<Expr> ParseBindBody(Ref<Expr> target, String name,
-                                const Array<String> & args);
-        
+        Ref<Expr> ParseKeyword(Ref<Expr> object);        
         Ref<Expr> ParseError(const char * message);
         
+        Ref<Expr> ParseBind(Ref<Expr> expr);
+        Ref<Expr> ParseBindBody(Ref<Expr> expr, String name,
+                           const Array<String> & args);
+
         IErrorReporter & mErrorReporter;
         
         NO_COPY(FinchParser);

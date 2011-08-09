@@ -119,44 +119,25 @@ namespace Finch
         
         if (Match(TOKEN_BIND))
         {
-            Array<String> args;
+            Ref<Expr> message = Ref<Expr>(new MessageExpr(target));
             
-            // figure out what kind of method we're binding
-            if (LookAhead(TOKEN_NAME))
+            if (Match(TOKEN_LEFT_PAREN))
             {
-                // unary
-                String name = Consume().Text();
-                
-                return ParseBindBody(target, name, args);
-            }
-            else if (LookAhead(TOKEN_OPERATOR))
-            {
-                // binary
-                String name = Consume().Text();
-                
-                // one arg
-                EXPECT(TOKEN_NAME, "Expect name after operator in a bind expression.");
-                args.Add(Consume().Text());
-                
-                return ParseBindBody(target, name, args);
-            }
-            else if (LookAhead(TOKEN_KEYWORD))
-            {
-                // keyword
-                String name;
-                while (LookAhead(TOKEN_KEYWORD))
+                // multiple bind
+                do
                 {
-                    // build the full method name
-                    name += Consume().Text();
+                    PARSE_RULE(dummy, ParseBind(message));
                     
-                    // parse each keyword's arg
-                    EXPECT(TOKEN_NAME, "Expect name after keyword in a bind expression.");
-                    args.Add(Consume().Text());
-                }
-                
-                return ParseBindBody(target, name, args);
+                    CONSUME(TOKEN_LINE, "Methods must be separated by lines in a multiple bind.");
+                } while (!Match(TOKEN_RIGHT_PAREN));
             }
-            else return ParseError("Expect message after '::'.");
+            else
+            {
+                // single bind
+                PARSE_RULE(dummy, ParseBind(message));
+            }
+
+            return Ref<Expr>(message);
         }
         
         return target;
@@ -248,16 +229,6 @@ namespace Finch
         
         return keyword;
     }
-    
-    /*
-     
-     parse keyword message
-     if we have a receiver
-        while match comma
-            parse message send
-            add to message expr
-     
-     */
     
     Ref<Expr> FinchParser::Keyword(bool & isMessage)
     {
@@ -431,9 +402,55 @@ namespace Finch
         return Ref<Expr>();
     }
     
-    Ref<Expr> FinchParser::ParseBindBody(Ref<Expr> target, String name,
+    Ref<Expr> FinchParser::ParseBind(Ref<Expr> expr)
+    {
+        Array<String> args;
+        
+        // figure out what kind of method we're binding
+        if (LookAhead(TOKEN_NAME))
+        {
+            // unary
+            String name = Consume().Text();
+            
+            PARSE_RULE(dummy, ParseBindBody(expr, name, args));
+        }
+        else if (LookAhead(TOKEN_OPERATOR))
+        {
+            // binary
+            String name = Consume().Text();
+            
+            // one arg
+            EXPECT(TOKEN_NAME, "Expect name after operator in a bind expression.");
+            args.Add(Consume().Text());
+            
+            PARSE_RULE(dummy, ParseBindBody(expr, name, args));
+        }
+        else if (LookAhead(TOKEN_KEYWORD))
+        {
+            // keyword
+            String name;
+            while (LookAhead(TOKEN_KEYWORD))
+            {
+                // build the full method name
+                name += Consume().Text();
+                
+                // parse each keyword's arg
+                EXPECT(TOKEN_NAME, "Expect name after keyword in a bind expression.");
+                args.Add(Consume().Text());
+            }
+            
+            PARSE_RULE(dummy, ParseBindBody(expr, name, args));
+        }
+        else return ParseError("Expect message after '::'.");
+        
+        return expr;
+    }
+    
+    Ref<Expr> FinchParser::ParseBindBody(Ref<Expr> expr, String name,
                                          const Array<String> & args)
     {
+        MessageExpr * message = static_cast<MessageExpr*>(&*expr);
+        
         // parse the block
         CONSUME(TOKEN_LEFT_BRACE, "Expect '{' to begin bound block.");
         PARSE_RULE(body, Expression());
@@ -446,10 +463,12 @@ namespace Finch
         Array<Ref<Expr> >  addMethodArgs;
         addMethodArgs.Add(Ref<Expr>(new StringExpr(name)));
         addMethodArgs.Add(block);
-
-        return Ref<Expr>(new MessageExpr(target, "addMethod:body:", addMethodArgs));
-    }
         
+        message->AddSend("addMethod:body:", addMethodArgs);
+        
+        return expr;
+    }
+    
     Ref<Expr> FinchParser::ParseError(const char * message)
     {
         //### bob: using stringstream here is gross
@@ -459,5 +478,6 @@ namespace Finch
 
         return Ref<Expr>();
     }
+
 }
 

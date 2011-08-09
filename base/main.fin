@@ -30,13 +30,15 @@ Object prototype :: != right {
 ' returns true
 Object prototype :: not { True }
 
-' type tests
-Object prototype :: array? { False }
-Object prototype :: block? { False }
-Object prototype :: boolean? { False }
-Object prototype :: fiber? { False }
-Object prototype :: number? { False }
-Object prototype :: string? { False }
+Object prototype :: (
+    ' type tests
+    array?   { False }
+    block?   { False }
+    boolean? { False }
+    fiber?   { False }
+    number?  { False }
+    string?  { False }
+)
 
 Object prototype :: ifTrue: then else: else { else call }
 
@@ -68,7 +70,7 @@ True :: ifTrue: then else: else { then call }
 ' define a for-style loop
 Ether :: from: start to: end step: step do: block {
     i <- start
-    
+
     while: { i <= end } do: {
         block call: i
         i <-- i + step
@@ -103,10 +105,10 @@ Ether :: if: if1 then: then1 elseif: if2 then: then2 else: else {
 
 ' while
 Ether :: while: condition do: block {
-    if: condition call then: {  
-        block call  
-        while: condition do: block  
-    }  
+    if: condition call then: {
+        block call
+        while: condition do: block
+    }
 }
 
 ' build the output methods in terms of the single primitive one
@@ -215,7 +217,7 @@ Array :: count: count {
 
 Array :: count: count fillWith: element {
     result <- []
-    
+
     from: 1 to: count do: {|i| result add: element }
     result
 }
@@ -224,10 +226,10 @@ Array prototype :: array? { True }
 
 Array prototype :: ++ right {
     result <- []
-    
+
     self each: {|e| result add: e }
     right each: {|e| result add: e }
-    
+
     result
 }
 
@@ -287,7 +289,7 @@ Object prototype :: switch {
 Switch <- Object new: {
     _prototype <- Object new: {
         self :: case: case do: block {
-            ' if this switch has already matched a case, just do nothing 
+            ' if this switch has already matched a case, just do nothing
             if: _done? not then: {
                 ' if the case is a block, then it's a predicate so evaluate it, otherwise
                 ' it's a value, so compare it to the value being switched
@@ -303,24 +305,24 @@ Switch <- Object new: {
                     _done? <- True
                 }
             }
-            
+
             ' always return the result. if we haven't matched yet, this will
             ' just be Nil. once we've matched, it will be the matched value.
             _result
         }
-        
+
         self :: default: block {
-            ' if this switch has already matched a case, just do nothing 
+            ' if this switch has already matched a case, just do nothing
             if: _done? not then: {
                 ' execute the block
                 _result <- block call: _value
                 _done? <- True
             }
-            
+
             _result;
         }
     }
-    
+
     self :: prototype { _prototype }
 }
 
