@@ -1,28 +1,25 @@
 ' object
 Object <- #PRIM# copy: objectPrototype
 
-' access the object prototype object
-Object :: prototype { #PRIM# objectPrototype }
+Object :: (
+    ' access the object prototype object
+    prototype { #PRIM# objectPrototype }
 
-Object prototype :: copy {
-  #PRIM# copy: self
-}
-
-Object prototype :: copyWith: block {
-  copy <- #PRIM# copy: self
-  #PRIM# run: block within: copy
-  copy
-}
-
-Object :: new {
-    Object prototype copy
-}
-
-Object :: new: block {
-    Object prototype copyWith: block
-}
+    new { Object prototype copy }
+    new: block { Object prototype copyWith: block }
+)
 
 Object prototype :: (
+    copy {
+      #PRIM# copy: self
+    }
+
+    copyWith: block {
+      copy <- #PRIM# copy: self
+      #PRIM# run: block within: copy
+      copy
+    }
+
     != right {
         (self = right) not
     }
@@ -38,24 +35,23 @@ Object prototype :: (
     fiber?   { False }
     number?  { False }
     string?  { False }
+
+    ifTrue: then else: else { else call }
+
+    ' calling a non-block like a block just returns the value
+    call { self }
+    call: a { self }
+    call: a : b { self }
+    call: a : b : c { self }
+    call: a : b : c : d { self }
+    call: a : b : c : d : e { self }
+    call: a : b : c : d : e : f { self }
+    call: a : b : c : d : e : f { self }
+    call: a : b : c : d : e : f : g { self }
+    call: a : b : c : d : e : f : g : h { self }
+    call: a : b : c : d : e : f : g : h : i { self }
+    call: a : b : c : d : e : f : g : h : i : j { self }
 )
-
-Object prototype :: ifTrue: then else: else { else call }
-
-' calling a non-block like a block just returns the value
-Object prototype :: call { self }
-Object prototype :: call: a { self }
-Object prototype :: call: a : b { self }
-Object prototype :: call: a : b : c { self }
-Object prototype :: call: a : b : c : d { self }
-Object prototype :: call: a : b : c : d : e { self }
-Object prototype :: call: a : b : c : d : e : f { self }
-Object prototype :: call: a : b : c : d : e : f { self }
-Object prototype :: call: a : b : c : d : e : f : g { self }
-Object prototype :: call: a : b : c : d : e : f : g : h { self }
-Object prototype :: call: a : b : c : d : e : f : g : h : i { self }
-Object prototype :: call: a : b : c : d : e : f : g : h : i : j { self }
-
 
 True :: not { False }
 
@@ -68,61 +64,56 @@ False :: toString { "false" }
 True :: ifTrue: then else: else { then call }
 
 ' define a for-style loop
-Ether :: from: start to: end step: step do: block {
-    i <- start
+Ether :: (
+    from: start to: end step: step do: block {
+        i <- start
 
-    while: { i <= end } do: {
-        block call: i
-        i <-- i + step
+        while: { i <= end } do: {
+            block call: i
+            i <-- i + step
+        }
     }
-}
 
-Ether :: from: start to: end do: block {
-    step <- (if: start < end then: 1 else: -1)
-    from: start to: end step: step do: block
-}
-
-' do
-Ether :: do: block {
-    block call
-}
-
-' if then
-Ether :: if: condition then: then {
-    condition ifTrue: then else: { Nil }
-}
-
-Ether :: if: condition then: then else: else {
-    condition ifTrue: then else: else
-}
-
-' a chained if/then/else
-Ether :: if: if1 then: then1 elseif: if2 then: then2 else: else {
-    if: if1 then: then1 else: {
-        if: if2 then: then2 else: else
+    from: start to: end do: block {
+        step <- (if: start < end then: 1 else: -1)
+        from: start to: end step: step do: block
     }
-}
 
-' while
-Ether :: while: condition do: block {
-    if: condition call then: {
-        block call
-        while: condition do: block
+    ' do
+    do: block { block call }
+
+    ' if then
+    if: condition then: then { condition ifTrue: then else: { Nil } }
+    if: condition then: then else: else { condition ifTrue: then else: else }
+
+    ' a chained if/then/else
+    if: if1 then: then1 elseif: if2 then: then2 else: else {
+        if: if1 then: then1 else: {
+            if: if2 then: then2 else: else
+        }
     }
-}
 
-' build the output methods in terms of the single primitive one
-Ether :: write: text {
-    ' make sure the argument is always converted to a string before
-    ' passing to the primitive version which can't do that.
-    #PRIM# write: text toString
-}
+    ' while
+    while: condition do: block {
+        if: condition call then: {
+            block call
+            while: condition do: block
+        }
+    }
 
-Ether :: writeLine: text {
-    ' make sure the argument is always converted to a string before
-    ' passing to the primitive version which can't do that.
-    #PRIM# write: text toString + "\n"
-}
+    ' build the output methods in terms of the single primitive one
+    write: text {
+        ' make sure the argument is always converted to a string before
+        ' passing to the primitive version which can't do that.
+        #PRIM# write: text toString
+    }
+
+    writeLine: text {
+        ' make sure the argument is always converted to a string before
+        ' passing to the primitive version which can't do that.
+        #PRIM# write: text toString + "\n"
+    }
+)
 
 ' block
 Block <- Object new
@@ -134,35 +125,38 @@ Block prototype :: block? { True }
 ' fiber
 Fiber <- Object new
 
-Fiber :: new: block { #PRIM# newFiber: block }
+Fiber :: (
+    new: block { #PRIM# newFiber: block }
 
-Fiber :: spawn: block {
-    fiber <- Fiber new: block
-    ' immediately run it, discarding the first yielded result
-    fiber run
-    fiber
-}
+    spawn: block {
+        fiber <- Fiber new: block
+        ' immediately run it, discarding the first yielded result
+        fiber run
+        fiber
+    }
 
-Fiber :: current { #PRIM# currentFiber }
+    current { #PRIM# currentFiber }
 
-Fiber :: yield: value {
-  #PRIM# switchToFiber: Fiber current runBy passing: value
-}
+    yield: value {
+      #PRIM# switchToFiber: Fiber current runBy passing: value
+    }
 
-Fiber :: yield { Fiber yield: Nil }
+    yield { Fiber yield: Nil }
 
-Fiber :: prototype { #PRIM# fiberPrototype }
+    prototype { #PRIM# fiberPrototype }
+)
 
-Fiber prototype :: fiber? { True }
+Fiber prototype :: (
+    fiber? { True }
 
-Fiber prototype :: run: value {
-  _runBy <- Fiber current
-  #PRIM# switchToFiber: self passing: value
-}
+    run: value {
+      _runBy <- Fiber current
+      #PRIM# switchToFiber: self passing: value
+    }
 
-Fiber prototype :: run { self run: Nil }
-
-Fiber prototype :: runBy { _runBy }
+    run { self run: Nil }
+    runBy { _runBy }
+)
 
 ' number
 Number <- Object new
@@ -176,74 +170,61 @@ String <- Object new
 
 String :: prototype { #PRIM# stringPrototype }
 
-String prototype :: string? { True }
+String prototype :: (
+    string? { True }
 
-String prototype :: + right {
-    #PRIM# stringConcat: self toString and: right toString
-}
+    + right { #PRIM# stringConcat: self toString and: right toString }
 
-String prototype :: = right {
-    (#PRIM# stringCompare: self to: right) = 0
-}
+    = right { (#PRIM# stringCompare: self to: right) = 0 }
 
-String prototype :: != right {
-    (self = right) not
-}
-
-String prototype :: < right {
-    (#PRIM# stringCompare: self to: right) < 0
-}
-
-String prototype :: > right {
-    (#PRIM# stringCompare: self to: right) > 0
-}
-
-String prototype :: <= right {
-    (#PRIM# stringCompare: self to: right) <= 0
-}
-
-String prototype :: >= right {
-    (#PRIM# stringCompare: self to: right) >= 0
-}
+    <  right { (#PRIM# stringCompare: self to: right) < 0 }
+    >  right { (#PRIM# stringCompare: self to: right) > 0 }
+    <= right { (#PRIM# stringCompare: self to: right) <= 0 }
+    >= right { (#PRIM# stringCompare: self to: right) >= 0 }
+)
 
 ' array
 Array <- Object new
 
-Array :: prototype { #PRIM# arrayPrototype }
+Array :: (
+    prototype { #PRIM# arrayPrototype }
 
-Array :: count: count {
-    self count: count fillWith: Nil
-}
-
-Array :: count: count fillWith: element {
-    result <- []
-
-    from: 1 to: count do: {|i| result add: element }
-    result
-}
-
-Array prototype :: array? { True }
-
-Array prototype :: ++ right {
-    result <- []
-
-    self each: {|e| result add: e }
-    right each: {|e| result add: e }
-
-    result
-}
-
-Array prototype :: each: block {
-    from: 0 to: self length - 1 do: {|i|
-        block call: (self at: i)
+    count: count {
+        self count: count fillWith: Nil
     }
-}
 
-Array prototype :: map: block {
-    result <- []
-    self each: {|element| result add: (block call: element) }
-    result
-}
+    count: count fillWith: element {
+        result <- []
+
+        from: 1 to: count do: {|i| result add: element }
+        result
+    }
+)
+
+Array prototype :: (
+    array? { True }
+
+    ++ right {
+        result <- []
+
+        self each: {|e| result add: e }
+        right each: {|e| result add: e }
+
+        result
+    }
+
+    each: block {
+        from: 0 to: self length - 1 do: {|i|
+            block call: (self at: i)
+        }
+    }
+
+    map: block {
+        result <- []
+        self each: {|element| result add: (block call: element) }
+        result
+    }
+)
 
 ' truthiness: only two things are true: the True global object, and
 ' blocks that evaluate to it.
@@ -253,23 +234,23 @@ True :: true? { True }
 Block prototype :: true? { self call true? }
 
 ' logical operators
-
-' by default, all objects are implicitly "false"
-Object prototype :: and: right {
-    if: self true? then: {
-        right true?
-    } else: {
-        False
+Object prototype :: (
+    and: right {
+        if: self true? then: {
+            right true?
+        } else: {
+            False
+        }
     }
-}
 
-Object prototype :: or: right {
-    if: self true? then: {
-        True
-    } else: {
-        right true?
+    or: right {
+        if: self true? then: {
+            True
+        } else: {
+            right true?
+        }
     }
-}
+)
 
 ' switch/case construct. usage looks like:
 ' c switch \

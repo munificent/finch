@@ -7,17 +7,19 @@ Test <- Object copyWith: {
     _testShown  <- False
     _tests      <- 0
     _failed     <- 0
-    
+
     _totalTests <- 0
     _totalFails <- 0
-    
-    self :: suite: name is: body {
+}
+
+Test :: (
+    suite: name is: body {
         _suite <- name
         body call
         _suite <- ""
     }
 
-    self :: test: name is: body {
+    test: name is: body {
         _test       <- name
         _tests      <- 0
         _failed     <- 0
@@ -32,38 +34,38 @@ Test <- Object copyWith: {
         _test <- ""
     }
 
-    self :: showHeader {
+    showHeader {
         if: _testShown not then: {
             writeLine: _suite + " / " + _test
             _testShown <- True
         }
     }
 
-    self :: fail { self isTrue: False }
-    self :: pass { self isTrue: True }
-    
-    self :: isTrue: actual {
+    fail { self isTrue: False }
+    pass { self isTrue: True }
+
+    isTrue: actual {
         _tests <- _tests + 1
         _totalTests <- _totalTests + 1
-        
+
         if: actual not then: {
             _failed <- _failed + 1
             _totalFails <- _totalFails + 1
-            
+
             self showHeader
             writeLine: "  Test " + _tests toString + " failed."
         }
     }
-    
-    self :: isNil: actual { self that: actual equals: Nil }
 
-    self :: isFalse: actual { self isTrue: actual not }
+    isNil: actual { self that: actual equals: Nil }
 
-    self :: that: actual equals: expected {
+    isFalse: actual { self isTrue: actual not }
+
+    that: actual equals: expected {
         self isTrue: actual = expected
     }
-    
-    self :: complete {
+
+    complete {
         writeLine: ""
         if: _totalFails = 0 then: {
             writeLine: "All " + _totalTests + " tests passed."
@@ -73,7 +75,7 @@ Test <- Object copyWith: {
         }
         writeLine: ""
     }
-}
+)
 
 ' run the test scripts
 '### bob: hack! path should be relative to this script's path!
