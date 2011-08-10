@@ -1,5 +1,5 @@
 ' object
-Object <- #PRIM# copy: objectPrototype
+Object <- #PRIM# copy: #PRIM# objectPrototype
 
 Object :: (
     ' access the object prototype object

@@ -4,22 +4,22 @@ body {
 
 h1 {
   color: #d0c;
-  font: 48px 'Reenie Beanie', Verdana, sans-serif;
+  font: 54px 'Reenie Beanie', Verdana, sans-serif;
   margin: 0;
   padding: 0;
 }
 
 h2 {
-  color: #888;
-  font: 20px Inconsolata, Consolas, Monaco, monospace;
-  margin: 20px 0 0 0;
+  color: #444;
+  font: 22px Consolas, Menlo, Monaco, monospace;
+  margin: 30px 0 10px 0;
   padding: 0;
 }
 
 h3 {
-  color: #888;
-  font: italic 17px Inconsolata, Consolas, Monaco, monospace;
-  margin: 20px 0 0 0;
+  color: #444;
+  font: 18px Consolas, Menlo, Monaco, monospace;
+  margin: 20px 0 10px 0;
   padding: 0;
 }
 
@@ -33,36 +33,61 @@ a:hover {
 }
 
 p {
-  font: 15px/22px Georgia, serif;
+  font: 16px/24px Georgia, serif;
   margin: 6px 0 6px 0;
   padding: 0;
 }
 
 code, pre, tt {
   color: #666;
-  font: 15px Inconsolata, Consolas, Monaco, monospace;
+  background: #f4f4f4;
+  padding: 2px;
+  font: 14px/20px Consolas, Menlo, Monaco, monospace;
+  -webkit-border-radius: 3px;
+  -moz-border-radius: 3px;
+  border-radius: 3px;
+}
+
+pre {
+  padding: 5px;
 }
 
 .content {
-  margin: 20px auto 20px auto;
-  width: 600px;
+  margin: 40px auto 40px auto;
+  width: 700px;
 }
+
+/*
+.nav {
+  display: block;
+  color: #b891b4;
+  margin: 20px 0 20px 0;
+  padding: 5px;
+  font: 14px Consolas, Menlo, Monaco, monospace;
+  background: #f5dff3;
+  -webkit-border-radius: 3px;
+  -moz-border-radius: 3px;
+  border-radius: 3px;
+}
+*/
 
 .nav {
   display: block;
-  background: #ddd;
   color: #888;
-  padding: 5px;
   margin: 10px 0 20px 0;
-  font: normal 16px Inconsolata, Consolas, Monaco, monospace;
+  padding-bottom: 10px;
+  font: 14px Consolas, Menlo, Monaco, monospace;
+  border-bottom: solid 2px #ddd;
 }
 
+
 p.footer {
-  background: #ddd;
   color: #888;
-  padding: 5px;
   margin: 20px 0;
-  font: normal 14px Inconsolata, Consolas, Monaco, monospace;
+  font: normal 14px Consolas, Menlo, Monaco, monospace;
+
+  padding-top: 10px;
+  border-top: solid 2px #ddd;
 }
 
 
