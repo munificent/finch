@@ -5,30 +5,30 @@ inspired by Smalltalk, Self, and Javascript.
 It is written in C++ with a hand-written lexer and parser. It has
 minimal dependencies. I want Finch to be:
 
-* Syntactically expressive yet minimal. Your code should look 
+* Syntactically expressive yet minimal. Your code should look
   beautiful and do what you want.
 
 * An example of a small, clean C++ codebase for an interpreter. If you
-  can read C++ and want to learn more about programming languages, I 
+  can read C++ and want to learn more about programming languages, I
   hope Finch's code will be a good primer.
 
-* A language in the Smalltalk family that's friendly to people coming 
+* A language in the Smalltalk family that's friendly to people coming
   from a text file and curly brace background.
 
-* A minimal prototype-based dynamic language. I think prototypes are a 
-  really cool paradigm, but Self is too complex (and mostly dead), and 
+* A minimal prototype-based dynamic language. I think prototypes are a
+  really cool paradigm, but Self is too complex (and mostly dead), and
   Javascript is... well... Javascript.
 
-* Easily embeddable in other applications. I don't know if Finch ever 
-  will have real use, but if it does, it will likely be as a 
-  configuration or scripting language within a larger application, 
+* Easily embeddable in other applications. I don't know if Finch ever
+  will have real use, but if it does, it will likely be as a
+  configuration or scripting language within a larger application,
   much like Lua.
 
 
 A Taste of the Language
 -----------------------
 
-Here's a little example to get you going. This little program doesn't 
+Here's a little example to get you going. This little program doesn't
 draw, but it will tell you what turns to make to draw a dragon curve:
 
   ' create a single global Dragon object
@@ -37,17 +37,17 @@ draw, but it will tell you what turns to make to draw a dragon curve:
   ' add a main "trace:" method for outputting the series of left and
   ' right turns needed to draw a dragon curve.
   Dragon :: trace: depth {
-    self traceDepth: depth turn: "R"
-    writeLine: "" ' end the line
+      self traceDepth: depth turn: "R"
+      writeLine: "" ' end the line
   }
 
   ' add the main recursive method
   Dragon :: traceDepth: n turn: turn {
-    if: n > 0 then: {
-      self traceDepth: n - 1 turn: "R"
-      write: turn
-      self traceDepth: n - 1 turn: "L"
-    }
+      if: n > 0 then: {
+          self traceDepth: n - 1 turn: "R"
+          write: turn
+          self traceDepth: n - 1 turn: "L"
+      }
   }
 
   ' now lets try it
@@ -60,7 +60,7 @@ gives you the idea of the general look.
 Getting Started
 ---------------
 
-Finch lives on bitbucket here: http://bitbucket.org/munificent/finch
+Finch lives on github here: https://github.com/munificent/finch
 
 To play around with it, sync it down. There is both an XCode project and a makefile. Uœse whichever you prefer. I don't have anything set up for Windows yet, but I'm keen if someone wants to throw a VS solution at me.
 

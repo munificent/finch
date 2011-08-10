@@ -260,6 +260,7 @@ It's common to want to define a number of methods on an object all at once. To m
     :::finch
     fred :: (
         dance { writeLine: "Sorry, I'm too sexy." }
+
         ? right { writeLine: "What do I do with a " + right + "?" }
 
         give: gift to: who {
