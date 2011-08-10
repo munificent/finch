@@ -1,6 +1,7 @@
 #include <sstream>
 
 #include "ArrayExpr.h"
+#include "BindExpr.h"
 #include "BlockExpr.h"
 #include "FinchParser.h"
 #include "IErrorReporter.h"
@@ -119,14 +120,14 @@ namespace Finch
         
         if (Match(TOKEN_BIND))
         {
-            Ref<Expr> message = Ref<Expr>(new MessageExpr(target));
-            
+            Ref<Expr> expr = Ref<Expr>(new BindExpr(target));
+
             if (Match(TOKEN_LEFT_PAREN))
             {
                 // multiple bind
                 do
                 {
-                    PARSE_RULE(dummy, ParseBind(message));
+                    PARSE_RULE(dummy, ParseBind(expr));
                     
                     CONSUME(TOKEN_LINE, "Methods must be separated by lines in a multiple bind.");
                 } while (!Match(TOKEN_RIGHT_PAREN));
@@ -134,10 +135,10 @@ namespace Finch
             else
             {
                 // single bind
-                PARSE_RULE(dummy, ParseBind(message));
+                PARSE_RULE(dummy, ParseBind(expr));
             }
 
-            return Ref<Expr>(message);
+            return expr;
         }
         
         return target;
@@ -449,8 +450,6 @@ namespace Finch
     Ref<Expr> FinchParser::ParseBindBody(Ref<Expr> expr, String name,
                                          const Array<String> & args)
     {
-        MessageExpr * message = static_cast<MessageExpr*>(&*expr);
-        
         // parse the block
         CONSUME(TOKEN_LEFT_BRACE, "Expect '{' to begin bound block.");
         PARSE_RULE(body, Expression());
@@ -464,7 +463,8 @@ namespace Finch
         addMethodArgs.Add(Ref<Expr>(new StringExpr(name)));
         addMethodArgs.Add(block);
         
-        message->AddSend("addMethod:body:", addMethodArgs);
+        BindExpr * define = static_cast<BindExpr*>(&*expr);
+        define->AddMethod(name, block);
         
         return expr;
     }

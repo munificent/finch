@@ -3,7 +3,7 @@ Test suite: "Variables" is: {
         a <- "something"
         Test that: a equals: "something"
     }
-    
+
     Test test: "Chain" is: {
         a <- b <- "something"
         Test that: a equals: "something"
@@ -15,21 +15,21 @@ Test suite: "Variables" is: {
         Test that: a equals: "thing"
         Test that: b equals: "something"
     }
-    
+
     Test test: "Redefinition" is: {
         a <- "before"
         Test that: a equals: "before"
         a <- "after"
         Test that: a equals: "after"
     }
-        
+
     Test test: "Assignment" is: {
         a <- "before"
         Test that: a equals: "before"
         a <-- "after"
         Test that: a equals: "after"
     }
-    
+
     Test test: "Assign Undefined" is: {
         a <-- "something"
         ' since a wasn't defined, should do nothing
@@ -41,13 +41,13 @@ Test suite: "Variables" is: {
             a <- "local"
             Test that: a equals: "local"
         }
-        
+
         Test that: a equals: Nil
     }
 
     Test test: "Nested Local Scope" is: {
         a <- "local"
-        
+
         do: { Test that: a equals: "local" }
 
         Test that: a equals: "local"
@@ -55,7 +55,7 @@ Test suite: "Variables" is: {
 
     Test test: "Shadowed Local Scope" is: {
         a <- "outer"
-        
+
         do: {
             a <- "inner"
             Test that: a equals: "inner"
@@ -63,10 +63,10 @@ Test suite: "Variables" is: {
 
         Test that: a equals: "outer"
     }
-    
+
     Test test: "Unshadow" is: {
         a <- "first"
-        
+
         do: {
             Test that: a equals: "first"
             a <- "shadow"
@@ -75,30 +75,25 @@ Test suite: "Variables" is: {
             Test that: a equals: "first"
         }
     }
-    
+
     Test test: "Object Scope" is: {
         foo <- Object copy
-        
-        foo addMethod: "createVar" body: {
-            _someVar <- "obj var"
-        }
-        
-        foo addMethod: "testVar" body: {
-            Test that: _someVar equals: "obj var"
-        }
-        
+
+        foo :: createVar { _someVar <- "obj var" }
+        foo :: testVar { Test that: _someVar equals: "obj var" }
+
         Test that: _someVar equals: Nil
         foo createVar
         Test that: _someVar equals: Nil
         foo testVar
     }
-    
+
     Test test: "Global Scope" is: {
         do: {
             SomeGlobal <- "global"
             Test that: SomeGlobal equals: "global"
         }
-        
+
         Test that: SomeGlobal equals: "global"
     }
 }

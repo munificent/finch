@@ -39,17 +39,17 @@ Here's a little example to get you going. This little program doesn't draw, but 
     ' add a main "trace:" method for outputting the series of left and right
     ' turns needed to draw a dragon curve.
     Dragon :: trace: depth {
-      self traceDepth: depth turn: "R"
-      writeLine: "" ' end the line
+        self traceDepth: depth turn: "R"
+        writeLine: "" ' end the line
     }
 
     ' add the main recursive method
     Dragon :: traceDepth: n turn: turn {
-      if: n > 0 then: {
-        self traceDepth: n - 1 turn: "R"
-        write: turn
-        self traceDepth: n - 1 turn: "L"
-      }
+        if: n > 0 then: {
+          self traceDepth: n - 1 turn: "R"
+          write: turn
+          self traceDepth: n - 1 turn: "L"
+        }
     }
 
     ' now lets try it

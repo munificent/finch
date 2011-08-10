@@ -1,6 +1,7 @@
 #include <iostream>
 
 #include "ArrayExpr.h"
+#include "BindExpr.h"
 #include "BlockExpr.h"
 #include "Compiler.h"
 #include "Environment.h"
@@ -41,6 +42,40 @@ namespace Finch
         
         // pop them into an array object
         mCode.Write(OP_CREATE_ARRAY, expr.Elements().Count());
+    }
+    
+    void Compiler::Visit(const BindExpr & expr)
+    {
+        // push the first copy of the target onto the stack
+        expr.Target()->Accept(*this);
+        
+        // compile each of the definitions
+        int methodCount = expr.Methods().Count();
+        for (int i = 0; i < methodCount; i++)
+        {
+            // push another copy of the target on the stack for the this
+            // definition to use so that the first copy is still there for
+            // the next one.
+            if (i < methodCount - 1)
+            {
+                mCode.Write(OP_DUP);
+            }
+            
+            const Definition & method = expr.Methods()[i];
+            
+            // compile the method body
+            method.GetBody()->Accept(*this);
+            
+            // compile the method definition
+            int id = mEnvironment.Strings().Add(method.GetName());
+            mCode.Write(OP_BIND_METHOD, id);
+            
+            // if we have another define coming, discard the return of this one.
+            if (i < methodCount - 1)
+            {
+                mCode.Write(OP_POP);
+            }
+        }
     }
     
     void Compiler::Visit(const BlockExpr & expr)

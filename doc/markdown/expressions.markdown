@@ -10,7 +10,7 @@ OK, technically comments aren't expressions, but here is as good a place as any 
 
     :::finch
     ' this is a comment
-    
+
 ## Literals
 
 Finch currently supports two atomic types: numbers and strings. Numbers are double-precision floating point values, and strings are text. Finch doesn't support a lot of fancy formats for them yet, just the basic:
@@ -34,7 +34,7 @@ Variable names in Finch are more flexible than in most other languages. They mus
     _
     <<HO!HO!HO!>>
     lotsOfPunctuation@#$%^&*-_=+<>/?!
-    
+
 There are three kinds of variables in Finch: global, local, and object. If the first letter is capital, it's a global variable. If lowercase, it's local. If it's an underscore, it's an object variable. Any leading punctuation is ignored:
 
     :::finch
@@ -69,7 +69,7 @@ Finch has no built-in operators. An expression like:
 
     :::finch
     a + b
-    
+
 Means "send a `+` message to `a`, passing in `b` as an argument." All operators have the same precedence and associate from left to right. This is unlike most other languages with hard-coded precedence levels. Parentheses are your friends here.
 
     1 + 2 * 3   ' evaluates to 9 in Finch
@@ -79,17 +79,17 @@ Because there are no built-in operators, there are no unary operators in Finch. 
 
     ' NOT valid
     - someVar
-    
+
     ' OK!
     someVar neg
-    
+
 ### Keyword Messages
 
 We've covered messages that take zero arguments (unary) and one (operators). To pass more than one argument, you use keyword messages. A keyword is a name followed by a colon (`:`), or just a colon by itself. A keyword message is formed by alternating keywords and arguments. An example will help here:
 
     :::finch
     dictionary addKey: "some key" value: "the value"
-    
+
 This sends the `addKey:value:` message to the `dictionary` object, passing in "some key" and "the value" as arguments. You can chain as many keywords as you want in a single message (within reason):
 
     chef prepareSoup: tomato appetizer: calimari entree: veal dessert: cake
@@ -111,7 +111,7 @@ Multiple expressions can be sequenced together into a single expression by separ
     :::finch
     write: "hi"
     write: "bye"
-    
+
 forms a single expression that writes two things. A sequence returns the value of the last expression. The returns of the other expressions are discarded.
 
 If you want to sequence multiple expressions in a single line, you can also use a semicolon (`;`) as a separator:
@@ -126,7 +126,7 @@ This generally implies that newlines are significant. However, there are some pl
 2. Duplicate newlines get collapsed into one. (This means you can put blank lines wherever.)
 
 3. Newlines that are obviously in the middle of an expression are ignored. This means that if a line ends with a keyword (like `foo:`), an operator (like `+`), `|`, `<-`, `<--`, `(`, `[` or `{`, the newline will be ignored.
-    
+
 ## Blocks
 
 Finch looks like a lot of other languages in that curly braces define local blocks:
@@ -185,7 +185,7 @@ Variables do not have to be explicitly declared&mdash; assigning it a value will
 
     :::finch
     write: (a <- "hi")
-    
+
 This creates a variable `a`, assigns "hi" to it, then prints "hi".
 
 ### Short and Long Assignment
@@ -223,7 +223,7 @@ Finch has built-in support for resizable arrays. Most of the things you can do w
     [1; 2; 3]      ' a three-element array
     [123; "text"]  ' arrays can have elements of different types
     [1 + 2; 3 neg] ' expressions are fine too
-    
+
     ' newlines can separate elements too
     ["first"
      "second"
@@ -231,40 +231,41 @@ Finch has built-in support for resizable arrays. Most of the things you can do w
 
 Arrays are objects like everything else, so they can be stored in variables, passed to methods, etc.
 
-## Method Binds
+## Method Binding
 
 One thing you commonly do in Finch is bind methods to objects. Finch doesn't have "class declarations" or anything formal like that. To make an object that does stuff, you basically make an object and then slap a bunch of methods on it.
 
-Like everything else, you can do that by sending a message to the object. If we have some object `fred`, we can add a method to it like this:
+You do that using the bind operator: `::`. If we have some object `fred`, we can add a method to it like this:
 
     :::finch
-    fred addMethod: "dance" body: { writeLine: "Sorry, I'm too sexy." }
+    fred :: dance { writeLine: "Sorry, I'm too sexy." }
+    fred dance ' Sorry, I'm too sexy.
 
 This also works for operators and keyword messages:
 
     :::finch
-    fred addMethod: "?" body: {|right|
-        writeLine: "What do I do with a " + right + "?"
-    }
-    
-    fred addMethod: "give:to:" {|gift who|
-        writeLine: "Here, " + who + ", have a " + gift + "."
-    }
-
-It works, but it's a bit ugly. To make things a little nicer, Finch has a little syntactical sugar for binding methods. The above methods could also be bound like this:
-
-    :::finch
-    fred :: dance { writeLine: "Sorry, I'm too sexy." }
-    
     fred :: ? right {
         writeLine: "What do I do with a " + right + "?"
     }
-    
+
     fred :: give: gift to: who {
         writeLine: "Here, " + who + ", have a " + gift + "."
     }
 
-It's cleaner, and it also makes sure you have the right number of arguments.
+    fred ? "plunger"
+    fred give: "plunger" to: "Bill"
+
+It's common to want to define a number of methods on an object all at once. To make that easier, you can also use parentheses after `::` and define a group of methods, like so:
+
+    :::finch
+    fred :: (
+        dance { writeLine: "Sorry, I'm too sexy." }
+        ? right { writeLine: "What do I do with a " + right + "?" }
+
+        give: gift to: who {
+            writeLine: "Here, " + who + ", have a " + gift + "."
+        }
+    )
 
 ## Combining Expressions: Precedence and Associativity
 

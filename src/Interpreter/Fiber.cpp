@@ -3,6 +3,7 @@
 #include "ArrayObject.h"
 #include "BlockObject.h"
 #include "CodeBlock.h"
+#include "DynamicObject.h"
 #include "Environment.h"
 #include "FiberObject.h"
 #include "IInterpreterHost.h"
@@ -219,6 +220,22 @@ namespace Finch
                     
                 case OP_LOAD_SELF:
                     PushOperand(Self());
+                    break;
+                    
+                case OP_BIND_METHOD:
+                {
+                    // the stack has the target of the method and the body.
+                    // the name is in the instruction.
+                    Ref<Object> body = mOperands.Pop();
+                    Ref<Object> target = mOperands.Pop();
+                    String name = mEnvironment.Strings().Find(instruction.arg.id);
+                    
+                    DynamicObject * object = target->AsDynamic();
+                    ASSERT_NOT_NULL(object);
+                    
+                    object->AddMethod(target, *this, name, body);
+                    PushNil();
+                }
                     break;
                     
                 case OP_MESSAGE_0:

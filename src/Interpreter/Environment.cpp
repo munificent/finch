@@ -24,7 +24,6 @@ namespace Finch
         DynamicObject* objectObj = mObjectPrototype->AsDynamic();
         objectObj->RegisterPrimitive("=",               ObjectEquals);
         objectObj->RegisterPrimitive("toString",        ObjectToString);
-        objectObj->RegisterPrimitive("addMethod:body:", ObjectAddMethodBody);
         objectObj->RegisterPrimitive("parent",          ObjectGetParent);
         objectObj->RegisterPrimitive("parent:",         ObjectSetParent);
 

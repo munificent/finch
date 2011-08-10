@@ -29,6 +29,7 @@ namespace Finch
         virtual ~Compiler() {}
         
         virtual void Visit(const ArrayExpr & expr);
+        virtual void Visit(const BindExpr & expr);
         virtual void Visit(const BlockExpr & expr);
         virtual void Visit(const MessageExpr & expr);
         virtual void Visit(const NameExpr & expr);

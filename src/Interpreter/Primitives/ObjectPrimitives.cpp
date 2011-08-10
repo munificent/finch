@@ -19,18 +19,6 @@ namespace Finch
         // by default, objects compare using reference equality
         fiber.PushBool(self == args[0]);
     }
-        
-    PRIMITIVE(ObjectAddMethodBody)
-    {
-        DynamicObject * object = self->AsDynamic();
-        ASSERT_NOT_NULL(object);
-        
-        String      name  = args[0]->AsString();
-        Ref<Object> value = args[1];
-        
-        object->AddMethod(self, fiber, name, value);
-        fiber.PushNil();
-    }
     
     PRIMITIVE(ObjectGetParent)
     {

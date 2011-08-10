@@ -11,7 +11,6 @@ namespace Finch
     // Primitive methods for dynamic (i.e. regular) objects.
     PRIMITIVE(ObjectToString);
     PRIMITIVE(ObjectEquals);
-    PRIMITIVE(ObjectAddMethodBody);
     PRIMITIVE(ObjectGetParent);
     PRIMITIVE(ObjectSetParent);
 }
