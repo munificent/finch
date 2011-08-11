@@ -1,0 +1,57 @@
+# This is used by GYP to generate platform-specific project files for building
+# Finch. (I.e. on a Mac it will create an XCode project, on Linux a makefile.)
+# See README for more.
+
+{
+  'targets': [
+    {
+      'target_name': 'finch',
+      'type': 'executable',
+      'include_dirs': [
+        'src/Base',
+        'src/Compiler',
+        'src/Interpreter',
+        'src/Test',
+      ],
+      'sources': [
+        'src/Base/FinchString.cpp',
+        'src/Base/StringTable.cpp',
+        'src/Compiler/BlockTable.cpp',
+        'src/Compiler/CodeBlock.cpp',
+        'src/Compiler/Compiler.cpp',
+        'src/Interpreter/Environment.cpp',
+        'src/Interpreter/Fiber.cpp',
+        'src/Interpreter/FileLineReader.cpp',
+        'src/Interpreter/Objects/DynamicObject.cpp',
+        'src/Interpreter/Objects/Object.cpp',
+        'src/Interpreter/Primitives/ArrayPrimitives.cpp',
+        'src/Interpreter/Primitives/BlockPrimitives.cpp',
+        'src/Interpreter/Primitives/FiberPrimitives.cpp',
+        'src/Interpreter/Primitives/NumberPrimitives.cpp',
+        'src/Interpreter/Primitives/ObjectPrimitives.cpp',
+        'src/Interpreter/Primitives/StringPrimitives.cpp',
+        'src/Interpreter/Primitives.cpp',
+        'src/Interpreter/Scope.cpp',
+        'src/Interpreter.cpp',
+        'src/main.cpp',
+        'src/ReplLineReader.cpp',
+        'src/StandaloneInterpreterHost.cpp',
+        'src/Syntax/AST/Expr.cpp',
+        'src/Syntax/FinchParser.cpp',
+        'src/Syntax/Lexer.cpp',
+        'src/Syntax/LineNormalizer.cpp',
+        'src/Syntax/Parser.cpp',
+        'src/Syntax/Token.cpp',
+        'src/Test/ArrayTests.cpp',
+        'src/Test/LexerTests.cpp',
+        'src/Test/QueueTests.cpp',
+        'src/Test/RefTests.cpp',
+        'src/Test/StackTests.cpp',
+        'src/Test/StringTests.cpp',
+        'src/Test/Test.cpp',
+        'src/Test/TestMain.cpp',
+        'src/Test/TokenTests.cpp',
+      ],
+    },
+  ],
+}

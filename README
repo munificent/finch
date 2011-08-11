@@ -62,23 +62,20 @@ Getting Started
 
 Finch lives on github here: https://github.com/munificent/finch
 
-To play around with it, sync it down. There is both an XCode project and a makefile. Uœse whichever you prefer. I don't have anything set up for Windows yet, but I'm keen if someone wants to throw a VS solution at me.
+To play around with it, sync it down. Finch uses GYP to generate projects or
+makefiles for your platform, which you then build to get an executable.
 
-- Building on Mac OS X with XCode
+1. Download GYP from: http://code.google.com/p/gyp/
+2. Clone the finch repo from github.
+3. In a terminal/command prompt, navigate to the root finch/ directory.
+4. Run GYP on this file: <path to gyp>/gyp --depth=1
+   Where <path to gyp> is wherever you downloaded GYP to in step 1.
+   This should spit out a project/makefile in the root directory for your
+   platform.
+5. Open that project in XCode or VS and build, or build the makefile.
+6. Ta-da! You should now have a Finch executable under a build/ directory.
 
-I mostly work on it in XCode. If you like that, here's how to get
-going:
-
-1. Open the XCode project at: src/finch.xcodeproject
-2. Build and run. Ta-da!
-
-- Building with make
-
-Thanks to Steve Folta, there is also a makefile for *nix users:
-
-1. cd to the root finch directory.
-2. make
-3. ./finch
+Let me know if you run into any problems.
 
 
 Running Finch
