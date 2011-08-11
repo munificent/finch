@@ -21,14 +21,14 @@ namespace Finch
         // So we can use definitions in an Array<T>.
         Definition()
         :   mIsMethod(false),
-        mName(),
-        mBody()
+            mName(),
+            mBody()
         {}
         
         Definition(bool isMethod, const String & name, const Ref<Expr> & body)
         :   mIsMethod(isMethod),
-        mName(name),
-        mBody(body)
+            mName(name),
+            mBody(body)
         {}
         
         Definition & operator=(const Definition & other)
@@ -43,8 +43,8 @@ namespace Finch
             return *this;
         }
         
-        bool        IsMethod() const { return mIsMethod; }
-        String      GetName() const { return mName; }
+              bool        IsMethod() const { return mIsMethod; }
+              String      GetName() const { return mName; }
         const Ref<Expr> & GetBody() const { return mBody; }
         
     private:

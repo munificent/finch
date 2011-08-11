@@ -1,25 +1,25 @@
 Test suite: "Objects" is: {
     ' make an object that implements toString
-    apple <- Object copy
+    apple <- (||)
     apple :: toString { "apple" }
-    
+
     Test test: "Equality" is: {
         ' reference equality
         a <- apple
         b <- apple
         Test isTrue: a = b
         Test isFalse: a = Nil
-        
+
         Test isFalse: a != b
         Test isTrue: a != Nil
-        
+
         ' equality is *strict* and doesn't implicitly convert
         Test isFalse: "apple" = apple
         Test isFalse: apple = "apple"
         Test isTrue: "apple" != apple
         Test isTrue: apple != "apple"
     }
-    
+
     Test test: "Type tests" is: {
         Test isTrue:  [1] array?
         Test isFalse: [1] block?

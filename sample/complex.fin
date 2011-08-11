@@ -1,49 +1,49 @@
 ' create the main factory object
-Complex <- Object copyWith: {
+Complex <- (|Object prototype|
     ' the prototypical complex number
-    _prototype <- Object copyWith: {
+    _prototype <- (|Object prototype|
         _real <- 0
         _imaginary <- 0
-        
+
         ' accessors
-        self :: real { _real }
-        self :: imaginary { _imaginary }
-        
+        real { _real }
+        imaginary { _imaginary }
+
         ' string conversion
-        self :: toString {
+        toString {
             _real toString + "+" + _imaginary + "i"
         }
-        
+
         ' arithmetic
-        self :: + right {
+        + right {
             Complex new: _real + right real i: _imaginary + right imaginary
         }
 
-        self :: - right {
+        - right {
             Complex new: _real - right real i: _imaginary - right imaginary
         }
 
-        self :: * right {
+        * right {
             Complex new: (_real * right real) - (_imaginary * right imaginary) i:
-                         (_imaginary * right real) + (_real * right imaginary) 
+                         (_imaginary * right real) + (_real * right imaginary)
         }
-        
-        self :: magnitude {
+
+        magnitude {
             ((_real * _real) + (_imaginary * _imaginary)) sqrt
         }
-    }
-    
+    )
+
     ' accessor for the prototype
-    self :: prototype { _prototype }
-    
+    prototype { _prototype }
+
     ' constructor
-    self :: new: real i: imaginary {
-        _prototype copyWith: {
+    new: real i: imaginary {
+        (|_prototype|
             _real <- real
             _imaginary <- imaginary
-        }
+        )
     }
-}
+)
 
 ' allow creating complex numbers from normal ones
 Number prototype :: i { Complex new: 0 i: self }

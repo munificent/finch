@@ -28,8 +28,8 @@ namespace Finch
         
         Ref<Scope>  Globals()       const { return mGlobals; }
 
-        // Get the core built-in prototype objects.
-        Ref<Object> ObjectPrototype()   const { return mObjectPrototype; }
+        // Get the core built-in objects.
+        Ref<Object> ObjectPrototype()   const { return mObject; }
         Ref<Object> ArrayPrototype()    const { return mArrayPrototype; }
         Ref<Object> BlockPrototype()    const { return mBlockPrototype; }
         Ref<Object> FiberPrototype()    const { return mFiberPrototype; }
@@ -46,7 +46,7 @@ namespace Finch
         StringTable mStrings;
         
         Ref<Scope> mGlobals;
-        Ref<Object> mObjectPrototype;
+        Ref<Object> mObject;
         Ref<Object> mArrayPrototype;
         Ref<Object> mBlockPrototype;
         Ref<Object> mFiberPrototype;

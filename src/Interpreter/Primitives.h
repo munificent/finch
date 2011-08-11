@@ -14,11 +14,7 @@ namespace Finch
     PRIMITIVE(PrimitiveGetBlockPrototype);
     PRIMITIVE(PrimitiveGetFiberPrototype);
     PRIMITIVE(PrimitiveGetNumberPrototype);
-    PRIMITIVE(PrimitiveGetObjectPrototype);
     PRIMITIVE(PrimitiveGetStringPrototype);
-    
-    PRIMITIVE(PrimitiveCopy);
-    PRIMITIVE(PrimitiveRunWithin);
 
     PRIMITIVE(PrimitiveStringConcat);
     PRIMITIVE(PrimitiveStringCompare);

@@ -131,8 +131,6 @@ namespace Finch
                         String name = mEnvironment.Strings().Find(instruction.arg.id);
                         if (!Self().IsNull())
                         {
-                            Ref<Object> self = Self();
-                            Ref<Scope> scope = Self()->ObjectScope();
                             Self()->ObjectScope()->Define(name, value);
                         }
                     }
@@ -234,6 +232,22 @@ namespace Finch
                         ASSERT_NOT_NULL(object);
                         
                         object->AddMethod(target, *this, name, body);
+                        // note: does not push a result. the object the
+                        // definition is being applied to will still be on the
+                        // stack after this and is the result.
+                    }
+                    break;
+                    
+                case OP_BIND_OBJECT:
+                    {
+                        // the stack has the target of the object variable and
+                        // the value.
+                        // the name is in the instruction.
+                        Ref<Object> value = mOperands.Pop();
+                        Ref<Object> object = mOperands.Pop();
+                        String name = mEnvironment.Strings().Find(instruction.arg.id);
+                        
+                        object->ObjectScope()->Define(name, value);
                         // note: does not push a result. the object the
                         // definition is being applied to will still be on the
                         // stack after this and is the result.

@@ -1,28 +1,6 @@
 ' object
-Object <- #PRIM# copy: #PRIM# objectPrototype
-
 Object :: (
-    ' access the object prototype object
-    prototype { #PRIM# objectPrototype }
-
-    new { Object prototype copy }
-    new: block { Object prototype copyWith: block }
-)
-
-Object prototype :: (
-    copy {
-      #PRIM# copy: self
-    }
-
-    copyWith: block {
-      copy <- #PRIM# copy: self
-      #PRIM# run: block within: copy
-      copy
-    }
-
-    != right {
-        (self = right) not
-    }
+    != right { (self = right) not }
 
     ' any non-true object is implicitly "false", so sending "not" to it
     ' returns true
@@ -116,14 +94,14 @@ Ether :: (
 )
 
 ' block
-Block <- (|Object prototype|
+Block <- (||
     prototype { #PRIM# blockPrototype }
 )
 
 Block prototype :: block? { True }
 
 ' fiber
-Fiber <- (|Object prototype|
+Fiber <- (||
     new: block { #PRIM# newFiber: block }
 
     spawn: block {
@@ -136,7 +114,7 @@ Fiber <- (|Object prototype|
     current { #PRIM# currentFiber }
 
     yield: value {
-      #PRIM# switchToFiber: Fiber current runBy passing: value
+        #PRIM# switchToFiber: Fiber current runBy passing: value
     }
 
     yield { Fiber yield: Nil }
@@ -157,14 +135,14 @@ Fiber prototype :: (
 )
 
 ' number
-Number <- (|Object prototype|
+Number <- (||
     prototype { #PRIM# numberPrototype }
 )
 
 Number prototype :: number? { True }
 
 ' string
-String <- (|Object prototype|
+String <- (||
     prototype { #PRIM# stringPrototype }
 )
 
@@ -182,7 +160,7 @@ String prototype :: (
 )
 
 ' array
-Array <- (|Object prototype|
+Array <- (||
     prototype { #PRIM# arrayPrototype }
 
     count: count {
@@ -224,13 +202,13 @@ Array prototype :: (
 
 ' truthiness: only two things are true: the True global object, and
 ' blocks that evaluate to it.
-Object prototype :: true? { False }
+Object :: true? { False }
 True :: true? { True }
 
 Block prototype :: true? { self call true? }
 
 ' logical operators
-Object prototype :: (
+Object :: (
     and: right {
         if: self true? then: {
             right true?
@@ -253,19 +231,19 @@ Object prototype :: (
 '     case: "{" do: { "foo" },
 '     case: "}" do: { "blah" },
 '     default: { "argh" }
-Object prototype :: switch {
+Object :: switch {
     ' ### bob: having to do this is lame. :(
     outerSelf <- self
-    Switch prototype copyWith: {
+    (|Switch prototype|
         _value  <- outerSelf
         _done   <- False
         _result <- Nil
-    }
+    )
 }
 
-Switch <- Object new: {
-    _prototype <- Object new: {
-        self :: case: case do: block {
+Switch <- (||
+    _prototype <- (||
+        case: case do: block {
             ' if this switch has already matched a case, just do nothing
             if: _done? not then: {
                 ' if the case is a block, then it's a predicate so evaluate it, otherwise
@@ -288,7 +266,7 @@ Switch <- Object new: {
             _result
         }
 
-        self :: default: block {
+        default: block {
             ' if this switch has already matched a case, just do nothing
             if: _done? not then: {
                 ' execute the block
@@ -298,11 +276,10 @@ Switch <- Object new: {
 
             _result;
         }
-    }
+    )
 
-    self :: prototype { _prototype }
-}
-
+    prototype { _prototype }
+)
 
 writeLine: "Base library loaded."
 

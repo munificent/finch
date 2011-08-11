@@ -313,11 +313,26 @@ namespace Finch
                 // object literal
 
                 // parse the parent
-                PARSE_RULE(parent, Assignment());
-                CONSUME(TOKEN_PIPE, "Expect closing '|' after parent.");
+                Ref<Expr> parent;
+                if (Match(TOKEN_PIPE))
+                {
+                    // no parent, so implicit "Object"
+                    parent = Ref<Expr>(new NameExpr("Object"));
+                }
+                else
+                {
+                    // TODO(bob): Macro isn't helping here. :(
+                    PARSE_RULE(tempParent, Assignment());
+                    parent = tempParent;
+                    CONSUME(TOKEN_PIPE, "Expect closing '|' after parent.");
+                }
+
                 Ref<Expr> object = Ref<Expr>(new ObjectExpr(parent));
                 
-                PARSE_RULE(dummy, ParseDefines(object));
+                if (!Match(TOKEN_RIGHT_PAREN))
+                {
+                    PARSE_RULE(dummy, ParseDefines(object));
+                }
 
                 return object;
             }
@@ -418,12 +433,13 @@ namespace Finch
     
     Ref<Expr> FinchParser::ParseDefines(Ref<Expr> expr)
     {
-        do
+        while (true)
         {
             PARSE_RULE(dummy, ParseDefine(expr));
-            
+            if (Match(TOKEN_RIGHT_PAREN)) break;
             CONSUME(TOKEN_LINE, "Definitions must be separated by lines.");
-        } while (!Match(TOKEN_RIGHT_PAREN));
+            if (Match(TOKEN_RIGHT_PAREN)) break;
+        }
         
         return expr;
     }
@@ -432,8 +448,19 @@ namespace Finch
     {
         Array<String> args;
         
-        // figure out what kind of method we're binding
-        if (LookAhead(TOKEN_NAME))
+        // figure out what kind of thing we're defining
+        if (LookAhead(TOKEN_NAME, TOKEN_ARROW))
+        {
+            // object variable
+            String name = Consume().Text();
+            Consume(); // <-
+
+            PARSE_RULE(body, Assignment());
+            
+            DefineExpr * define = static_cast<DefineExpr*>(&*expr);
+            define->Define(false, name, body);
+        }
+        else if (LookAhead(TOKEN_NAME))
         {
             // unary
             String name = Consume().Text();

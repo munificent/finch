@@ -207,17 +207,22 @@ namespace Finch
             // the next one. after all of the definitions are done, the object
             // will remain on the stack, to be the final result value.
             mCode.Write(OP_DUP);
-            
-            // TODO(bob): Handle non-method definitions.
-            
+                        
             const Definition & definition = expr.Definitions()[i];
             
-            // compile the method body
+            // compile the body
             definition.GetBody()->Accept(*this);
             
-            // compile the method definition
             int id = mEnvironment.Strings().Add(definition.GetName());
-            mCode.Write(OP_BIND_METHOD, id);
+
+            if (definition.IsMethod())
+            {
+                mCode.Write(OP_BIND_METHOD, id);
+            }
+            else
+            {
+                mCode.Write(OP_BIND_OBJECT, id);
+            }
         }
     }
 

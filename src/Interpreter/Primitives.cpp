@@ -36,54 +36,11 @@ namespace Finch
         fiber.Push(fiber.GetEnvironment().NumberPrototype());
     }
     
-    PRIMITIVE(PrimitiveGetObjectPrototype)
-    {
-        fiber.Push(fiber.GetEnvironment().ObjectPrototype());
-    }
-    
     PRIMITIVE(PrimitiveGetStringPrototype)
     {
         fiber.Push(fiber.GetEnvironment().StringPrototype());
     }
     
-    // Primitive object operations.
-    
-    PRIMITIVE(PrimitiveCopy)
-    {
-        fiber.Push(Object::NewObject(args[0]));
-    }
-    
-    PRIMITIVE(PrimitiveRunWithin)
-    {
-        // make sure we have a block
-        BlockObject * originalBlock = args[0]->AsBlock();
-        if (originalBlock == NULL)
-        {
-            fiber.Error("run:within: must be passed a block argument.");
-            fiber.PushNil();
-            return;
-        }
-        
-        //### bob: update docs
-        // bind the block's "self" to the given target.
-        Ref<Object> blockCopy = Object::NewBlock(fiber.GetEnvironment(),
-                                                 originalBlock->GetCode(),originalBlock->Closure(),
-                                                 args[1]);
-        
-        // we copy the block here because, in theory, you could reuse the block after passing it to
-        // copyWith:, like:
-        //
-        // b <- { writeLine: "self is " + self }
-        // c <- Object copyWith: b
-        // b call
-        // d <- Object copyWith: b
-        // b call
-        // since binding self mutates it, we have to copy it first
-        
-        // now call the block
-        fiber.CallMethod(args[1], blockCopy, Array<Ref<Object> >());
-    }
-
     // Primitive string operators. Note that these get wrapped in the base
     // library so that the arguments can have toString called on them before
     // passing them to the primitives which expect them to already be in string

@@ -20,10 +20,9 @@ namespace Finch
     public:
         BindExpr(Ref<Expr> target)
         :   mTarget(target)
-        {
-        }
+        {}
         
-        Ref<Expr>                 Target() const { return mTarget; }
+        Ref<Expr> Target() const { return mTarget; }
         
         virtual void Trace(ostream & stream) const
         {

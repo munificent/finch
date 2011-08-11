@@ -1,7 +1,7 @@
 writeLine: "Running Finch test suite."
 
 ' define a Test object the tests can use
-Test <- Object copyWith: {
+Test <- (||
     _suite      <- ""
     _test       <- ""
     _testShown  <- False
@@ -10,9 +10,7 @@ Test <- Object copyWith: {
 
     _totalTests <- 0
     _totalFails <- 0
-}
 
-Test :: (
     suite: name is: body {
         _suite <- name
         body call

@@ -77,7 +77,7 @@ Test suite: "Variables" is: {
     }
 
     Test test: "Object Scope" is: {
-        foo <- Object copy
+        foo <- (||)
 
         foo :: createVar { _someVar <- "obj var" }
         foo :: testVar { Test that: _someVar equals: "obj var" }

@@ -23,7 +23,7 @@ namespace Finch
         {
         }
         
-        Ref<Expr>                 Parent() const { return mParent; }
+        Ref<Expr> Parent() const { return mParent; }
         
         virtual void Trace(ostream & stream) const
         {
