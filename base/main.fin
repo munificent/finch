@@ -116,16 +116,14 @@ Ether :: (
 )
 
 ' block
-Block <- Object new
-
-Block :: prototype { #PRIM# blockPrototype }
+Block <- (|Object prototype|
+    prototype { #PRIM# blockPrototype }
+)
 
 Block prototype :: block? { True }
 
 ' fiber
-Fiber <- Object new
-
-Fiber :: (
+Fiber <- (|Object prototype|
     new: block { #PRIM# newFiber: block }
 
     spawn: block {
@@ -159,16 +157,16 @@ Fiber prototype :: (
 )
 
 ' number
-Number <- Object new
-
-Number :: prototype { #PRIM# numberPrototype }
+Number <- (|Object prototype|
+    prototype { #PRIM# numberPrototype }
+)
 
 Number prototype :: number? { True }
 
 ' string
-String <- Object new
-
-String :: prototype { #PRIM# stringPrototype }
+String <- (|Object prototype|
+    prototype { #PRIM# stringPrototype }
+)
 
 String prototype :: (
     string? { True }
@@ -184,9 +182,7 @@ String prototype :: (
 )
 
 ' array
-Array <- Object new
-
-Array :: (
+Array <- (|Object prototype|
     prototype { #PRIM# arrayPrototype }
 
     count: count {

@@ -11,6 +11,7 @@
 
 namespace Finch
 {
+    class DefineExpr;
     class Environment;
     
     // Compiles an expression AST to bytecode for execution by the interpreter.
@@ -34,12 +35,15 @@ namespace Finch
         virtual void Visit(const MessageExpr & expr);
         virtual void Visit(const NameExpr & expr);
         virtual void Visit(const NumberExpr & expr);
+        virtual void Visit(const ObjectExpr & expr);
         virtual void Visit(const SequenceExpr & expr);
         virtual void Visit(const SelfExpr & expr);
         virtual void Visit(const SetExpr & expr);
         virtual void Visit(const StringExpr & expr);
         virtual void Visit(const UndefineExpr & expr);
         virtual void Visit(const VarExpr & expr);
+        
+        void CompileDefinitions(const DefineExpr & expr);
         
         Environment & mEnvironment;
         CodeBlock & mCode;

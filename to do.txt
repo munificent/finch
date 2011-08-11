@@ -33,24 +33,7 @@ there should be solid.
     have to get moved into Object prototype.
   - Better array/indexer syntax?
   + Multiple bind.
-  - Object literals. Essentially combines copy and multiple bind:
-
-    Array <- (|Object|
-        prototype { #PRIM# arrayPrototype }
-
-        count: count {
-            self count: count fillWith: Nil
-        }
-
-        count: count fillWith: element {
-            result <- []
-
-            from: 1 to: count do: {|i| result add: element }
-            result
-        }
-    )
-
-    A "(" "|" starts an object literal.
+  + Object literals. Essentially combines copy and multiple bind:
 
 - Testing and Quality
   - Make unit tests optionally-compiled with a separate make target.

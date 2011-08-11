@@ -223,19 +223,28 @@ namespace Finch
                     break;
                     
                 case OP_BIND_METHOD:
-                {
-                    // the stack has the target of the method and the body.
-                    // the name is in the instruction.
-                    Ref<Object> body = mOperands.Pop();
-                    Ref<Object> target = mOperands.Pop();
-                    String name = mEnvironment.Strings().Find(instruction.arg.id);
+                    {
+                        // the stack has the target of the method and the body.
+                        // the name is in the instruction.
+                        Ref<Object> body = mOperands.Pop();
+                        Ref<Object> target = mOperands.Pop();
+                        String name = mEnvironment.Strings().Find(instruction.arg.id);
+                        
+                        DynamicObject * object = target->AsDynamic();
+                        ASSERT_NOT_NULL(object);
+                        
+                        object->AddMethod(target, *this, name, body);
+                        // note: does not push a result. the object the
+                        // definition is being applied to will still be on the
+                        // stack after this and is the result.
+                    }
+                    break;
                     
-                    DynamicObject * object = target->AsDynamic();
-                    ASSERT_NOT_NULL(object);
-                    
-                    object->AddMethod(target, *this, name, body);
-                    PushNil();
-                }
+                case OP_MAKE_OBJECT:
+                    {
+                        Ref<Object> parent = mOperands.Pop();
+                        PushOperand(Object::NewObject(parent));
+                    }
                     break;
                     
                 case OP_MESSAGE_0:

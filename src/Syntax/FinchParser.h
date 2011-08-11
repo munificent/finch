@@ -43,8 +43,9 @@ namespace Finch
         Ref<Expr> ParseKeyword(Ref<Expr> object);        
         Ref<Expr> ParseError(const char * message);
         
-        Ref<Expr> ParseBind(Ref<Expr> expr);
-        Ref<Expr> ParseBindBody(Ref<Expr> expr, String name,
+        Ref<Expr> ParseDefines(Ref<Expr> expr);
+        Ref<Expr> ParseDefine(Ref<Expr> expr);
+        Ref<Expr> ParseDefineBody(Ref<Expr> expr, String name,
                            const Array<String> & args);
 
         IErrorReporter & mErrorReporter;

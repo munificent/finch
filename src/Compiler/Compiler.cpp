@@ -8,6 +8,7 @@
 #include "MessageExpr.h"
 #include "NameExpr.h"
 #include "NumberExpr.h"
+#include "ObjectExpr.h"
 #include "SelfExpr.h"
 #include "SequenceExpr.h"
 #include "SetExpr.h"
@@ -49,33 +50,7 @@ namespace Finch
         // push the first copy of the target onto the stack
         expr.Target()->Accept(*this);
         
-        // compile each of the definitions
-        int methodCount = expr.Methods().Count();
-        for (int i = 0; i < methodCount; i++)
-        {
-            // push another copy of the target on the stack for the this
-            // definition to use so that the first copy is still there for
-            // the next one.
-            if (i < methodCount - 1)
-            {
-                mCode.Write(OP_DUP);
-            }
-            
-            const Definition & method = expr.Methods()[i];
-            
-            // compile the method body
-            method.GetBody()->Accept(*this);
-            
-            // compile the method definition
-            int id = mEnvironment.Strings().Add(method.GetName());
-            mCode.Write(OP_BIND_METHOD, id);
-            
-            // if we have another define coming, discard the return of this one.
-            if (i < methodCount - 1)
-            {
-                mCode.Write(OP_POP);
-            }
-        }
+        CompileDefinitions(expr);
     }
     
     void Compiler::Visit(const BlockExpr & expr)
@@ -137,6 +112,13 @@ namespace Finch
     void Compiler::Visit(const NumberExpr & expr)
     {
         mCode.Write(OP_NUMBER_LITERAL, expr.Value());
+    }
+    
+    void Compiler::Visit(const ObjectExpr & expr)
+    {
+        expr.Parent()->Accept(*this);
+        mCode.Write(OP_MAKE_OBJECT);
+        CompileDefinitions(expr);
     }
     
     void Compiler::Visit(const SelfExpr & expr)
@@ -213,5 +195,31 @@ namespace Finch
                 break;
         }
     }
+    
+    void Compiler::CompileDefinitions(const DefineExpr & expr)
+    {
+        // compile each of the definitions
+        int count = expr.Definitions().Count();
+        for (int i = 0; i < count; i++)
+        {
+            // push another copy of the target on the stack for the this
+            // definition to use so that the first copy is still there for
+            // the next one. after all of the definitions are done, the object
+            // will remain on the stack, to be the final result value.
+            mCode.Write(OP_DUP);
+            
+            // TODO(bob): Handle non-method definitions.
+            
+            const Definition & definition = expr.Definitions()[i];
+            
+            // compile the method body
+            definition.GetBody()->Accept(*this);
+            
+            // compile the method definition
+            int id = mEnvironment.Strings().Add(definition.GetName());
+            mCode.Write(OP_BIND_METHOD, id);
+        }
+    }
+
 }
 

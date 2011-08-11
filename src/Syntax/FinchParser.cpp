@@ -9,6 +9,7 @@
 #include "MessageExpr.h"
 #include "NameExpr.h"
 #include "NumberExpr.h"
+#include "ObjectExpr.h"
 #include "SelfExpr.h"
 #include "SequenceExpr.h"
 #include "SetExpr.h"
@@ -125,17 +126,12 @@ namespace Finch
             if (Match(TOKEN_LEFT_PAREN))
             {
                 // multiple bind
-                do
-                {
-                    PARSE_RULE(dummy, ParseBind(expr));
-                    
-                    CONSUME(TOKEN_LINE, "Methods must be separated by lines in a multiple bind.");
-                } while (!Match(TOKEN_RIGHT_PAREN));
+                PARSE_RULE(dummy, ParseDefines(expr));
             }
             else
             {
                 // single bind
-                PARSE_RULE(dummy, ParseBind(expr));
+                PARSE_RULE(dummy, ParseDefine(expr));
             }
 
             return expr;
@@ -312,9 +308,26 @@ namespace Finch
         }
         else if (Match(TOKEN_LEFT_PAREN))
         {
-            PARSE_RULE(expression, Expression());
-            CONSUME(TOKEN_RIGHT_PAREN, "Expect closing ')'.");
-            return expression;
+            if (Match(TOKEN_PIPE))
+            {
+                // object literal
+
+                // parse the parent
+                PARSE_RULE(parent, Assignment());
+                CONSUME(TOKEN_PIPE, "Expect closing '|' after parent.");
+                Ref<Expr> object = Ref<Expr>(new ObjectExpr(parent));
+                
+                PARSE_RULE(dummy, ParseDefines(object));
+
+                return object;
+            }
+            else
+            {
+                // just a parenthesized expression
+                PARSE_RULE(expression, Expression());
+                CONSUME(TOKEN_RIGHT_PAREN, "Expect closing ')'.");
+                return expression;
+            }
         }
         else if (Match(TOKEN_LEFT_BRACKET))
         {
@@ -403,7 +416,19 @@ namespace Finch
         return Ref<Expr>();
     }
     
-    Ref<Expr> FinchParser::ParseBind(Ref<Expr> expr)
+    Ref<Expr> FinchParser::ParseDefines(Ref<Expr> expr)
+    {
+        do
+        {
+            PARSE_RULE(dummy, ParseDefine(expr));
+            
+            CONSUME(TOKEN_LINE, "Definitions must be separated by lines.");
+        } while (!Match(TOKEN_RIGHT_PAREN));
+        
+        return expr;
+    }
+    
+    Ref<Expr> FinchParser::ParseDefine(Ref<Expr> expr)
     {
         Array<String> args;
         
@@ -413,7 +438,7 @@ namespace Finch
             // unary
             String name = Consume().Text();
             
-            PARSE_RULE(dummy, ParseBindBody(expr, name, args));
+            PARSE_RULE(dummy, ParseDefineBody(expr, name, args));
         }
         else if (LookAhead(TOKEN_OPERATOR))
         {
@@ -424,7 +449,7 @@ namespace Finch
             EXPECT(TOKEN_NAME, "Expect name after operator in a bind expression.");
             args.Add(Consume().Text());
             
-            PARSE_RULE(dummy, ParseBindBody(expr, name, args));
+            PARSE_RULE(dummy, ParseDefineBody(expr, name, args));
         }
         else if (LookAhead(TOKEN_KEYWORD))
         {
@@ -440,14 +465,14 @@ namespace Finch
                 args.Add(Consume().Text());
             }
             
-            PARSE_RULE(dummy, ParseBindBody(expr, name, args));
+            PARSE_RULE(dummy, ParseDefineBody(expr, name, args));
         }
         else return ParseError("Expect message after '::'.");
         
         return expr;
     }
     
-    Ref<Expr> FinchParser::ParseBindBody(Ref<Expr> expr, String name,
+    Ref<Expr> FinchParser::ParseDefineBody(Ref<Expr> expr, String name,
                                          const Array<String> & args)
     {
         // parse the block
@@ -459,12 +484,12 @@ namespace Finch
         Ref<Expr> block = Ref<Expr>(new BlockExpr(args, body));
         
         // desugar to the basic addMethod:body: form
-        Array<Ref<Expr> >  addMethodArgs;
+        Array<Ref<Expr> > addMethodArgs;
         addMethodArgs.Add(Ref<Expr>(new StringExpr(name)));
         addMethodArgs.Add(block);
         
-        BindExpr * define = static_cast<BindExpr*>(&*expr);
-        define->AddMethod(name, block);
+        DefineExpr * define = static_cast<DefineExpr*>(&*expr);
+        define->Define(true, name, block);
         
         return expr;
     }
