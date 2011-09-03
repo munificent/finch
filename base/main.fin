@@ -53,7 +53,7 @@ Ether :: (
     }
 
     from: start to: end do: block {
-        step <- (if: start < end then: 1 else: -1)
+        step <- (if: start <= end then: 1 else: -1)
         from: start to: end step: step do: block
     }
 
