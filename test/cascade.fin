@@ -1,13 +1,14 @@
 Test suite: "Strings" is: {
     called <- ""
     ' make a couple of objects that implement toString
-    obj <- (||)
-    obj :: foo { called <-- called + "foo" }
-    obj :: bar { called <-- called + "bar" }
-    obj :: baz { called <-- called + "baz" }
-    obj :: me { self }
-    obj :: + other { called <-- called + other }
-    obj :: add: a and: b { called <-- called + a + b }
+    obj <- (||
+        foo { called <-- called + "foo" }
+        bar { called <-- called + "bar" }
+        baz { called <-- called + "baz" }
+        me { self }
+        + other { called <-- called + other }
+        add: a and: b { called <-- called + a + b }
+    )
 
     Test test: "Unary" is: {
         called <-- ""

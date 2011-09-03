@@ -1,7 +1,8 @@
 Test suite: "Objects" is: {
     ' make an object that implements toString
-    apple <- (||)
-    apple :: toString { "apple" }
+    apple <- (||
+        toString { "apple" }
+    )
 
     Test test: "Equality" is: {
         ' reference equality

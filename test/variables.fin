@@ -77,10 +77,10 @@ Test suite: "Variables" is: {
     }
 
     Test test: "Object Scope" is: {
-        foo <- (||)
-
-        foo :: createVar { _someVar <- "obj var" }
-        foo :: testVar { Test that: _someVar equals: "obj var" }
+        foo <- (||
+            createVar { _someVar <- "obj var" }
+            testVar { Test that: _someVar equals: "obj var" }
+        )
 
         Test that: _someVar equals: Nil
         foo createVar
