@@ -157,6 +157,14 @@ String prototype :: (
     >  right { (#PRIM# stringCompare: self to: right) > 0 }
     <= right { (#PRIM# stringCompare: self to: right) <= 0 }
     >= right { (#PRIM# stringCompare: self to: right) >= 0 }
+
+    contains: needle {
+        (self indexOf: needle) != -1
+    }
+
+    from: from to: to {
+        self from: from count: to - from
+    }
 )
 
 ' array

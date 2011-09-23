@@ -91,7 +91,9 @@ namespace Finch
         DynamicObject* stringObj = mStringPrototype->AsDynamic();
         stringObj->RegisterPrimitive("length",      StringLength);
         stringObj->RegisterPrimitive("at:",         StringAt);
+        stringObj->RegisterPrimitive("from:count:", StringFromCount);
         stringObj->RegisterPrimitive("hashCode",    StringHashCode);
+        stringObj->RegisterPrimitive("indexOf:",    StringIndexOf);
 
         // define Ether
         Ref<Object> ether = Object::NewObject(mObject, "Ether");

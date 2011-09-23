@@ -42,4 +42,30 @@ Test suite: "Strings" is: {
         ' equality is *strict* and doesn't implicitly convert
         Test isFalse: "apple" = apple
     }
+
+    Test test: "from:count:" is: {
+        Test that: ("0123456789" from: 0 count: 1) equals: "0"
+        Test that: ("0123456789" from: 2 count: 5) equals: "23456"
+    }
+
+    Test test: "from:to:" is: {
+        Test that: ("0123456789" from: 0 to: 1) equals: "0"
+        Test that: ("0123456789" from: 2 to: 5) equals: "234"
+    }
+
+    Test test: "indexOf:" is: {
+        Test that: ("0123456789" indexOf: "0") equals: 0
+        Test that: ("0123456789" indexOf: "234") equals: 2
+        Test that: ("0123456789" indexOf: "56789") equals: 5
+        Test that: ("0123456789" indexOf: "not found") equals: -1
+        Test that: ("" indexOf: "not found") equals: -1
+    }
+
+    Test test: "contains:" is: {
+        Test isTrue: ("0123456789" contains: "0")
+        Test isTrue: ("0123456789" contains: "234")
+        Test isTrue: ("0123456789" contains: "56789")
+        Test isFalse: ("0123456789" contains: "not found")
+        Test isFalse: ("" contains: "not found")
+    }
 }

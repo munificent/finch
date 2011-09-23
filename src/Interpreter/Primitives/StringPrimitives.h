@@ -11,6 +11,8 @@ namespace Finch
     // Primitive methods for string objects.
     PRIMITIVE(StringLength);
     PRIMITIVE(StringAt);
+    PRIMITIVE(StringFromCount);
+    PRIMITIVE(StringIndexOf);
     PRIMITIVE(StringHashCode);
 }
 

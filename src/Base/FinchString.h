@@ -48,6 +48,10 @@ namespace Finch
         // Gets the number of characters in the string.
         int Length() const;
         
+        // Gets the position in this string of the given substring or -1 if not
+        // found.
+        int IndexOf(const String & other) const;
+        
         // Gets the hash code for the string.
         unsigned int HashCode() const;
         

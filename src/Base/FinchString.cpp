@@ -113,6 +113,16 @@ namespace Finch
         return mData->length;
     }
     
+    int String::IndexOf(const String & other) const
+    {
+        if (mData.IsNull()) return -1;
+        
+        char* found = strstr(mData->chars, other.CString());
+        if (found == NULL) return -1;
+        
+        return static_cast<int>(found - mData->chars);
+    }
+
     unsigned int String::HashCode() const
     {
         if (mData.IsNull()) return EmptyStringHash;
