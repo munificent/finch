@@ -31,27 +31,27 @@ A Taste of the Language
 Here's a little example to get you going. This little program doesn't
 draw, but it will tell you what turns to make to draw a dragon curve:
 
-  ' create a single global Dragon object
-  Dragon <- Object copy
+    ' create a single global Dragon object
+    Dragon <- Object copy
 
-  ' add a main "trace:" method for outputting the series of left and
-  ' right turns needed to draw a dragon curve.
-  Dragon :: trace: depth {
-      self traceDepth: depth turn: "R"
-      writeLine: "" ' end the line
-  }
+    ' add a main "trace:" method for outputting the series of left and
+    ' right turns needed to draw a dragon curve.
+    Dragon :: trace: depth {
+        self traceDepth: depth turn: "R"
+        writeLine: "" ' end the line
+    }
 
-  ' add the main recursive method
-  Dragon :: traceDepth: n turn: turn {
-      if: n > 0 then: {
-          self traceDepth: n - 1 turn: "R"
-          write: turn
-          self traceDepth: n - 1 turn: "L"
-      }
-  }
+    ' add the main recursive method
+    Dragon :: traceDepth: n turn: turn {
+        if: n > 0 then: {
+            self traceDepth: n - 1 turn: "R"
+            write: turn
+            self traceDepth: n - 1 turn: "L"
+        }
+    }
 
-  ' now lets try it
-  Dragon trace: 5
+    ' now lets try it
+    Dragon trace: 5
 
 This doesn't really give you the OOP flavor of the language, but it
 gives you the idea of the general look.
@@ -68,7 +68,7 @@ makefiles for your platform, which you then build to get an executable.
 1. Download GYP from: http://code.google.com/p/gyp/
 2. Clone the finch repo from github.
 3. In a terminal/command prompt, navigate to the root finch/ directory.
-4. Run GYP on this file: <path to gyp>/gyp --depth=1
+4. Run GYP on this file: `<path to gyp>/gyp --depth=1`
    Where <path to gyp> is wherever you downloaded GYP to in step 1.
    This should spit out a project/makefile in the root directory for your
    platform.
@@ -92,11 +92,11 @@ Once you're in the REPL, you can load and execute a script using
 load:. The path must be relative to where the executable is. If you've
 built from XCode, you can run the tests like this:
 
-  >> load: "../../test/test.fin"
+    >> load: "../../test/test.fin"
 
 If you built from a makefile, it's:
 
-  >> load: "test/test.fin"
+    >> load: "test/test.fin"
 
 
 Where to Go from Here
@@ -105,7 +105,7 @@ Where to Go from Here
 You should be good to start hacking some Finch code now. There is some
 documentation here:
 
-- http://finch.stuffwithstuff.com
-- http://journal.stuffwithstuff.com/category/finch/
+* http://finch.stuffwithstuff.com
+ http://journal.stuffwithstuff.com/category/finch/
 
 If you have any questions or comments, holler at me.
