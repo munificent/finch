@@ -255,6 +255,8 @@ This also works for operators and keyword messages:
     fred ? "plunger"
     fred give: "plunger" to: "Bill"
 
+### Multibinds
+
 It's common to want to define a number of methods on an object all at once. To make that easier, you can also use parentheses after `::` and define a group of methods, like so:
 
     :::finch
@@ -266,6 +268,33 @@ It's common to want to define a number of methods on an object all at once. To m
         give: gift to: who {
             writeLine: "Here, " + who + ", have a " + gift + "."
         }
+    )
+
+In addition to methods, you can use bind expressions to define object variables:
+
+### Variable Binding
+
+    :::finch
+    fred :: (
+        _name <- "Fred"
+        sayName { writeLine: _name }
+    }
+    fred sayName ' Fred
+
+If the name is an object variable name like `_name` here, it just defines that
+variable on the object. If you use a name without a leading underscore, then it will define an object variable with that name and automatically add an accessor message. In other words, this:
+
+    :::finch
+    fred :: (
+        band <- "Right Said Fred"
+    )
+
+Is exactly the same as doing:
+
+    :::finch
+    fred :: (
+        _band <- "Right Said Fred"
+        band { _band }
     )
 
 ## Combining Expressions: Precedence and Associativity
