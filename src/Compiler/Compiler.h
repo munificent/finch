@@ -8,6 +8,7 @@
 #include "IExprVisitor.h"
 #include "Object.h"
 #include "Ref.h"
+#include "Stack.h"
 
 namespace Finch
 {
@@ -22,10 +23,11 @@ namespace Finch
         // the bytecode into the given CodeBlock. Needs an Environment to have
         // access to the string and code tables.
         static void Compile(Environment & environment, const Expr & expr,
-                            CodeBlock & code);
+                            CodeBlock & code, int enclosingMethod);
         
     private:
-        Compiler(Environment & environment, CodeBlock & code);
+        Compiler(Environment & environment, CodeBlock & code,
+                 int enclosingMethod);
         
         virtual ~Compiler() {}
         
@@ -36,6 +38,7 @@ namespace Finch
         virtual void Visit(const NameExpr & expr);
         virtual void Visit(const NumberExpr & expr);
         virtual void Visit(const ObjectExpr & expr);
+        virtual void Visit(const ReturnExpr & expr);
         virtual void Visit(const SequenceExpr & expr);
         virtual void Visit(const SelfExpr & expr);
         virtual void Visit(const SetExpr & expr);
@@ -45,9 +48,14 @@ namespace Finch
         
         void CompileDefinitions(const DefineExpr & expr);
         
+        static int sNextMethodId;
+        
         Environment & mEnvironment;
         CodeBlock & mCode;
         
+        int mEnclosingMethod;
+        int mMethodIdForNextBlock;
+
         NO_COPY(Compiler);
     };
 }

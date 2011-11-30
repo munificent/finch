@@ -1,0 +1,51 @@
+Test suite: "Return" is: {
+    Test test: "break exits block" is: {
+        a <- "before"
+        {
+            a <-- "inside"
+            break
+            a <-- "after"
+        } call
+
+        Test that: a equals: "inside"
+    }
+
+    Test test: "the block returns the value passed to break" is: {
+        result <- {
+            break "b"
+            "a"
+        } call
+
+        Test that: result equals: "b"
+    }
+
+    Test test: "return exits enclosing method" is: {
+        a <- "0"
+        obj <- (||
+            foo {
+                a <-- a + "1"
+                {
+                    a <-- a + "2"
+                    return
+                    a <-- a + "3"
+                } call
+                a <-- a + "4"
+            }
+        )
+        obj foo
+
+        Test that: a equals: "012"
+    }
+
+    Test test: "the method returns the value passed to return" is: {
+        a <- "before"
+        obj <- (||
+            foo {
+                return "result"
+                "bad"
+            }
+        )
+
+        Test that: obj foo equals: "result"
+    }
+}

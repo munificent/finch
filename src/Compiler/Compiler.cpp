@@ -9,6 +9,7 @@
 #include "NameExpr.h"
 #include "NumberExpr.h"
 #include "ObjectExpr.h"
+#include "ReturnExpr.h"
 #include "SelfExpr.h"
 #include "SequenceExpr.h"
 #include "SetExpr.h"
@@ -18,18 +19,23 @@
 
 namespace Finch
 {
+    int Compiler::sNextMethodId = 1;
+
     void Compiler::Compile(Environment & environment, const Expr & expr,
-                           CodeBlock & code)
+                           CodeBlock & code, int enclosingMethod)
     {
-        Compiler compiler = Compiler(environment, code);
+        Compiler compiler = Compiler(environment, code, enclosingMethod);
         expr.Accept(compiler);
         
         code.Write(OP_END_BLOCK);
     }
     
-    Compiler::Compiler(Environment & environment, CodeBlock & code)
+    Compiler::Compiler(Environment & environment, CodeBlock & code,
+                       int enclosingMethod)
     :   mEnvironment(environment),
-        mCode(code)
+        mCode(code),
+        mEnclosingMethod(enclosingMethod),
+        mMethodIdForNextBlock(0)
     {
     }
     
@@ -55,7 +61,20 @@ namespace Finch
     
     void Compiler::Visit(const BlockExpr & expr)
     {
-        int id = mEnvironment.Blocks().Add(expr.Params(), *expr.Body(), mEnvironment);
+        Ref<CodeBlock> code = Ref<CodeBlock>(new CodeBlock(
+            expr.Params(), mMethodIdForNextBlock));
+        
+        // if this block is a method, then it becomes the new enclosing method
+        // for its contents.
+        int enclosingMethod = mEnclosingMethod;
+        if (mMethodIdForNextBlock != 0) {
+            enclosingMethod = mMethodIdForNextBlock;
+        }
+        
+        Compiler::Compile(mEnvironment, *expr.Body(), *code, enclosingMethod);
+        
+        int id = mEnvironment.Blocks().Add(code);
+        mMethodIdForNextBlock = 0;
         mCode.Write(OP_BLOCK_LITERAL, id);
     }
     
@@ -119,6 +138,16 @@ namespace Finch
         expr.Parent()->Accept(*this);
         mCode.Write(OP_MAKE_OBJECT);
         CompileDefinitions(expr);
+    }
+    
+    void Compiler::Visit(const ReturnExpr & expr)
+    {
+        expr.Result()->Accept(*this);
+        if (expr.IsReturn()) {
+            mCode.Write(OP_RETURN, mEnclosingMethod);
+        } else {
+            mCode.Write(OP_END_BLOCK);
+        }
     }
     
     void Compiler::Visit(const SelfExpr & expr)
@@ -209,6 +238,11 @@ namespace Finch
             mCode.Write(OP_DUP);
                         
             const Definition & definition = expr.Definitions()[i];
+            
+            // the body we're about to compile needs to know it's method id.
+            if (definition.IsMethod()) {
+                mMethodIdForNextBlock = sNextMethodId++;
+            }
             
             // compile the body
             definition.GetBody()->Accept(*this);

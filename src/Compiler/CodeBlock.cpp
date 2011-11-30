@@ -2,8 +2,9 @@
 
 namespace Finch
 {
-    CodeBlock::CodeBlock(const Array<String> & params)
+    CodeBlock::CodeBlock(const Array<String> & params, int methodId)
     :   mParams(params),
+        mMethodId(methodId),
         mInstructions()
     {
     }

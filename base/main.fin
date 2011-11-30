@@ -24,7 +24,6 @@ Object :: (
     call: a : b : c : d { self }
     call: a : b : c : d : e { self }
     call: a : b : c : d : e : f { self }
-    call: a : b : c : d : e : f { self }
     call: a : b : c : d : e : f : g { self }
     call: a : b : c : d : e : f : g : h { self }
     call: a : b : c : d : e : f : g : h : i { self }
@@ -41,8 +40,8 @@ False :: toString { "false" }
 
 True :: ifTrue: then else: else { then call }
 
-' define a for-style loop
 Ether :: (
+    ' define a for-style loop
     from: start to: end step: step do: block {
         i <- start
 

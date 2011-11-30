@@ -10,6 +10,7 @@
 #include "NameExpr.h"
 #include "NumberExpr.h"
 #include "ObjectExpr.h"
+#include "ReturnExpr.h"
 #include "SelfExpr.h"
 #include "SequenceExpr.h"
 #include "SetExpr.h"
@@ -305,6 +306,28 @@ namespace Finch
         else if (Match(TOKEN_SELF))
         {
             return Ref<Expr>(new SelfExpr());
+        }
+        else if (Match(TOKEN_BREAK))
+        {
+            Ref<Expr> result;
+            if (LookAhead(TOKEN_LINE)) {
+                // No return value so implicitly return Nil.
+                result = Ref<Expr>(new NameExpr("Nil"));
+            } else {
+                result = Assignment();
+            }
+            return Ref<Expr>(new ReturnExpr(false, result));
+        }
+        else if (Match(TOKEN_RETURN))
+        {
+            Ref<Expr> result;
+            if (LookAhead(TOKEN_LINE)) {
+                // No return value so implicitly return Nil.
+                result = Ref<Expr>(new NameExpr("Nil"));
+            } else {
+                result = Assignment();
+            }
+            return Ref<Expr>(new ReturnExpr(true, result));
         }
         else if (Match(TOKEN_LEFT_PAREN))
         {

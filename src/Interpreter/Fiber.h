@@ -15,7 +15,6 @@ namespace Finch
     class Expr;
     class Interpreter;
     
-    //### bob: rename to Fiber
     // A single bytecode execution thread in the interpreter. A Fiber has a
     // virtual callstack and is responsible for executing bytecode. In other
     // words, it's where stuff actually happens.
@@ -63,10 +62,10 @@ namespace Finch
         {
             // The instruction pointer. Stores the index of the current bytecode instruction in the
             // block of code for this frame.
-            int         address;
+            int address;
             
             // The local variable scope.
-            Ref<Scope>  scope;
+            Ref<Scope> scope;
             
             // The block of code being executed by this frame.
             Ref<Object> block;

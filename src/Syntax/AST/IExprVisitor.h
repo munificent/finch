@@ -15,6 +15,7 @@ namespace Finch
     class NameExpr;
     class NumberExpr;
     class ObjectExpr;
+    class ReturnExpr;
     class SelfExpr;
     class SequenceExpr;
     class SetExpr;
@@ -39,6 +40,7 @@ namespace Finch
         virtual void Visit(const NameExpr & expr) = 0;
         virtual void Visit(const NumberExpr & expr) = 0;
         virtual void Visit(const ObjectExpr & expr) = 0;
+        virtual void Visit(const ReturnExpr & expr) = 0;
         virtual void Visit(const SequenceExpr & expr) = 0;
         virtual void Visit(const SelfExpr & expr) = 0;
         virtual void Visit(const SetExpr & expr) = 0;

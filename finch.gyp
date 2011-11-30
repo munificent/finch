@@ -82,6 +82,7 @@
         'src/Syntax/AST/NameExpr.h',
         'src/Syntax/AST/NumberExpr.h',
         'src/Syntax/AST/ObjectExpr.h',
+        'src/Syntax/AST/ReturnExpr.h',
         'src/Syntax/AST/SelfExpr.h',
         'src/Syntax/AST/SequenceExpr.h',
         'src/Syntax/AST/SetExpr.h',

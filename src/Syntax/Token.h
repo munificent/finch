@@ -29,6 +29,9 @@ namespace Finch
         TOKEN_SELF,
         TOKEN_UNDEFINED,
         
+        TOKEN_BREAK,
+        TOKEN_RETURN,
+        
         TOKEN_NUMBER,
         TOKEN_STRING,
         

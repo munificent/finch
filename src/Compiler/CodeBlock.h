@@ -51,6 +51,8 @@ namespace Finch
         OP_MESSAGE_9,       // id = string table id of message name
         OP_MESSAGE_10,      // id = string table id of message name
         
+        OP_RETURN,          // id = method id of enclosing method
+        
         OP_END_BLOCK        // (not used)
     };
     
@@ -77,10 +79,12 @@ namespace Finch
     public:
         // Creates a new CodeBlock for a block that takes parameters with the
         // given names.
-        CodeBlock(const Array<String> & params);
+        CodeBlock(const Array<String> & params, int methodId);
         
         // Gets the names of the parameters that this block expects.
         const Array<String> & Params() const { return mParams; }
+        
+        int MethodId() const { return mMethodId; }
         
         // Gets the instruction at the given offset in the block.
         const Instruction & operator[](int i) const { return mInstructions[i]; }
@@ -91,6 +95,7 @@ namespace Finch
         
     private:
         Array<String>      mParams;
+        int                mMethodId;
         Array<Instruction> mInstructions;
         
         NO_COPY(CodeBlock);

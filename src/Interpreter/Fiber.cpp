@@ -292,7 +292,35 @@ namespace Finch
                         receiver->Receive(receiver, *this, string, args);
                     }
                     break;
-                                        
+                
+                case OP_RETURN:
+                    {
+                        int methodId = instruction.arg.id;
+                        
+                        // find the enclosing method on the callstack
+                        int frame;
+                        for (frame = 0; frame < mCallStack.Count(); frame++) {
+                            if (mCallStack[frame].Block().GetCode().MethodId() == methodId) {
+                                // found it
+                                break;
+                            }
+                        }
+                        
+                        if (frame == mCallStack.Count()) {
+                            Error("Cannot return from a block whose enclosing method has already returned.");
+                            // unwind the whole stack now and bail
+                            frame = mCallStack.Count() - 1;
+                        }
+                        
+                        // unwind until we reach the method
+                        while (frame >= 0) {
+                            mCallStack.Pop();
+                            mReceivers.Pop();
+                            frame--;
+                        }
+                    }
+                    break;
+                    
                 case OP_END_BLOCK:
                     mCallStack.Pop();
                     mReceivers.Pop();

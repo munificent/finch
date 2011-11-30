@@ -140,6 +140,8 @@ namespace Finch
                         // see if it's a reserved word
                         if (name == "self") token = Token(TOKEN_SELF);
                         else if (name == "undefined") token = Token(TOKEN_UNDEFINED);
+                        else if (name == "break") token = Token(TOKEN_BREAK);
+                        else if (name == "return") token = Token(TOKEN_RETURN);
                         else token = Token(TOKEN_NAME, name);
                         
                         mState = LEX_DEFAULT;

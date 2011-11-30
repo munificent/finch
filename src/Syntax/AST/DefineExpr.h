@@ -54,7 +54,7 @@ namespace Finch
         // The name of the message.
         String mName;
         
-        // The method body. The referred-to Expr should be a Blcoc.
+        // The method body. The referred-to Expr should be a BlockExpr.
         Ref<Expr> mBody;
     };
     
