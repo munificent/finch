@@ -106,6 +106,6 @@ You should be good to start hacking some Finch code now. There is some
 documentation here:
 
 * http://finch.stuffwithstuff.com
- http://journal.stuffwithstuff.com/category/finch/
+* http://journal.stuffwithstuff.com/category/finch/
 
 If you have any questions or comments, holler at me.
