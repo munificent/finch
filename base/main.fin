@@ -249,7 +249,7 @@ Object :: switch {
 }
 
 Switch <- (||
-    _prototype <- (||
+    prototype <- (||
         case: case do: block {
             ' if this switch has already matched a case, just do nothing
             if: _done? not then: {
@@ -284,8 +284,6 @@ Switch <- (||
             _result;
         }
     )
-
-    prototype { _prototype }
 )
 
 writeLine: "Base library loaded."

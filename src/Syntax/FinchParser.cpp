@@ -480,6 +480,23 @@ namespace Finch
 
             PARSE_RULE(body, Assignment());
             
+            // if the name is an object variable like "_foo" then the definition
+            // just creates that. if it's a local name like "foo" then we will
+            // automatically define "_foo" and a method "foo" to access it.
+            if (Expr::GetNameScope(name) == NAMESCOPE_LOCAL) {
+                // create the object variable name
+                String varName = String("_") + name;
+                
+                // define the accessor method
+                Ref<Expr> accessor = Ref<Expr>(new NameExpr(varName));
+                Ref<Expr> block = Ref<Expr>(new BlockExpr(args, accessor));
+                
+                DefineExpr * define = static_cast<DefineExpr*>(&*expr);
+                define->Define(true, name, block);
+                
+                name = varName;
+            }
+            
             DefineExpr * define = static_cast<DefineExpr*>(&*expr);
             define->Define(false, name, body);
         }
@@ -532,11 +549,6 @@ namespace Finch
         
         // attach the block's arguments
         Ref<Expr> block = Ref<Expr>(new BlockExpr(args, body));
-        
-        // desugar to the basic addMethod:body: form
-        Array<Ref<Expr> > addMethodArgs;
-        addMethodArgs.Add(Ref<Expr>(new StringExpr(name)));
-        addMethodArgs.Add(block);
         
         DefineExpr * define = static_cast<DefineExpr*>(&*expr);
         define->Define(true, name, block);
