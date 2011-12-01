@@ -14,18 +14,18 @@ namespace Finch
         OP_NUMBER_LITERAL,  // number = value
         OP_STRING_LITERAL,  // id = string table id of literal
         OP_BLOCK_LITERAL,   // id = block table id of code
-        
+
         OP_CREATE_ARRAY,    // id = number of elements to pop
-        
+
         OP_POP,             // (not used)
         OP_DUP,             // (not used)
-        
+
         OP_DEF_GLOBAL,      // id = string table id of identifier
         OP_DEF_OBJECT,      // id = string table id of identifier
         OP_DEF_LOCAL,       // id = string table id of identifier
-        
+
         OP_SET_LOCAL,       // id = string table id of identifier
-        
+
         OP_UNDEF_LOCAL,     // id = string table id of identifier
         OP_UNDEF_OBJECT,    // id = string table id of identifier
         OP_UNDEF_GLOBAL,    // id = string table id of identifier
@@ -50,12 +50,12 @@ namespace Finch
         OP_MESSAGE_8,       // id = string table id of message name
         OP_MESSAGE_9,       // id = string table id of message name
         OP_MESSAGE_10,      // id = string table id of message name
-        
+
         OP_RETURN,          // id = method id of enclosing method
-        
+
         OP_END_BLOCK        // (not used)
     };
-    
+
     // A single bytecode instruction. Each instruction is an OpCode and an
     // argument (which is unused for some ops).
     struct Instruction
@@ -63,7 +63,7 @@ namespace Finch
         Instruction()
         :   op(OP_NOTHING)
         {}
-        
+
         OpCode op;
         union
         {
@@ -71,7 +71,7 @@ namespace Finch
             int    id;
         } arg;
     };
-    
+
     // A block expression compiled to bytecode for a simple stack-based virtual
     // machine. This is what the interpreter executes.
     class CodeBlock
@@ -80,24 +80,24 @@ namespace Finch
         // Creates a new CodeBlock for a block that takes parameters with the
         // given names.
         CodeBlock(const Array<String> & params, int methodId);
-        
+
         // Gets the names of the parameters that this block expects.
         const Array<String> & Params() const { return mParams; }
-        
+
         int MethodId() const { return mMethodId; }
-        
+
         // Gets the instruction at the given offset in the block.
         const Instruction & operator[](int i) const { return mInstructions[i]; }
 
         void Write(OpCode op);
         void Write(OpCode op, double number);
         void Write(OpCode op, int id);
-        
+
     private:
         Array<String>      mParams;
         int                mMethodId;
         Array<Instruction> mInstructions;
-        
+
         NO_COPY(CodeBlock);
     };
 }

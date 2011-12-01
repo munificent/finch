@@ -14,7 +14,7 @@ namespace Finch
 {
     class DefineExpr;
     class Environment;
-    
+
     // Compiles an expression AST to bytecode for execution by the interpreter.
     class Compiler : private IExprVisitor
     {
@@ -24,13 +24,13 @@ namespace Finch
         // access to the string and code tables.
         static void Compile(Environment & environment, const Expr & expr,
                             CodeBlock & code, int enclosingMethod);
-        
+
     private:
         Compiler(Environment & environment, CodeBlock & code,
                  int enclosingMethod);
-        
+
         virtual ~Compiler() {}
-        
+
         virtual void Visit(const ArrayExpr & expr);
         virtual void Visit(const BindExpr & expr);
         virtual void Visit(const BlockExpr & expr);
@@ -45,16 +45,16 @@ namespace Finch
         virtual void Visit(const StringExpr & expr);
         virtual void Visit(const UndefineExpr & expr);
         virtual void Visit(const VarExpr & expr);
-        
+
+        void CompileBlock(const BlockExpr & expr, int methodId);
         void CompileDefinitions(const DefineExpr & expr);
-        
+
         static int sNextMethodId;
-        
+
         Environment & mEnvironment;
         CodeBlock & mCode;
-        
+
         int mEnclosingMethod;
-        int mMethodIdForNextBlock;
 
         NO_COPY(Compiler);
     };
