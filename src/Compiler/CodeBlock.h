@@ -20,19 +20,16 @@ namespace Finch
         OP_POP,             // (not used)
         OP_DUP,             // (not used)
 
-        OP_DEF_GLOBAL,      // id = string table id of identifier
-        OP_DEF_OBJECT,      // id = string table id of identifier
         OP_DEF_LOCAL,       // id = string table id of identifier
+        OP_DEF_FIELD,       // id = string table id of identifier
 
         OP_SET_LOCAL,       // id = string table id of identifier
 
         OP_UNDEF_LOCAL,     // id = string table id of identifier
-        OP_UNDEF_OBJECT,    // id = string table id of identifier
-        OP_UNDEF_GLOBAL,    // id = string table id of identifier
+        OP_UNDEF_FIELD,     // id = string table id of identifier
 
-        OP_LOAD_GLOBAL,     // id = string table id of identifier
-        OP_LOAD_OBJECT,     // id = string table id of identifier
         OP_LOAD_LOCAL,      // id = string table id of identifier
+        OP_LOAD_FIELD,      // id = string table id of identifier
         OP_LOAD_SELF,       // (not used)
 
         OP_BIND_METHOD,     // id = method name

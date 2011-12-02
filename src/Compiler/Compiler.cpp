@@ -111,11 +111,13 @@ namespace Finch
     void Compiler::Visit(const NameExpr & expr)
     {
         int id = mEnvironment.Strings().Add(expr.Name());
-        switch (Expr::GetNameScope(expr.Name()))
+        if (Expr::IsField(expr.Name()))
         {
-            case NAMESCOPE_GLOBAL: mCode.Write(OP_LOAD_GLOBAL, id); break;
-            case NAMESCOPE_OBJECT: mCode.Write(OP_LOAD_OBJECT, id); break;
-            case NAMESCOPE_LOCAL:  mCode.Write(OP_LOAD_LOCAL, id); break;
+            mCode.Write(OP_LOAD_FIELD, id);
+        }
+        else
+        {
+            mCode.Write(OP_LOAD_LOCAL, id);
         }
     }
 
@@ -162,19 +164,15 @@ namespace Finch
     {
         expr.Value()->Accept(*this);
 
-        switch (Expr::GetNameScope(expr.Name()))
+        if (Expr::IsField(expr.Name()))
         {
-            case NAMESCOPE_GLOBAL:
-            case NAMESCOPE_OBJECT:
-                //### bob: need error-handling (or have the parser
-                // disallow this). should not be able to <-- on
-                // globals or object vars
-                break;
-
-            case NAMESCOPE_LOCAL:
-                int id = mEnvironment.Strings().Add(expr.Name());
-                mCode.Write(OP_SET_LOCAL, id);
-                break;
+            //### bob: need error-handling (or have the parser disallow this).
+            // should not be able to <-- on fields
+        }
+        else
+        {
+            int id = mEnvironment.Strings().Add(expr.Name());
+            mCode.Write(OP_SET_LOCAL, id);
         }
     }
 
@@ -188,11 +186,13 @@ namespace Finch
     void Compiler::Visit(const UndefineExpr & expr)
     {
         int id = mEnvironment.Strings().Add(expr.Name());
-        switch (Expr::GetNameScope(expr.Name()))
+        if (Expr::IsField(expr.Name()))
         {
-            case NAMESCOPE_GLOBAL: mCode.Write(OP_UNDEF_GLOBAL, id); break;
-            case NAMESCOPE_OBJECT: mCode.Write(OP_UNDEF_OBJECT, id); break;
-            case NAMESCOPE_LOCAL:  mCode.Write(OP_UNDEF_LOCAL, id); break;
+            mCode.Write(OP_UNDEF_FIELD, id);
+        }
+        else
+        {
+            mCode.Write(OP_UNDEF_LOCAL, id);
         }
     }
 
@@ -201,19 +201,13 @@ namespace Finch
         expr.Value()->Accept(*this);
 
         int id = mEnvironment.Strings().Add(expr.Name());
-        switch (Expr::GetNameScope(expr.Name()))
+        if (Expr::IsField(expr.Name()))
         {
-            case NAMESCOPE_GLOBAL:
-                mCode.Write(OP_DEF_GLOBAL, id);
-                break;
-
-            case NAMESCOPE_OBJECT:
-                mCode.Write(OP_DEF_OBJECT, id);
-                break;
-
-            case NAMESCOPE_LOCAL:
-                mCode.Write(OP_DEF_LOCAL, id);
-                break;
+            mCode.Write(OP_DEF_FIELD, id);
+        }
+        else
+        {
+            mCode.Write(OP_DEF_LOCAL, id);
         }
     }
     

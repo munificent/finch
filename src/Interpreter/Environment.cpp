@@ -133,7 +133,7 @@ namespace Finch
         // wrap it in an object
         //### bob: should look for other places that call NewBlock and see if
         // they can be consolidated with this.
-        return Object::NewBlock(*this, *code, mGlobals, mNil);
+        return Object::NewBlock(*this, *code, Ref<Scope>(), mNil);
     }
     
     Ref<Object> Environment::MakeGlobal(const char * name)

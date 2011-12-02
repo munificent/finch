@@ -483,8 +483,8 @@ namespace Finch
             // if the name is an object variable like "_foo" then the definition
             // just creates that. if it's a local name like "foo" then we will
             // automatically define "_foo" and a method "foo" to access it.
-            if (Expr::GetNameScope(name) == NAMESCOPE_LOCAL) {
-                // create the object variable name
+            if (!Expr::IsField(name)) {
+                // create the field name
                 String varName = String("_") + name;
                 
                 // define the accessor method

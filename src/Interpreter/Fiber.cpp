@@ -22,8 +22,7 @@ namespace Finch
     {
         // push the starting block
         // when not in any method, self is Nil
-        BlockObject * blockObj = block->AsBlock();
-        mCallStack.Push(CallFrame(blockObj->Closure(), block, mEnvironment.Nil()));
+        CallMethod(mEnvironment.Nil(), block, Array<Ref<Object> >());
     }
 
     bool Fiber::IsDone() const
@@ -106,21 +105,18 @@ namespace Finch
                     PushOperand(mOperands.Peek());
                     break;
 
-                case OP_DEF_GLOBAL:
+                case OP_DEF_LOCAL:
                     {
                         // def returns the defined value, so instead of popping
                         // and then pushing the value back on the stack, we'll
                         // just peek
                         Ref<Object> value = mOperands.Peek();
-                        //### bob: if we get strings fully interned (i.e. no dupes in
-                        // string table), then the global name scope doesn't need the
-                        // actual string at all, just the id in the string table
                         String name = mEnvironment.Strings().Find(instruction.arg.id);
-                        mEnvironment.Globals()->Define(name, value);
+                        CurrentScope()->Define(name, value);
                     }
                     break;
-
-                case OP_DEF_OBJECT:
+                    
+                case OP_DEF_FIELD:
                     {
                         // def returns the defined value, so instead of popping
                         // and then pushing the value back on the stack, we'll
@@ -134,26 +130,16 @@ namespace Finch
                     }
                     break;
 
-                case OP_DEF_LOCAL:
-                    {
-                        // def returns the defined value, so instead of popping
-                        // and then pushing the value back on the stack, we'll
-                        // just peek
-                        Ref<Object> value = mOperands.Peek();
-                        String name = mEnvironment.Strings().Find(instruction.arg.id);
-                        CurrentScope()->Define(name, value);
-                    }
-                    break;
 
-                case OP_UNDEF_GLOBAL:
+                case OP_UNDEF_LOCAL:
                     {
                         String name = mEnvironment.Strings().Find(instruction.arg.id);
-                        mEnvironment.Globals()->Undefine(name);
+                        CurrentScope()->Undefine(name);
                         PushNil();
                     }
                     break;
-
-                case OP_UNDEF_OBJECT:
+                    
+                case OP_UNDEF_FIELD:
                     {
                         String name = mEnvironment.Strings().Find(instruction.arg.id);
                         if (!Self().IsNull())
@@ -163,15 +149,7 @@ namespace Finch
                         PushNil();
                     }
                     break;
-
-                case OP_UNDEF_LOCAL:
-                    {
-                        String name = mEnvironment.Strings().Find(instruction.arg.id);
-                        CurrentScope()->Undefine(name);
-                        PushNil();
-                    }
-                    break;
-
+                    
                 case OP_SET_LOCAL:
                     {
                         // set returns the defined value, so instead of popping
@@ -182,16 +160,16 @@ namespace Finch
                         CurrentScope()->Set(name, value);
                     }
                     break;
-
-                case OP_LOAD_GLOBAL:
+                    
+                case OP_LOAD_LOCAL:
                     {
                         String name = mEnvironment.Strings().Find(instruction.arg.id);
-                        Ref<Object> value = mEnvironment.Globals()->LookUp(name);
+                        Ref<Object> value = CurrentScope()->LookUp(name);
                         PushOperand(value.IsNull() ? mEnvironment.Nil() : value);
                     }
                     break;
-
-                case OP_LOAD_OBJECT:
+                    
+                case OP_LOAD_FIELD:
                     {
                         String name = mEnvironment.Strings().Find(instruction.arg.id);
                         if (!Self().IsNull())
@@ -203,14 +181,6 @@ namespace Finch
                         {
                             PushOperand(Ref<Object>());
                         }
-                    }
-                    break;
-
-                case OP_LOAD_LOCAL:
-                    {
-                        String name = mEnvironment.Strings().Find(instruction.arg.id);
-                        Ref<Object> value = CurrentScope()->LookUp(name);
-                        PushOperand(value.IsNull() ? mEnvironment.Nil() : value);
                     }
                     break;
 
@@ -374,7 +344,19 @@ namespace Finch
         BlockObject & block = *(blockObj->AsBlock());
 
         // create a new local scope for the block
-        Ref<Scope> scope = Ref<Scope>(new Scope(block.Closure()));
+        Ref<Scope> scope;
+        if (block.Closure().IsNull())
+        {
+            // if the block doesn't have a closure, that means its a top-level
+            // one. in that case, we use global directly (instead of a *child* 
+            // of global scope) so that variables defined in it are shared with
+            // other top-level blocks.
+            scope = mEnvironment.Globals();
+        }
+        else
+        {
+            scope = Ref<Scope>(new Scope(block.Closure()));
+        }
 
         // bind the arguments to the parameters. missing arguments will be
         // filled with Nil, and extra arguments will be ignored.

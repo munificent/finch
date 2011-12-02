@@ -87,13 +87,4 @@ Test suite: "Variables" is: {
         Test that: _someVar equals: Nil
         foo testVar
     }
-
-    Test test: "Global Scope" is: {
-        do: {
-            SomeGlobal <- "global"
-            Test that: SomeGlobal equals: "global"
-        }
-
-        Test that: SomeGlobal equals: "global"
-    }
 }

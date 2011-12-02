@@ -45,22 +45,9 @@ Test <- (||
     fail { self isTrue: False }
     pass { self isTrue: True }
 
-    isTrue: actual {
-        _tests <- _tests + 1
-        _totalTests <- _totalTests + 1
-
-        if: actual not then: {
-            _failed <- _failed + 1
-            _totalFails <- _totalFails + 1
-
-            self showHeader
-            writeLine: "  Test " + _tests toString + " failed."
-        }
-    }
-
-    isNil: actual { self that: actual equals: Nil }
-
-    isFalse: actual { self isTrue: actual not }
+    isTrue:  actual { self that: actual equals: True }
+    isNil:   actual { self that: actual equals: Nil }
+    isFalse: actual { self that: actual equals: False }
 
     that: actual equals: expected {
         _tests <- _tests + 1
