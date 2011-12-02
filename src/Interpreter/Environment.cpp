@@ -30,15 +30,16 @@ namespace Finch
         objectObj->RegisterPrimitive("parent:",         ObjectSetParent);
 
         // define Array prototype
-        mArrayPrototype = Object::NewObject(mObject, "array prototype");
+        mArrayPrototype = Object::NewObject(mObject, "Arrays");
         DynamicObject* arrayObj = mArrayPrototype->AsDynamic();
         arrayObj->RegisterPrimitive("length",      ArrayLength);
         arrayObj->RegisterPrimitive("add:",        ArrayAdd);
         arrayObj->RegisterPrimitive("at:",         ArrayAt);
         arrayObj->RegisterPrimitive("at:put:",     ArrayAtPut);
-        
-        // define Block type object
-        mBlockPrototype = Object::NewObject(mObject, "block prototype");
+        mGlobals->Define("Arrays", mArrayPrototype);
+
+        // define Blocks prototype
+        mBlockPrototype = Object::NewObject(mObject, "Blocks");
         DynamicObject* blockObj = mBlockPrototype->AsDynamic();
         blockObj->RegisterPrimitive("call", BlockCall);
         blockObj->RegisterPrimitive("call:", BlockCall);
@@ -51,16 +52,19 @@ namespace Finch
         blockObj->RegisterPrimitive("call::::::::", BlockCall);
         blockObj->RegisterPrimitive("call:::::::::", BlockCall);
         blockObj->RegisterPrimitive("call::::::::::", BlockCall);
-        
+        mGlobals->Define("Blocks", mBlockPrototype);
+
         // define Fiber prototype
-        mFiberPrototype = Object::NewObject(mObject, "fiber prototype");
+        mFiberPrototype = Object::NewObject(mObject, "Fibers");
         DynamicObject* fiberObj = mFiberPrototype->AsDynamic();
         fiberObj->RegisterPrimitive("running?", FiberRunning);
         fiberObj->RegisterPrimitive("done?", FiberDone);
-        
+        mGlobals->Define("Fibers", mFiberPrototype);
+
         // define Number type object
-        mNumberPrototype = Object::NewObject(mObject, "number prototype");
-        
+        mNumberPrototype = Object::NewObject(mObject, "Numbers");
+        mGlobals->Define("Numbers", mNumberPrototype);
+
         DynamicObject* numberObj = mNumberPrototype->AsDynamic();
         numberObj->RegisterPrimitive("abs", NumberAbs);
         numberObj->RegisterPrimitive("neg", NumberNeg);
@@ -87,8 +91,9 @@ namespace Finch
         numberObj->RegisterPrimitive(">=",  NumberGreaterThanOrEqual);
         
         // define String prototype
-        mStringPrototype = Object::NewObject(mObject, "string prototype");
-        
+        mStringPrototype = Object::NewObject(mObject, "Strings");
+        mGlobals->Define("Strings", mStringPrototype);
+
         DynamicObject* stringObj = mStringPrototype->AsDynamic();
         stringObj->RegisterPrimitive("length",      StringLength);
         stringObj->RegisterPrimitive("at:",         StringAt);
@@ -105,11 +110,6 @@ namespace Finch
         mGlobals->Define("#PRIM#", primitives);
 
         DynamicObject* primsObj = primitives->AsDynamic();
-        primsObj->RegisterPrimitive("arrayPrototype",           PrimitiveGetArrayPrototype);
-        primsObj->RegisterPrimitive("blockPrototype",           PrimitiveGetBlockPrototype);
-        primsObj->RegisterPrimitive("fiberPrototype",           PrimitiveGetFiberPrototype);
-        primsObj->RegisterPrimitive("numberPrototype",          PrimitiveGetNumberPrototype);
-        primsObj->RegisterPrimitive("stringPrototype",          PrimitiveGetStringPrototype);
         primsObj->RegisterPrimitive("stringConcat:and:",        PrimitiveStringConcat);
         primsObj->RegisterPrimitive("stringCompare:to:",        PrimitiveStringCompare);
         primsObj->RegisterPrimitive("write:",                   PrimitiveWrite);

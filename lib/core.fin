@@ -101,12 +101,7 @@ Ether :: (
     }
 )
 
-' block
-Block <- (||
-    prototype { #PRIM# blockPrototype }
-)
-
-Block prototype :: block? { True }
+Blocks :: block? { True }
 
 ' fiber
 Fiber <- (||
@@ -126,11 +121,9 @@ Fiber <- (||
     }
 
     yield { Fiber yield: Nil }
-
-    prototype { #PRIM# fiberPrototype }
 )
 
-Fiber prototype :: (
+Fibers :: (
     fiber? { True }
 
     run: value {
@@ -142,19 +135,9 @@ Fiber prototype :: (
     runBy { _runBy }
 )
 
-' number
-Number <- (||
-    prototype { #PRIM# numberPrototype }
-)
+Numbers :: number? { True }
 
-Number prototype :: number? { True }
-
-' string
-String <- (||
-    prototype { #PRIM# stringPrototype }
-)
-
-String prototype :: (
+Strings :: (
     string? { True }
 
     + right { #PRIM# stringConcat: self toString and: right toString }
@@ -177,8 +160,6 @@ String prototype :: (
 
 ' array
 Array <- (||
-    prototype { #PRIM# arrayPrototype }
-
     count: count {
         self count: count fillWith: Nil
     }
@@ -191,7 +172,7 @@ Array <- (||
     }
 )
 
-Array prototype :: (
+Arrays :: (
     array? { True }
 
     ++ right {
@@ -221,7 +202,7 @@ Array prototype :: (
 Object :: true? { False }
 True :: true? { True }
 
-Block prototype :: true? { self call true? }
+Blocks :: true? { self call true? }
 
 ' logical operators
 Object :: (

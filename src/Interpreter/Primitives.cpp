@@ -14,33 +14,6 @@
 
 namespace Finch
 {
-    // Built-in prototype accessors.
-    
-    PRIMITIVE(PrimitiveGetArrayPrototype)
-    {
-        fiber.Push(fiber.GetEnvironment().ArrayPrototype());
-    }
-
-    PRIMITIVE(PrimitiveGetBlockPrototype)
-    {
-        fiber.Push(fiber.GetEnvironment().BlockPrototype());
-    }
-    
-    PRIMITIVE(PrimitiveGetFiberPrototype)
-    {
-        fiber.Push(fiber.GetEnvironment().FiberPrototype());
-    }
-
-    PRIMITIVE(PrimitiveGetNumberPrototype)
-    {
-        fiber.Push(fiber.GetEnvironment().NumberPrototype());
-    }
-    
-    PRIMITIVE(PrimitiveGetStringPrototype)
-    {
-        fiber.Push(fiber.GetEnvironment().StringPrototype());
-    }
-    
     // Primitive string operators. Note that these get wrapped in the base
     // library so that the arguments can have toString called on them before
     // passing them to the primitives which expect them to already be in string
