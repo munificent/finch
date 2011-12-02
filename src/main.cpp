@@ -73,9 +73,9 @@ int main (int argc, char * const argv[])
     // load the base library
     //### bob: hard-coded path here is a total hack
 #ifdef HACK_ROOT_BASE_PATH
-    const char* baseLibPath = "base/main.fin";
+    const char* baseLibPath = "lib/core.fin";
 #else
-    const char* baseLibPath = "../../base/main.fin";
+    const char* baseLibPath = "../../lib/core.fin";
 #endif
     if (!InterpretFile(interpreter, baseLibPath))
     {
