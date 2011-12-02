@@ -70,16 +70,21 @@ namespace Finch
             // The block of code being executed by this frame.
             Ref<Object> block;
             
+            // The current receiver.
+            Ref<Object> receiver;
+            
             CallFrame()
             :   address(0),
                 scope(),
-                block()
+                block(),
+                receiver()
             {}
             
-            CallFrame(Ref<Scope> scope, Ref<Object> block)
+            CallFrame(Ref<Scope> scope, Ref<Object> block, Ref<Object> receiver)
             :   address(0),
                 scope(scope),
-                block(block)
+                block(block),
+                receiver(receiver)
             {}
             
             // Gets the code object for this frame.
@@ -99,7 +104,6 @@ namespace Finch
         Environment & mEnvironment;
         Stack<Ref<Object> > mOperands; 
         Stack<CallFrame>    mCallStack;
-        Stack<Ref<Object> > mReceivers;
         
         NO_COPY(Fiber);
     };

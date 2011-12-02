@@ -21,11 +21,9 @@ namespace Finch
         mEnvironment(interpreter.GetEnvironment())
     {
         // push the starting block
+        // when not in any method, self is Nil
         BlockObject * blockObj = block->AsBlock();
-        mCallStack.Push(CallFrame(blockObj->Closure(), block));
-
-        // if not in any method, self is Nil
-        mReceivers.Push(mEnvironment.Nil());
+        mCallStack.Push(CallFrame(blockObj->Closure(), block, mEnvironment.Nil()));
     }
 
     bool Fiber::IsDone() const
@@ -71,7 +69,7 @@ namespace Finch
 
                         const CodeBlock & code = mEnvironment.Blocks().Find(instruction.arg.id);
                         Ref<Object> block = Object::NewBlock(mEnvironment, code,
-                                closure, mReceivers.Peek());
+                                closure, mCallStack.Peek().receiver);
 
                         PushOperand(block);
                     }
@@ -294,7 +292,6 @@ namespace Finch
                     {
                         // eliminate the current frame first
                         mCallStack.Pop();
-                        mReceivers.Pop();
                     }
                     
                     SendMessage(instruction.arg.id, instruction.op - OP_TAIL_MESSAGE_0);
@@ -322,7 +319,6 @@ namespace Finch
                         // unwind until we reach the method
                         while (frame >= 0) {
                             mCallStack.Pop();
-                            mReceivers.Pop();
                             frame--;
                         }
                     }
@@ -330,7 +326,6 @@ namespace Finch
 
                 case OP_END_BLOCK:
                     mCallStack.Pop();
-                    mReceivers.Pop();
                     break;
 
                 default:
@@ -390,8 +385,7 @@ namespace Finch
         }
 
         // push the call onto the stack
-        mCallStack.Push(CallFrame(scope, blockObj));
-        mReceivers.Push(self);
+        mCallStack.Push(CallFrame(scope, blockObj, self));
     }
 
     void Fiber::CallBlock(Ref<Object> blockObj,
@@ -432,7 +426,7 @@ namespace Finch
 
     Ref<Object> Fiber::Self()
     {
-        return mReceivers.Peek();
+        return mCallStack.Peek().receiver;
     }
 
     void Fiber::PushOperand(Ref<Object> object)
