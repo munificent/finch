@@ -23,10 +23,10 @@ Test suite: "Booleans" is: {
         Test isFalse: ({ True } and: { False })
         Test isFalse: ({ False } and: { True })
         Test isFalse: ({ False } and: { False })
-        
+
         ' should short-circuit
         shorted <- True
-        Test isFalse: ({ False } and: { shorted <-- False; True })
+        Test isFalse: ({ False } and: { shorted <-- False, True })
         Test isTrue: shorted
     }
 
@@ -42,10 +42,10 @@ Test suite: "Booleans" is: {
         Test isTrue:  ({ True } or: { False })
         Test isTrue:  ({ False } or: { True })
         Test isFalse: ({ False } or: { False })
-        
+
         ' should short-circuit
         shorted <- True
-        Test isTrue: ({ True } or: { shorted <-- False; False })
+        Test isTrue: ({ True } or: { shorted <-- False, False })
         Test isTrue: shorted
     }
 }

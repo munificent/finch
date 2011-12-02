@@ -19,7 +19,7 @@ namespace Finch
         TOKEN_RIGHT_BRACKET,
         TOKEN_LEFT_BRACE,
         TOKEN_RIGHT_BRACE,
-        TOKEN_COMMA,
+        TOKEN_SEMICOLON,
         TOKEN_DOT,
         TOKEN_PIPE,
         
@@ -39,7 +39,7 @@ namespace Finch
         TOKEN_OPERATOR,
         TOKEN_KEYWORD,
         
-        TOKEN_LINE,
+        TOKEN_LINE, // Includes "," too since they are equivalent in Finch.
         TOKEN_IGNORE_LINE,
         TOKEN_EOF
     };

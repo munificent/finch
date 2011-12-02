@@ -244,8 +244,8 @@ Object :: (
 
 ' switch/case construct. usage looks like:
 ' c switch \
-'     case: "{" do: { "foo" },
-'     case: "}" do: { "blah" },
+'     case: "{" do: { "foo" };
+'     case: "}" do: { "blah" };
 '     default: { "argh" }
 Object :: switch {
     ' ### bob: having to do this is lame. :(
@@ -262,8 +262,9 @@ Switch <- (||
         case: case do: block {
             ' if this switch has already matched a case, just do nothing
             if: _done? not then: {
-                ' if the case is a block, then it's a predicate so evaluate it, otherwise
-                ' it's a value, so compare it to the value being switched
+                ' if the case is a block, then it's a predicate so evaluate
+                ' it, otherwise it's a value, so compare it to the value being
+                ' switched
                 matched <- if: case block? then: {
                     case call: _value
                 } else: {
@@ -290,12 +291,12 @@ Switch <- (||
                 _done? <- True
             }
 
-            _result;
+            _result
         }
     )
 )
 
 'writeLine: "Base library loaded."
 
-' ###bob: temp, run tests
+' ###bob: temp; run tests
 load: "../../test/test.fin"

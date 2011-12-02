@@ -6,7 +6,7 @@ Ackermann <- {|m n|
         Ackermann call: m - 1 : 1
     } else: {
         Ackermann call: m - 1 : (Ackermann call: m : n - 1)
-    } 
+    }
 }
 
 ' test it with a variety of arguments

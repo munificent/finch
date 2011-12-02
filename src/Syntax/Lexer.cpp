@@ -44,9 +44,9 @@ namespace Finch
                         case ']': token = SingleToken(TOKEN_RIGHT_BRACKET); break;
                         case '{': token = SingleToken(TOKEN_LEFT_BRACE); break;
                         case '}': token = SingleToken(TOKEN_RIGHT_BRACE); break;
-                        case ',': token = SingleToken(TOKEN_COMMA); break;
+                        case ',': token = SingleToken(TOKEN_LINE); break;
                         case '.': token = SingleToken(TOKEN_DOT); break;
-                        case ';': token = SingleToken(TOKEN_LINE); break;
+                        case ';': token = SingleToken(TOKEN_SEMICOLON); break;
                         case '\\': token = SingleToken(TOKEN_IGNORE_LINE); break;
                         case '|': token = SingleToken(TOKEN_PIPE); break;
                             

@@ -184,7 +184,7 @@ namespace Finch
         {
             MessageExpr * expr = static_cast<MessageExpr*>(&*keyword);
             
-            while (Match(TOKEN_COMMA))
+            while (Match(TOKEN_SEMICOLON))
             {
                 Array<Ref<Expr> > args;
                 bool dummy;

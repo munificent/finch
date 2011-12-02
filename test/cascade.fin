@@ -12,25 +12,25 @@ Test suite: "Strings" is: {
 
     Test test: "Unary" is: {
         called <-- ""
-        obj foo, bar, baz
+        obj foo ; bar ; baz
         Test that: called equals: "foobarbaz"
     }
 
     Test test: "Binary" is: {
         called <-- ""
-        obj + "foo", + "bar", + "baz"
+        obj + "foo" ; + "bar" ; + "baz"
         Test that: called equals: "foobarbaz"
     }
 
     Test test: "Keyword" is: {
         called <-- ""
-        obj add: "foo" and: "bar", add: "bar" and: "baz", add: "baz" and: "bop"
-        Test that: called equals: "foobarbarbazbazbop"
+        obj add: "foo" and: "bar" ; add: "bar" and: "baz"
+        Test that: called equals: "foobarbarbaz"
     }
 
     Test test: "Mixed" is: {
         called <-- ""
-        obj me add: "foo" + "bar" and: "baz", + "bar", bar
+        obj me add: "foo" + "bar" and: "baz" ; + "bar" ; bar
         Test that: called equals: "foobarbazbarbar"
     }
 }

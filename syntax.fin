@@ -44,14 +44,14 @@ undef temp ' remove a previously defined variable at this scope
 ' from being accessible in a parent scope. consider:
 {
     def a 1
-    
+
     ' set to nil
     {
         def a 2
         set a Nil
         Out write: a ' writes 'nil'
     }
-    
+
     ' unset
     {
         def a 2
@@ -73,7 +73,7 @@ self name
 .name
 
 ' compound expressions
-' two or more expressions separated by newlines (or ";") will form a
+' two or more expressions separated by newlines (or ",") will form a
 ' single sequence expression. newlines are thus significant, but a
 ' normalization step removed unneeded newlines.
 ' normalization rules:
@@ -94,7 +94,7 @@ if: 1 < 2 then:
 }
 
 ' normalizes to:
-if: 1 < 2 then: { write: "a" ; write: "b" + "c" ; } else: { write: "d" ; }
+if: 1 < 2 then: { write: "a" , write: "b" + "c" , } else: { write: "d" , }
 
 ' cascade
-foo bar, bang, baz ' same as foo bar; foo bang; foo baz
+foo bar; bang; baz ' same as foo bar, foo bang, foo baz

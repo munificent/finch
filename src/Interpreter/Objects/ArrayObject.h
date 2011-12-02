@@ -38,7 +38,7 @@ namespace Finch
             if (mElements.Count() > 0) text += mElements[0]->AsString();
             for (int i = 1; i < mElements.Count(); i++)
             {
-                text += String("; ") + mElements[i]->AsString();
+                text += String(", ") + mElements[i]->AsString();
             }
             text += "]";
             
