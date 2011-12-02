@@ -1,0 +1,153 @@
+Token <- (||
+  new: text type: type {
+    (|Tokens| _text <- text, _type <- type )
+  }
+
+  traits <- (||
+  )
+)
+
+Tokens <- (||
+  text { _text }
+  type { _type }
+)
+
+String prototype :: (
+  alpha? {
+    "abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ_" contains: self
+  }
+
+  operator? {
+    "-+=/<>?~!,#$%^&*" contains: self
+  }
+
+  alpha-or-operator? {
+    (self alpha?) or: { self operator? }
+  }
+)
+
+Lexer <- (||
+  lex: source {
+    result <- []
+    from: 0 to: source length do: {|n|
+      (source at: n) switch \
+      case: "(" do: { result add: "(" };
+      case: ")" do: { result add: ")" };
+      case: "[" do: { result add: "[" };
+      case: "]" do: { result add: "]" };
+      case: "{" do: { result add: "{" };
+      case: "}" do: { result add: "}" };
+      case: ";" do: { result add: ";" };
+      case: "." do: { result add: "." };
+      case: "|" do: { result add: "|" }
+    }
+
+    result
+  }
+
+  new: source {
+    (|Lexers|
+      _source <- source
+      _pos <- 0
+      _start <- 0
+    )
+  }
+)
+
+Lexers <- (||
+  each: block {
+    token <- self next-token
+    while: { token != Nil } do: {
+      block call: token
+      token <-- self next-token
+    }
+  }
+
+  advance {
+    _pos <- _pos + 1
+    _source at: _pos
+  }
+
+  done? { _pos >= _source length }
+
+  advance-while: predicate {
+    while: { self done? not } and: { predicate call: self current } do: {
+      self advance
+    }
+  }
+
+  current { _source at: _pos }
+
+  next-token {
+    self skip-whitespace
+
+    if: _pos >= _source length then: { return Nil }
+
+    c <- self current
+    if: c = "(" then: { return self single-token }
+    if: c = ")" then: { return self single-token }
+    if: c = "[" then: { return self single-token }
+    if: c = "]" then: { return self single-token }
+    if: c = "{" then: { return self single-token }
+    if: c = "}" then: { return self single-token }
+    if: c = "," then: { return self single-token }
+    if: c = ";" then: { return self single-token }
+    if: c = "." then: { return self single-token }
+    if: c = "|" then: { return self single-token }
+    if: (c alpha?) then: { return self read-name }
+  }
+
+  skip-whitespace {
+    while: { self current = " " } do: {
+      _pos <- _pos + 1
+      _start <- _pos
+    }
+  }
+
+  read-name {
+    self advance-while: {|c| c alpha-or-operator? }
+    self make-token
+  }
+
+  read-operator {
+    ' When token types are implemented; needs to switch to name if it
+    ' encounters a letter.
+    self advance-while: {|c| c alpha-or-operator? }
+    self make-token
+  }
+
+  single-token {
+    self advance
+    self make-token
+  }
+
+  make-token {
+    result <- _source from: _start to: _pos
+    _start <- _pos
+    result
+  }
+)
+
+tests <- [["()[]{}", "(", ")", "[", "]", "{", "}"]
+          [";.|", ";", ".", "|"]
+          ["foo bar a-+=/<>?~!,#$%^&*", "foo", "bar", "a-+=/<>?~!,#$%^&*"]
+         ]
+
+tests each: {|test|
+  lexer <- Lexer new: (test at: 0)
+  result <- []
+  lexer each: {|token| result add: token }
+
+  passed <- True
+  from: 0 to: test length - 1 do: {|n|
+    expected <- test at: n + 1
+    actual <- result at: n
+    if: expected != actual then: { passed <-- False }
+  }
+
+  if: passed then: {
+    writeLine: "PASS " + (test at: 0)
+  } else: {
+    writeLine: "FAIL " + (test at: 0) + " != " + result
+  }
+}
