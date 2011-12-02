@@ -1,8 +1,8 @@
 Test suite: "Fibers" is: {
     Test test: "new: doesn't immediately start" is: {
-        executed <- False
+        executed <- false
         fiber <- Fiber new: {
-            executed <-- True
+            executed <-- true
         }
 
         Test isFalse: executed
@@ -16,9 +16,9 @@ Test suite: "Fibers" is: {
     }
 
     Test test: "spawn: immediately starts" is: {
-        executed <- False
+        executed <- false
         fiber <- Fiber spawn: {
-            executed <-- True
+            executed <-- true
         }
 
         Test isTrue: executed
@@ -56,7 +56,7 @@ Test suite: "Fibers" is: {
         Test isFalse: fiber running?
     }
 
-    Test test: "run returns Nil after last yield" is: {
+    Test test: "run returns nil after last yield" is: {
         fiber <- Fiber new: {
             Fiber yield: 123
         }
@@ -65,12 +65,12 @@ Test suite: "Fibers" is: {
         result2 <- fiber run
 
         Test that: result1 equals: 123
-        Test that: result2 equals: Nil
+        Test that: result2 equals: nil
         Test isFalse: fiber running?
     }
 
     Test test: "run: passes in value" is: {
-        passedIn <- Nil
+        passedIn <- nil
         fiber <- Fiber new: {
             passedIn <-- Fiber yield
         }

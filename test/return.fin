@@ -53,7 +53,7 @@ Test suite: "Return" is: {
         a <- "before"
         obj <- (||
             foo {
-                if: True then: { return "result" }
+                if: true then: { return "result" }
             }
         )
 

@@ -1,51 +1,51 @@
 Test suite: "Booleans" is: {
     Test test: "toString" is: {
-        Test that: True toString  equals: "true"
-        Test that: False toString equals: "false"
+        Test that: true toString  equals: "true"
+        Test that: false toString equals: "false"
     }
 
     Test test: "not" is: {
-        Test that: True not  equals: False
-        Test that: False not equals: True
-        Test that: True not not  equals: True
-        Test that: False not not equals: False
+        Test that: true not  equals: false
+        Test that: false not equals: true
+        Test that: true not not  equals: true
+        Test that: false not not equals: false
     }
 
     Test test: "and:" is: {
         ' should work with values
-        Test isTrue:  (True and: True)
-        Test isFalse: (True and: False)
-        Test isFalse: (False and: True)
-        Test isFalse: (False and: False)
+        Test isTrue:  (true and: true)
+        Test isFalse: (true and: false)
+        Test isFalse: (false and: true)
+        Test isFalse: (false and: false)
 
         ' and blocks
-        Test isTrue:  ({ True } and: { True })
-        Test isFalse: ({ True } and: { False })
-        Test isFalse: ({ False } and: { True })
-        Test isFalse: ({ False } and: { False })
+        Test isTrue:  ({ true } and: { true })
+        Test isFalse: ({ true } and: { false })
+        Test isFalse: ({ false } and: { true })
+        Test isFalse: ({ false } and: { false })
 
         ' should short-circuit
-        shorted <- True
-        Test isFalse: ({ False } and: { shorted <-- False, True })
+        shorted <- true
+        Test isFalse: ({ false } and: { shorted <-- false, true })
         Test isTrue: shorted
     }
 
     Test test: "or:" is: {
         ' should work with values
-        Test isTrue:  (True or: True)
-        Test isTrue:  (True or: False)
-        Test isTrue:  (False or: True)
-        Test isFalse: (False or: False)
+        Test isTrue:  (true or: true)
+        Test isTrue:  (true or: false)
+        Test isTrue:  (false or: true)
+        Test isFalse: (false or: false)
 
         ' and blocks
-        Test isTrue:  ({ True } or: { True })
-        Test isTrue:  ({ True } or: { False })
-        Test isTrue:  ({ False } or: { True })
-        Test isFalse: ({ False } or: { False })
+        Test isTrue:  ({ true } or: { true })
+        Test isTrue:  ({ true } or: { false })
+        Test isTrue:  ({ false } or: { true })
+        Test isFalse: ({ false } or: { false })
 
         ' should short-circuit
-        shorted <- True
-        Test isTrue: ({ True } or: { shorted <-- False, False })
+        shorted <- true
+        Test isTrue: ({ true } or: { shorted <-- false, false })
         Test isTrue: shorted
     }
 }

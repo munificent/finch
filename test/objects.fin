@@ -9,10 +9,10 @@ Test suite: "Objects" is: {
         a <- apple
         b <- apple
         Test isTrue: a = b
-        Test isFalse: a = Nil
+        Test isFalse: a = nil
 
         Test isFalse: a != b
-        Test isTrue: a != Nil
+        Test isTrue: a != nil
 
         ' equality is *strict* and doesn't implicitly convert
         Test isFalse: "apple" = apple
@@ -36,19 +36,19 @@ Test suite: "Objects" is: {
         Test isFalse: { 0 } number?
         Test isFalse: { 0 } string?
 
-        Test isFalse: True array?
-        Test isFalse: True block?
-        Test isTrue:  True boolean?
-        Test isFalse: True fiber?
-        Test isFalse: True number?
-        Test isFalse: True string?
+        Test isFalse: true array?
+        Test isFalse: true block?
+        Test isTrue:  true boolean?
+        Test isFalse: true fiber?
+        Test isFalse: true number?
+        Test isFalse: true string?
 
-        Test isFalse: False array?
-        Test isFalse: False block?
-        Test isTrue:  False boolean?
-        Test isFalse: False fiber?
-        Test isFalse: False number?
-        Test isFalse: False string?
+        Test isFalse: false array?
+        Test isFalse: false block?
+        Test isTrue:  false boolean?
+        Test isFalse: false fiber?
+        Test isFalse: false number?
+        Test isFalse: false string?
 
         fiber <- Fiber new: { 0 }
         Test isFalse: fiber array?

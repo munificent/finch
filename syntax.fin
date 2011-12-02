@@ -39,7 +39,7 @@ def foo <- 345
 undef foo
 
 undef temp ' remove a previously defined variable at this scope
-' note this is different from setting temp to Nil
+' note this is different from setting temp to nil
 ' when you unset a variable, you unshadow that name
 ' from being accessible in a parent scope. consider:
 {
@@ -48,7 +48,7 @@ undef temp ' remove a previously defined variable at this scope
     ' set to nil
     {
         def a 2
-        set a Nil
+        set a nil
         Out write: a ' writes 'nil'
     }
 

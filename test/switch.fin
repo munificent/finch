@@ -1,10 +1,10 @@
 Test suite: "Switch" is: {
     Test test: "Match value" is: {
-        found <- False
+        found <- false
 
         2 switch \
         case: 1 do: { Test fail } ;
-        case: 2 do: { found <-- True } ;
+        case: 2 do: { found <-- true } ;
         case: 3 do: { Test fail }
 
         Test isTrue: found
@@ -17,20 +17,20 @@ Test suite: "Switch" is: {
     }
 
     Test test: "Default match" is: {
-        found <- False
+        found <- false
         5 switch \
         case: 1 do: { Test fail } ;
         case: 3 do: { Test fail } ;
-        default: { found <-- True }
+        default: { found <-- true }
 
         Test isTrue: found
     }
 
     Test test: "Match predicate" is: {
-        found <- False
+        found <- false
         2 switch \
         case: {|i| i < 2 } do: { Test fail } ;
-        case: {|i| i = 2 } do: { found <-- True } ;
+        case: {|i| i = 2 } do: { found <-- true } ;
         case: {|i| i > 2 } do: { Test fail }
 
         Test isTrue: found

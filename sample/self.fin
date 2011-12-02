@@ -1,6 +1,6 @@
 ' tests various edges regarding self
 
-Nil addMethod: "name" body: { "Nil" }
+nil addMethod: "name" body: { "nil" }
 
 Parent <- (||
     _name <- "parent"
@@ -42,7 +42,7 @@ Other <- (||
 ' passing a block to a method should *not* use the method's self
 ' in this case, since the block is not defined in any object, self
 ' should be nil
-writeLine: (Other callMe: { self name }) + " (expect Nil)"
+writeLine: (Other callMe: { self name }) + " (expect nil)"
 
 Foo <- (||
     name { "Foo" }

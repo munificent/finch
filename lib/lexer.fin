@@ -57,7 +57,7 @@ Lexer <- (||
 Lexers <- (||
   each: block {
     token <- self next-token
-    while: { token != Nil } do: {
+    while: { token != nil } do: {
       block call: token
       token <-- self next-token
     }
@@ -81,7 +81,7 @@ Lexers <- (||
   next-token {
     self skip-whitespace
 
-    if: _pos >= _source length then: { return Nil }
+    if: _pos >= _source length then: { return nil }
 
     c <- self current
     if: c = "(" then: { return self single-token }
@@ -138,11 +138,11 @@ tests each: {|test|
   result <- []
   lexer each: {|token| result add: token }
 
-  passed <- True
+  passed <- true
   from: 0 to: test length - 1 do: {|n|
     expected <- test at: n + 1
     actual <- result at: n
-    if: expected != actual then: { passed <-- False }
+    if: expected != actual then: { passed <-- false }
   }
 
   if: passed then: {

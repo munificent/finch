@@ -1,26 +1,26 @@
 Test suite: "Messages" is: {
-    Test test: "missing args are Nil" is: {
+    Test test: "missing args are nil" is: {
         {|a b c d|
             Test isNil: a
             Test isNil: b
             Test isNil: c
             Test isNil: d
         } call
-        
+
         {|a b c d|
             Test that: a equals: 1
             Test isNil: b
             Test isNil: c
             Test isNil: d
         } call: 1
-        
+
         {|a b c d|
             Test that: a equals: 1
             Test that: b equals: 2
             Test isNil: c
             Test isNil: d
         } call: 1 : 2
-        
+
         {|a b c d|
             Test that: a equals: 1
             Test that: b equals: 2

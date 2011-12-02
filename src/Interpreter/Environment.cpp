@@ -119,9 +119,9 @@ namespace Finch
         primsObj->RegisterPrimitive("callstackDepth",           PrimitiveGetCallstackDepth);
         
         // make the special values
-        mNil = MakeGlobal("Nil");
-        mTrue = MakeGlobal("True");
-        mFalse = MakeGlobal("False");
+        mNil = MakeGlobal("nil");
+        mTrue = MakeGlobal("true");
+        mFalse = MakeGlobal("false");
     }
 
     Ref<Object> Environment::CreateBlock(Ref<Expr> expr)

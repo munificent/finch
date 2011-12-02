@@ -1,8 +1,8 @@
 Test suite: "Self" is: {
-    Test test: "Self in non-method block is Nil" is: {
+    Test test: "Self in non-method block is nil" is: {
         block <- { self }
 
-        Test that: block call equals: Nil
+        Test that: block call equals: nil
     }
 
     Test test: "Self in block is outer self" is: {
@@ -60,7 +60,7 @@ Test suite: "Self" is: {
                 a <- self toString
                 if: recurse then: {
                     ' call this exact same method but with a different self
-                    a <-- a + (child recurse: False)
+                    a <-- a + (child recurse: false)
                     ' see that self was correctly restored to parent
                     a <-- a + self toString
                 }
@@ -73,9 +73,9 @@ Test suite: "Self" is: {
             toString { "c" }
         )
 
-        Test that: (parent recurse: False) equals: "p"
-        Test that: (child  recurse: False) equals: "c"
-        Test that: (parent recurse: True) equals: "pcp"
+        Test that: (parent recurse: false) equals: "p"
+        Test that: (child  recurse: false) equals: "c"
+        Test that: (parent recurse: true) equals: "pcp"
     }
 
     Test test: "Storing a block in a method caches self at that time" is: {

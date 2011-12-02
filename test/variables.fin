@@ -33,7 +33,7 @@ Test suite: "Variables" is: {
     Test test: "Assign Undefined" is: {
         a <-- "something"
         ' since a wasn't defined, should do nothing
-        Test that: a equals: Nil
+        Test that: a equals: nil
     }
 
     Test test: "Local Scope" is: {
@@ -42,7 +42,7 @@ Test suite: "Variables" is: {
             Test that: a equals: "local"
         }
 
-        Test that: a equals: Nil
+        Test that: a equals: nil
     }
 
     Test test: "Nested Local Scope" is: {
@@ -82,9 +82,9 @@ Test suite: "Variables" is: {
             testVar { Test that: _someVar equals: "obj var" }
         )
 
-        Test that: _someVar equals: Nil
+        Test that: _someVar equals: nil
         foo createVar
-        Test that: _someVar equals: Nil
+        Test that: _someVar equals: nil
         foo testVar
     }
 }

@@ -4,7 +4,7 @@ writeLine: "Running Finch test suite."
 Test <- (||
     _suite      <- ""
     _test       <- ""
-    _testShown  <- False
+    _testShown  <- false
     _tests      <- 0
     _failed     <- 0
 
@@ -21,7 +21,7 @@ Test <- (||
         _test       <- name
         _tests      <- 0
         _failed     <- 0
-        _testShown  <- False
+        _testShown  <- false
 
         body call
 
@@ -38,16 +38,16 @@ Test <- (||
     showHeader {
         if: _testShown not then: {
             writeLine: _suite + " / " + _test
-            _testShown <- True
+            _testShown <- true
         }
     }
 
-    fail { self isTrue: False }
-    pass { self isTrue: True }
+    fail { self isTrue: false }
+    pass { self isTrue: true }
 
-    isTrue:  actual { self that: actual equals: True }
-    isNil:   actual { self that: actual equals: Nil }
-    isFalse: actual { self that: actual equals: False }
+    isTrue:  actual { self that: actual equals: true }
+    isNil:   actual { self that: actual equals: nil }
+    isFalse: actual { self that: actual equals: false }
 
     that: actual equals: expected {
         _tests <- _tests + 1

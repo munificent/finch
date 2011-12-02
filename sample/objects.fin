@@ -37,7 +37,7 @@ writeLine: jetta toString
 
 ' now let's try adding something to the car prototype. first we'll
 ' check to see that it isn't there
-writeLine: jetta shortName ' this should write Nil
+writeLine: jetta shortName ' this should write nil
 
 ' now we'll add a method to the prototype
 Car prototype :: shortName { _make + " " + _model }

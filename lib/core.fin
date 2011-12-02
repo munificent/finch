@@ -4,15 +4,15 @@ Object :: (
 
     ' any non-true object is implicitly "false", so sending "not" to it
     ' returns true
-    not { True }
+    not { true }
 
     ' type tests
-    array?   { False }
-    block?   { False }
-    boolean? { False }
-    fiber?   { False }
-    number?  { False }
-    string?  { False }
+    array?   { false }
+    block?   { false }
+    boolean? { false }
+    fiber?   { false }
+    number?  { false }
+    string?  { false }
 
     ifTrue: then else: else { else call }
 
@@ -30,15 +30,15 @@ Object :: (
     call: a : b : c : d : e : f : g : h : i : j { self }
 )
 
-True :: not { False }
+true :: not { false }
 
-True :: boolean? { True }
-False :: boolean? { True }
+true :: boolean? { true }
+false :: boolean? { true }
 
-True :: toString { "true" }
-False :: toString { "false" }
+true :: toString { "true" }
+false :: toString { "false" }
 
-True :: ifTrue: then else: else { then call }
+true :: ifTrue: then else: else { then call }
 
 Ether :: (
     ' define a for-style loop
@@ -60,7 +60,7 @@ Ether :: (
     do: block { block call }
 
     ' if then
-    if: condition then: then { condition ifTrue: then else: { Nil } }
+    if: condition then: then { condition ifTrue: then else: { nil } }
     if: condition then: then else: else { condition ifTrue: then else: else }
 
     ' a chained if/then/else
@@ -101,7 +101,7 @@ Ether :: (
     }
 )
 
-Blocks :: block? { True }
+Blocks :: block? { true }
 
 ' fiber
 Fiber <- (||
@@ -120,25 +120,25 @@ Fiber <- (||
         #PRIM# switchToFiber: Fiber current runBy passing: value
     }
 
-    yield { Fiber yield: Nil }
+    yield { Fiber yield: nil }
 )
 
 Fibers :: (
-    fiber? { True }
+    fiber? { true }
 
     run: value {
       _runBy <- Fiber current
       #PRIM# switchToFiber: self passing: value
     }
 
-    run { self run: Nil }
+    run { self run: nil }
     runBy { _runBy }
 )
 
-Numbers :: number? { True }
+Numbers :: number? { true }
 
 Strings :: (
-    string? { True }
+    string? { true }
 
     + right { #PRIM# stringConcat: self toString and: right toString }
 
@@ -161,7 +161,7 @@ Strings :: (
 ' array
 Array <- (||
     count: count {
-        self count: count fillWith: Nil
+        self count: count fillWith: nil
     }
 
     count: count fillWith: element {
@@ -173,7 +173,7 @@ Array <- (||
 )
 
 Arrays :: (
-    array? { True }
+    array? { true }
 
     ++ right {
         result <- []
@@ -197,10 +197,10 @@ Arrays :: (
     }
 )
 
-' truthiness: only two things are true: the True global object, and
+' truthiness: only two things are true: the true global object, and
 ' blocks that evaluate to it.
-Object :: true? { False }
-True :: true? { True }
+Object :: true? { false }
+true :: true? { true }
 
 Blocks :: true? { self call true? }
 
@@ -210,13 +210,13 @@ Object :: (
         if: self true? then: {
             right true?
         } else: {
-            False
+            false
         }
     }
 
     or: right {
         if: self true? then: {
-            True
+            true
         } else: {
             right true?
         }
@@ -233,8 +233,8 @@ Object :: switch {
     outerSelf <- self
     (|Switch prototype|
         _value  <- outerSelf
-        _done   <- False
-        _result <- Nil
+        _done   <- false
+        _result <- nil
     )
 }
 
@@ -255,12 +255,12 @@ Switch <- (||
                 if: matched then: {
                     ' execute the block
                     _result <- block call: _value
-                    _done? <- True
+                    _done? <- true
                 }
             }
 
             ' always return the result. if we haven't matched yet, this will
-            ' just be Nil. once we've matched, it will be the matched value.
+            ' just be nil. once we've matched, it will be the matched value.
             _result
         }
 
@@ -269,7 +269,7 @@ Switch <- (||
             if: _done? not then: {
                 ' execute the block
                 _result <- block call: _value
-                _done? <- True
+                _done? <- true
             }
 
             _result
