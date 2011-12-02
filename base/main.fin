@@ -78,6 +78,15 @@ Ether :: (
         }
     }
 
+    while: condition-a and: condition-b do: block {
+        while: { condition-a call and: condition-b } do: block
+    }
+
+    ' until
+    until: condition do: block {
+        while: { condition call not } do: block
+    }
+
     ' build the output methods in terms of the single primitive one
     write: text {
         ' make sure the argument is always converted to a string before
@@ -286,7 +295,7 @@ Switch <- (||
     )
 )
 
-writeLine: "Base library loaded."
+'writeLine: "Base library loaded."
 
 ' ###bob: temp, run tests
 load: "../../test/test.fin"

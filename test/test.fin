@@ -26,7 +26,10 @@ Test <- (||
         body call
 
         if: _failed > 0 then: {
-            writeLine: "XXX " + _suite + " / " + _test + " failed " + _failed +
+            writeLine: "FAIL " + _suite + " / " + _test + " failed " + _failed +
+                " / " + _tests + " tests"
+        } else: {
+            writeLine: "PASS " + _suite + " / " + _test + " failed " + _failed +
                 " / " + _tests + " tests"
         }
         _test <- ""
@@ -60,7 +63,17 @@ Test <- (||
     isFalse: actual { self isTrue: actual not }
 
     that: actual equals: expected {
-        self isTrue: actual = expected
+        _tests <- _tests + 1
+        _totalTests <- _totalTests + 1
+
+        if: actual != expected then: {
+            _failed <- _failed + 1
+            _totalFails <- _totalFails + 1
+
+            self showHeader
+            writeLine: "  Test " + _tests toString + " failed. Expected " +
+                expected + " but got " + actual + "."
+        }
     }
 
     complete {

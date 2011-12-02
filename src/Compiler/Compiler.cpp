@@ -20,21 +20,27 @@
 namespace Finch
 {
     int Compiler::sNextMethodId = 1;
-
-    void Compiler::Compile(Environment & environment, const Expr & expr,
-                           CodeBlock & code, int enclosingMethod)
+    
+    Ref<CodeBlock> Compiler::CompileTopLevel(Environment & environment, const Expr & expr)
     {
-        Compiler compiler = Compiler(environment, code, enclosingMethod);
+        Method method = Method(0);
+        Ref<CodeBlock> code = Ref<CodeBlock>(new CodeBlock(Array<String>(), 0));
+        Compile(environment, expr, *code, method);
+        return code;
+    }
+    
+    void Compiler::Compile(Environment & environment, const Expr & expr,
+                           CodeBlock & code, Method & method)
+    {
+        Compiler compiler = Compiler(environment, method, code);
         expr.Accept(compiler);
-
         code.Write(OP_END_BLOCK);
     }
-
-    Compiler::Compiler(Environment & environment, CodeBlock & code,
-                       int enclosingMethod)
+    
+    Compiler::Compiler(Environment & environment, Method & method, CodeBlock & code)
     :   mEnvironment(environment),
-        mCode(code),
-        mEnclosingMethod(enclosingMethod)
+        mMethod(method),
+        mCode(code)
     {
     }
 
@@ -60,7 +66,7 @@ namespace Finch
 
     void Compiler::Visit(const BlockExpr & expr)
     {
-        CompileBlock(expr, 0);
+        CompileBlock(expr);
     }
     
     void Compiler::Visit(const MessageExpr & expr)
@@ -129,7 +135,8 @@ namespace Finch
     {
         expr.Result()->Accept(*this);
         if (expr.IsReturn()) {
-            mCode.Write(OP_RETURN, mEnclosingMethod);
+            mCode.Write(OP_RETURN, mMethod.id);
+            mMethod.hasReturn = true;
         } else {
             mCode.Write(OP_END_BLOCK);
         }
@@ -210,19 +217,35 @@ namespace Finch
         }
     }
     
-    void Compiler::CompileBlock(const BlockExpr & expr, int methodId)
+    void Compiler::CompileBlock(const BlockExpr & expr)
     {
         Ref<CodeBlock> code = Ref<CodeBlock>(
-                                             new CodeBlock(expr.Params(), methodId));
+            new CodeBlock(expr.Params(), 0));
         
-        // if this block is a method, then it becomes the new enclosing method
-        // for its contents.
-        int enclosingMethod = mEnclosingMethod;
-        if (methodId != 0) {
-            enclosingMethod = methodId;
+        Compiler::Compile(mEnvironment, *expr.Body(), *code, mMethod);
+        
+        code->MarkTailCalls();
+        
+        int id = mEnvironment.Blocks().Add(code);
+        mCode.Write(OP_BLOCK_LITERAL, id);
+    }
+    
+    void Compiler::CompileMethod(const BlockExpr & expr, int methodId)
+    {
+        Method method = Method(methodId);
+        
+        Ref<CodeBlock> code = Ref<CodeBlock>(
+            new CodeBlock(expr.Params(), methodId));
+        
+        Compiler::Compile(mEnvironment, *expr.Body(), *code, method);
+        
+        // if the method contains any non-local returns, we can't eliminate it
+        // on a tail call because it needs to stay on the stack so the
+        // non-local return can find it when unwinding.
+        if (!method.hasReturn)
+        {
+            code->MarkTailCalls();
         }
-        
-        Compiler::Compile(mEnvironment, *expr.Body(), *code, enclosingMethod);
         
         int id = mEnvironment.Blocks().Add(code);
         mCode.Write(OP_BLOCK_LITERAL, id);
@@ -247,7 +270,7 @@ namespace Finch
                 BlockExpr & body = static_cast<BlockExpr &>(
                     *definition.GetBody());
                 // create a unique id for the method
-                CompileBlock(body, sNextMethodId++);
+                CompileMethod(body, sNextMethodId++);
                 mCode.Write(OP_BIND_METHOD, id);
             }
             else

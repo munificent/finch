@@ -50,7 +50,19 @@ namespace Finch
         OP_MESSAGE_8,       // id = string table id of message name
         OP_MESSAGE_9,       // id = string table id of message name
         OP_MESSAGE_10,      // id = string table id of message name
-
+        
+        OP_TAIL_MESSAGE_0,  // id = string table id of message name
+        OP_TAIL_MESSAGE_1,  // id = string table id of message name
+        OP_TAIL_MESSAGE_2,  // id = string table id of message name
+        OP_TAIL_MESSAGE_3,  // id = string table id of message name
+        OP_TAIL_MESSAGE_4,  // id = string table id of message name
+        OP_TAIL_MESSAGE_5,  // id = string table id of message name
+        OP_TAIL_MESSAGE_6,  // id = string table id of message name
+        OP_TAIL_MESSAGE_7,  // id = string table id of message name
+        OP_TAIL_MESSAGE_8,  // id = string table id of message name
+        OP_TAIL_MESSAGE_9,  // id = string table id of message name
+        OP_TAIL_MESSAGE_10, // id = string table id of message name
+        
         OP_RETURN,          // id = method id of enclosing method
 
         OP_END_BLOCK        // (not used)
@@ -80,7 +92,7 @@ namespace Finch
         // Creates a new CodeBlock for a block that takes parameters with the
         // given names.
         CodeBlock(const Array<String> & params, int methodId);
-
+        
         // Gets the names of the parameters that this block expects.
         const Array<String> & Params() const { return mParams; }
 
@@ -93,7 +105,11 @@ namespace Finch
         void Write(OpCode op, double number);
         void Write(OpCode op, int id);
 
-    private:
+        // Finds any message sends that immediately precede OP_END_BLOCKs and
+        // changes them to tail call instructions.
+        void MarkTailCalls();
+        
+    private:        
         Array<String>      mParams;
         int                mMethodId;
         Array<Instruction> mInstructions;

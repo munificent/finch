@@ -6,9 +6,6 @@
 
 namespace Finch
 {
-    class Environment;
-    class Expr;
-    
     //### bob: code is never removed from this, even if no longer needed.
     //    eventually, it would be good to ref-count or gc the contents of this.
     // A table of CodeBlocks. The compiler adds compiled code to this so that
@@ -16,11 +13,6 @@ namespace Finch
     class BlockTable
     {
     public:
-        // Adds the given block to the table if not already present and returns
-        // its ID. This should only be called for top-level blocks.
-        int Add(const Array<String> & params, const Expr & body,
-                Environment & environment);
-        
         // Adds the given block to the table if not already present and returns
         // its ID.
         int Add(Ref<CodeBlock> code);

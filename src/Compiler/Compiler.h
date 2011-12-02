@@ -22,12 +22,24 @@ namespace Finch
         // Compiles the given expression in the given Environment and writes
         // the bytecode into the given CodeBlock. Needs an Environment to have
         // access to the string and code tables.
-        static void Compile(Environment & environment, const Expr & expr,
-                            CodeBlock & code, int enclosingMethod);
+        static Ref<CodeBlock> CompileTopLevel(Environment & environment,
+                                              const Expr & expr);
 
     private:
-        Compiler(Environment & environment, CodeBlock & code,
-                 int enclosingMethod);
+        struct Method
+        {
+            Method(int id)
+            :   id(id),
+                hasReturn(false) {}
+            
+            int id;
+            bool hasReturn;
+        };
+        
+        static void Compile(Environment & environment, const Expr & expr,
+                            CodeBlock & code, Method & method);
+
+        Compiler(Environment & environment, Method & method, CodeBlock & code);
 
         virtual ~Compiler() {}
 
@@ -46,15 +58,15 @@ namespace Finch
         virtual void Visit(const UndefineExpr & expr);
         virtual void Visit(const VarExpr & expr);
 
-        void CompileBlock(const BlockExpr & expr, int methodId);
+        void CompileBlock(const BlockExpr & expr);
+        void CompileMethod(const BlockExpr & expr, int methodId);
         void CompileDefinitions(const DefineExpr & expr);
 
         static int sNextMethodId;
 
         Environment & mEnvironment;
+        Method & mMethod;
         CodeBlock & mCode;
-
-        int mEnclosingMethod;
 
         NO_COPY(Compiler);
     };

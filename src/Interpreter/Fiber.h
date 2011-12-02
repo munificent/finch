@@ -86,6 +86,7 @@ namespace Finch
             const BlockObject & Block() const { return *(block->AsBlock()); }
         };
         
+        void        SendMessage(int message, int numArgs);
         Ref<Object> Self();
         Ref<Scope>  CurrentScope() { return mCallStack.Peek().scope; }
         

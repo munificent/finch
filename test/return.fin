@@ -48,4 +48,15 @@ Test suite: "Return" is: {
 
         Test that: obj foo equals: "result"
     }
+
+    Test test: "returns work even when passed to tail calls" is: {
+        a <- "before"
+        obj <- (||
+            foo {
+                if: True then: { return "result" }
+            }
+        )
+
+        Test that: obj foo equals: "result"
+    }
 }

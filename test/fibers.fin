@@ -4,11 +4,11 @@ Test suite: "Fibers" is: {
         fiber <- Fiber new: {
             executed <-- True
         }
-        
+
         Test isFalse: executed
         Test isFalse: fiber running?
         Test isFalse: fiber done?
-        
+
         fiber run
         Test isTrue: executed
         Test isFalse: fiber running?
@@ -20,7 +20,7 @@ Test suite: "Fibers" is: {
         fiber <- Fiber spawn: {
             executed <-- True
         }
-        
+
         Test isTrue: executed
         Test isFalse: fiber running?
         Test isTrue: fiber done?
@@ -30,13 +30,13 @@ Test suite: "Fibers" is: {
         fiber <- Fiber new: {
             Fiber yield: 123
         }
-        
+
         result <- fiber run
-        
+
         Test that: result equals: 123
         Test isFalse: fiber running?
         Test isFalse: fiber done?
-        
+
         fiber run
         Test isFalse: fiber running?
         Test isTrue: fiber done?
@@ -47,10 +47,10 @@ Test suite: "Fibers" is: {
             Fiber yield: 123
             345
         }
-        
+
         result1 <- fiber run
         result2 <- fiber run
-        
+
         Test that: result1 equals: 123
         Test that: result2 equals: 345
         Test isFalse: fiber running?
@@ -60,10 +60,10 @@ Test suite: "Fibers" is: {
         fiber <- Fiber new: {
             Fiber yield: 123
         }
-        
+
         result1 <- fiber run
         result2 <- fiber run
-        
+
         Test that: result1 equals: 123
         Test that: result2 equals: Nil
         Test isFalse: fiber running?
@@ -74,13 +74,13 @@ Test suite: "Fibers" is: {
         fiber <- Fiber new: {
             passedIn <-- Fiber yield
         }
-        
+
         ' run to first yield
         fiber run
-        
+
         ' pass value into yield and resume
         fiber run: 123
-        
+
         Test that: passedIn equals: 123
     }
 }
