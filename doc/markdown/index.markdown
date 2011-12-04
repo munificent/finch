@@ -33,29 +33,27 @@ It is written in C++ with a hand-written [lexer](http://bitbucket.org/munificent
 Here's a little example to get you going. This little program doesn't draw, but it will tell you what turns to make to draw a [dragon curve](http://en.wikipedia.org/wiki/Dragon_curve):
 
     :::finch
-    ' create a single global Dragon object
-    Dragon <- Object copy
-
-    ' add a main "trace:" method for outputting the series of left and right
-    ' turns needed to draw a dragon curve.
-    Dragon :: trace: depth {
+    ' create an object and put it in a variable "dragon"
+    dragon <- (||
+      ' define a "trace:" method for outputting the series of left and
+      ' right turns needed to draw a dragon curve.
+      trace: depth {
         self traceDepth: depth turn: "R"
         writeLine: "" ' end the line
-    }
+      }
 
-    ' add the main recursive method
-    Dragon :: traceDepth: n turn: turn {
+      ' the main recursive method
+      traceDepth: n turn: turn {
         if: n > 0 then: {
           self traceDepth: n - 1 turn: "R"
           write: turn
           self traceDepth: n - 1 turn: "L"
         }
-    }
+      }
+    )
 
     ' now lets try it
-    Dragon trace: 5
-
-This doesn't really give you the OOP flavor of the language, but it gives you the idea of the general look.
+    dragon trace: 5
 
 ## Getting Started
 

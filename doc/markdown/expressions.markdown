@@ -31,25 +31,22 @@ Variable names in Finch are more flexible than in most other languages. They mus
     foo
     Bar
     best-friends4eva
-    _
-    <<HO!HO!HO!>>
-    lotsOfPunctuation@#$%^&*-_=+<>/?!
+    _under_score_
+    I<3punctuation!!!!!1
 
-There are three kinds of variables in Finch: global, local, and object. If the first letter is capital, it's a global variable. If lowercase, it's local. If it's an underscore, it's an object variable. Any leading punctuation is ignored:
-
-    :::finch
-    Global
-    local
-    _object
-    $#$*AlsoGlobal
+Finch has two kinds of variables. Normal variables are lexically scoped like
+other languages. Variables that start with an underscore (`_`) are *fields*.
+These are looked up on the object that the current method is being called on.
+In other words, when you see `_name`, it's a bit like `this.name` in other
+languages.
 
 ## Messages
 
-What other languages refer to as "calling a function" or "invoking a method", Finch calls "sending a message." Sending a message to an object (and remember, everything is an object) invokes a method on that object. There are three flavors of message sends in Finch: unary, operator, and keyword.
+What other languages refer to as "calling a function" or "invoking a method", Finch calls "sending a message." Sending a message to an object (and remember, everything is an object) invokes a *method* on that object. There are three flavors of message sends in Finch: unary, operator, and keyword.
 
 ### Unary Messages
 
-An unary message has a name but no arguments beyond the object receiving the message. You can send an unary message to an object by following the object with the name of the message:
+An *unary* message has a name but no arguments. You can send an unary message to an object by following the object with the name of the message:
 
     :::finch
     ' send the 'length' message to the string "hi there"
@@ -57,7 +54,7 @@ An unary message has a name but no arguments beyond the object receiving the mes
 
 ### Operators
 
-Any sequence of punctuation characters can be used to define an operator, but don't go too crazy. The goal here is not to make your code look like comic strip profanity:
+One or more punctuation characters defines an *operator*. You can define whatever operators you like, but don't go too crazy. The goal here is not to make your code look like comic strip profanity:
 
     ' valid punctuation characters
     + - ! @ # $ % ^ & * = < > / ? ~
@@ -65,36 +62,36 @@ Any sequence of punctuation characters can be used to define an operator, but do
     ' can also be combined
     -- ?! ---@ <=/=> @*#%&#$@&!
 
-Finch has no built-in operators. An expression like:
+All operators are *infix*&mdash; they have operands on both sides. Using an operator sends a message to the left-hand operand with the right-hand one as an argument.
 
     :::finch
     a + b
 
-Means "send a `+` message to `a`, passing in `b` as an argument." All operators have the same precedence and associate from left to right. This is unlike most other languages with hard-coded precedence levels. Parentheses are your friends here.
+The above expression means "send a `+` message to `a`, passing in `b` as an argument." Finch doesn't have any built-in operators: they're all just message sends.
+
+Because of this, all operators have the same precedence and associativity (left to right). This is unlike most other languages with hard-coded precedence levels. Parentheses are your friends here.
 
     1 + 2 * 3   ' evaluates to 9 in Finch
     1 + (2 * 3) ' evaluates to 7
 
-Because there are no built-in operators, there are no unary operators in Finch. To negate an expression, instead of an unary `-` operator, send it the unary `neg` message:
+Because there are no built-in operators, there are no unary operators in Finch. Instead, it uses unary message for what would be an unary operator in another language:
 
-    ' NOT valid
-    - someVar
-
-    ' OK!
-    someVar neg
+    ' C/JS/etc.  Finch
+    -value       value neg
+    !condition   condition not
 
 ### Keyword Messages
 
-We've covered messages that take zero arguments (unary) and one (operators). To pass more than one argument, you use keyword messages. A keyword is a name followed by a colon (`:`), or just a colon by itself. A keyword message is formed by alternating keywords and arguments. An example will help here:
+We've covered messages that take zero arguments (unary) and one (operators). To pass more than one argument, you use *keyword messages*. A keyword is a name followed by a colon (`:`), or just a colon by itself. A keyword message is formed by alternating keywords and arguments. An example will help here:
 
     :::finch
-    dictionary addKey: "some key" value: "the value"
+    dictionary add-key: "some key" value: "the value"
 
-This sends the `addKey:value:` message to the `dictionary` object, passing in "some key" and "the value" as arguments. You can chain as many keywords as you want in a single message (within reason):
+This sends the `add-key:value:` message to the `dictionary` object, passing in "some key" and "the value" as arguments. You can chain as many keywords as you want in a single message (within reason):
 
-    chef prepareSoup: tomato appetizer: calimari entree: veal dessert: cake
+    chef cook-soup: tomato appetizer: calimari entree: veal dessert: cake
 
-That sends a *single* `prepareSoup:appetizer:entree:dessert:` message to `chef` with four arguments.
+That sends a *single* `cook-soup:appetizer:entree:dessert:` message to `chef` with four arguments.
 
 Like other messages, keyword messages usually follow a receiver (`dictionary` and `chef` in the above examples). However, you can also omit the receiver. In that case, it will implicitly be sent to a special `Ether` object:
 
@@ -104,28 +101,30 @@ Like other messages, keyword messages usually follow a receiver (`dictionary` an
     ' is equivalent to:
     Ether write: "hi"
 
+Most of Finch's control flow operations like `if:then:` and `while:do` are defined as methods on Ether.
+
 ## Sequences
 
-Multiple expressions can be sequenced together into a single expression by separating them with newlines. This code:
+Multiple expressions can be sequenced together into a single expression by separating them with commas.
+
+    :::finch
+    write: "hi", write: "bye"
+
+This code forms a single expression that writes "hi" and then "bye". A sequence just evaluates each of its expressions in order, and returns the result of the last one.
+
+To make things a little cleaner, Finch also treats newlines as commas in places where that makes sense. In other words, we could write the above just as:
 
     :::finch
     write: "hi"
     write: "bye"
 
-forms a single expression that writes two things. A sequence returns the value of the last expression. The returns of the other expressions are discarded.
-
-If you want to sequence multiple expressions in a single line, you can also use a semicolon (`;`) as a separator:
+This doesn't mean *all* newlines will be treated as commas. If the end of a line is obviously not the end of an expression, a newline will be ignored. For example:
 
     :::finch
-    write: "hi"; write: "bye"
+    write: 1 +
+      2
 
-This generally implies that newlines are significant. However, there are some places they get ignored to make things easier on you. The rules are:
-
-1. Leading newlines at the top of a file are ignored.
-
-2. Duplicate newlines get collapsed into one. (This means you can put blank lines wherever.)
-
-3. Newlines that are obviously in the middle of an expression are ignored. This means that if a line ends with a keyword (like `foo:`), an operator (like `+`), `|`, `<-`, `<--`, `(`, `[` or `{`, the newline will be ignored.
+Since a `+` can't end an expression, the newline after is ignored and it continues onto the next line.
 
 ## Blocks
 
@@ -133,7 +132,7 @@ Finch looks like a lot of other languages in that curly braces define local bloc
 
     :::finch
     {
-        write: "inside a block"
+      write: "inside a block"
     }
 
 However, these blocks aren't what you think they are. When you enclose an expression in curly braces, you're actually creating a block *object*. A block object is essentially a closure or a local function. It's an object that contains a chunk of code and a lexical scope (i.e. its own set of local variables).
@@ -151,9 +150,9 @@ It's important to realize that blocks really are just objects. They can be store
 
     :::finch
     if: a < b then: {
-        write: "less"
+      write: "less"
     } else: {
-        write: "greater"
+      write: "greater"
     }
 
 That looks like some built-in `if/then` construct. It isn't. What you're looking at is an `if:then:else:` keyword message being sent to `Ether`. The two blocks are arguments that are sent with the message. The implementation of that method looks at the first condition argument, and decides which of the two blocks to `call` based on that.
@@ -197,7 +196,7 @@ An example will clarify:
     :::finch
     a <- "outside"
     do: {
-        a <- "inside"
+      a <- "inside"
     }
     write: a
 
@@ -206,7 +205,7 @@ This chunk of code will display "outside". The assignment inside the `do:` block
     :::finch
     a <- "outside"
     do: {
-        a <-- "inside"
+      a <-- "inside"
     }
     write: a
 
@@ -220,9 +219,9 @@ Finch has built-in support for resizable arrays. Most of the things you can do w
 
     :::finch
     []             ' creates an empty array
-    [1; 2; 3]      ' a three-element array
-    [123; "text"]  ' arrays can have elements of different types
-    [1 + 2; 3 neg] ' expressions are fine too
+    [1, 2, 3]      ' a three-element array
+    [123, "text"]  ' arrays can have elements of different types
+    [1 + 2, 3 neg] ' expressions are fine too
 
     ' newlines can separate elements too
     ["first"

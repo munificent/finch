@@ -2,9 +2,6 @@ Token <- (||
   new: text type: type {
     (|Tokens| _text <- text, _type <- type )
   }
-
-  traits <- (||
-  )
 )
 
 Tokens <- (||
