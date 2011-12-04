@@ -26,11 +26,11 @@ Test <- (||
         body call
 
         if: _failed > 0 then: {
-            writeLine: "FAIL " + _suite + " / " + _test + " failed " + _failed +
-                " / " + _tests + " tests"
+            writeLine: "FAIL " + _suite + " / " + _test + " passed " +
+                (_tests - _failed) + " / " + _tests + " tests"
         } else: {
-            writeLine: "PASS " + _suite + " / " + _test + " failed " + _failed +
-                " / " + _tests + " tests"
+            writeLine: "PASS " + _suite + " / " + _test + " passed " +
+                (_tests - _failed) + " / " + _tests + " tests"
         }
         _test <- ""
     }

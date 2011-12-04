@@ -152,12 +152,23 @@ namespace Finch
                     
                 case OP_SET_LOCAL:
                     {
-                        // set returns the defined value, so instead of popping
+                        // set returns the assigned value, so instead of popping
                         // and then pushing the value back on the stack, we'll
                         // just peek
                         Ref<Object> value = mOperands.Peek();
                         String name = mEnvironment.Strings().Find(instruction.arg.id);
                         CurrentScope()->Set(name, value);
+                    }
+                    break;
+                    
+                case OP_SET_FIELD:
+                    {
+                        // set returns the assigned value, so instead of popping
+                        // and then pushing the value back on the stack, we'll
+                        // just peek
+                        Ref<Object> value = mOperands.Peek();
+                        String name = mEnvironment.Strings().Find(instruction.arg.id);
+                        Self()->ObjectScope()->Set(name, value);
                     }
                     break;
                     

@@ -24,6 +24,7 @@ namespace Finch
         OP_DEF_FIELD,       // id = string table id of identifier
 
         OP_SET_LOCAL,       // id = string table id of identifier
+        OP_SET_FIELD,       // id = string table id of identifier
 
         OP_UNDEF_LOCAL,     // id = string table id of identifier
         OP_UNDEF_FIELD,     // id = string table id of identifier

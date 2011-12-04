@@ -164,14 +164,13 @@ namespace Finch
     {
         expr.Value()->Accept(*this);
 
+        int id = mEnvironment.Strings().Add(expr.Name());
         if (Expr::IsField(expr.Name()))
         {
-            //### bob: need error-handling (or have the parser disallow this).
-            // should not be able to <-- on fields
+            mCode.Write(OP_SET_FIELD, id);
         }
         else
         {
-            int id = mEnvironment.Strings().Add(expr.Name());
             mCode.Write(OP_SET_LOCAL, id);
         }
     }

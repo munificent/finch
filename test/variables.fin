@@ -76,15 +76,35 @@ Test suite: "Variables" is: {
         }
     }
 
-    Test test: "Object Scope" is: {
+    Test test: "Assign to outer scope" is: {
+        a <- "outer"
+        do: { a <-- "inner" }
+        Test that: a equals: "inner"
+    }
+
+    Test test: "Field" is: {
         foo <- (||
-            createVar { _someVar <- "obj var" }
-            testVar { Test that: _someVar equals: "obj var" }
+            create { _field <- "field" }
+            test { Test that: _field equals: "field" }
         )
 
-        Test that: _someVar equals: nil
-        foo createVar
-        Test that: _someVar equals: nil
-        foo testVar
+        Test that: _field equals: nil
+        foo create
+        Test that: _field equals: nil
+        foo test
+    }
+
+    Test test: "Assign to parent" is: {
+        parent <- (||
+            _a <- "parent"
+            get { _a }
+        )
+        child <- (|parent|
+            assign { _a <-- "child" }
+        )
+
+        child assign
+        Test that: child get equals: "child"
+        Test that: parent get equals: "child"
     }
 }
