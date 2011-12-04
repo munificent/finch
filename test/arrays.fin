@@ -4,8 +4,8 @@ Test suite: "Arrays" is: {
         Test that: (Array count: 5) length equals: 5
     }
 
-    Test test: "Array count:fillWith:" is: {
-        a <- Array count: 3 fillWith: "hi"
+    Test test: "Array count:fill-with:" is: {
+        a <- Array count: 3 fill-with: "hi"
         Test that: (a at: 0) equals: "hi"
         Test that: (a at: 1) equals: "hi"
         Test that: (a at: 2) equals: "hi"

@@ -5,16 +5,16 @@
 ' It will be a generator, yielding the numbers from 1 to 10, one at a
 ' time, each time it's run.
 a <- Fiber new: {
-    from: 1 to: 10 do: {|n|
-        writeLine: "fiber a yielding " + n toString
-        Fiber yield: n
-    }
+  from: 1 to: 10 do: {|n|
+    write-line: "fiber a yielding " + n to-string
+    Fiber yield: n
+  }
 }
 
 ' Our main fiber will be the consumer. It will pass control to the
 ' other fiber and get the generated results back. It then prints them,
 ' one at a time. It stops when the generator fiber ends.
 while: { a done? not } do: {
-    result <- a run
-    writeLine: "main fiber received " + result toString
+  result <- a run
+  write-line: "main fiber received " + result to-string
 }

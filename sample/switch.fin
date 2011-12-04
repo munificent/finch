@@ -1,4 +1,4 @@
 2 switch \
-case: 1 do: { writeLine: "one" } ;
-case: 2 do: { writeLine: "two" } ;
-case: 3 do: { writeLine: "three" }
+case: 1 do: { write-line: "one" } ;
+case: 2 do: { write-line: "two" } ;
+case: 3 do: { write-line: "three" }

@@ -7,7 +7,7 @@ Dragon <- (||
     generate: depth {
         write: "dragon curve " + depth + " depth: "
         self iterate: depth turn: "R"
-        writeLine: "" ' end the line
+        write-line: "" ' end the line
     }
 
     ' the inner recursive method

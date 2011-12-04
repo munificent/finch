@@ -1,59 +1,53 @@
 ' create the main factory object
-Complex <- (|Object prototype|
-    ' the prototypical complex number
-    _prototype <- (|Object prototype|
-        _real <- 0
-        _imaginary <- 0
+Complex <- (||
+  ' constructor
+  new: real i: imaginary {
+    (|Complexes| _real <- real, _imaginary <- imaginary )
+  }
+)
 
-        ' accessors
-        real { _real }
-        imaginary { _imaginary }
+' the prototypical complex number
+Complexes <- (||
+  _real <- 0
+  _imaginary <- 0
 
-        ' string conversion
-        toString {
-            _real toString + "+" + _imaginary + "i"
-        }
+  ' accessors
+  real { _real }
+  imaginary { _imaginary }
 
-        ' arithmetic
-        + right {
-            Complex new: _real + right real i: _imaginary + right imaginary
-        }
+  ' string conversion
+  to-string {
+    _real to-string + "+" + _imaginary + "i"
+  }
 
-        - right {
-            Complex new: _real - right real i: _imaginary - right imaginary
-        }
+  ' arithmetic
+  + right {
+    Complex new: _real + right real i: _imaginary + right imaginary
+  }
 
-        * right {
-            Complex new: (_real * right real) - (_imaginary * right imaginary) i:
-                         (_imaginary * right real) + (_real * right imaginary)
-        }
+  - right {
+    Complex new: _real - right real i: _imaginary - right imaginary
+  }
 
-        magnitude {
-            ((_real * _real) + (_imaginary * _imaginary)) sqrt
-        }
-    )
+  * right {
+    Complex new: (_real * right real) - (_imaginary * right imaginary) i:
+           (_imaginary * right real) + (_real * right imaginary)
+  }
 
-    ' accessor for the prototype
-    prototype { _prototype }
-
-    ' constructor
-    new: real i: imaginary {
-        (|_prototype|
-            _real <- real
-            _imaginary <- imaginary
-        )
-    }
+  magnitude {
+    ((_real * _real) + (_imaginary * _imaginary)) sqrt
+  }
 )
 
 ' allow creating complex numbers from normal ones
-Number prototype :: i { Complex new: 0 i: self }
+Numbers :: i { Complex new: 0 i: self }
 
 ' test it out a bit
 a <- 4 i
 b <- Complex new: 2 i: 3
 
-writeLine: "a = " + a
-writeLine: "b = " + b
-writeLine: "|b| = " + b magnitude
-writeLine: "a + b = " + (a + b)
-writeLine: "a * b = " + (a * b)
+write-line: "a = " + a
+write-line: "b = " + b
+write-line: "|b| = " + b magnitude
+write-line: "a + b = " + (a + b)
+write-line: "a * b = " + (a * b)

@@ -143,8 +143,8 @@ tests each: {|test|
   }
 
   if: passed then: {
-    writeLine: "PASS " + (test at: 0)
+    write-line: "PASS " + (test at: 0)
   } else: {
-    writeLine: "FAIL " + (test at: 0) + " != " + result
+    write-line: "FAIL " + (test at: 0) + " != " + result
   }
 }

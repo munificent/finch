@@ -1,6 +1,6 @@
 Test suite: "Strings" is: {
     called <- ""
-    ' make a couple of objects that implement toString
+    ' make a couple of objects that implement to-string
     obj <- (||
         foo { called <-- called + "foo" }
         bar { called <-- called + "bar" }

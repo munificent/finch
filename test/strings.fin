@@ -1,13 +1,13 @@
 Test suite: "Strings" is: {
-    ' make a couple of objects that implement toString
-    apple <- (|| toString { "apple" } )
-    banana <- (|| toString { "banana" } )
+    ' make a couple of objects that implement to-string
+    apple <- (|| to-string { "apple" } )
+    banana <- (|| to-string { "banana" } )
 
-    Test test: "toString" is: {
-        Test that: 123 toString        equals: "123"
-        Test that: "foo" toString      equals: "foo"
-        Test that: [1, 2, 3] toString  equals: "[1, 2, 3]"
-        Test that: apple toString      equals: "apple"
+    Test test: "to-string" is: {
+        Test that: 123 to-string        equals: "123"
+        Test that: "foo" to-string      equals: "foo"
+        Test that: [1, 2, 3] to-string  equals: "[1, 2, 3]"
+        Test that: apple to-string      equals: "apple"
     }
 
     Test test: "Concatenation" is: {
@@ -17,30 +17,30 @@ Test suite: "Strings" is: {
     }
 
     Test test: "Comparison" is: {
-        Test isTrue: "a" = "a"
-        Test isFalse: "a" = "b"
+        Test is-true: "a" = "a"
+        Test is-false: "a" = "b"
 
-        Test isFalse: "a" != "a"
-        Test isTrue: "a" != "b"
+        Test is-false: "a" != "a"
+        Test is-true: "a" != "b"
 
-        Test isTrue: "a" < "b"
-        Test isFalse: "b" < "a"
-        Test isFalse: "a" < "a"
+        Test is-true: "a" < "b"
+        Test is-false: "b" < "a"
+        Test is-false: "a" < "a"
 
-        Test isFalse: "a" > "b"
-        Test isTrue: "b" > "a"
-        Test isFalse: "a" > "a"
+        Test is-false: "a" > "b"
+        Test is-true: "b" > "a"
+        Test is-false: "a" > "a"
 
-        Test isTrue: "a" <= "b"
-        Test isFalse: "b" <= "a"
-        Test isTrue: "a" <= "a"
+        Test is-true: "a" <= "b"
+        Test is-false: "b" <= "a"
+        Test is-true: "a" <= "a"
 
-        Test isFalse: "a" >= "b"
-        Test isTrue: "b" >= "a"
-        Test isTrue: "a" >= "a"
+        Test is-false: "a" >= "b"
+        Test is-true: "b" >= "a"
+        Test is-true: "a" >= "a"
 
         ' equality is *strict* and doesn't implicitly convert
-        Test isFalse: "apple" = apple
+        Test is-false: "apple" = apple
     }
 
     Test test: "from:count:" is: {
@@ -53,19 +53,19 @@ Test suite: "Strings" is: {
         Test that: ("0123456789" from: 2 to: 5) equals: "234"
     }
 
-    Test test: "indexOf:" is: {
-        Test that: ("0123456789" indexOf: "0") equals: 0
-        Test that: ("0123456789" indexOf: "234") equals: 2
-        Test that: ("0123456789" indexOf: "56789") equals: 5
-        Test that: ("0123456789" indexOf: "not found") equals: -1
-        Test that: ("" indexOf: "not found") equals: -1
+    Test test: "index-of:" is: {
+        Test that: ("0123456789" index-of: "0") equals: 0
+        Test that: ("0123456789" index-of: "234") equals: 2
+        Test that: ("0123456789" index-of: "56789") equals: 5
+        Test that: ("0123456789" index-of: "not found") equals: -1
+        Test that: ("" index-of: "not found") equals: -1
     }
 
     Test test: "contains:" is: {
-        Test isTrue: ("0123456789" contains: "0")
-        Test isTrue: ("0123456789" contains: "234")
-        Test isTrue: ("0123456789" contains: "56789")
-        Test isFalse: ("0123456789" contains: "not found")
-        Test isFalse: ("" contains: "not found")
+        Test is-true: ("0123456789" contains: "0")
+        Test is-true: ("0123456789" contains: "234")
+        Test is-true: ("0123456789" contains: "56789")
+        Test is-false: ("0123456789" contains: "not found")
+        Test is-false: ("" contains: "not found")
     }
 }

@@ -7,7 +7,7 @@ Test suite: "Switch" is: {
         case: 2 do: { found <-- true } ;
         case: 3 do: { Test fail }
 
-        Test isTrue: found
+        Test is-true: found
     }
 
     Test test: "No match" is: {
@@ -23,7 +23,7 @@ Test suite: "Switch" is: {
         case: 3 do: { Test fail } ;
         default: { found <-- true }
 
-        Test isTrue: found
+        Test is-true: found
     }
 
     Test test: "Match predicate" is: {
@@ -33,7 +33,7 @@ Test suite: "Switch" is: {
         case: {|i| i = 2 } do: { found <-- true } ;
         case: {|i| i > 2 } do: { Test fail }
 
-        Test isTrue: found
+        Test is-true: found
     }
 
     Test test: "Returns value" is: {

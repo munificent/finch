@@ -25,7 +25,7 @@ namespace Finch
 
         DynamicObject* objectObj = mObject->AsDynamic();
         objectObj->RegisterPrimitive("=",               ObjectEquals);
-        objectObj->RegisterPrimitive("toString",        ObjectToString);
+        objectObj->RegisterPrimitive("to-string",       ObjectToString);
         objectObj->RegisterPrimitive("parent",          ObjectGetParent);
         objectObj->RegisterPrimitive("parent:",         ObjectSetParent);
 
@@ -98,8 +98,8 @@ namespace Finch
         stringObj->RegisterPrimitive("length",      StringLength);
         stringObj->RegisterPrimitive("at:",         StringAt);
         stringObj->RegisterPrimitive("from:count:", StringFromCount);
-        stringObj->RegisterPrimitive("hashCode",    StringHashCode);
-        stringObj->RegisterPrimitive("indexOf:",    StringIndexOf);
+        stringObj->RegisterPrimitive("hash-code",   StringHashCode);
+        stringObj->RegisterPrimitive("index-of:",   StringIndexOf);
 
         // define Ether
         Ref<Object> ether = Object::NewObject(mObject, "Ether");
@@ -110,13 +110,13 @@ namespace Finch
         mGlobals->Define("#PRIM#", primitives);
 
         DynamicObject* primsObj = primitives->AsDynamic();
-        primsObj->RegisterPrimitive("stringConcat:and:",        PrimitiveStringConcat);
-        primsObj->RegisterPrimitive("stringCompare:to:",        PrimitiveStringCompare);
+        primsObj->RegisterPrimitive("string-concat:and:",       PrimitiveStringConcat);
+        primsObj->RegisterPrimitive("string-compare:to:",       PrimitiveStringCompare);
         primsObj->RegisterPrimitive("write:",                   PrimitiveWrite);
-        primsObj->RegisterPrimitive("newFiber:",                PrimitiveNewFiber);
-        primsObj->RegisterPrimitive("currentFiber",             PrimitiveGetCurrentFiber);
-        primsObj->RegisterPrimitive("switchToFiber:passing:",   PrimitiveSwitchToFiber);
-        primsObj->RegisterPrimitive("callstackDepth",           PrimitiveGetCallstackDepth);
+        primsObj->RegisterPrimitive("new-fiber:",               PrimitiveNewFiber);
+        primsObj->RegisterPrimitive("current-fiber",            PrimitiveGetCurrentFiber);
+        primsObj->RegisterPrimitive("switch-to-fiber:passing:", PrimitiveSwitchToFiber);
+        primsObj->RegisterPrimitive("callstack-depth",          PrimitiveGetCallstackDepth);
         
         // make the special values
         mNil = MakeGlobal("nil");

@@ -1,66 +1,67 @@
 ' tests various edges regarding self
 
-nil addMethod: "name" body: { "nil" }
+nil :: name { "nil" }
 
 Parent <- (||
-    _name <- "parent"
-    name { _name }
+  _name <- "parent"
+  name { _name }
 
-    getName { "parent" }
-    calledName { self getName }
+  get-name { "parent" }
+  called-name { self get-name }
 
-    recursiveName: depth {
-        if: depth > 0 then: {
-            _name + " " + (Parent recursiveName: 0) + " " +
-            _name + " " + (Child recursiveName: 0) + " " +
-            _name
-        } else: { _name }
-    }
+  recursive-name: depth {
+    if: depth > 0 then: {
+      _name + " " + (Parent recursive-name: 0) + " " +
+      _name + " " + (Child recursive-name: 0) + " " +
+      _name
+    } else: { _name }
+  }
 )
 
-Child <- (||
-    _name <- "child"
-    getName { "child" }
+Child <- (|Parent|
+  _name <- "child"
+  get-name { "child" }
 )
 
 ' basic just call a method on an object
-writeLine: Parent name + " (expect: parent)"
-writeLine: Parent calledName + " (expect: parent)"
-writeLine: (Parent recursiveName: 1) + " (expect: parent parent parent child parent)"
+write-line: Parent name + " (expect: parent)"
+write-line: Parent called-name + " (expect: parent)"
+write-line: (Parent recursive-name: 1) +
+    " (expect: parent parent parent child parent)"
 
 ' make sure calling an inherited method uses the child as self
-writeLine: Child name + " (expect: child)"
-writeLine: Child calledName + " (expect: child)"
-writeLine: (Child recursiveName: 1) + " (expect: child parent child child child)"
+write-line: Child name + " (expect: child)"
+write-line: Child called-name + " (expect: child)"
+write-line: (Child recursive-name: 1) +
+    " (expect: child parent child child child)"
 
 Other <- (||
-    name { "Other" }
-
-    callMe: block { block call }
+  name { "Other" }
+  call-me: block { block call }
 )
 
 ' passing a block to a method should *not* use the method's self
 ' in this case, since the block is not defined in any object, self
 ' should be nil
-writeLine: (Other callMe: { self name }) + " (expect nil)"
+write-line: (Other call-me: { self name }) + " (expect nil)"
 
 Foo <- (||
-    name { "Foo" }
+  name { "Foo" }
 
-    routeThroughOther {
-        Other callMe: { self name }
-    }
+  route-through-other {
+    Other call-me: { self name }
+  }
 )
 
 ' passing a block to a method should *not* use the method's self
 ' instead, should use the self where the block is declared. in this
 ' case, that's inside Foo
-writeLine: Foo routeThroughOther + " (expect Foo)"
+write-line: Foo route-through-other + " (expect Foo)"
 
-Child :: getBlock { { self name } }
+Child :: get-block { { self name } }
 
 ' returning a block from a method should keep the block bound to the
 ' method's self
-b <- Child getBlock
-writeLine: b call + " (expect child)"
-writeLine: (Other callMe: b) + " (expect child)"
+b <- Child get-block
+write-line: b call + " (expect child)"
+write-line: (Other call-me: b) + " (expect child)"

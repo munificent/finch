@@ -1,15 +1,15 @@
-writeLine: "Running Finch test suite."
+write-line: "Running Finch test suite."
 
 ' define a Test object the tests can use
 Test <- (||
-    _suite      <- ""
-    _test       <- ""
-    _testShown  <- false
-    _tests      <- 0
-    _failed     <- 0
+    _suite       <- ""
+    _test        <- ""
+    _test-shown? <- false
+    _tests       <- 0
+    _failed      <- 0
 
-    _totalTests <- 0
-    _totalFails <- 0
+    _total-tests <- 0
+    _total-fails <- 0
 
     suite: name is: body {
         _suite <- name
@@ -21,57 +21,57 @@ Test <- (||
         _test       <- name
         _tests      <- 0
         _failed     <- 0
-        _testShown  <- false
+        _test-shown?  <- false
 
         body call
 
         if: _failed > 0 then: {
-            writeLine: "FAIL " + _suite + " / " + _test + " passed " +
+            write-line: "FAIL " + _suite + " / " + _test + " passed " +
                 (_tests - _failed) + " / " + _tests + " tests"
         } else: {
-            writeLine: "PASS " + _suite + " / " + _test + " passed " +
+            write-line: "PASS " + _suite + " / " + _test + " passed " +
                 (_tests - _failed) + " / " + _tests + " tests"
         }
         _test <- ""
     }
 
-    showHeader {
-        if: _testShown not then: {
-            writeLine: _suite + " / " + _test
-            _testShown <- true
+    show-header {
+        if: _test-shown? not then: {
+            write-line: _suite + " / " + _test
+            _test-shown? <- true
         }
     }
 
-    fail { self isTrue: false }
-    pass { self isTrue: true }
+    fail { self is-true: false }
+    pass { self is-true: true }
 
-    isTrue:  actual { self that: actual equals: true }
-    isNil:   actual { self that: actual equals: nil }
-    isFalse: actual { self that: actual equals: false }
+    is-true:  actual { self that: actual equals: true }
+    is-nil:   actual { self that: actual equals: nil }
+    is-false: actual { self that: actual equals: false }
 
     that: actual equals: expected {
         _tests <- _tests + 1
-        _totalTests <- _totalTests + 1
+        _total-tests <- _total-tests + 1
 
         if: actual != expected then: {
             _failed <- _failed + 1
-            _totalFails <- _totalFails + 1
+            _total-fails <- _total-fails + 1
 
-            self showHeader
-            writeLine: "  Test " + _tests toString + " failed. Expected " +
+            self show-header
+            write-line: "  Test " + _tests to-string + " failed. Expected " +
                 expected + " but got " + actual + "."
         }
     }
 
     complete {
-        writeLine: ""
-        if: _totalFails = 0 then: {
-            writeLine: "All " + _totalTests + " tests passed."
+        write-line: ""
+        if: _total-fails = 0 then: {
+            write-line: "All " + _total-tests + " tests passed."
         } else: {
-            writeLine: _totalFails toString + " out of " + _totalTests +
+            write-line: _total-fails to-string + " out of " + _total-tests +
                 " tests failed."
         }
-        writeLine: ""
+        write-line: ""
     }
 )
 

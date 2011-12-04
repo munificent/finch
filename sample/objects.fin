@@ -1,31 +1,25 @@
-' define a singleton object for the Car "type". this object will be
+' Define a singleton object for the Car "type". This object will be
 ' the factory for all other cars.
 Car <- (||
-    ' define the car prototype. all cars will derive from this
-    _prototype <- (||
-        ' all cars have accessors for their make and model
-        self :: make { _make }
-        self :: model { _model }
+  ' Define a constructor method on the factory.
+  make: make model: model {
+    ' The constructor simply derives a new car from the car
+    ' prototype and then stores the make and model in it.
+    (|Cars| _make <- make, _model <- model)
+    ' Like ruby, the last expression in the method is implicitly
+    ' the returned value.
+  }
+)
 
-        self :: toString {
-            "This car is a " + _make + " " + _model + "."
-        }
-    )
+' Define the car prototype. All cars will derive from this.
+Cars <- (||
+  ' Accessors for their make and model.
+  make { _make }
+  model { _model }
 
-    ' define a constructor method on the factory.
-    make: make model: model {
-        ' the constructor simply derives a new car from the car
-        ' prototype and then stores the make and model in it
-        (|_prototype|
-            _make <- make
-            _model <- model
-        )
-        ' like ruby, the last expression in the method is implicitly
-        ' the returned value
-    }
-
-    ' expose the prototype. this lets us add features to all cars
-    prototype { _prototype }
+  to-string {
+    "This car is a " + _make + " " + _model + "."
+  }
 )
 
 ' now lets make a car
@@ -33,14 +27,14 @@ jetta <- Car make: "volkswagen" model: "jetta"
 
 ' and call a method on its prototype, which in turn references the
 ' specific car's state
-writeLine: jetta toString
+write-line: jetta to-string
 
 ' now let's try adding something to the car prototype. first we'll
 ' check to see that it isn't there
-writeLine: jetta shortName ' this should write nil
+write-line: jetta short-name ' this should write nil
 
 ' now we'll add a method to the prototype
-Car prototype :: shortName { _make + " " + _model }
+Cars :: short-name { _make + " " + _model }
 
 ' now lets call it on jetta and see if we can find it
-writeLine: jetta shortName
+write-line: jetta short-name

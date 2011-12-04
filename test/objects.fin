@@ -1,75 +1,75 @@
 Test suite: "Objects" is: {
-    ' make an object that implements toString
+    ' make an object that implements to-string
     apple <- (||
-        toString { "apple" }
+        to-string { "apple" }
     )
 
     Test test: "Equality" is: {
         ' reference equality
         a <- apple
         b <- apple
-        Test isTrue: a = b
-        Test isFalse: a = nil
+        Test is-true: a = b
+        Test is-false: a = nil
 
-        Test isFalse: a != b
-        Test isTrue: a != nil
+        Test is-false: a != b
+        Test is-true: a != nil
 
         ' equality is *strict* and doesn't implicitly convert
-        Test isFalse: "apple" = apple
-        Test isFalse: apple = "apple"
-        Test isTrue: "apple" != apple
-        Test isTrue: apple != "apple"
+        Test is-false: "apple" = apple
+        Test is-false: apple = "apple"
+        Test is-true: "apple" != apple
+        Test is-true: apple != "apple"
     }
 
     Test test: "Type tests" is: {
-        Test isTrue:  [1] array?
-        Test isFalse: [1] block?
-        Test isFalse: [1] boolean?
-        Test isFalse: [1] fiber?
-        Test isFalse: [1] number?
-        Test isFalse: [1] string?
+        Test is-true:  [1] array?
+        Test is-false: [1] block?
+        Test is-false: [1] boolean?
+        Test is-false: [1] fiber?
+        Test is-false: [1] number?
+        Test is-false: [1] string?
 
-        Test isFalse: { 0 } array?
-        Test isTrue:  { 0 } block?
-        Test isFalse: { 0 } boolean?
-        Test isFalse: { 0 } fiber?
-        Test isFalse: { 0 } number?
-        Test isFalse: { 0 } string?
+        Test is-false: { 0 } array?
+        Test is-true:  { 0 } block?
+        Test is-false: { 0 } boolean?
+        Test is-false: { 0 } fiber?
+        Test is-false: { 0 } number?
+        Test is-false: { 0 } string?
 
-        Test isFalse: true array?
-        Test isFalse: true block?
-        Test isTrue:  true boolean?
-        Test isFalse: true fiber?
-        Test isFalse: true number?
-        Test isFalse: true string?
+        Test is-false: true array?
+        Test is-false: true block?
+        Test is-true:  true boolean?
+        Test is-false: true fiber?
+        Test is-false: true number?
+        Test is-false: true string?
 
-        Test isFalse: false array?
-        Test isFalse: false block?
-        Test isTrue:  false boolean?
-        Test isFalse: false fiber?
-        Test isFalse: false number?
-        Test isFalse: false string?
+        Test is-false: false array?
+        Test is-false: false block?
+        Test is-true:  false boolean?
+        Test is-false: false fiber?
+        Test is-false: false number?
+        Test is-false: false string?
 
         fiber <- Fiber new: { 0 }
-        Test isFalse: fiber array?
-        Test isFalse: fiber block?
-        Test isFalse: fiber boolean?
-        Test isTrue:  fiber fiber?
-        Test isFalse: fiber number?
-        Test isFalse: fiber string?
+        Test is-false: fiber array?
+        Test is-false: fiber block?
+        Test is-false: fiber boolean?
+        Test is-true:  fiber fiber?
+        Test is-false: fiber number?
+        Test is-false: fiber string?
 
-        Test isFalse: 123 array?
-        Test isFalse: 123 block?
-        Test isFalse: 123 boolean?
-        Test isFalse: 123 fiber?
-        Test isTrue:  123 number?
-        Test isFalse: 123 string?
+        Test is-false: 123 array?
+        Test is-false: 123 block?
+        Test is-false: 123 boolean?
+        Test is-false: 123 fiber?
+        Test is-true:  123 number?
+        Test is-false: 123 string?
 
-        Test isFalse: "hi" array?
-        Test isFalse: "hi" block?
-        Test isFalse: "hi" boolean?
-        Test isFalse: "hi" fiber?
-        Test isFalse: "hi" number?
-        Test isTrue:  "hi" string?
+        Test is-false: "hi" array?
+        Test is-false: "hi" block?
+        Test is-false: "hi" boolean?
+        Test is-false: "hi" fiber?
+        Test is-false: "hi" number?
+        Test is-true:  "hi" string?
     }
 }

@@ -7,9 +7,9 @@ Test suite: "Self" is: {
 
     Test test: "Self in block is outer self" is: {
         foo <- (||
-            toString { "foo" }
+            to-string { "foo" }
             bar {
-                block <- { self toString }
+                block <- { self to-string }
                 block call
             }
         )
@@ -19,58 +19,58 @@ Test suite: "Self" is: {
 
     Test test: "Self in parent method is child" is: {
         parent <- (||
-            callToString { self toString }
-            toString { "parent" }
+            call-to-string { self to-string }
+            to-string { "parent" }
         )
 
         child <- (|parent|
-            toString { "child" }
+            to-string { "child" }
         )
 
-        Test that: parent callToString equals: "parent"
-        Test that: child callToString equals: "child"
+        Test that: parent call-to-string equals: "parent"
+        Test that: child call-to-string equals: "child"
     }
 
     Test test: "Self in block is lexical not dynamic scope" is: {
         ' create a block in one object scope
         foo <- (||
-            toString { "foo" }
-            block { { self toString } }
+            to-string { "foo" }
+            block { { self to-string } }
         )
 
         ' and call it from within a different object
         bar <- (||
-            toString { "bar" }
-            callBlock: block { block call }
+            to-string { "bar" }
+            call-block: block { block call }
         )
 
-        Test that: (bar callBlock: foo block) equals: "foo"
+        Test that: (bar call-block: foo block) equals: "foo"
 
         ' needs to play nice with inheritance too
         foo2 <- (|foo|
-            toString { "foo2" }
+            to-string { "foo2" }
         )
-        Test that: (bar callBlock: foo2 block) equals: "foo2"
+        Test that: (bar call-block: foo2 block) equals: "foo2"
     }
 
     Test test: "Recursive inherited method restores outer self" is: {
         parent <- (||
             recurse: recurse {
                 ' see what self is bound to
-                a <- self toString
+                a <- self to-string
                 if: recurse then: {
                     ' call this exact same method but with a different self
                     a <-- a + (child recurse: false)
                     ' see that self was correctly restored to parent
-                    a <-- a + self toString
+                    a <-- a + self to-string
                 }
                 a
             }
-            toString { "p" }
+            to-string { "p" }
         )
 
         child <- (|parent|
-            toString { "c" }
+            to-string { "c" }
         )
 
         Test that: (parent recurse: false) equals: "p"
@@ -80,21 +80,21 @@ Test suite: "Self" is: {
 
     Test test: "Storing a block in a method caches self at that time" is: {
         parent <- (||
-            toString { "parent" }
-            makeBlock {
-                _block <- { self toString }
+            to-string { "parent" }
+            make-block {
+                _block <- { self to-string }
             }
-            callBlock { _block call }
+            call-block { _block call }
         )
 
         child <- (|parent|
-            toString { "child" }
+            to-string { "child" }
         )
 
-        parent makeBlock
-        Test that: child callBlock equals: "parent"
+        parent make-block
+        Test that: child call-block equals: "parent"
 
-        child makeBlock
-        Test that: child callBlock equals: "child"
+        child make-block
+        Test that: child call-block equals: "child"
     }
 }
