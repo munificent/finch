@@ -1,51 +1,51 @@
 Test suite: "Booleans" is: {
-    Test test: "to-string" is: {
-        Test that: true to-string  equals: "true"
-        Test that: false to-string equals: "false"
-    }
+  Test test: "to-string" is: {
+    Test that: true to-string  equals: "true"
+    Test that: false to-string equals: "false"
+  }
 
-    Test test: "not" is: {
-        Test that: true not  equals: false
-        Test that: false not equals: true
-        Test that: true not not  equals: true
-        Test that: false not not equals: false
-    }
+  Test test: "not" is: {
+    Test that: true not  equals: false
+    Test that: false not equals: true
+    Test that: true not not  equals: true
+    Test that: false not not equals: false
+  }
 
-    Test test: "and:" is: {
-        ' should work with values
-        Test is-true:  (true and: true)
-        Test is-false: (true and: false)
-        Test is-false: (false and: true)
-        Test is-false: (false and: false)
+  Test test: "and:" is: {
+    ' should work with values
+    Test is-true:  (true and: true)
+    Test is-false: (true and: false)
+    Test is-false: (false and: true)
+    Test is-false: (false and: false)
 
-        ' and blocks
-        Test is-true:  ({ true } and: { true })
-        Test is-false: ({ true } and: { false })
-        Test is-false: ({ false } and: { true })
-        Test is-false: ({ false } and: { false })
+    ' and blocks
+    Test is-true:  ({ true } and: { true })
+    Test is-false: ({ true } and: { false })
+    Test is-false: ({ false } and: { true })
+    Test is-false: ({ false } and: { false })
 
-        ' should short-circuit
-        shorted <- true
-        Test is-false: ({ false } and: { shorted <-- false, true })
-        Test is-true: shorted
-    }
+    ' should short-circuit
+    shorted <- true
+    Test is-false: ({ false } and: { shorted <-- false, true })
+    Test is-true: shorted
+  }
 
-    Test test: "or:" is: {
-        ' should work with values
-        Test is-true:  (true or: true)
-        Test is-true:  (true or: false)
-        Test is-true:  (false or: true)
-        Test is-false: (false or: false)
+  Test test: "or:" is: {
+    ' should work with values
+    Test is-true:  (true or: true)
+    Test is-true:  (true or: false)
+    Test is-true:  (false or: true)
+    Test is-false: (false or: false)
 
-        ' and blocks
-        Test is-true:  ({ true } or: { true })
-        Test is-true:  ({ true } or: { false })
-        Test is-true:  ({ false } or: { true })
-        Test is-false: ({ false } or: { false })
+    ' and blocks
+    Test is-true:  ({ true } or: { true })
+    Test is-true:  ({ true } or: { false })
+    Test is-true:  ({ false } or: { true })
+    Test is-false: ({ false } or: { false })
 
-        ' should short-circuit
-        shorted <- true
-        Test is-true: ({ true } or: { shorted <-- false, false })
-        Test is-true: shorted
-    }
+    ' should short-circuit
+    shorted <- true
+    Test is-true: ({ true } or: { shorted <-- false, false })
+    Test is-true: shorted
+  }
 }

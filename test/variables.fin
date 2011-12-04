@@ -1,110 +1,110 @@
 Test suite: "Variables" is: {
-    Test test: "Define" is: {
-        a <- "something"
-        Test that: a equals: "something"
+  Test test: "Define" is: {
+    a <- "something"
+    Test that: a equals: "something"
+  }
+
+  Test test: "Chain" is: {
+    a <- b <- "something"
+    Test that: a equals: "something"
+    Test that: b equals: "something"
+  }
+
+  Test test: "In Expression" is: {
+    b <- "some" + (a <- "thing")
+    Test that: a equals: "thing"
+    Test that: b equals: "something"
+  }
+
+  Test test: "Redefinition" is: {
+    a <- "before"
+    Test that: a equals: "before"
+    a <- "after"
+    Test that: a equals: "after"
+  }
+
+  Test test: "Assignment" is: {
+    a <- "before"
+    Test that: a equals: "before"
+    a <-- "after"
+    Test that: a equals: "after"
+  }
+
+  Test test: "Assign Undefined" is: {
+    a <-- "something"
+    ' since a wasn't defined, should do nothing
+    Test that: a equals: nil
+  }
+
+  Test test: "Local Scope" is: {
+    do: {
+      a <- "local"
+      Test that: a equals: "local"
     }
 
-    Test test: "Chain" is: {
-        a <- b <- "something"
-        Test that: a equals: "something"
-        Test that: b equals: "something"
+    Test that: a equals: nil
+  }
+
+  Test test: "Nested Local Scope" is: {
+    a <- "local"
+
+    do: { Test that: a equals: "local" }
+
+    Test that: a equals: "local"
+  }
+
+  Test test: "Shadowed Local Scope" is: {
+    a <- "outer"
+
+    do: {
+      a <- "inner"
+      Test that: a equals: "inner"
     }
 
-    Test test: "In Expression" is: {
-        b <- "some" + (a <- "thing")
-        Test that: a equals: "thing"
-        Test that: b equals: "something"
+    Test that: a equals: "outer"
+  }
+
+  Test test: "Unshadow" is: {
+    a <- "first"
+
+    do: {
+      Test that: a equals: "first"
+      a <- "shadow"
+      Test that: a equals: "shadow"
+      a <- undefined
+      Test that: a equals: "first"
     }
+  }
 
-    Test test: "Redefinition" is: {
-        a <- "before"
-        Test that: a equals: "before"
-        a <- "after"
-        Test that: a equals: "after"
-    }
+  Test test: "Assign to outer scope" is: {
+    a <- "outer"
+    do: { a <-- "inner" }
+    Test that: a equals: "inner"
+  }
 
-    Test test: "Assignment" is: {
-        a <- "before"
-        Test that: a equals: "before"
-        a <-- "after"
-        Test that: a equals: "after"
-    }
+  Test test: "Field" is: {
+    foo <- (||
+      create { _field <- "field" }
+      test { Test that: _field equals: "field" }
+    )
 
-    Test test: "Assign Undefined" is: {
-        a <-- "something"
-        ' since a wasn't defined, should do nothing
-        Test that: a equals: nil
-    }
+    Test that: _field equals: nil
+    foo create
+    Test that: _field equals: nil
+    foo test
+  }
 
-    Test test: "Local Scope" is: {
-        do: {
-            a <- "local"
-            Test that: a equals: "local"
-        }
+  Test test: "Assign to parent" is: {
+    parent <- (||
+      _a <- "parent"
+      get { _a }
+    )
+    child <- (|parent|
+      assign { _a <-- "child" }
+    )
 
-        Test that: a equals: nil
-    }
-
-    Test test: "Nested Local Scope" is: {
-        a <- "local"
-
-        do: { Test that: a equals: "local" }
-
-        Test that: a equals: "local"
-    }
-
-    Test test: "Shadowed Local Scope" is: {
-        a <- "outer"
-
-        do: {
-            a <- "inner"
-            Test that: a equals: "inner"
-        }
-
-        Test that: a equals: "outer"
-    }
-
-    Test test: "Unshadow" is: {
-        a <- "first"
-
-        do: {
-            Test that: a equals: "first"
-            a <- "shadow"
-            Test that: a equals: "shadow"
-            a <- undefined
-            Test that: a equals: "first"
-        }
-    }
-
-    Test test: "Assign to outer scope" is: {
-        a <- "outer"
-        do: { a <-- "inner" }
-        Test that: a equals: "inner"
-    }
-
-    Test test: "Field" is: {
-        foo <- (||
-            create { _field <- "field" }
-            test { Test that: _field equals: "field" }
-        )
-
-        Test that: _field equals: nil
-        foo create
-        Test that: _field equals: nil
-        foo test
-    }
-
-    Test test: "Assign to parent" is: {
-        parent <- (||
-            _a <- "parent"
-            get { _a }
-        )
-        child <- (|parent|
-            assign { _a <-- "child" }
-        )
-
-        child assign
-        Test that: child get equals: "child"
-        Test that: parent get equals: "child"
-    }
+    child assign
+    Test that: child get equals: "child"
+    Test that: parent get equals: "child"
+  }
 }

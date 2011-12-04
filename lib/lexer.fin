@@ -28,14 +28,14 @@ Lexer <- (||
     result <- []
     from: 0 to: source length do: {|n|
       (source at: n) switch \
-      case: "(" do: { result add: "(" };
-      case: ")" do: { result add: ")" };
-      case: "[" do: { result add: "[" };
-      case: "]" do: { result add: "]" };
-      case: "{" do: { result add: "{" };
-      case: "}" do: { result add: "}" };
-      case: ";" do: { result add: ";" };
-      case: "." do: { result add: "." };
+      case: "(" do: { result add: "(" } ;
+      case: ")" do: { result add: ")" } ;
+      case: "[" do: { result add: "[" } ;
+      case: "]" do: { result add: "]" } ;
+      case: "{" do: { result add: "{" } ;
+      case: "}" do: { result add: "}" } ;
+      case: ";" do: { result add: ";" } ;
+      case: "." do: { result add: "." } ;
       case: "|" do: { result add: "|" }
     }
 

@@ -1,30 +1,30 @@
 Test suite: "Arithmetic" is: {
-    Test test: "Addition" is: {
-        Test that: 1 + 2    equals: 3
-        Test that: 0 + 1000 equals: 1000
-        Test that: -3 + 3   equals: 0
-    }
+  Test test: "Addition" is: {
+    Test that: 1 + 2    equals: 3
+    Test that: 0 + 1000 equals: 1000
+    Test that: -3 + 3   equals: 0
+  }
 
-    Test test: "Subtraction" is: {
-        Test that: 2 - 1    equals: 1
-        Test that: 0 - 1000 equals: -1000
-        Test that: -3 - 3   equals: -6
-    }
+  Test test: "Subtraction" is: {
+    Test that: 2 - 1    equals: 1
+    Test that: 0 - 1000 equals: -1000
+    Test that: -3 - 3   equals: -6
+  }
 
-    Test test: "Multiplication" is: {
-        Test that: 2 * 3    equals: 6
-        Test that: 0 * 1000 equals: 0
-    }
+  Test test: "Multiplication" is: {
+    Test that: 2 * 3    equals: 6
+    Test that: 0 * 1000 equals: 0
+  }
 
-    Test test: "Division" is: {
-        Test that: 6 / 3    equals: 2
-        Test that: 5 / 0    equals: nil
-    }
+  Test test: "Division" is: {
+    Test that: 6 / 3    equals: 2
+    Test that: 5 / 0    equals: nil
+  }
 
-    Test test: "Sqrt" is: {
-        Test that: 0 sqrt   equals: 0
-        Test that: 1 sqrt   equals: 1
-        Test that: 4 sqrt   equals: 2
-        Test that: 9 sqrt   equals: 3
-    }
+  Test test: "Sqrt" is: {
+    Test that: 0 sqrt   equals: 0
+    Test that: 1 sqrt   equals: 1
+    Test that: 4 sqrt   equals: 2
+    Test that: 9 sqrt   equals: 3
+  }
 }

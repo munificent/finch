@@ -1,36 +1,36 @@
 Test suite: "Strings" is: {
-    called <- ""
-    ' make a couple of objects that implement to-string
-    obj <- (||
-        foo { called <-- called + "foo" }
-        bar { called <-- called + "bar" }
-        baz { called <-- called + "baz" }
-        me { self }
-        + other { called <-- called + other }
-        add: a and: b { called <-- called + a + b }
-    )
+  called <- ""
+  ' make a couple of objects that implement to-string
+  obj <- (||
+    foo { called <-- called + "foo" }
+    bar { called <-- called + "bar" }
+    baz { called <-- called + "baz" }
+    me { self }
+    + other { called <-- called + other }
+    add: a and: b { called <-- called + a + b }
+  )
 
-    Test test: "Unary" is: {
-        called <-- ""
-        obj foo ; bar ; baz
-        Test that: called equals: "foobarbaz"
-    }
+  Test test: "Unary" is: {
+    called <-- ""
+    obj foo ; bar ; baz
+    Test that: called equals: "foobarbaz"
+  }
 
-    Test test: "Binary" is: {
-        called <-- ""
-        obj + "foo" ; + "bar" ; + "baz"
-        Test that: called equals: "foobarbaz"
-    }
+  Test test: "Binary" is: {
+    called <-- ""
+    obj + "foo" ; + "bar" ; + "baz"
+    Test that: called equals: "foobarbaz"
+  }
 
-    Test test: "Keyword" is: {
-        called <-- ""
-        obj add: "foo" and: "bar" ; add: "bar" and: "baz"
-        Test that: called equals: "foobarbarbaz"
-    }
+  Test test: "Keyword" is: {
+    called <-- ""
+    obj add: "foo" and: "bar" ; add: "bar" and: "baz"
+    Test that: called equals: "foobarbarbaz"
+  }
 
-    Test test: "Mixed" is: {
-        called <-- ""
-        obj me add: "foo" + "bar" and: "baz" ; + "bar" ; bar
-        Test that: called equals: "foobarbazbarbar"
-    }
+  Test test: "Mixed" is: {
+    called <-- ""
+    obj me add: "foo" + "bar" and: "baz" ; + "bar" ; bar
+    Test that: called equals: "foobarbazbarbar"
+  }
 }

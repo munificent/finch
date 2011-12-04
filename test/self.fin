@@ -1,100 +1,100 @@
 Test suite: "Self" is: {
-    Test test: "Self in non-method block is nil" is: {
-        block <- { self }
+  Test test: "Self in non-method block is nil" is: {
+    block <- { self }
 
-        Test that: block call equals: nil
-    }
+    Test that: block call equals: nil
+  }
 
-    Test test: "Self in block is outer self" is: {
-        foo <- (||
-            to-string { "foo" }
-            bar {
-                block <- { self to-string }
-                block call
-            }
-        )
+  Test test: "Self in block is outer self" is: {
+    foo <- (||
+      to-string { "foo" }
+      bar {
+        block <- { self to-string }
+        block call
+      }
+    )
 
-        Test that: foo bar equals: "foo"
-    }
+    Test that: foo bar equals: "foo"
+  }
 
-    Test test: "Self in parent method is child" is: {
-        parent <- (||
-            call-to-string { self to-string }
-            to-string { "parent" }
-        )
+  Test test: "Self in parent method is child" is: {
+    parent <- (||
+      call-to-string { self to-string }
+      to-string { "parent" }
+    )
 
-        child <- (|parent|
-            to-string { "child" }
-        )
+    child <- (|parent|
+      to-string { "child" }
+    )
 
-        Test that: parent call-to-string equals: "parent"
-        Test that: child call-to-string equals: "child"
-    }
+    Test that: parent call-to-string equals: "parent"
+    Test that: child call-to-string equals: "child"
+  }
 
-    Test test: "Self in block is lexical not dynamic scope" is: {
-        ' create a block in one object scope
-        foo <- (||
-            to-string { "foo" }
-            block { { self to-string } }
-        )
+  Test test: "Self in block is lexical not dynamic scope" is: {
+    ' create a block in one object scope
+    foo <- (||
+      to-string { "foo" }
+      block { { self to-string } }
+    )
 
-        ' and call it from within a different object
-        bar <- (||
-            to-string { "bar" }
-            call-block: block { block call }
-        )
+    ' and call it from within a different object
+    bar <- (||
+      to-string { "bar" }
+      call-block: block { block call }
+    )
 
-        Test that: (bar call-block: foo block) equals: "foo"
+    Test that: (bar call-block: foo block) equals: "foo"
 
-        ' needs to play nice with inheritance too
-        foo2 <- (|foo|
-            to-string { "foo2" }
-        )
-        Test that: (bar call-block: foo2 block) equals: "foo2"
-    }
+    ' needs to play nice with inheritance too
+    foo2 <- (|foo|
+      to-string { "foo2" }
+    )
+    Test that: (bar call-block: foo2 block) equals: "foo2"
+  }
 
-    Test test: "Recursive inherited method restores outer self" is: {
-        parent <- (||
-            recurse: recurse {
-                ' see what self is bound to
-                a <- self to-string
-                if: recurse then: {
-                    ' call this exact same method but with a different self
-                    a <-- a + (child recurse: false)
-                    ' see that self was correctly restored to parent
-                    a <-- a + self to-string
-                }
-                a
-            }
-            to-string { "p" }
-        )
+  Test test: "Recursive inherited method restores outer self" is: {
+    parent <- (||
+      recurse: recurse {
+        ' see what self is bound to
+        a <- self to-string
+        if: recurse then: {
+          ' call this exact same method but with a different self
+          a <-- a + (child recurse: false)
+          ' see that self was correctly restored to parent
+          a <-- a + self to-string
+        }
+        a
+      }
+      to-string { "p" }
+    )
 
-        child <- (|parent|
-            to-string { "c" }
-        )
+    child <- (|parent|
+      to-string { "c" }
+    )
 
-        Test that: (parent recurse: false) equals: "p"
-        Test that: (child  recurse: false) equals: "c"
-        Test that: (parent recurse: true) equals: "pcp"
-    }
+    Test that: (parent recurse: false) equals: "p"
+    Test that: (child  recurse: false) equals: "c"
+    Test that: (parent recurse: true) equals: "pcp"
+  }
 
-    Test test: "Storing a block in a method caches self at that time" is: {
-        parent <- (||
-            to-string { "parent" }
-            make-block {
-                _block <- { self to-string }
-            }
-            call-block { _block call }
-        )
+  Test test: "Storing a block in a method caches self at that time" is: {
+    parent <- (||
+      to-string { "parent" }
+      make-block {
+        _block <- { self to-string }
+      }
+      call-block { _block call }
+    )
 
-        child <- (|parent|
-            to-string { "child" }
-        )
+    child <- (|parent|
+      to-string { "child" }
+    )
 
-        parent make-block
-        Test that: child call-block equals: "parent"
+    parent make-block
+    Test that: child call-block equals: "parent"
 
-        child make-block
-        Test that: child call-block equals: "child"
-    }
+    child make-block
+    Test that: child call-block equals: "child"
+  }
 }

@@ -1,8 +1,8 @@
 Test suite: "Literals" is: {
-    Test test: "Numbers" is: {
-        Test that: 0 to-string equals: "0"
-        Test that: 1 to-string equals: "1"
-        Test that: 999999 to-string equals: "999999"
-        Test that: -1234 to-string equals: "-1234"
-    }
+  Test test: "Numbers" is: {
+    Test that: 0 to-string equals: "0"
+    Test that: 1 to-string equals: "1"
+    Test that: 999999 to-string equals: "999999"
+    Test that: -1234 to-string equals: "-1234"
+  }
 }
