@@ -24,41 +24,41 @@ namespace Finch
         mGlobals->Define("Object", mObject);
 
         DynamicObject* objectObj = mObject->AsDynamic();
-        objectObj->RegisterPrimitive("=",               ObjectEquals);
-        objectObj->RegisterPrimitive("to-string",       ObjectToString);
-        objectObj->RegisterPrimitive("parent",          ObjectGetParent);
-        objectObj->RegisterPrimitive("parent:",         ObjectSetParent);
+        objectObj->AddPrimitive("=",               ObjectEquals);
+        objectObj->AddPrimitive("to-string",       ObjectToString);
+        objectObj->AddPrimitive("parent",          ObjectGetParent);
+        objectObj->AddPrimitive("parent:",         ObjectSetParent);
 
         // define Array prototype
         mArrayPrototype = Object::NewObject(mObject, "Arrays");
         DynamicObject* arrayObj = mArrayPrototype->AsDynamic();
-        arrayObj->RegisterPrimitive("length",      ArrayLength);
-        arrayObj->RegisterPrimitive("add:",        ArrayAdd);
-        arrayObj->RegisterPrimitive("at:",         ArrayAt);
-        arrayObj->RegisterPrimitive("at:put:",     ArrayAtPut);
+        arrayObj->AddPrimitive("length",      ArrayLength);
+        arrayObj->AddPrimitive("add:",        ArrayAdd);
+        arrayObj->AddPrimitive("at:",         ArrayAt);
+        arrayObj->AddPrimitive("at:put:",     ArrayAtPut);
         mGlobals->Define("Arrays", mArrayPrototype);
 
         // define Blocks prototype
         mBlockPrototype = Object::NewObject(mObject, "Blocks");
         DynamicObject* blockObj = mBlockPrototype->AsDynamic();
-        blockObj->RegisterPrimitive("call", BlockCall);
-        blockObj->RegisterPrimitive("call:", BlockCall);
-        blockObj->RegisterPrimitive("call::", BlockCall);
-        blockObj->RegisterPrimitive("call:::", BlockCall);
-        blockObj->RegisterPrimitive("call::::", BlockCall);
-        blockObj->RegisterPrimitive("call:::::", BlockCall);
-        blockObj->RegisterPrimitive("call::::::", BlockCall);
-        blockObj->RegisterPrimitive("call:::::::", BlockCall);
-        blockObj->RegisterPrimitive("call::::::::", BlockCall);
-        blockObj->RegisterPrimitive("call:::::::::", BlockCall);
-        blockObj->RegisterPrimitive("call::::::::::", BlockCall);
+        blockObj->AddPrimitive("call", BlockCall);
+        blockObj->AddPrimitive("call:", BlockCall);
+        blockObj->AddPrimitive("call::", BlockCall);
+        blockObj->AddPrimitive("call:::", BlockCall);
+        blockObj->AddPrimitive("call::::", BlockCall);
+        blockObj->AddPrimitive("call:::::", BlockCall);
+        blockObj->AddPrimitive("call::::::", BlockCall);
+        blockObj->AddPrimitive("call:::::::", BlockCall);
+        blockObj->AddPrimitive("call::::::::", BlockCall);
+        blockObj->AddPrimitive("call:::::::::", BlockCall);
+        blockObj->AddPrimitive("call::::::::::", BlockCall);
         mGlobals->Define("Blocks", mBlockPrototype);
 
         // define Fiber prototype
         mFiberPrototype = Object::NewObject(mObject, "Fibers");
         DynamicObject* fiberObj = mFiberPrototype->AsDynamic();
-        fiberObj->RegisterPrimitive("running?", FiberRunning);
-        fiberObj->RegisterPrimitive("done?", FiberDone);
+        fiberObj->AddPrimitive("running?", FiberRunning);
+        fiberObj->AddPrimitive("done?", FiberDone);
         mGlobals->Define("Fibers", mFiberPrototype);
 
         // define Number type object
@@ -66,40 +66,40 @@ namespace Finch
         mGlobals->Define("Numbers", mNumberPrototype);
 
         DynamicObject* numberObj = mNumberPrototype->AsDynamic();
-        numberObj->RegisterPrimitive("abs", NumberAbs);
-        numberObj->RegisterPrimitive("neg", NumberNeg);
-        numberObj->RegisterPrimitive("mod:", NumberMod);
-        numberObj->RegisterPrimitive("floor", NumberFloor);
-        numberObj->RegisterPrimitive("ceiling", NumberCeiling);
-        numberObj->RegisterPrimitive("sqrt",  NumberSqrt);
-        numberObj->RegisterPrimitive("sin",   NumberSin);
-        numberObj->RegisterPrimitive("cos",   NumberCos);
-        numberObj->RegisterPrimitive("tan",   NumberTan);
-        numberObj->RegisterPrimitive("asin",  NumberAsin);
-        numberObj->RegisterPrimitive("acos",  NumberAcos);
-        numberObj->RegisterPrimitive("atan",  NumberAtan);
-        numberObj->RegisterPrimitive("atan:", NumberAtan2);
-        numberObj->RegisterPrimitive("+",   NumberAdd);
-        numberObj->RegisterPrimitive("-",   NumberSubtract);
-        numberObj->RegisterPrimitive("*",   NumberMultiply);
-        numberObj->RegisterPrimitive("/",   NumberDivide);
-        numberObj->RegisterPrimitive("=",   NumberEquals);
-        numberObj->RegisterPrimitive("!=",  NumberNotEquals);
-        numberObj->RegisterPrimitive("<",   NumberLessThan);
-        numberObj->RegisterPrimitive(">",   NumberGreaterThan);
-        numberObj->RegisterPrimitive("<=",  NumberLessThanOrEqual);
-        numberObj->RegisterPrimitive(">=",  NumberGreaterThanOrEqual);
+        numberObj->AddPrimitive("abs", NumberAbs);
+        numberObj->AddPrimitive("neg", NumberNeg);
+        numberObj->AddPrimitive("mod:", NumberMod);
+        numberObj->AddPrimitive("floor", NumberFloor);
+        numberObj->AddPrimitive("ceiling", NumberCeiling);
+        numberObj->AddPrimitive("sqrt",  NumberSqrt);
+        numberObj->AddPrimitive("sin",   NumberSin);
+        numberObj->AddPrimitive("cos",   NumberCos);
+        numberObj->AddPrimitive("tan",   NumberTan);
+        numberObj->AddPrimitive("asin",  NumberAsin);
+        numberObj->AddPrimitive("acos",  NumberAcos);
+        numberObj->AddPrimitive("atan",  NumberAtan);
+        numberObj->AddPrimitive("atan:", NumberAtan2);
+        numberObj->AddPrimitive("+",   NumberAdd);
+        numberObj->AddPrimitive("-",   NumberSubtract);
+        numberObj->AddPrimitive("*",   NumberMultiply);
+        numberObj->AddPrimitive("/",   NumberDivide);
+        numberObj->AddPrimitive("=",   NumberEquals);
+        numberObj->AddPrimitive("!=",  NumberNotEquals);
+        numberObj->AddPrimitive("<",   NumberLessThan);
+        numberObj->AddPrimitive(">",   NumberGreaterThan);
+        numberObj->AddPrimitive("<=",  NumberLessThanOrEqual);
+        numberObj->AddPrimitive(">=",  NumberGreaterThanOrEqual);
         
         // define String prototype
         mStringPrototype = Object::NewObject(mObject, "Strings");
         mGlobals->Define("Strings", mStringPrototype);
 
         DynamicObject* stringObj = mStringPrototype->AsDynamic();
-        stringObj->RegisterPrimitive("length",      StringLength);
-        stringObj->RegisterPrimitive("at:",         StringAt);
-        stringObj->RegisterPrimitive("from:count:", StringFromCount);
-        stringObj->RegisterPrimitive("hash-code",   StringHashCode);
-        stringObj->RegisterPrimitive("index-of:",   StringIndexOf);
+        stringObj->AddPrimitive("length",      StringLength);
+        stringObj->AddPrimitive("at:",         StringAt);
+        stringObj->AddPrimitive("from:count:", StringFromCount);
+        stringObj->AddPrimitive("hash-code",   StringHashCode);
+        stringObj->AddPrimitive("index-of:",   StringIndexOf);
 
         // define Ether
         Ref<Object> ether = Object::NewObject(mObject, "Ether");
@@ -110,13 +110,13 @@ namespace Finch
         mGlobals->Define("#PRIM#", primitives);
 
         DynamicObject* primsObj = primitives->AsDynamic();
-        primsObj->RegisterPrimitive("string-concat:and:",       PrimitiveStringConcat);
-        primsObj->RegisterPrimitive("string-compare:to:",       PrimitiveStringCompare);
-        primsObj->RegisterPrimitive("write:",                   PrimitiveWrite);
-        primsObj->RegisterPrimitive("new-fiber:",               PrimitiveNewFiber);
-        primsObj->RegisterPrimitive("current-fiber",            PrimitiveGetCurrentFiber);
-        primsObj->RegisterPrimitive("switch-to-fiber:passing:", PrimitiveSwitchToFiber);
-        primsObj->RegisterPrimitive("callstack-depth",          PrimitiveGetCallstackDepth);
+        primsObj->AddPrimitive("string-concat:and:",       PrimitiveStringConcat);
+        primsObj->AddPrimitive("string-compare:to:",       PrimitiveStringCompare);
+        primsObj->AddPrimitive("write:",                   PrimitiveWrite);
+        primsObj->AddPrimitive("new-fiber:",               PrimitiveNewFiber);
+        primsObj->AddPrimitive("current-fiber",            PrimitiveGetCurrentFiber);
+        primsObj->AddPrimitive("switch-to-fiber:passing:", PrimitiveSwitchToFiber);
+        primsObj->AddPrimitive("callstack-depth",          PrimitiveGetCallstackDepth);
         
         // make the special values
         mNil = MakeGlobal("nil");

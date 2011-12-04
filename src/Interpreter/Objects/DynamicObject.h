@@ -44,7 +44,7 @@ namespace Finch
         void AddMethod(Ref<Object> self, Fiber & fiber,
                        String name, Ref<Object> body);
         
-        void RegisterPrimitive(String message, PrimitiveMethod method);
+        void AddPrimitive(String message, PrimitiveMethod method);
         
     private:
         void InitializeScope();

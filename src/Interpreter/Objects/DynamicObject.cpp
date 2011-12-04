@@ -65,9 +65,8 @@ namespace Finch
         mMethods.Insert(name, blockCopy);
     }
     
-    void DynamicObject::RegisterPrimitive(String message, PrimitiveMethod method)
+    void DynamicObject::AddPrimitive(String message, PrimitiveMethod method)
     {
         mPrimitives.Insert(message, method);
     }
 }
-

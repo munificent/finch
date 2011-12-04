@@ -146,6 +146,6 @@ namespace Finch
         DynamicObject* dynamicObj = object->AsDynamic();
         ASSERT_NOT_NULL(dynamicObj);
         
-        dynamicObj->RegisterPrimitive(message, method);
+        dynamicObj->AddPrimitive(message, method);
     }
 }
