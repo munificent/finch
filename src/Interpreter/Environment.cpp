@@ -79,10 +79,10 @@ namespace Finch
         numberObj->AddPrimitive("acos",  NumberAcos);
         numberObj->AddPrimitive("atan",  NumberAtan);
         numberObj->AddPrimitive("atan:", NumberAtan2);
-        numberObj->AddPrimitive("+",   NumberAdd);
-        numberObj->AddPrimitive("-",   NumberSubtract);
-        numberObj->AddPrimitive("*",   NumberMultiply);
-        numberObj->AddPrimitive("/",   NumberDivide);
+        numberObj->AddPrimitive("+number:", NumberAdd);
+        numberObj->AddPrimitive("-number:", NumberSubtract);
+        numberObj->AddPrimitive("*number:", NumberMultiply);
+        numberObj->AddPrimitive("/number:", NumberDivide);
         numberObj->AddPrimitive("=",   NumberEquals);
         numberObj->AddPrimitive("!=",  NumberNotEquals);
         numberObj->AddPrimitive("<",   NumberLessThan);

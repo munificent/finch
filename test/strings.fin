@@ -12,7 +12,8 @@ Test suite: "Strings" is: {
 
   Test test: "Concatenation" is: {
     Test that: "a" + 1 + 2     equals: "a12"
-    Test that: 1 + "a" + 2     equals: 3
+    Test that: 1 + "a" + 2     equals: "1a2"
+    Test that: 1 + 2 + "a"     equals: "3a"
     Test that: "left" + apple  equals: "leftapple"
   }
 

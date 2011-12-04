@@ -15,11 +15,11 @@ namespace Finch
     Token Lexer::ReadToken()
     {
         Token token;
-        
+
         while (token.Type() == TOKEN_NONE)
         {
             char c = mLine[mIndex];
-            
+
             switch (mState)
             {
                 case LEX_NEED_LINE:
@@ -34,7 +34,7 @@ namespace Finch
                         mState = LEX_DEFAULT;
                     }
                     break;
-                    
+
                 case LEX_DEFAULT:
                     switch (c)
                     {
@@ -49,26 +49,26 @@ namespace Finch
                         case ';': token = SingleToken(TOKEN_SEMICOLON); break;
                         case '\\': token = SingleToken(TOKEN_IGNORE_LINE); break;
                         case '|': token = SingleToken(TOKEN_PIPE); break;
-                            
+
                         case '-': StartState(LEX_IN_MINUS); break;
                         case ':': StartState(LEX_IN_COLON); break;
-                            
+
                         case '"':
                             mEscapedString = "";
                             StartState(LEX_IN_STRING);
                             break;
-                            
+
                         case '\'':
                             mState = LEX_IN_COMMENT;
                             break;
-                            
+
                         case '\0':
                             token = Token(TOKEN_LINE);
                             mState = LEX_NEED_LINE;
                             break;
-                        
+
                         case ' ': Consume(); break;
-                            
+
                         default:
                             if (IsDigit(c))         StartState(LEX_IN_NUMBER);
                             else if (IsAlpha(c))    StartState(LEX_IN_NAME);
@@ -77,15 +77,16 @@ namespace Finch
                             {
                                 String message = String::Format("Unknown character '%c'.", c);
                                 mErrorReporter.Error(message);
-                                
+
                                 // just ignore the character and continue
                                 Consume();
                             }
                     }
                     break;
-                    
+
                 case LEX_IN_MINUS:
                     if (IsDigit(c))         ChangeState(LEX_IN_NUMBER);
+                    else if (IsAlpha(c))    ChangeState(LEX_IN_NAME);
                     else if (IsOperator(c)) ChangeState(LEX_IN_OPERATOR);
                     else
                     {
@@ -93,7 +94,7 @@ namespace Finch
                         mState = LEX_DEFAULT;
                     }
                     break;
-                    
+
                 case LEX_IN_NUMBER:
                     if (IsDigit(c)) Consume();
                     else if (c =='.')
@@ -105,11 +106,11 @@ namespace Finch
                         String text = mLine.Substring(mTokenStart, mIndex - mTokenStart);
                         double number = atof(text.CString());
                         token = Token(TOKEN_NUMBER, number);
-                        
+
                         mState = LEX_DEFAULT;
                     }
                     break;
-                    
+
                 case LEX_IN_DECIMAL:
                     if (IsDigit(c)) Consume();
                     else
@@ -117,17 +118,17 @@ namespace Finch
                         String text = mLine.Substring(mTokenStart, mIndex - mTokenStart);
                         double number = atof(text.CString());
                         token = Token(TOKEN_NUMBER, number);
-                        
+
                         mState = LEX_DEFAULT;
                     }
                     break;
-                    
+
                 case LEX_IN_NAME:
                     if (IsAlpha(c) || IsDigit(c) || IsOperator(c)) Consume();
                     else if (c == ':')
                     {
                         Consume();
-                        
+
                         String name = mLine.Substring(mTokenStart, mIndex - mTokenStart);
                         token = Token(TOKEN_KEYWORD, name);
 
@@ -136,34 +137,34 @@ namespace Finch
                     else
                     {
                         String name = mLine.Substring(mTokenStart, mIndex - mTokenStart);
-                        
+
                         // see if it's a reserved word
                         if (name == "self") token = Token(TOKEN_SELF);
                         else if (name == "undefined") token = Token(TOKEN_UNDEFINED);
                         else if (name == "break") token = Token(TOKEN_BREAK);
                         else if (name == "return") token = Token(TOKEN_RETURN);
                         else token = Token(TOKEN_NAME, name);
-                        
+
                         mState = LEX_DEFAULT;
                     }
                     break;
-                    
+
                 case LEX_IN_OPERATOR:
-                    if (IsOperator(c))   Consume();
-                    else if (IsAlpha(c)) mState = LEX_IN_NAME;
+                    if (IsOperator(c)) Consume();
+                    else if (IsAlpha(c)) ChangeState(LEX_IN_NAME);
                     else
                     {
                         String name = mLine.Substring(mTokenStart, mIndex - mTokenStart);
-                        
+
                         // see if it's a reserved operator
                         if (name == "<-") token = Token(TOKEN_ARROW);
                         else if (name == "<--") token = Token(TOKEN_LONG_ARROW);
                         else token = Token(TOKEN_OPERATOR, name);
-                        
+
                         mState = LEX_DEFAULT;
                     }
                     break;
-                    
+
                 case LEX_IN_STRING:
                     switch (c)
                     {
@@ -171,11 +172,11 @@ namespace Finch
                             token = Token(TOKEN_STRING, mEscapedString);
                             ChangeState(LEX_DEFAULT);
                             break;
-                            
+
                         case '\\':
                             ChangeState(LEX_IN_STRING_ESCAPE);
                             break;
-                            
+
                         case '\0':
                             mErrorReporter.Error("String is missing closing '\"'.");
                             // just ditch the token and end the line
@@ -189,21 +190,21 @@ namespace Finch
                             break;
                     }
                     break;
-                    
+
                 case LEX_IN_STRING_ESCAPE:
                     switch (c)
                     {
                         case '"':  EscapeCharacter('"'); break;
                         case 'n':  EscapeCharacter('\n'); break;
                         case '\\': EscapeCharacter('\\'); break;
-                        
+
                         case '\0':
                             mErrorReporter.Error("String is missing escape code and closing '\"'.");
-                            
+
                             // just ditch the token and end the line
                             mState = LEX_NEED_LINE;
                             break;
-                            
+
                         default:
                             String message = String::Format("Unrecognized string escape code '\\%c'.", c);
                             mErrorReporter.Error(message);
@@ -214,7 +215,7 @@ namespace Finch
                             break;
                     }
                     break;
-                    
+
                 case LEX_IN_COMMENT:
                     if (c == '\0')
                     {
@@ -223,7 +224,7 @@ namespace Finch
                     }
                     else Consume();
                     break;
-                    
+
                 case LEX_IN_COLON:
                     if (c == ':')
                     {
@@ -238,30 +239,30 @@ namespace Finch
                         mState = LEX_DEFAULT;
                     }
                     break;
-                    
+
                 case LEX_DONE:
                     token = Token(TOKEN_EOF);
                     break;
-                    
+
                 default:
                     ASSERT(false, "Uknown lexer state.");
             }
         }
-        
+
         return token;
     }
-    
+
     void Lexer::Consume()
     {
         mIndex++;
     }
-    
+
     Token Lexer::SingleToken(TokenType type)
     {
         Consume();
         return Token(type);
     }
-    
+
     void Lexer::StartState(State state)
     {
         mState = state;
@@ -274,25 +275,25 @@ namespace Finch
         Consume();
         mState = state;
     }
-    
+
     void Lexer::EscapeCharacter(char c)
     {
         mEscapedString += c;
         ChangeState(LEX_IN_STRING);
     }
-    
+
     bool Lexer::IsAlpha(char c) const
     {
         return (c == '_') ||
                ((c >= 'a') && (c <= 'z')) ||
                ((c >= 'A') && (c <= 'Z'));
     }
-    
+
     bool Lexer::IsDigit(char c) const
     {
         return (c >= '0') && (c <= '9');
     }
-    
+
     bool Lexer::IsOperator(char c) const
     {
         return (c != '\0') &&

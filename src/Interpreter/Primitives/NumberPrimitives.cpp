@@ -7,24 +7,30 @@
 
 namespace Finch
 {
+    // The binary operators here are the result of a double-dispatch on the two
+    // operands. When you do "1 - 2", it sends a "-" message to 1 which in turn
+    // sends "-number:" to 2, passing in itself as the argument. The primitives
+    // here are those second messages. That means the operands are reversed:
+    // self is the RHS and the arg is the LHS.
+    
     PRIMITIVE(NumberAdd)
     {
-        fiber.PushNumber(self->AsNumber() + args[0]->AsNumber());
+        fiber.PushNumber(args[0]->AsNumber() + self->AsNumber());
     }
 
     PRIMITIVE(NumberSubtract)
     {
-        fiber.PushNumber(self->AsNumber() - args[0]->AsNumber());
+        fiber.PushNumber(args[0]->AsNumber() - self->AsNumber());
     }
     
     PRIMITIVE(NumberMultiply)
     {
-        fiber.PushNumber(self->AsNumber() * args[0]->AsNumber());
+        fiber.PushNumber(args[0]->AsNumber() * self->AsNumber());
     }
     
     PRIMITIVE(NumberDivide)
     {
-        double dividend = args[0]->AsNumber();
+        double dividend = self->AsNumber();
         
         // check for divide by zero
         if (dividend == 0)
@@ -33,7 +39,7 @@ namespace Finch
         }
         else
         {
-            fiber.PushNumber(self->AsNumber() / dividend);
+            fiber.PushNumber(args[0]->AsNumber() / dividend);
         }
     }
 

@@ -134,15 +134,31 @@ Fibers :: (
   run-by { _run-by }
 )
 
-Numbers :: number? { true }
+Numbers :: (
+  number? { true }
+
+  ' Double-dispatch.
+  + right { right +number: self }
+  - right { right -number: self }
+  * right { right *number: self }
+  / right { right /number: self }
+)
+
+Object :: (
+  ' Adding anything to a string converts it to a string and concatenates.
+  +string: left { #PRIM# string-concat: left and: self to-string }
+)
 
 Strings :: (
   string? { true }
 
-  + right { #PRIM# string-concat: self to-string and: right to-string }
+  ' Adding a number to a string converts it to a string and concatenates.
+  +number: left { left to-string + self }
 
-  = right { (#PRIM# string-compare: self to: right) = 0 }
+  ' Double-dispatch.
+  + right { right +string: self }
 
+  =  right { (#PRIM# string-compare: self to: right) = 0 }
   <  right { (#PRIM# string-compare: self to: right) < 0 }
   >  right { (#PRIM# string-compare: self to: right) > 0 }
   <= right { (#PRIM# string-compare: self to: right) <= 0 }
