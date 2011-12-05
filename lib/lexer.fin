@@ -1,12 +1,67 @@
+Token/None         <- ""
+Token/LeftParen    <- "("
+Token/RightParen   <- ")"
+Token/LeftBracket  <- "["
+Token/RightBracket <- "]"
+Token/LeftBrace    <- "{"
+Token/RightBrace   <- "}"
+Token/Comma        <- "," ' Includes newlines too.
+Token/Semicolon    <- ";"
+Token/Dot          <- "."
+Token/Pipe         <- "|"
+Token/Arrow        <- "<-"
+Token/LongArrow    <- "<--"
+Token/Bind         <- "::"
+Token/Self         <- "self"
+Token/Undefined    <- "undefined"
+Token/Break        <- "break"
+Token/Return       <- "return"
+Token/Number       <- "number"
+Token/String       <- "string"
+Token/Name         <- "name"
+Token/Operator     <- "operator"
+Token/Keyword      <- "keyword"
+Token/IgnoreLine   <- "ignore line"
+Token/Eof          <- "eof"
+Token/Error        <- "error"
+
 Token <- (||
-  new: text type: type {
-    (|Tokens| _text <- text, _type <- type )
+  new: type text: text span: span {
+    (|Tokens| _type <- type, _text <- text, _span <- span )
   }
 )
 
 Tokens <- (||
-  text { _text }
   type { _type }
+  text { _text }
+  span { _span }
+
+  to-string { "'" + _text + "' (" + _type + ") " + _span }
+)
+
+SourceSpan <- (||
+  new-file: file start: start end: end {
+    (|SourceSpans| _file <- file, _start <- start, _end <- end)
+  }
+)
+
+SourceSpans <- (||
+  file { _file }
+  start { _start }
+  end { _end }
+
+  to-string { _file path + ":" + _start + ":" + _end }
+)
+
+SourceFile <- (||
+  new-path: path source: source {
+    (|SourceFiles| _path <- path, _source <- source)
+  }
+)
+
+SourceFiles <- (||
+  path { _path }
+  source { _source }
 )
 
 Strings :: (
@@ -24,8 +79,9 @@ Strings :: (
 )
 
 Lexer <- (||
-  new: source {
+  new-path: path source: source {
     (|Lexers|
+      _file <- SourceFile new-path: path source: source
       _source <- source
       _pos <- 0
       _start <- 0
@@ -63,20 +119,20 @@ Lexers <- (||
     if: _pos >= _source length then: { return nil }
 
     c <- self current
-    if: c = "(" then: { return self single-token }
-    if: c = ")" then: { return self single-token }
-    if: c = "[" then: { return self single-token }
-    if: c = "]" then: { return self single-token }
-    if: c = "{" then: { return self single-token }
-    if: c = "}" then: { return self single-token }
-    if: c = "," then: { return self single-token }
-    if: c = ";" then: { return self single-token }
-    if: c = "." then: { return self single-token }
-    if: c = "|" then: { return self single-token }
+    if: c = "(" then: { return self single-token: Token/LeftParen }
+    if: c = ")" then: { return self single-token: Token/RightParen }
+    if: c = "[" then: { return self single-token: Token/LeftBracket }
+    if: c = "]" then: { return self single-token: Token/RightBracket }
+    if: c = "{" then: { return self single-token: Token/LeftBrace }
+    if: c = "}" then: { return self single-token: Token/RightBrace }
+    if: c = "," then: { return self single-token: Token/Comma }
+    if: c = ";" then: { return self single-token: Token/Semicolon }
+    if: c = "." then: { return self single-token: Token/Dot }
+    if: c = "|" then: { return self single-token: Token/Pipe }
     if: (c alpha?) then: { return self read-name }
 
-    c <- self advance
-    "ERROR " + c
+    ' If we got here, we failed to handle the current character.
+    self single-token: Token/Error
   }
 
   skip-whitespace {
@@ -88,25 +144,26 @@ Lexers <- (||
 
   read-name {
     self advance-while: {|c| c alpha-or-operator? }
-    self make-token
+    self make-token: Token/Name
   }
 
   read-operator {
     ' When token types are implemented; needs to switch to name if it
     ' encounters a letter.
     self advance-while: {|c| c alpha-or-operator? }
-    self make-token
+    self make-token: Token/Operator
   }
 
-  single-token {
+  single-token: type {
     self advance
-    self make-token
+    self make-token: type
   }
 
-  make-token {
-    result <- _source from: _start to: _pos
+  make-token: type {
+    span <- SourceSpan new-file: _file start: _start end: _pos
+    text <- _source from: _start to: _pos
     _start <- _pos
-    result
+    Token new: type text: text span: span
   }
 )
 
@@ -117,7 +174,7 @@ tests <- [["()[]{}", "(", ")", "[", "]", "{", "}"]
          ]
 
 tests each: {|test|
-  lexer <- Lexer new: (test at: 0)
+  lexer <- Lexer new-path: "(test)" source: (test at: 0)
   result <- []
   lexer each: {|token| result add: token }
 
@@ -160,9 +217,12 @@ errors <- 0
 files each: {|file|
   write-line: file
   source <- Io read-file: file
-  lexer <- Lexer new: source
+  lexer <- Lexer new-path: file source: source
   lexer each: {|token|
-    if: (token starts-with: "ERROR") then: { errors <-- errors + 1 }
+    write-line: token
+    if: (token type = Token/Error) then: {
+      errors <-- errors + 1
+    }
   }
 }
 
