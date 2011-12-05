@@ -6,10 +6,11 @@
 #include "Environment.h"
 #include "Expr.h"
 #include "FiberPrimitives.h"
-#include "Primitives.h"
 #include "Fiber.h"
+#include "IoPrimitives.h"
 #include "NumberPrimitives.h"
 #include "ObjectPrimitives.h"
+#include "Primitives.h"
 #include "StringPrimitives.h"
 
 namespace Finch
@@ -56,12 +57,13 @@ namespace Finch
 
         // define Fiber prototype
         mFiberPrototype = Object::NewObject(mObject, "Fibers");
+        mGlobals->Define("Fibers", mFiberPrototype);
+
         DynamicObject* fiberObj = mFiberPrototype->AsDynamic();
         fiberObj->AddPrimitive("running?", FiberRunning);
         fiberObj->AddPrimitive("done?", FiberDone);
-        mGlobals->Define("Fibers", mFiberPrototype);
 
-        // define Number type object
+        // define Number prototype
         mNumberPrototype = Object::NewObject(mObject, "Numbers");
         mGlobals->Define("Numbers", mNumberPrototype);
 
@@ -104,7 +106,14 @@ namespace Finch
         // define Ether
         Ref<Object> ether = Object::NewObject(mObject, "Ether");
         mGlobals->Define("Ether", ether);
-                
+        
+        // define IO
+        Ref<Object> io = Object::NewObject(mObject, "Io");
+        mGlobals->Define("Io", io);
+
+        DynamicObject* ioObj = io->AsDynamic();
+        ioObj->AddPrimitive("read-file:", IoReadFile);
+
         // define bare primitive object
         Ref<Object> primitives = Object::NewObject(mObject);
         mGlobals->Define("#PRIM#", primitives);

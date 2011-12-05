@@ -74,6 +74,9 @@ Lexers <- (||
     if: c = "." then: { return self single-token }
     if: c = "|" then: { return self single-token }
     if: (c alpha?) then: { return self read-name }
+
+    c <- self advance
+    "ERROR " + c
   }
 
   skip-whitespace {
@@ -107,6 +110,7 @@ Lexers <- (||
   }
 )
 
+' Tokenize some example strings.
 tests <- [["()[]{}", "(", ")", "[", "]", "{", "}"]
           [";.|", ";", ".", "|"]
           ["foo bar a-+=/<>?~!,#$%^&*", "foo", "bar", "a-+=/<>?~!,#$%^&*"]
@@ -130,3 +134,36 @@ tests each: {|test|
     write-line: "FAIL " + (test at: 0) + " != " + result
   }
 }
+
+' Try to tokenize some real files.
+files <- [
+  "../../lib/core.fin"
+  "../../lib/lexer.fin"
+  "../../test/arithmetic.fin"
+  "../../test/arrays.fin"
+  "../../test/booleans.fin"
+  "../../test/cascade.fin"
+  "../../test/fibers.fin"
+  "../../test/literals.fin"
+  "../../test/messages.fin"
+  "../../test/objects.fin"
+  "../../test/return.fin"
+  "../../test/self.fin"
+  "../../test/strings.fin"
+  "../../test/switch.fin"
+  "../../test/tco.fin"
+  "../../test/test.fin"
+  "../../test/variables.fin"
+]
+
+errors <- 0
+files each: {|file|
+  write-line: file
+  source <- Io read-file: file
+  lexer <- Lexer new: source
+  lexer each: {|token|
+    if: (token starts-with: "ERROR") then: { errors <-- errors + 1 }
+  }
+}
+
+write-line: errors + " errors"

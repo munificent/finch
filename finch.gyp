@@ -54,6 +54,8 @@
         'src/Interpreter/Primitives/BlockPrimitives.h',
         'src/Interpreter/Primitives/FiberPrimitives.cpp',
         'src/Interpreter/Primitives/FiberPrimitives.h',
+        'src/Interpreter/Primitives/IoPrimitives.cpp',
+        'src/Interpreter/Primitives/IoPrimitives.h',
         'src/Interpreter/Primitives/NumberPrimitives.cpp',
         'src/Interpreter/Primitives/NumberPrimitives.h',
         'src/Interpreter/Primitives/ObjectPrimitives.cpp',
