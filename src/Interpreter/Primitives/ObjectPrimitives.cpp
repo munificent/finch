@@ -14,9 +14,9 @@ namespace Finch
         fiber.PushString(self->AsString());
     }
     
-    PRIMITIVE(ObjectEquals)
+    PRIMITIVE(ObjectSame)
     {
-        // by default, objects compare using reference equality
+        // reference equality
         fiber.PushBool(self == args[0]);
     }
     

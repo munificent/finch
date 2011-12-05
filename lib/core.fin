@@ -1,5 +1,8 @@
 ' object
 Object :: (
+  ' By default, just check reference equality.
+  = right { self === right }
+
   != right { (self = right) not }
 
   ' any non-true object is implicitly "false", so sending "not" to it
@@ -142,11 +145,16 @@ Numbers :: (
   - right { right -number: self }
   * right { right *number: self }
   / right { right /number: self }
+  = right { right =number: self }
 )
 
 Object :: (
   ' Adding anything to a string converts it to a string and concatenates.
   +string: left { #PRIM# string-concat: left and: self to-string }
+
+  ' Comparisons between unrelated types always return false.
+  =number: left { false }
+  =string: left { false }
 )
 
 Strings :: (
@@ -157,8 +165,9 @@ Strings :: (
 
   ' Double-dispatch.
   + right { right +string: self }
+  = right { right =string: self }
 
-  =  right { (#PRIM# string-compare: self to: right) = 0 }
+  =string: left { (#PRIM# string-compare: left to: self) = 0 }
   <  right { (#PRIM# string-compare: self to: right) < 0 }
   >  right { (#PRIM# string-compare: self to: right) > 0 }
   <= right { (#PRIM# string-compare: self to: right) <= 0 }

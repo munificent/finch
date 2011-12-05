@@ -9,7 +9,7 @@ Tokens <- (||
   type { _type }
 )
 
-String prototype :: (
+Strings :: (
   alpha? {
     "abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ_" contains: self
   }
@@ -24,24 +24,6 @@ String prototype :: (
 )
 
 Lexer <- (||
-  lex: source {
-    result <- []
-    from: 0 to: source length do: {|n|
-      (source at: n) switch \
-      case: "(" do: { result add: "(" } ;
-      case: ")" do: { result add: ")" } ;
-      case: "[" do: { result add: "[" } ;
-      case: "]" do: { result add: "]" } ;
-      case: "{" do: { result add: "{" } ;
-      case: "}" do: { result add: "}" } ;
-      case: ";" do: { result add: ";" } ;
-      case: "." do: { result add: "." } ;
-      case: "|" do: { result add: "|" }
-    }
-
-    result
-  }
-
   new: source {
     (|Lexers|
       _source <- source

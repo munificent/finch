@@ -24,7 +24,7 @@ namespace Finch
         mGlobals->Define("Object", mObject);
 
         DynamicObject* objectObj = mObject->AsDynamic();
-        objectObj->AddPrimitive("=",               ObjectEquals);
+        objectObj->AddPrimitive("===",             ObjectSame);
         objectObj->AddPrimitive("to-string",       ObjectToString);
         objectObj->AddPrimitive("parent",          ObjectGetParent);
         objectObj->AddPrimitive("parent:",         ObjectSetParent);
@@ -83,7 +83,7 @@ namespace Finch
         numberObj->AddPrimitive("-number:", NumberSubtract);
         numberObj->AddPrimitive("*number:", NumberMultiply);
         numberObj->AddPrimitive("/number:", NumberDivide);
-        numberObj->AddPrimitive("=",   NumberEquals);
+        numberObj->AddPrimitive("=number:", NumberEquals);
         numberObj->AddPrimitive("!=",  NumberNotEquals);
         numberObj->AddPrimitive("<",   NumberLessThan);
         numberObj->AddPrimitive(">",   NumberGreaterThan);
