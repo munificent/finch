@@ -75,6 +75,10 @@ Ether :: (
     }
   }
 
+  loop: block {
+    while: true do: block
+  }
+
   ' while
   while: condition do: block {
     if: condition call then: {
