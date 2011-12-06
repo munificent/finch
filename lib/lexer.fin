@@ -1,17 +1,17 @@
 Token/None         <- ""
-Token/LeftParen    <- "("
-Token/RightParen   <- ")"
-Token/LeftBracket  <- "["
-Token/RightBracket <- "]"
-Token/LeftBrace    <- "{"
-Token/RightBrace   <- "}"
-Token/Comma        <- "," ' Includes newlines too.
-Token/Semicolon    <- ";"
-Token/Dot          <- "."
-Token/Pipe         <- "|"
-Token/Arrow        <- "<-"
-Token/LongArrow    <- "<--"
-Token/Bind         <- "::"
+Token/LeftParen    <- "left paren"
+Token/RightParen   <- "right paren"
+Token/LeftBracket  <- "left bracket"
+Token/RightBracket <- "right bracket"
+Token/LeftBrace    <- "left brace"
+Token/RightBrace   <- "right brace"
+Token/Comma        <- "comma" ' Includes newlines too.
+Token/Semicolon    <- "semicolon"
+Token/Dot          <- "dot"
+Token/Pipe         <- "pipe"
+Token/Arrow        <- "arrow"
+Token/LongArrow    <- "long arrow"
+Token/Bind         <- "bind"
 Token/Self         <- "self"
 Token/Undefined    <- "undefined"
 Token/Break        <- "break"
@@ -89,6 +89,7 @@ Lexer <- (||
       _source <- source
       _pos <- 0
       _start <- 0
+      _eat-newlines? <- true
     )
   }
 )
@@ -117,33 +118,83 @@ Lexers <- (||
 
   current { _source at: _pos }
 
+  ' Reads the next token from the source and handles newlines.
   next-token {
+    loop: {
+      token <- self next-token-raw
+
+      if: token = nil then: { return token }
+
+      done? <- true
+      token type switch \
+      case: Token/Comma do: {
+        if: _eat-newlines? then: {
+          ' Discard newline.
+          done? <-- false
+        } else: {
+          ' Discard any newlines after this one.
+          _eat-newlines? <- true
+        }
+      } ;
+      case: Token/IgnoreLine do: {
+        ' Eat the ignore token.
+        done? <-- false
+
+        ' And newlines after it.
+        _eat-newlines? <- true
+      } ;
+      case: Token/Keyword     do: { _eat-newlines? <- true } ;
+      case: Token/Operator    do: { _eat-newlines? <- true } ;
+      case: Token/Pipe        do: { _eat-newlines? <- true } ;
+      case: Token/Arrow       do: { _eat-newlines? <- true } ;
+      case: Token/LongArrow   do: { _eat-newlines? <- true } ;
+      case: Token/Semicolon   do: { _eat-newlines? <- true } ;
+      case: Token/LeftParen   do: { _eat-newlines? <- true } ;
+      case: Token/LeftBracket do: { _eat-newlines? <- true } ;
+      case: Token/LeftBrace   do: { _eat-newlines? <- true } ;
+      default: { _eat-newlines? <- false }
+
+      if: done? then: { return token }
+    }
+  }
+
+  ' Reads the next token from the source. Doesn't do any newline normalization.
+  next-token-raw {
     if: _pos >= _source length then: { return nil }
 
     self skip-whitespace
     self skip-comment
 
-    _start = _pos
+    _start <- _pos
 
     c <- self current
-    if: c = "(" then: { return self single-token: Token/LeftParen }
-    if: c = ")" then: { return self single-token: Token/RightParen }
-    if: c = "[" then: { return self single-token: Token/LeftBracket }
-    if: c = "]" then: { return self single-token: Token/RightBracket }
-    if: c = "{" then: { return self single-token: Token/LeftBrace }
-    if: c = "}" then: { return self single-token: Token/RightBrace }
-    if: c = "," then: { return self single-token: Token/Comma }
+    if: c = "("  then: { return self single-token: Token/LeftParen }
+    if: c = ")"  then: { return self single-token: Token/RightParen }
+    if: c = "["  then: { return self single-token: Token/LeftBracket }
+    if: c = "]"  then: { return self single-token: Token/RightBracket }
+    if: c = "{"  then: { return self single-token: Token/LeftBrace }
+    if: c = "}"  then: { return self single-token: Token/RightBrace }
+    if: c = ","  then: { return self single-token: Token/Comma }
     if: c = "\n" then: { return self single-token: Token/Comma }
     if: c = "\\" then: { return self single-token: Token/IgnoreLine }
-    if: c = ";" then: { return self single-token: Token/Semicolon }
-    if: c = ":" then: { return self single-token: Token/Keyword }
-    if: c = "." then: { return self single-token: Token/Dot }
-    if: c = "|" then: { return self single-token: Token/Pipe }
+    if: c = ";"  then: { return self single-token: Token/Semicolon }
+    if: c = "."  then: { return self single-token: Token/Dot }
+    if: c = "|"  then: { return self single-token: Token/Pipe }
 
-    if: (c alpha?) then: { return self read-name }
+    if: c = ":"  then: {
+      self advance
+      if: self current = ":" then: {
+        self advance
+        return self make-token: Token/Bind
+      } else: {
+        return self make-token: Token/Keyword
+      }
+    }
+
+    if: (c alpha?)    then: { return self read-name }
     if: (c operator?) then: { return self read-operator }
-    if: (c = "\"") then: { return self read-string }
-    if: (c digit?) then: { return self read-number }
+    if: (c = "\"")    then: { return self read-string }
+    if: (c digit?)    then: { return self read-number }
 
     ' If we got here, we failed to handle the current character.
     self single-token: Token/Error
@@ -194,7 +245,6 @@ Lexers <- (||
   read-string {
     self advance
 
-    ' TODO(bob): String escape sequences.
     text <- ""
     loop: {
       if: self done? then: {
@@ -272,6 +322,7 @@ files <- [
   "../../test/variables.fin"
 ]
 
+tokens <- 0
 errors <- 0
 lines <- 0
 files each: {|file|
@@ -279,6 +330,7 @@ files each: {|file|
   source <- Io read-file: file
   lexer <- Lexer new-path: file source: source
   lexer each: {|token|
+    tokens <-- tokens + 1
     if: (token type = Token/Error) then: {
       write-line: token
       errors <-- errors + 1
@@ -288,4 +340,4 @@ files each: {|file|
   }
 }
 
-write-line: errors + " errors in " + lines + " lines"
+write-line: tokens + " tokens with " + errors + " errors in " + lines + " lines"
