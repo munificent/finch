@@ -9,65 +9,47 @@ namespace Finch
     class IErrorReporter;
     class ILineReader;
     
-    // The Finch lexer. Reads a series of lines from an ILineReader and splits
-    // them into Tokens.
     class Lexer : public ITokenSource
     {
     public:
-        Lexer(ILineReader & reader, IErrorReporter & errorReporter)
+        Lexer(ILineReader & reader)
         :   mReader(reader),
-            mErrorReporter(errorReporter),
-            mState(LEX_NEED_LINE),
-            mIndex(0),
-            mTokenStart(0)
+            mNeedsLine(true),
+            mPos(0),
+            mStart(0)
         {}
         
         // Will be true if the line reader is.
         virtual bool IsInfinite() const;
-
+        
         // Lexes and returns the next full Token read from the source. If the
         // ILineReader is out of lines, this will return an EOF Token.
         virtual Token ReadToken();
         
     private:
-        enum State
-        {
-            LEX_NEED_LINE,
-            LEX_DEFAULT,
-            LEX_IN_MINUS,
-            LEX_IN_NUMBER,
-            LEX_IN_DECIMAL,
-            LEX_IN_NAME,
-            LEX_IN_OPERATOR,
-            LEX_IN_STRING,
-            LEX_IN_STRING_ESCAPE,
-            LEX_IN_COMMENT,
-            LEX_IN_COLON,
-            LEX_DONE
-        };
+        bool IsDone() const;
         
-        void Consume();
+        char Current() const { return mLine[mPos]; }
         
+        char Advance();
+                
         Token SingleToken(TokenType type);
-        void StartState(State state);
-        void ChangeState(State state);
-
-        void EscapeCharacter(char c);
-
+        Token ReadString();
+        Token ReadNumber();
+        Token ReadName();
+        Token ReadOperator();
+        
+        bool IsWhitespace(char c) const;
         bool IsAlpha(char c) const;
         bool IsDigit(char c) const;
         bool IsOperator(char c) const;
         
         ILineReader    & mReader;
-        IErrorReporter & mErrorReporter;
         
-        State         mState;
-        
-        String        mLine;
-        int           mIndex;
-        int           mTokenStart;
-        
-        String        mEscapedString;
+        bool    mNeedsLine;
+        String  mLine;
+        int     mPos;
+        int     mStart;
         
         NO_COPY(Lexer);
     };

@@ -41,6 +41,8 @@ namespace Finch
         
         TOKEN_LINE, // Includes "," too since they are equivalent in Finch.
         TOKEN_IGNORE_LINE,
+        
+        TOKEN_ERROR,
         TOKEN_EOF
     };
     

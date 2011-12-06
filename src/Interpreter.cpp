@@ -88,7 +88,7 @@ namespace Finch
     Ref<Expr> Interpreter::Parse(ILineReader & reader)
     {
         InterpreterErrorReporter errorReporter(*this);
-        Lexer          lexer(reader, errorReporter);
+        Lexer          lexer(reader);
         LineNormalizer normalizer(lexer);
         FinchParser    parser(normalizer, errorReporter);
         

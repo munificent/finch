@@ -29,13 +29,7 @@ namespace Finch
     private:
         const char * mLine;
     };
-    
-    class DummyErrorReporter : public IErrorReporter
-    {
-    public:
-        virtual void Error(String message) {}
-    };
-    
+
     void LexerTests::Run()
     {
         // test the single character tokens
@@ -146,8 +140,7 @@ namespace Finch
     Token LexerTests::LexOne(const char * text)
     {
         FixedLineReader reader(text);
-        DummyErrorReporter errorReporter;
-        Lexer lexer(reader, errorReporter);
+        Lexer lexer(reader);
         
         return lexer.ReadToken();
     }
@@ -155,8 +148,7 @@ namespace Finch
     void LexerTests::TestLex(const char * text, ...)
     {
         FixedLineReader reader(text);
-        DummyErrorReporter errorReporter;
-        Lexer lexer(reader, errorReporter);
+        Lexer lexer(reader);
         
         va_list args;
         va_start(args, text);

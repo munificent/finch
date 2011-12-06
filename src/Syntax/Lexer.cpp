@@ -11,293 +11,212 @@ namespace Finch
     {
         return mReader.IsInfinite();
     }
-
+    
     Token Lexer::ReadToken()
     {
-        Token token;
-
-        while (token.Type() == TOKEN_NONE)
+        if (IsDone()) return Token(TOKEN_EOF);
+        
+        if (mNeedsLine)
         {
-            char c = mLine[mIndex];
+            if (mReader.EndOfLines()) return Token(TOKEN_EOF);
+            
+            mLine = mReader.NextLine();
+            mPos = 0;
+            mStart = 0;
+            mNeedsLine = false;
+        }
+        
+        while (!IsDone() && IsWhitespace(Current())) Advance();
+        
+        if (IsDone()) return Token(TOKEN_EOF);
+        
+        mStart = mPos;
+        
+        char c = Current();
+        switch (c)
+        {
+            case '\'':
+                // Fallthrough to just lex a line comment as a line.
+            case '\0':
+                // Skip the rest of the line.
+                mNeedsLine = true;
+                // But not the line at the end.
+                return Token(TOKEN_LINE);
+                
+            case '(': return SingleToken(TOKEN_LEFT_PAREN);
+            case ')': return SingleToken(TOKEN_RIGHT_PAREN);
+            case '[': return SingleToken(TOKEN_LEFT_BRACKET);
+            case ']': return SingleToken(TOKEN_RIGHT_BRACKET);
+            case '{': return SingleToken(TOKEN_LEFT_BRACE);
+            case '}': return SingleToken(TOKEN_RIGHT_BRACE);
+            case ',': return SingleToken(TOKEN_LINE);
+            case '.': return SingleToken(TOKEN_DOT);
+            case ';': return SingleToken(TOKEN_SEMICOLON);
+            case '\\': return SingleToken(TOKEN_IGNORE_LINE);
+            case '|': return SingleToken(TOKEN_PIPE);
+            
+            case ':':
+                Advance();
+                if (Current() == ':')
+                {
+                    // "::".
+                    Advance();
+                    return Token(TOKEN_BIND);
+                }
 
-            switch (mState)
-            {
-                case LEX_NEED_LINE:
-                    if (mReader.EndOfLines())
-                    {
-                        mState = LEX_DONE;
-                    }
-                    else
-                    {
-                        mLine = mReader.NextLine();
-                        mIndex = 0;
-                        mState = LEX_DEFAULT;
-                    }
-                    break;
-
-                case LEX_DEFAULT:
-                    switch (c)
-                    {
-                        case '(': token = SingleToken(TOKEN_LEFT_PAREN); break;
-                        case ')': token = SingleToken(TOKEN_RIGHT_PAREN); break;
-                        case '[': token = SingleToken(TOKEN_LEFT_BRACKET); break;
-                        case ']': token = SingleToken(TOKEN_RIGHT_BRACKET); break;
-                        case '{': token = SingleToken(TOKEN_LEFT_BRACE); break;
-                        case '}': token = SingleToken(TOKEN_RIGHT_BRACE); break;
-                        case ',': token = SingleToken(TOKEN_LINE); break;
-                        case '.': token = SingleToken(TOKEN_DOT); break;
-                        case ';': token = SingleToken(TOKEN_SEMICOLON); break;
-                        case '\\': token = SingleToken(TOKEN_IGNORE_LINE); break;
-                        case '|': token = SingleToken(TOKEN_PIPE); break;
-
-                        case '-': StartState(LEX_IN_MINUS); break;
-                        case ':': StartState(LEX_IN_COLON); break;
-
-                        case '"':
-                            mEscapedString = "";
-                            StartState(LEX_IN_STRING);
-                            break;
-
-                        case '\'':
-                            mState = LEX_IN_COMMENT;
-                            break;
-
-                        case '\0':
-                            token = Token(TOKEN_LINE);
-                            mState = LEX_NEED_LINE;
-                            break;
-
-                        case ' ': Consume(); break;
-
-                        default:
-                            if (IsDigit(c))         StartState(LEX_IN_NUMBER);
-                            else if (IsAlpha(c))    StartState(LEX_IN_NAME);
-                            else if (IsOperator(c)) StartState(LEX_IN_OPERATOR);
-                            else
-                            {
-                                String message = String::Format("Unknown character '%c'.", c);
-                                mErrorReporter.Error(message);
-
-                                // just ignore the character and continue
-                                Consume();
-                            }
-                    }
-                    break;
-
-                case LEX_IN_MINUS:
-                    if (IsDigit(c))         ChangeState(LEX_IN_NUMBER);
-                    else if (IsAlpha(c))    ChangeState(LEX_IN_NAME);
-                    else if (IsOperator(c)) ChangeState(LEX_IN_OPERATOR);
-                    else
-                    {
-                        token = Token(TOKEN_OPERATOR, "-");
-                        mState = LEX_DEFAULT;
-                    }
-                    break;
-
-                case LEX_IN_NUMBER:
-                    if (IsDigit(c)) Consume();
-                    else if (c =='.')
-                    {
-                        ChangeState(LEX_IN_DECIMAL);
-                    }
-                    else
-                    {
-                        String text = mLine.Substring(mTokenStart, mIndex - mTokenStart);
-                        double number = atof(text.CString());
-                        token = Token(TOKEN_NUMBER, number);
-
-                        mState = LEX_DEFAULT;
-                    }
-                    break;
-
-                case LEX_IN_DECIMAL:
-                    if (IsDigit(c)) Consume();
-                    else
-                    {
-                        String text = mLine.Substring(mTokenStart, mIndex - mTokenStart);
-                        double number = atof(text.CString());
-                        token = Token(TOKEN_NUMBER, number);
-
-                        mState = LEX_DEFAULT;
-                    }
-                    break;
-
-                case LEX_IN_NAME:
-                    if (IsAlpha(c) || IsDigit(c) || IsOperator(c)) Consume();
-                    else if (c == ':')
-                    {
-                        Consume();
-
-                        String name = mLine.Substring(mTokenStart, mIndex - mTokenStart);
-                        token = Token(TOKEN_KEYWORD, name);
-
-                        mState = LEX_DEFAULT;
-                    }
-                    else
-                    {
-                        String name = mLine.Substring(mTokenStart, mIndex - mTokenStart);
-
-                        // see if it's a reserved word
-                        if (name == "self") token = Token(TOKEN_SELF);
-                        else if (name == "undefined") token = Token(TOKEN_UNDEFINED);
-                        else if (name == "break") token = Token(TOKEN_BREAK);
-                        else if (name == "return") token = Token(TOKEN_RETURN);
-                        else token = Token(TOKEN_NAME, name);
-
-                        mState = LEX_DEFAULT;
-                    }
-                    break;
-
-                case LEX_IN_OPERATOR:
-                    if (IsOperator(c)) Consume();
-                    else if (IsAlpha(c)) ChangeState(LEX_IN_NAME);
-                    else
-                    {
-                        String name = mLine.Substring(mTokenStart, mIndex - mTokenStart);
-
-                        // see if it's a reserved operator
-                        if (name == "<-") token = Token(TOKEN_ARROW);
-                        else if (name == "<--") token = Token(TOKEN_LONG_ARROW);
-                        else token = Token(TOKEN_OPERATOR, name);
-
-                        mState = LEX_DEFAULT;
-                    }
-                    break;
-
-                case LEX_IN_STRING:
-                    switch (c)
-                    {
-                        case '"':
-                            token = Token(TOKEN_STRING, mEscapedString);
-                            ChangeState(LEX_DEFAULT);
-                            break;
-
-                        case '\\':
-                            ChangeState(LEX_IN_STRING_ESCAPE);
-                            break;
-
-                        case '\0':
-                            mErrorReporter.Error("String is missing closing '\"'.");
-                            // just ditch the token and end the line
-                            mState = LEX_NEED_LINE;
-                            break;
-
-                        default:
-                            // allow other characters in string
-                            mEscapedString += c;
-                            Consume();
-                            break;
-                    }
-                    break;
-
-                case LEX_IN_STRING_ESCAPE:
-                    switch (c)
-                    {
-                        case '"':  EscapeCharacter('"'); break;
-                        case 'n':  EscapeCharacter('\n'); break;
-                        case '\\': EscapeCharacter('\\'); break;
-
-                        case '\0':
-                            mErrorReporter.Error("String is missing escape code and closing '\"'.");
-
-                            // just ditch the token and end the line
-                            mState = LEX_NEED_LINE;
-                            break;
-
-                        default:
-                            String message = String::Format("Unrecognized string escape code '\\%c'.", c);
-                            mErrorReporter.Error(message);
-
-                            // ignore the escape sequence and keep going
-                            mState = LEX_IN_STRING;
-                            Consume();
-                            break;
-                    }
-                    break;
-
-                case LEX_IN_COMMENT:
-                    if (c == '\0')
-                    {
-                        token = Token(TOKEN_LINE);
-                        mState = LEX_NEED_LINE;
-                    }
-                    else Consume();
-                    break;
-
-                case LEX_IN_COLON:
-                    if (c == ':')
-                    {
-                        token = Token(TOKEN_BIND);
-                        ChangeState(LEX_DEFAULT);
-                    }
-                    else
-                    {
-                        // emit the first colon as a keyword
-                        token = Token(TOKEN_KEYWORD);
-                        // don't consume the character after the :
-                        mState = LEX_DEFAULT;
-                    }
-                    break;
-
-                case LEX_DONE:
-                    token = Token(TOKEN_EOF);
-                    break;
-
-                default:
-                    ASSERT(false, "Uknown lexer state.");
-            }
+                // Just a ":" by itself.
+                return Token(TOKEN_KEYWORD);
+            
+            case '-':
+                Advance();
+                if (IsDigit(Current())) return ReadNumber();
+                return ReadOperator();
+                
+            case '"': return ReadString();
+                
+            default:
+                if (IsDigit(c)) return ReadNumber();
+                if (IsAlpha(c)) return ReadName();
+                if (IsOperator(c)) return ReadOperator();
         }
 
-        return token;
+        // If we got here, we don't know what it is. Just eat it so we
+        // don't get stuck.
+        Advance();
+        return Token(TOKEN_ERROR, String::Format(
+                "Unrecognized character \"%c\".", c));
     }
-
-    void Lexer::Consume()
+    
+    bool Lexer::IsDone() const
     {
-        mIndex++;
+        return mNeedsLine && mReader.EndOfLines();
     }
-
-    Token Lexer::SingleToken(TokenType type)
+    
+    bool Lexer::IsWhitespace(char c) const
     {
-        Consume();
-        return Token(type);
+        return (c == ' ') || (c == '\t');
     }
-
-    void Lexer::StartState(State state)
-    {
-        mState = state;
-        mTokenStart = mIndex;
-        Consume();
-    }
-
-    void Lexer::ChangeState(State state)
-    {
-        Consume();
-        mState = state;
-    }
-
-    void Lexer::EscapeCharacter(char c)
-    {
-        mEscapedString += c;
-        ChangeState(LEX_IN_STRING);
-    }
-
+    
     bool Lexer::IsAlpha(char c) const
     {
         return (c == '_') ||
                ((c >= 'a') && (c <= 'z')) ||
                ((c >= 'A') && (c <= 'Z'));
     }
-
+    
     bool Lexer::IsDigit(char c) const
     {
         return (c >= '0') && (c <= '9');
     }
-
+    
     bool Lexer::IsOperator(char c) const
     {
         return (c != '\0') &&
                (strchr("-+=/<>?~!@#$%^&*", c) != NULL);
     }
-}
+    
+    char Lexer::Advance()
+    {
+        mPos++;
+        return mLine[mPos - 1];
+    }
+        
+    Token Lexer::SingleToken(TokenType type)
+    {
+        Advance();
+        return Token(type);
+    }
+    
+    Token Lexer::ReadString()
+    {
+        Advance();
+        
+        String text;
+        while (true)
+        {
+            if (IsDone()) return Token(TOKEN_ERROR, "Unterminated string.");
+            
+            char c = Advance();
+            if (c == '"') return Token(TOKEN_STRING, text);
+            
+            // An escape sequence.
+            if (c == '\\')
+            {
+                if (IsDone()) return Token(TOKEN_ERROR,
+                        "Unterminated string escape.");
+                
+                char e = Advance();
+                switch (e)
+                {
+                    case 'n': text += "\n"; break;
+                    case '"': text += "\""; break;
+                    case '\\': text += "\\"; break;
+                    default:
+                        return Token(TOKEN_ERROR, String::Format(
+                                "Unrecognized escape sequence \"%c\".", e));
+                }
+            }
+            else
+            {
+                // Normal character.
+                text += c;
+            }
+        }
+    }
+    
+    Token Lexer::ReadNumber()
+    {
+        Advance();
+        while (IsDigit(Current())) Advance();
+        
+        // Read the fractional part, if any.
+        if (Current() == '.')
+        {
+            Advance();
+            while (IsDigit(Current())) Advance();
+        }
 
+        String text = mLine.Substring(mStart, mPos - mStart);
+        double number = atof(text.CString());
+        return Token(TOKEN_NUMBER, number);
+    }
+    
+    Token Lexer::ReadName()
+    {
+        while (IsOperator(Current()) ||
+               IsAlpha(Current()) ||
+               IsDigit(Current())) Advance();
+        
+        // If it ends in ":", it's a keyword.
+        TokenType type = TOKEN_NAME;
+        if (Current() == ':')
+        {
+            Advance();
+            type = TOKEN_KEYWORD;
+        }
+        
+        String name = mLine.Substring(mStart, mPos - mStart);
+        
+        if (name == "break") return Token(TOKEN_BREAK);
+        if (name == "return") return Token(TOKEN_RETURN);
+        if (name == "self") return Token(TOKEN_SELF);
+        if (name == "undefined") return Token(TOKEN_UNDEFINED);
+        
+        return Token(type, name);
+    }
+    
+    Token Lexer::ReadOperator()
+    {
+        while (IsOperator(Current())) Advance();
+        
+        // A mixture of operator characters and letters is a name.
+        if (IsAlpha(Current())) return ReadName();
+        
+        String name = mLine.Substring(mStart, mPos - mStart);
+        
+        if (name == "<-") return Token(TOKEN_ARROW);
+        if (name == "<--") return Token(TOKEN_LONG_ARROW);
+        
+        return Token(TOKEN_OPERATOR, name);
+    }
+}
