@@ -1,9 +1,9 @@
-' This demonstrates using fibers for cooperative multi-tasking and
-' passing data between them. First, we'll create a second fiber in
-' addition to our main one.
-'
-' It will be a generator, yielding the numbers from 1 to 10, one at a
-' time, each time it's run.
+// This demonstrates using fibers for cooperative multi-tasking and
+// passing data between them. First, we'll create a second fiber in
+// addition to our main one.
+//
+// It will be a generator, yielding the numbers from 1 to 10, one at a
+// time, each time it's run.
 a <- Fiber new: {
   from: 1 to: 10 do: {|n|
     write-line: "fiber a yielding " + n to-string
@@ -11,9 +11,9 @@ a <- Fiber new: {
   }
 }
 
-' Our main fiber will be the consumer. It will pass control to the
-' other fiber and get the generated results back. It then prints them,
-' one at a time. It stops when the generator fiber ends.
+// Our main fiber will be the consumer. It will pass control to the
+// other fiber and get the generated results back. It then prints them,
+// one at a time. It stops when the generator fiber ends.
 while: { a done? not } do: {
   result <- a run
   write-line: "main fiber received " + result to-string

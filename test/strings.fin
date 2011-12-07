@@ -1,5 +1,5 @@
 Test suite: "Strings" is: {
-  ' make a couple of objects that implement to-string
+  // make a couple of objects that implement to-string
   apple <- (|| to-string { "apple" } )
   banana <- (|| to-string { "banana" } )
 
@@ -40,7 +40,7 @@ Test suite: "Strings" is: {
     Test is-true: "b" >= "a"
     Test is-true: "a" >= "a"
 
-    ' equality is *strict* and doesn't implicitly convert
+    // equality is *strict* and doesn't implicitly convert
     Test is-false: "apple" = apple
   }
 

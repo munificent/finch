@@ -1,6 +1,6 @@
 write-line: "Running Finch test suite."
 
-' define a Test object the tests can use
+// define a Test object the tests can use
 Test <- (||
   _suite       <- ""
   _test        <- ""
@@ -75,12 +75,13 @@ Test <- (||
   }
 )
 
-' run the test scripts
-'### bob: hack! path should be relative to this script's path!
+// run the test scripts
+//### bob: hack! path should be relative to this script's path!
 load: "../../test/arithmetic.fin"
 load: "../../test/arrays.fin"
 load: "../../test/booleans.fin"
 load: "../../test/cascade.fin"
+load: "../../test/comments.fin"
 load: "../../test/fibers.fin"
 load: "../../test/literals.fin"
 load: "../../test/messages.fin"

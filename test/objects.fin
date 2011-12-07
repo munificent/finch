@@ -1,11 +1,11 @@
 Test suite: "Objects" is: {
-  ' make an object that implements to-string
+  // make an object that implements to-string
   apple <- (||
     to-string { "apple" }
   )
 
   Test test: "Equality" is: {
-    ' reference equality
+    // reference equality
     a <- apple
     b <- apple
     Test is-true: a = b
@@ -14,7 +14,7 @@ Test suite: "Objects" is: {
     Test is-false: a != b
     Test is-true: a != nil
 
-    ' equality is *strict* and doesn't implicitly convert
+    // equality is *strict* and doesn't implicitly convert
     Test is-false: "apple" = apple
     Test is-false: apple = "apple"
     Test is-true: "apple" != apple

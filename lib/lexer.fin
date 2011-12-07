@@ -5,7 +5,7 @@ Token/LeftBracket  <- "left bracket"
 Token/RightBracket <- "right bracket"
 Token/LeftBrace    <- "left brace"
 Token/RightBrace   <- "right brace"
-Token/Comma        <- "comma" ' Includes newlines too.
+Token/Comma        <- "comma" // Includes newlines too.
 Token/Semicolon    <- "semicolon"
 Token/Dot          <- "dot"
 Token/Pipe         <- "pipe"
@@ -118,7 +118,7 @@ Lexers <- (||
 
   current { _source at: _pos }
 
-  ' Reads the next token from the source and handles newlines.
+  // Reads the next token from the source and handles newlines.
   next-token {
     loop: {
       token <- self next-token-raw
@@ -129,18 +129,18 @@ Lexers <- (||
       token type switch \
       case: Token/Comma do: {
         if: _eat-newlines? then: {
-          ' Discard newline.
+          // Discard newline.
           done? <-- false
         } else: {
-          ' Discard any newlines after this one.
+          // Discard any newlines after this one.
           _eat-newlines? <- true
         }
       } ;
       case: Token/IgnoreLine do: {
-        ' Eat the ignore token.
+        // Eat the ignore token.
         done? <-- false
 
-        ' And newlines after it.
+        // And newlines after it.
         _eat-newlines? <- true
       } ;
       case: Token/Keyword     do: { _eat-newlines? <- true } ;
@@ -158,7 +158,7 @@ Lexers <- (||
     }
   }
 
-  ' Reads the next token from the source. Doesn't do any newline normalization.
+  // Reads the next token from the source. Doesn't do any newline normalization.
   next-token-raw {
     if: _pos >= _source length then: { return nil }
 
@@ -196,7 +196,7 @@ Lexers <- (||
     if: (c = "\"")    then: { return self read-string }
     if: (c digit?)    then: { return self read-number }
 
-    ' If we got here, we failed to handle the current character.
+    // If we got here, we failed to handle the current character.
     self single-token: Token/Error
   }
 
@@ -213,7 +213,7 @@ Lexers <- (||
   read-name {
     self advance-while: {|c| c alpha-or-operator? }
 
-    ' See if it ends with a ":"
+    // See if it ends with a ":"
     type <- Token/Name
     if: self current = ":" then: {
       self advance
@@ -224,8 +224,8 @@ Lexers <- (||
   }
 
   read-operator {
-    ' When token types are implemented; needs to switch to name if it
-    ' encounters a letter.
+    // When token types are implemented; needs to switch to name if it
+    // encounters a letter.
     type <- Token/Operator
 
     while: { self done? not } and: { self current alpha-or-operator? } do: {
@@ -233,7 +233,7 @@ Lexers <- (||
       self advance
     }
 
-    ' See if it ends with a ":"
+    // See if it ends with a ":"
     if: self current = ":" then: {
       self advance
       type <-- Token/Keyword
@@ -256,7 +256,7 @@ Lexers <- (||
         return self make-token: Token/String text: text
       }
 
-      ' Handle string escapes.
+      // Handle string escapes.
       if: self current = "\\" then: {
         self advance
 
@@ -301,7 +301,7 @@ Lexers <- (||
   }
 )
 
-' Tokenize some real files.
+// Tokenize some real files.
 files <- [
   "../../lib/core.fin"
   "../../lib/lexer.fin"

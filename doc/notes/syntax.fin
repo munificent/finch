@@ -1,58 +1,58 @@
-' comment
+// comment
 
-' unary message
+// unary message
 obj message
 
-' operator
+// operator
 obj + arg
 
-' keyword message
+// keyword message
 obj do: arg with: other
 
-' implicit Ether receiver
+// implicit Ether receiver
 if: 1 < 2 then: { obj message }
 + foo
 
-' blocks
+// blocks
 { obj someMessage }
 {|arg| someMessage }
 {|| it someMessage } ' implicit arg named "it"
 {|first second| first gets: second }
 
-' early return
+// early return
 return resultObject
 
-' define method
+// define method
 someObj addMethod: `messageName body: { self do-something }
 someObj addMethod: `+some-op body: {|rhs| self do-something }
 someObj addMethod: `key:word:method: body: {|a b c| self do-something }
 
-' variables
+// variables
 def temp 123 ' defines a new local at this scope
 
 set temp 123 ' sets the value of 'temp' at whatever scope it was
-             ' previously defined. use this to change variables
-             ' defined in outer scopes
+             // previously defined. use this to change variables
+             // defined in outer scopes
 
 foo <- 234 ' set
 def foo <- 345
 undef foo
 
 undef temp ' remove a previously defined variable at this scope
-' note this is different from setting temp to nil
-' when you unset a variable, you unshadow that name
-' from being accessible in a parent scope. consider:
+// note this is different from setting temp to nil
+// when you unset a variable, you unshadow that name
+// from being accessible in a parent scope. consider:
 {
     def a 1
 
-    ' set to nil
+    // set to nil
     {
         def a 2
         set a nil
         Out write: a ' writes 'nil'
     }
 
-    ' unset
+    // unset
     {
         def a 2
         undef a
@@ -60,30 +60,30 @@ undef temp ' remove a previously defined variable at this scope
     }
 }
 
-' global variables
+// global variables
 def SomeGlobal ' case distinguishes global from local
 
-' object variables
+// object variables
 def _someObjVar ' leading underscore means obj
 
-' self
-' within the body of a method, you can access the object that owns
-' the method using "self" or its abbreviation "."
+// self
+// within the body of a method, you can access the object that owns
+// the method using "self" or its abbreviation "."
 self name
 .name
 
-' compound expressions
-' two or more expressions separated by newlines (or ",") will form a
-' single sequence expression. newlines are thus significant, but a
-' normalization step removed unneeded newlines.
-' normalization rules:
-' - any newlines after a kept newline are eaten
-' - any newlines after a keyword (then:, else:) are eaten
-' - any newlines after an operator (+) are eaten
-' - any newlines after { are eaten
-' - exactly one newline after } is eaten
+// compound expressions
+// two or more expressions separated by newlines (or ",") will form a
+// single sequence expression. newlines are thus significant, but a
+// normalization step removed unneeded newlines.
+// normalization rules:
+// - any newlines after a kept newline are eaten
+// - any newlines after a keyword (then:, else:) are eaten
+// - any newlines after an operator (+) are eaten
+// - any newlines after { are eaten
+// - exactly one newline after } is eaten
 
-' this:
+// this:
 if: 1 < 2 then:
 {
     write: "a"
@@ -93,8 +93,8 @@ if: 1 < 2 then:
     write: "d"
 }
 
-' normalizes to:
+// normalizes to:
 if: 1 < 2 then: { write: "a" , write: "b" + "c" , } else: { write: "d" , }
 
-' cascade
+// cascade
 foo bar; bang; baz ' same as foo bar, foo bang, foo baz

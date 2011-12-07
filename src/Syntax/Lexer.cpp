@@ -26,17 +26,15 @@ namespace Finch
             mNeedsLine = false;
         }
         
-        while (!IsDone() && IsWhitespace(Current())) Advance();
+        while (!IsDone() && IsWhitespace(Peek())) Advance();
         
         if (IsDone()) return Token(TOKEN_EOF);
         
         mStart = mPos;
         
-        char c = Current();
+        char c = Peek();
         switch (c)
         {
-            case '\'':
-                // Fallthrough to just lex a line comment as a line.
             case '\0':
                 // Skip the rest of the line.
                 mNeedsLine = true;
@@ -57,7 +55,7 @@ namespace Finch
             
             case ':':
                 Advance();
-                if (Current() == ':')
+                if (Peek() == ':')
                 {
                     // "::".
                     Advance();
@@ -69,9 +67,23 @@ namespace Finch
             
             case '-':
                 Advance();
-                if (IsDigit(Current())) return ReadNumber();
+                if (IsDigit(Peek())) return ReadNumber();
                 return ReadOperator();
-                
+            
+            case '/':
+                Advance();
+                if (Peek() == '/')
+                {
+                    // Line comment.
+                    mNeedsLine = true;
+                    return Token(TOKEN_LINE);
+                }
+                else
+                {
+                    return ReadOperator();
+                }
+
+            
             case '"': return ReadString();
                 
             default:
@@ -115,10 +127,17 @@ namespace Finch
                (strchr("-+=/<>?~!@#$%^&*", c) != NULL);
     }
     
+    char Lexer::Peek(int ahead) const
+    {
+        if (mPos + ahead >= mLine.Length()) return '\0';
+        return mLine[mPos + ahead];
+    }
+    
     char Lexer::Advance()
     {
+        char c = Peek();
         mPos++;
-        return mLine[mPos - 1];
+        return c;
     }
         
     Token Lexer::SingleToken(TokenType type)
@@ -167,13 +186,13 @@ namespace Finch
     Token Lexer::ReadNumber()
     {
         Advance();
-        while (IsDigit(Current())) Advance();
+        while (IsDigit(Peek())) Advance();
         
         // Read the fractional part, if any.
-        if (Current() == '.')
+        if (Peek() == '.')
         {
             Advance();
-            while (IsDigit(Current())) Advance();
+            while (IsDigit(Peek())) Advance();
         }
 
         String text = mLine.Substring(mStart, mPos - mStart);
@@ -183,13 +202,17 @@ namespace Finch
     
     Token Lexer::ReadName()
     {
-        while (IsOperator(Current()) ||
-               IsAlpha(Current()) ||
-               IsDigit(Current())) Advance();
+        while (IsOperator(Peek()) || IsAlpha(Peek()) || IsDigit(Peek()))
+        {
+            // Line comments take priority over names.
+            if ((Peek() == '/') && (Peek(1) == '/')) break;
+            
+            Advance();
+        }
         
         // If it ends in ":", it's a keyword.
         TokenType type = TOKEN_NAME;
-        if (Current() == ':')
+        if (Peek() == ':')
         {
             Advance();
             type = TOKEN_KEYWORD;
@@ -207,10 +230,16 @@ namespace Finch
     
     Token Lexer::ReadOperator()
     {
-        while (IsOperator(Current())) Advance();
+        while (IsOperator(Peek()))
+        {
+            // Line comments take priority over names.
+            if ((Peek() == '/') && (Peek(1) == '/')) break;
+            
+            Advance();
+        }
         
         // A mixture of operator characters and letters is a name.
-        if (IsAlpha(Current())) return ReadName();
+        if (IsAlpha(Peek())) return ReadName();
         
         String name = mLine.Substring(mStart, mPos - mStart);
         

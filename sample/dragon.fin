@@ -1,7 +1,7 @@
-' creates a singleton Dragon object. sending it the "turns:" message
-' with a number of iterations causes it to write out the sequence
-' of left and right turns required to draw a dragon curve with the
-' given recursion depth.
+// creates a singleton Dragon object. sending it the "turns:" message
+// with a number of iterations causes it to write out the sequence
+// of left and right turns required to draw a dragon curve with the
+// given recursion depth.
 
 Dragon <- (||
     generate: depth {
@@ -10,7 +10,7 @@ Dragon <- (||
         write-line: "" ' end the line
     }
 
-    ' the inner recursive method
+    // the inner recursive method
     iterate: depth turn: turn {
         if: depth > 0 then: {
             self iterate: depth - 1 turn: "R"
@@ -20,5 +20,5 @@ Dragon <- (||
     }
 )
 
-' test it
+// test it
 from: 1 to: 5 do: {|n| Dragon generate: n }

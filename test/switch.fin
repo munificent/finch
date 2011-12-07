@@ -45,5 +45,5 @@ Test suite: "Switch" is: {
     Test that: result equals: "two"
   }
 
-  ' need to test returning values from a switch
+  // need to test returning values from a switch
 }

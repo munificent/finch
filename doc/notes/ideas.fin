@@ -1,0 +1,148 @@
+// some things contain a list of definitions (object literal and multibind) and
+// some things contain a sequence of expressions (list; block; etc.). it would be
+// good if each of those used the same basic grouping character so that; for
+// example curlies always means definitions inside.
+
+// what we need to group:
+// - multibind
+// - object literals
+// - blocks
+// - groups (i.e. parentheses for grouping)
+// - lists
+// - maps
+
+// stuff to keep in mind:
+// - zero-argument blocks are very common; so should be lightweight
+// - most objects don't seem to have an explicit parent
+
+( ... )
+{ ... }
+[ ... ]
+(|a b| ... )
+{|a b| ... }
+[|a b| ... ]
+|a b|( ... )
+|a b|{ ... }
+|a b|[ ... ]
+(| ... |)
+[| ... |]
+{| ... |}
+< ... >
+<|a b| ... >
+(: ... :)
+[: ... :]
+{: ... :}
+list( ... )
+map( ... )
+o( ... )
+
+// current:
+
+// block (args)
+{|arg| ... }
+{ ... }
+
+// object (parent)
+(|parent| ... )
+(|| ... )
+
+// multibind
+existing :: ( ... )
+
+// list
+[1, 2, 3]
+[]
+
+// map
+// n/a
+
+
+
+// idea 1:
+
+// block (args)
+{|arg| ... }
+{ ... }
+
+// object (parent)
+[(parent) ... ]
+[ ... ]
+
+// multibind
+existing :: ( ... )
+
+// list
+[|1, 2, 3|]
+[||]
+
+// map
+[|"a" -> 1, "b" -> 2|]
+
+
+
+// idea 2:
+
+// block (args)
+{|arg| ... }
+{ ... }
+
+// object (parent)
+[|parent| ... ]
+[ ... ]
+
+// multibind
+existing :: ( ... )
+
+// list
+<1, 2, 3>
+< >
+
+// map
+<|"a": 1, "b": 2|>
+
+
+
+// idea 2:
+
+// block (args)
+|arg| { ... }
+{ ... }
+
+// object (parent)
+parent <: ( ... )
+(: ... :)
+
+// multibind
+existing :: ( ... )
+
+// list
+<1, 2, 3>
+< >
+
+// map
+<|"a": 1, "b": 2|>
+
+
+
+// kinds of object literals:
+// 1. object from scratch:
+(|| blah)
+
+// 2. object that inherits another:
+(|parent| blah)
+
+// 3. class-like object that inherits another and also inherits protos:
+
+Point3D <- (|Point2D|
+  zero {
+    (|Point3Ds| _x <- 0, _y <- 0, _z <- 0)
+  }
+
+  new-x: x y: y z: z {
+    (|Point3Ds| _x <- x, _y <- y, _z <- z)
+  }
+)
+
+Point3Ds <- (|Point2Ds|
+  z { _z }
+)

@@ -1,26 +1,26 @@
-' create the main factory object
+// create the main factory object
 Complex <- (||
-  ' constructor
+  // constructor
   new: real i: imaginary {
     (|Complexes| _real <- real, _imaginary <- imaginary )
   }
 )
 
-' the prototypical complex number
+// the prototypical complex number
 Complexes <- (||
   _real <- 0
   _imaginary <- 0
 
-  ' accessors
+  // accessors
   real { _real }
   imaginary { _imaginary }
 
-  ' string conversion
+  // string conversion
   to-string {
     _real to-string + "+" + _imaginary + "i"
   }
 
-  ' arithmetic
+  // arithmetic
   + right {
     Complex new: _real + right real i: _imaginary + right imaginary
   }
@@ -39,10 +39,10 @@ Complexes <- (||
   }
 )
 
-' allow creating complex numbers from normal ones
+// allow creating complex numbers from normal ones
 Numbers :: i { Complex new: 0 i: self }
 
-' test it out a bit
+// test it out a bit
 a <- 4 i
 b <- Complex new: 2 i: 3
 

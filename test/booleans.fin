@@ -12,38 +12,38 @@ Test suite: "Booleans" is: {
   }
 
   Test test: "and:" is: {
-    ' should work with values
+    // should work with values
     Test is-true:  (true and: true)
     Test is-false: (true and: false)
     Test is-false: (false and: true)
     Test is-false: (false and: false)
 
-    ' and blocks
+    // and blocks
     Test is-true:  ({ true } and: { true })
     Test is-false: ({ true } and: { false })
     Test is-false: ({ false } and: { true })
     Test is-false: ({ false } and: { false })
 
-    ' should short-circuit
+    // should short-circuit
     shorted <- true
     Test is-false: ({ false } and: { shorted <-- false, true })
     Test is-true: shorted
   }
 
   Test test: "or:" is: {
-    ' should work with values
+    // should work with values
     Test is-true:  (true or: true)
     Test is-true:  (true or: false)
     Test is-true:  (false or: true)
     Test is-false: (false or: false)
 
-    ' and blocks
+    // and blocks
     Test is-true:  ({ true } or: { true })
     Test is-true:  ({ true } or: { false })
     Test is-true:  ({ false } or: { true })
     Test is-false: ({ false } or: { false })
 
-    ' should short-circuit
+    // should short-circuit
     shorted <- true
     Test is-true: ({ true } or: { shorted <-- false, false })
     Test is-true: shorted

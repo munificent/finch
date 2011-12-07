@@ -1,12 +1,47 @@
+// this file exists to show all syntax for hacking on syntax highlighters.
+
+// line comment
+
+/* block comment */
+
+/* nested /* block */ comment */
+
+// special vars
+self true false nil undefined
+
+// assignment
+a <- b
+a <-- b
+
+// but not in the middle of other operators
+><--?
+
+ <-
+(<-)<-[<-]<-{<-}
+
+// blocks
+{ no arguments }
+{
+    multi
+    line
+}
+{|arg arg arg| body }
+
+
+
+// object
 Object :: (
+	/* nested /* block */ comment */
   // By default, just check reference equality.
   = right { self === right }
 
   != right { (self = right) not }
 
-  // Any non-true object is implicitly "false", so sending "not" to it
-  // returns true.
+  // any non-true object is implicitly "false", so sending "not" to it
+  // returns true
   not { true }
+
+/* foo */
 
   // type tests
   array?   { false }
@@ -45,6 +80,7 @@ false :: (
 )
 
 Ether :: (
+  // define a for-style loop
   from: start to: end step: step do: block {
     i <- start
 
@@ -59,11 +95,14 @@ Ether :: (
     from: start to: end step: step do: block
   }
 
+  // do
   do: block { block call }
 
+  // if then
   if: condition then: then { condition if-true: then else: { nil } }
   if: condition then: then else: else { condition if-true: then else: else }
 
+  // a chained if/then/else
   if: if1 then: then1 else-if: if2 then: then2 else: else {
     if: if1 then: then1 else: {
       if: if2 then: then2 else: else
@@ -74,6 +113,7 @@ Ether :: (
     while: true do: block
   }
 
+  // while
   while: condition do: block {
     if: condition call then: {
       block call
@@ -85,19 +125,20 @@ Ether :: (
     while: { condition-a call and: condition-b } do: block
   }
 
+  // until
   until: condition do: block {
     while: { condition call not } do: block
   }
 
-  // Build the output methods in terms of the single primitive one.
+  // build the output methods in terms of the single primitive one
   write: text {
-    // Make sure the argument is always converted to a string before
+    // make sure the argument is always converted to a string before
     // passing to the primitive version which can't do that.
     #PRIM# write: text to-string
   }
 
   write-line: text {
-    // Make sure the argument is always converted to a string before
+    // make sure the argument is always converted to a string before
     // passing to the primitive version which can't do that.
     #PRIM# write: text to-string + "\n"
   }
@@ -110,7 +151,7 @@ Fiber <- (||
 
   spawn: block {
     fiber <- Fiber new: block
-    // Immediately run it, discarding the first yielded result.
+    // immediately run it, discarding the first yielded result
     fiber run
     fiber
   }
@@ -172,11 +213,17 @@ Strings :: (
   <= right { (#PRIM# string-compare: self to: right) <= 0 }
   >= right { (#PRIM# string-compare: self to: right) >= 0 }
 
-  starts-with: needle { (self index-of: needle) = 0 }
+  starts-with: needle {
+    (self index-of: needle) = 0
+  }
 
-  contains: needle { (self index-of: needle) != -1 }
+  contains: needle {
+    (self index-of: needle) != -1
+  }
 
-  from: from to: to { self from: from count: to - from }
+  from: from to: to {
+    self from: from count: to - from
+  }
 )
 
 Array <- (||
@@ -217,14 +264,14 @@ Arrays :: (
   }
 )
 
-// Truthiness: only two things are true: the true object, and blocks that
+// truthiness: only two things are true: the true object, and blocks that
 // evaluate to it.
 Object :: true? { false }
 true :: true? { true }
 
 Blocks :: true? { self call true? }
 
-// Short-circuiting logical operators
+// logical operators
 Object :: (
   and: right {
     if: self true? then: {
@@ -260,11 +307,11 @@ Object :: switch {
 
 Switches <- (||
   case: case do: block {
-    // If this switch has already matched a case, just do nothing.
+    // if this switch has already matched a case, just do nothing
     if: _done? not then: {
-      // If the case is a block, then it's a predicate so evaluate
+      // if the case is a block, then it's a predicate so evaluate
       // it, otherwise it's a value, so compare it to the value being
-      // switched.
+      // switched
       matched <- if: case block? then: {
         case call: _value
       } else: {
@@ -272,21 +319,21 @@ Switches <- (||
       }
 
       if: matched then: {
-        // Execute the block.
+        // execute the block
         _result <- block call: _value
         _done? <- true
       }
     }
 
-    // Always return the result. If we haven't matched yet, this will
-    // just be nil. Once we've matched, it will be the matched value.
+    // always return the result. if we haven't matched yet, this will
+    // just be nil. once we've matched, it will be the matched value.
     _result
   }
 
   default: block {
-    // If this switch has already matched a case, just do nothing.
+    // if this switch has already matched a case, just do nothing
     if: _done? not then: {
-      // Execute the block.
+      // execute the block
       _result <- block call: _value
       _done? <- true
     }

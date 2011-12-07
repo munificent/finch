@@ -32,7 +32,7 @@ Test suite: "Variables" is: {
 
   Test test: "Assign Undefined" is: {
     a <-- "something"
-    ' since a wasn't defined, should do nothing
+    // since a wasn't defined, should do nothing
     Test that: a equals: nil
   }
 

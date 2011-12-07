@@ -32,13 +32,13 @@ Test suite: "Self" is: {
   }
 
   Test test: "Self in block is lexical not dynamic scope" is: {
-    ' create a block in one object scope
+    // create a block in one object scope
     foo <- (||
       to-string { "foo" }
       block { { self to-string } }
     )
 
-    ' and call it from within a different object
+    // and call it from within a different object
     bar <- (||
       to-string { "bar" }
       call-block: block { block call }
@@ -46,7 +46,7 @@ Test suite: "Self" is: {
 
     Test that: (bar call-block: foo block) equals: "foo"
 
-    ' needs to play nice with inheritance too
+    // needs to play nice with inheritance too
     foo2 <- (|foo|
       to-string { "foo2" }
     )
@@ -56,12 +56,12 @@ Test suite: "Self" is: {
   Test test: "Recursive inherited method restores outer self" is: {
     parent <- (||
       recurse: recurse {
-        ' see what self is bound to
+        // see what self is bound to
         a <- self to-string
         if: recurse then: {
-          ' call this exact same method but with a different self
+          // call this exact same method but with a different self
           a <-- a + (child recurse: false)
-          ' see that self was correctly restored to parent
+          // see that self was correctly restored to parent
           a <-- a + self to-string
         }
         a

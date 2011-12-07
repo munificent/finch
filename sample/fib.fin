@@ -1,13 +1,13 @@
-' defines a "fib" method on numbers that returns the nth value of the
-' fibonacci sequence. uses a slow naive recursive process. useful for
-' performance testing.
+// defines a "fib" method on numbers that returns the nth value of the
+// fibonacci sequence. uses a slow naive recursive process. useful for
+// performance testing.
 Numbers :: fib {
   if: self = 0 then: { return 0 }
   if: self = 1 then: { return 1 }
   (self - 2) fib + (self - 1) fib
 }
 
-' test
+// test
 from: 0 to: 20 do: {|i|
   write-line: "" + i + " fib = " + i fib
 }

@@ -29,7 +29,7 @@ namespace Finch
     private:
         bool IsDone() const;
         
-        char Current() const { return mLine[mPos]; }
+        char Peek(int ahead = 0) const;
         
         char Advance();
                 

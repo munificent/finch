@@ -75,10 +75,10 @@ Test suite: "Fibers" is: {
       passed-in <-- Fiber yield
     }
 
-    ' run to first yield
+    // run to first yield
     fiber run
 
-    ' pass value into yield and resume
+    // pass value into yield and resume
     fiber run: 123
 
     Test that: passed-in equals: 123
