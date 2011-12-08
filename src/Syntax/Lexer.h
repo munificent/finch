@@ -33,11 +33,14 @@ namespace Finch
         
         char Advance();
                 
+        void SkipBlockComment();
         Token SingleToken(TokenType type);
         Token ReadString();
         Token ReadNumber();
         Token ReadName();
         Token ReadOperator();
+        
+        void AdvanceLine();
         
         bool IsWhitespace(char c) const;
         bool IsAlpha(char c) const;

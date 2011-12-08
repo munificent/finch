@@ -14,89 +14,95 @@ namespace Finch
     
     Token Lexer::ReadToken()
     {
-        if (IsDone()) return Token(TOKEN_EOF);
-        
-        if (mNeedsLine)
+        while (true)
         {
-            if (mReader.EndOfLines()) return Token(TOKEN_EOF);
+            if (IsDone()) return Token(TOKEN_EOF);
             
-            mLine = mReader.NextLine();
-            mPos = 0;
-            mStart = 0;
-            mNeedsLine = false;
-        }
-        
-        while (!IsDone() && IsWhitespace(Peek())) Advance();
-        
-        if (IsDone()) return Token(TOKEN_EOF);
-        
-        mStart = mPos;
-        
-        char c = Peek();
-        switch (c)
-        {
-            case '\0':
-                // Skip the rest of the line.
-                mNeedsLine = true;
-                // But not the line at the end.
-                return Token(TOKEN_LINE);
-                
-            case '(': return SingleToken(TOKEN_LEFT_PAREN);
-            case ')': return SingleToken(TOKEN_RIGHT_PAREN);
-            case '[': return SingleToken(TOKEN_LEFT_BRACKET);
-            case ']': return SingleToken(TOKEN_RIGHT_BRACKET);
-            case '{': return SingleToken(TOKEN_LEFT_BRACE);
-            case '}': return SingleToken(TOKEN_RIGHT_BRACE);
-            case ',': return SingleToken(TOKEN_LINE);
-            case '.': return SingleToken(TOKEN_DOT);
-            case ';': return SingleToken(TOKEN_SEMICOLON);
-            case '\\': return SingleToken(TOKEN_IGNORE_LINE);
-            case '|': return SingleToken(TOKEN_PIPE);
+            if (mNeedsLine)
+            {
+                AdvanceLine();
+                continue;
+            }
             
-            case ':':
-                Advance();
-                if (Peek() == ':')
-                {
-                    // "::".
-                    Advance();
-                    return Token(TOKEN_BIND);
-                }
-
-                // Just a ":" by itself.
-                return Token(TOKEN_KEYWORD);
+            mStart = mPos;
             
-            case '-':
-                Advance();
-                if (IsDigit(Peek())) return ReadNumber();
-                return ReadOperator();
-            
-            case '/':
-                Advance();
-                if (Peek() == '/')
-                {
-                    // Line comment.
+            char c = Peek();
+            switch (c)
+            {
+                case ' ':
+                case '\t':
+                    // Skip whitespace.
+                    while (IsWhitespace(Peek())) Advance();
+                    break;
+                    
+                case '\0':
+                    // End of the line.
                     mNeedsLine = true;
                     return Token(TOKEN_LINE);
-                }
-                else
-                {
-                    return ReadOperator();
-                }
-
-            
-            case '"': return ReadString();
+                    
+                case '(': return SingleToken(TOKEN_LEFT_PAREN);
+                case ')': return SingleToken(TOKEN_RIGHT_PAREN);
+                case '[': return SingleToken(TOKEN_LEFT_BRACKET);
+                case ']': return SingleToken(TOKEN_RIGHT_BRACKET);
+                case '{': return SingleToken(TOKEN_LEFT_BRACE);
+                case '}': return SingleToken(TOKEN_RIGHT_BRACE);
+                case ',': return SingleToken(TOKEN_LINE);
+                case '.': return SingleToken(TOKEN_DOT);
+                case ';': return SingleToken(TOKEN_SEMICOLON);
+                case '\\': return SingleToken(TOKEN_IGNORE_LINE);
+                case '|': return SingleToken(TOKEN_PIPE);
                 
-            default:
-                if (IsDigit(c)) return ReadNumber();
-                if (IsAlpha(c)) return ReadName();
-                if (IsOperator(c)) return ReadOperator();
-        }
+                case ':':
+                    Advance();
+                    if (Peek() == ':')
+                    {
+                        // "::".
+                        Advance();
+                        return Token(TOKEN_BIND);
+                    }
 
-        // If we got here, we don't know what it is. Just eat it so we
-        // don't get stuck.
-        Advance();
-        return Token(TOKEN_ERROR, String::Format(
-                "Unrecognized character \"%c\".", c));
+                    // Just a ":" by itself.
+                    return Token(TOKEN_KEYWORD);
+                
+                case '-':
+                    Advance();
+                    if (IsDigit(Peek())) return ReadNumber();
+                    return ReadOperator();
+                
+                case '/':
+                    Advance();
+                    if (Peek() == '/')
+                    {
+                        // Line comment, so ignore the rest of the line and
+                        // emit the line token.
+                        mNeedsLine = true;
+                        return Token(TOKEN_LINE);
+                    }
+                    else if (Peek() == '*')
+                    {
+                        SkipBlockComment();
+                    }
+                    else
+                    {
+                        return ReadOperator();
+                    }
+                    break;
+                    
+                
+                case '"': return ReadString();
+                    
+                default:
+                    if (IsDigit(c)) return ReadNumber();
+                    if (IsAlpha(c)) return ReadName();
+                    if (IsOperator(c)) return ReadOperator();
+                    
+                    // If we got here, we don't know what it is. Just eat it so
+                    // we don't get stuck.
+                    Advance();
+                    return Token(TOKEN_ERROR, String::Format(
+                        "Unrecognized character \"%c\".", c));
+            }
+        }
     }
     
     bool Lexer::IsDone() const
@@ -139,7 +145,42 @@ namespace Finch
         mPos++;
         return c;
     }
+    
+    void Lexer::SkipBlockComment()
+    {
+        Advance();
+        Advance();
         
+        int nesting = 1;
+        
+        while (nesting > 0)
+        {
+            // TODO(bob): Unterminated comment. Should return error.
+            if (IsDone()) return;
+            
+            if ((Peek() == '/') && (Peek(1) == '*'))
+            {
+                Advance();
+                Advance();
+                nesting++;
+            }
+            else if ((Peek() == '*') && (Peek(1) == '/'))
+            {
+                Advance();
+                Advance();
+                nesting--;
+            }
+            else if (Peek() == '\0')
+            {
+                AdvanceLine();
+            }
+            else
+            {
+                Advance();
+            }
+        }
+    }
+    
     Token Lexer::SingleToken(TokenType type)
     {
         Advance();
@@ -204,9 +245,9 @@ namespace Finch
     {
         while (IsOperator(Peek()) || IsAlpha(Peek()) || IsDigit(Peek()))
         {
-            // Line comments take priority over names.
+            // Comments take priority over names.
             if ((Peek() == '/') && (Peek(1) == '/')) break;
-            
+            if ((Peek() == '/') && (Peek(1) == '*')) break;
             Advance();
         }
         
@@ -232,9 +273,10 @@ namespace Finch
     {
         while (IsOperator(Peek()))
         {
-            // Line comments take priority over names.
+            // Comments take priority over names.
             if ((Peek() == '/') && (Peek(1) == '/')) break;
-            
+            if ((Peek() == '/') && (Peek(1) == '*')) break;
+
             Advance();
         }
         
@@ -247,5 +289,13 @@ namespace Finch
         if (name == "<--") return Token(TOKEN_LONG_ARROW);
         
         return Token(TOKEN_OPERATOR, name);
+    }
+    
+    void Lexer::AdvanceLine()
+    {
+        mLine = mReader.NextLine();
+        mPos = 0;
+        mStart = 0;
+        mNeedsLine = false;
     }
 }

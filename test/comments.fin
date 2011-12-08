@@ -14,4 +14,17 @@ Test suite: "Comments" is: {
     Test that: 3 equals: 1 +//comment
     2
   }
+
+  Test test: "block comment in name" is: {
+    foo <- 1
+    Test that: foo/*comment*/ equals: 1
+  }
+
+  Test test: "block comment in operator" is: {
+    Test that: 1 +/*comment*/2 equals: 3
+  }
+
+  Test test: "nested block comment" is: {
+    Test that: 1 + /* 2 /* 3 */ 4 */ 5 equals: 6
+  }
 }
