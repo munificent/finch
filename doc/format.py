@@ -61,8 +61,7 @@ def formatfile(path):
         out.write('<title>The Finch Programming Language: ' + title + '</title>\n')
         out.write(
             '''
-            <link rel="stylesheet" type="text/css" href="http://fonts.googleapis.com/css?family=Inconsolata|Reenie+Beanie">
-            <link href='http://fonts.googleapis.com/css?family=Rosario:400,400italic,700,700italic' rel='stylesheet' type='text/css'>
+            <link rel="stylesheet" type="text/css" href="http://fonts.googleapis.com/css?family=Copse|Rosario">
             ''')
         out.write('<link rel="stylesheet" type="text/css" href="styles.css" />\n')
         out.write('<script src="jquery-1.3.2.min.js" type="text/javascript"></script>\n')
