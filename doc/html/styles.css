@@ -1,161 +1,125 @@
-body {
-	color: #444;
-}
-
-h1 {
-  color: #d0c;
-  font: 54px 'Reenie Beanie', Verdana, sans-serif;
+body, code, h1, h2, h3, p, pre, tt {
   margin: 0;
   padding: 0;
 }
 
+body {
+	color: #333;
+  background: #f0f8ff;
+}
+
+h1 {
+  color: #3a5c54;
+  font: 48px/48px Copse, Georgia, serif;
+  margin: 48px 0 0 0;
+  padding: 12px 0;
+  text-transform: lowercase;
+  text-align: right;
+}
+
 h2 {
-  color: #444;
-  font: 22px Consolas, Menlo, Monaco, monospace;
-  margin: 30px 0 10px 0;
-  padding: 0;
+  color: #3a5c54;
+  font: 28px/48px Copse, Georgia, serif;
+  margin: 48px 0 24px 0;
 }
 
 h3 {
-  color: #444;
-  font: 18px Consolas, Menlo, Monaco, monospace;
-  margin: 20px 0 10px 0;
-  padding: 0;
+  color: #3a5c54;
+  font: 20px/24px Copse, Georgia, serif;
+  margin: 24px 0;
 }
 
 a {
-  color: #d0c;
+  color: #467d4a;
   text-decoration: none;
 }
 
 a:hover {
-  color: #706;
+  color: #649453;
 }
 
-p {
-  font: 16px/24px Georgia, serif;
-  margin: 6px 0 6px 0;
-  padding: 0;
+p, li {
+  font: 16px/24px Rosario, 'Lucida Grande', sans-serif;
+  margin: 24px 0;
 }
 
 code, pre, tt {
   color: #666;
-  background: #f4f4f4;
-  padding: 2px;
-  font: 14px/20px Consolas, Menlo, Monaco, monospace;
-  -webkit-border-radius: 3px;
-  -moz-border-radius: 3px;
-  border-radius: 3px;
+  font: 13px/24px Monaco, Consolas, Menlo, monospace;
+}
+
+code {
+  padding: 0 2px;
 }
 
 pre {
-  padding: 5px;
+  margin: 24px 0 24px 48px;
 }
 
 .content {
-  margin: 40px auto 40px auto;
+  margin: 0 auto;
   width: 700px;
 }
 
-/*
-.nav {
-  display: block;
-  color: #b891b4;
-  margin: 20px 0 20px 0;
-  padding: 5px;
-  font: 14px Consolas, Menlo, Monaco, monospace;
-  background: #f5dff3;
-  -webkit-border-radius: 3px;
-  -moz-border-radius: 3px;
-  border-radius: 3px;
-}
-*/
-
-.nav {
-  display: block;
-  color: #888;
-  margin: 10px 0 20px 0;
-  padding-bottom: 10px;
-  font: 14px Consolas, Menlo, Monaco, monospace;
-  border-bottom: solid 2px #ddd;
+.header, .footer {
+  color: #666;
+  -background: #6d7e5b;
+  font: 14px/24px Mako, 'Lucida Grande', sans-serif;
 }
 
+.header {
+  margin: 0 0 24px 0;
+  -padding: 0 24px 24px 24px;
+  -border-bottom-left-radius: 4px;
+  -border-bottom-right-radius: 4px;
+}
 
-p.footer {
-  color: #888;
-  margin: 20px 0;
-  font: normal 14px Consolas, Menlo, Monaco, monospace;
+.nav {
+  margin: 0 0 48px 0;
+  text-align: right;
+}
 
-  padding-top: 10px;
-  border-top: solid 2px #ddd;
+.footer {
+  text-align: right;
+  margin: 48px 0;
 }
 
 
 /* syntax highlighting */
 
-/* line comment */
-.codehilite pre span.c1 {
-  color: #999;
+.codehilite pre span.c1 { color: #999;    } /* line comment */
+.codehilite pre span.cm { color: #999;    } /* block comment */
+.codehilite pre span.vg { color: #5d3a85; } /* global variable */
+.codehilite pre span.vi { color: #784bab; } /* instance variable */
+.codehilite pre span.k  { color: #008ac9; } /* keyword message */
+.codehilite pre span.p  { color: #777;    } /* punctuation ()[]{} */
+.codehilite pre span.s  { color: #bd8c11; } /* string */
+.codehilite pre span.se { color: #c97526; } /* string escape */
+.codehilite pre span.nb { color: #30a138; } /* built-in name: self undefined */
+.codehilite pre span.o  { color: #30a138; } /* built-in operator <- <-- */
+.codehilite pre span.kd { color: #8cd1b2; } /* keyword decl (arg list |) */
+.codehilite pre span.nv { color: #24a36a; } /* argument name */
+.codehilite pre span.ow { color: #30a186; } /* user-defined operator */
+.codehilite pre span.mi { } /* number */
+.codehilite pre span.n  { }  /* name */
+
+/*
+body {
+  background: -webkit-linear-gradient(
+    top, #eee 0, #fff 10%, #fff 90%, #eee 100%);
+  background-size: 24px 24px;
+  background-repeat: repeat;
 }
 
-/* global variable */
-.codehilite pre span.vg {
-  color: #5d3a85;
+h1, h2, h3 {
+  border-left: solid 4px red;
 }
 
-/* instance variable */
-.codehilite pre span.vi
-{
-  color: #784bab;
+p {
+  border-left: solid 4px blue;
 }
 
-/* keyword message */
-.codehilite pre span.k {
-  color: #008ac9;
+pre {
+  border-left: solid 4px green;
 }
-
-/* punctuation ()[]{} */
-.codehilite pre span.p {
-  color: #777;
-}
-
-/* string */
-.codehilite pre span.s {
-  color: #f59f2f;
-}
-
-/* string escape */
-.codehilite pre span.se {
-  color: #f59f2f;
-  background: #fff4e5;
-}
-/* built-in name: self undefined */
-.codehilite pre span.nb {
-  color: #d0c;
-}
-
-/* built-in operator <- <-- */
-.codehilite pre span.o {
-  color: #d0c;
-}
-
-/* keyword declaration (arg list |) */
-.codehilite pre span.kd {
-  color: #8cd1b2;
-}
-
-/* argument name */
-.codehilite pre span.nv {
-  color: #24a36a;
-}
-
-/* user-defined operator */
-.codehilite pre span.ow {
-  color: #09c906;
-}
-
-/* number */
-.codehilite pre span.mi { }
-
-/* name */
-.codehilite pre span.n { }
+*/
