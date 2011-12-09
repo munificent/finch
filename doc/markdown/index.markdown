@@ -1,7 +1,5 @@
 ^title Welcome
 
-<span class="nav">Welcome | [Expressions](expressions.html)</span>
-
 Welcome and thanks for coming. You're here because, for some reason, you're interested in Finch, a little programming language of mine. Finch is still very early in development so the only people likely to be interested in it are language nerds. Thus, the docs here will tend to assume you're one of those.
 
 ## What is Finch?
@@ -21,8 +19,7 @@ It is written in C++ with a hand-written [lexer](http://bitbucket.org/munificent
     text file and curly brace background.
 
 *   A minimal prototype-based dynamic language. I think prototypes are a really
-    cool paradigm, but Self is too complex (and mostly dead), and Javascript
-    is... well... Javascript.
+    cool paradigm, but Self goes too far, and Javascript doesn't go far enough.
 
 *   Easily embeddable in other applications. I don't know if Finch ever will
     have real use, but if it does, it will likely be as a configuration or
@@ -33,26 +30,26 @@ It is written in C++ with a hand-written [lexer](http://bitbucket.org/munificent
 Here's a little example to get you going. This little program doesn't draw, but it will tell you what turns to make to draw a [dragon curve](http://en.wikipedia.org/wiki/Dragon_curve):
 
     :::finch
-    ' create an object and put it in a variable "dragon"
+    // create an object and put it in a variable "dragon"
     dragon <- (||
-      ' define a "trace:" method for outputting the series of left and
-      ' right turns needed to draw a dragon curve.
+      // define a "trace:" method for outputting the series of left and
+      // right turns needed to draw a dragon curve.
       trace: depth {
-        self traceDepth: depth turn: "R"
-        writeLine: "" ' end the line
+        self trace-depth: depth turn: "R"
+        write-line: "" ' end the line
       }
 
-      ' the main recursive method
-      traceDepth: n turn: turn {
+      // the main recursive method
+      trace-depth: n turn: turn {
         if: n > 0 then: {
-          self traceDepth: n - 1 turn: "R"
+          self trace-depth: n - 1 turn: "R"
           write: turn
-          self traceDepth: n - 1 turn: "L"
+          self trace-depth: n - 1 turn: "L"
         }
       }
     )
 
-    ' now lets try it
+    // now let's try it
     dragon trace: 5
 
 ## Getting Started
@@ -92,6 +89,6 @@ If you built from a makefile, it's:
 
 ### Where to Go from Here
 
-You should be good to start hacking some Finch code now. The other docs here can help get you started. The [sample scripts](http://bitbucket.org/munificent/finch/src/tip/sample/) and the [tests](http://bitbucket.org/munificent/finch/src/tip/test/) will give you some ideas, along with the Finch-related posts on [my blog](http://journal.stuffwithstuff.com/category/finch/).
+You should be good to start hacking some Finch code now. The other docs here can help get you started. The [sample scripts](https://github.com/munificent/finch/tree/master/sample) and the [tests](https://github.com/munificent/finch/tree/master/test) will give you some ideas, along with the Finch-related posts on [my blog](http://journal.stuffwithstuff.com/category/finch/).
 
 If you have any questions or comments, holler at me.

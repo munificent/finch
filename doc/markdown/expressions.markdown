@@ -1,15 +1,18 @@
 ^title Expressions
 
-<span class="nav">[Welcome](index.html) | Expressions</span>
-
 Expressions are the heart of any programming language&mdash; they're the building blocks for programs. Finch, like many functional languages but unlike most C-derived languages, does not have statements, only expressions. We'll go over the different kinds of expressions Finch supports, starting from the bottom up.
 
 ## Comments
 
-OK, technically comments aren't expressions, but here is as good a place as any to describe them. Comments start with a single quote and end at the end of the line:
+OK, technically comments aren't expressions, but here is as good a place as any to describe them. Line comments start with `//` and end at the end of the line:
 
     :::finch
-    ' this is a comment
+    // this is a comment
+
+Block comments start with `/*` and end with `*/`. They can span multiple lines or be within a single one. Unlike C and others, block comments can nest in Finch:
+
+    :::finch
+    /* this is /* a nested */ comment */
 
 ## Literals
 
@@ -49,17 +52,17 @@ What other languages refer to as "calling a function" or "invoking a method", Fi
 An *unary* message has a name but no arguments. You can send an unary message to an object by following the object with the name of the message:
 
     :::finch
-    ' send the 'length' message to the string "hi there"
+    // send the 'length' message to the string "hi there"
     "hi there" length
 
 ### Operators
 
 One or more punctuation characters defines an *operator*. You can define whatever operators you like, but don't go too crazy. The goal here is not to make your code look like comic strip profanity:
 
-    ' valid punctuation characters
+    // valid punctuation characters
     + - ! @ # $ % ^ & * = < > / ? ~
 
-    ' can also be combined
+    // can also be combined
     -- ?! ---@ <=/=> @*#%&#$@&!
 
 All operators are *infix*&mdash; they have operands on both sides. Using an operator sends a message to the left-hand operand with the right-hand one as an argument.
@@ -71,14 +74,14 @@ The above expression means "send a `+` message to `a`, passing in `b` as an argu
 
 Because of this, all operators have the same precedence and associativity (left to right). This is unlike most other languages with hard-coded precedence levels. Parentheses are your friends here.
 
-    1 + 2 * 3   ' evaluates to 9 in Finch
-    1 + (2 * 3) ' evaluates to 7
+    1 + 2 * 3   // evaluates to 9 in Finch
+    1 + (2 * 3) // evaluates to 7
 
 Because there are no built-in operators, there are no unary operators in Finch. Instead, it uses unary message for what would be an unary operator in another language:
 
-    ' C/JS/etc.  Finch
-    -value       value neg
-    !condition   condition not
+    // C/JS/etc.  Finch
+    -value        value neg
+    !condition    condition not
 
 ### Keyword Messages
 
@@ -96,9 +99,9 @@ That sends a *single* `cook-soup:appetizer:entree:dessert:` message to `chef` wi
 Like other messages, keyword messages usually follow a receiver (`dictionary` and `chef` in the above examples). However, you can also omit the receiver. In that case, it will implicitly be sent to a special `Ether` object:
 
     :::finch
-    ' this:
+    // this:
     write: "hi"
-    ' is equivalent to:
+    // is equivalent to:
     Ether write: "hi"
 
 Most of Finch's control flow operations like `if:then:` and `while:do` are defined as methods on Ether.
@@ -167,9 +170,9 @@ Because blocks are basically functions, you can also pass arguments to them. If 
 The above code creates a block that takes two arguments. When called, it returns the sum of the arguments. You pass arguments to a block by using one of the keyword versions of `call`. For example:
 
     :::finch
-    {|a| write: a } call: "arg" ' one argument
-    {|a b| write: a + b } call: "one" : "two" ' two args
-    {|a b c| write: a + b + c } call: "one" : "two" : "three" ' you get the idea
+    {|a| write: a } call: "arg" // one argument
+    {|a b| write: a + b } call: "one" : "two" // two args
+    {|a b c| write: a + b + c } call: "one" : "two" : "three" // three
 
 If you pass too many arguments to a block, the extra ones will be ignored. If you don't pass enough, it will assign the special value `Nil` to the missing ones.
 
@@ -218,12 +221,12 @@ One way you can think of this is that short assignment always means "declare a n
 Finch has built-in support for resizable arrays. Most of the things you can do with arrays use normal message syntax, but there's also a little special sauce for creating arrays. If you surround a series of expressions with square brackets, it creates an array with an element for the value of each expression. Elements are separated with newlines or semi-colons like in a regular sequence. Enough talk:
 
     :::finch
-    []             ' creates an empty array
-    [1, 2, 3]      ' a three-element array
-    [123, "text"]  ' arrays can have elements of different types
-    [1 + 2, 3 neg] ' expressions are fine too
+    []             // creates an empty array
+    [1, 2, 3]      // a three-element array
+    [123, "text"]  // arrays can have elements of different types
+    [1 + 2, 3 neg] // expressions are fine too
 
-    ' newlines can separate elements too
+    // newlines can separate elements too
     ["first"
      "second"
      "third"]
@@ -238,17 +241,17 @@ You do that using the bind operator: `::`. If we have some object `fred`, we can
 
     :::finch
     fred :: dance { writeLine: "Sorry, I'm too sexy." }
-    fred dance ' Sorry, I'm too sexy.
+    fred dance // Sorry, I'm too sexy.
 
 This also works for operators and keyword messages:
 
     :::finch
     fred :: ? right {
-        writeLine: "What do I do with a " + right + "?"
+      writeLine: "What do I do with a " + right + "?"
     }
 
     fred :: give: gift to: who {
-        writeLine: "Here, " + who + ", have a " + gift + "."
+      writeLine: "Here, " + who + ", have a " + gift + "."
     }
 
     fred ? "plunger"
@@ -260,13 +263,13 @@ It's common to want to define a number of methods on an object all at once. To m
 
     :::finch
     fred :: (
-        dance { writeLine: "Sorry, I'm too sexy." }
+      dance { writeLine: "Sorry, I'm too sexy." }
 
-        ? right { writeLine: "What do I do with a " + right + "?" }
+      ? right { writeLine: "What do I do with a " + right + "?" }
 
-        give: gift to: who {
-            writeLine: "Here, " + who + ", have a " + gift + "."
-        }
+      give: gift to: who {
+        writeLine: "Here, " + who + ", have a " + gift + "."
+      }
     )
 
 In addition to methods, you can use bind expressions to define object variables:
@@ -275,25 +278,25 @@ In addition to methods, you can use bind expressions to define object variables:
 
     :::finch
     fred :: (
-        _name <- "Fred"
-        sayName { writeLine: _name }
-    }
-    fred sayName ' Fred
+      _name <- "Fred"
+      sayName { writeLine: _name }
+    )
+    fred sayName // Fred
 
 If the name is an object variable name like `_name` here, it just defines that
 variable on the object. If you use a name without a leading underscore, then it will define an object variable with that name and automatically add an accessor message. In other words, this:
 
     :::finch
     fred :: (
-        band <- "Right Said Fred"
+      band <- "Right Said Fred"
     )
 
 Is exactly the same as doing:
 
     :::finch
     fred :: (
-        _band <- "Right Said Fred"
-        band { _band }
+      _band <- "Right Said Fred"
+      band { _band }
     )
 
 ## Combining Expressions: Precedence and Associativity
@@ -312,9 +315,9 @@ Finch will parse that like this:
 Associativity controls how a series of the same type of expression is interpreted. Unary and operator messages associate to the left. A series of keywords will be parsed into a single keyword. Assignment is right-associative. Or, by example:
 
     :::finch
-    3 neg abs square            ' is parsed as (((3 neg) abs) square)
-    1 + 2 * 3 - 4               ' is parsed as (((1 + 2) * 3) - 4)
-    dict addKey: 123 value: "v" ' is parsed as a single "addKey:value:" message
-    a <- b <- c <- 4            ' is parsed as (a <- (b <- (c <- 4)))
+    3 neg abs square            // is parsed as (((3 neg) abs) square)
+    1 + 2 * 3 - 4               // is parsed as (((1 + 2) * 3) - 4)
+    dict addKey: 123 value: "v" // is parsed as a single "addKey:value:" message
+    a <- b <- c <- 4            // is parsed as (a <- (b <- (c <- 4)))
 
 That's pretty much the entirety of Finch's syntax. It's different, but I think it's a good bit simpler than most languages out there. (I'm looking at you C++.)
