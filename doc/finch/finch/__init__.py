@@ -13,36 +13,40 @@ class FinchLexer(RegexLexer):
     tokens = {
         'root': [
             (r'\s+', Text),
-            
+
             # reserved words
             (r'(self|undefined)', Name.Builtin),
             (r'(\<\-\-|\<\-|\.|;)', Operator),
-             
+
             # built-in operators and punctuation
             (r'[,()\\\[\]{}]', Punctuation),
-            
+
             # comments
-            (r'\'.*?\n', Comment.Single),
-            
+            (r'//.*?\n', Comment.Single),
+            (r'/\*', Comment.Multiline, 'comment'),
             # literals
-            
+
             # numbers
             (r'-?\d+\.\d+', Number.Float),
             (r'-?\d+', Number.Integer),
-            
+
             # strings
             (r'L?"', String, 'string'),
-            
+
             # user-defined names
             (r'[a-zA-Z_][a-zA-Z_0-9`~!@#$%^&*\-=+\/?<>]*:', Keyword),
             (r'[a-z][a-zA-Z_0-9`~!@#$%^&*\-=+\/?<>]*', Name),
             (r'[A-Z][a-zA-Z_0-9`~!@#$%^&*\-=+\/?<>]*', Name.Variable.Global),
             (r'_[a-zA-Z_0-9`~!@#$%^&*\-=+\/?<>]*', Name.Variable.Instance),
             (r'[`~!@#$%^&*\-=+\/?<>]+', Operator.Word),
-            
+
             # argument lists
             (r'\|', Keyword.Declaration, 'arglist'),
-            
+
+        ],
+        'comment': [
+            (r'\*/', Comment.Multiline, '#pop'),
+            (r'.+', Comment.Multiline), # all other characters
         ],
         'string': [
             (r'"', String, '#pop'),
@@ -57,7 +61,3 @@ class FinchLexer(RegexLexer):
             (r'\s+', Whitespace), # everything else
         ],
     }
-    
-    # bob: hack. i know i want it to guess finch
-    def analyse_text(text):
-        return 1.0

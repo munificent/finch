@@ -59,16 +59,24 @@ def formatfile(path):
         out.write('<meta http-equiv="Content-type" content="text/html;charset=UTF-8" />\n')
 
         out.write('<title>The Finch Programming Language: ' + title + '</title>\n')
-        out.write('<link rel="stylesheet" type="text/css" href="http://fonts.googleapis.com/css?family=Inconsolata|Reenie+Beanie">\n')
+        out.write(
+            '''
+            <link rel="stylesheet" type="text/css" href="http://fonts.googleapis.com/css?family=Inconsolata|Reenie+Beanie">
+            <link href='http://fonts.googleapis.com/css?family=Rosario:400,400italic,700,700italic' rel='stylesheet' type='text/css'>
+            ''')
         out.write('<link rel="stylesheet" type="text/css" href="styles.css" />\n')
         out.write('<script src="jquery-1.3.2.min.js" type="text/javascript"></script>\n')
         out.write('</head>\n')
         out.write('<body id="top">\n')
 
         out.write('<div class="content">\n')
+        out.write('<div class="header">\n')
 
         # title
         out.write('<h1><a href="index.html">Finch:</a> {0}</h1>\n'.format(title))
+
+        out.write('<p class="nav"><a href="index.html">Welcome</a> | <a href="expressions.html">Expressions</a></p>\n')
+        out.write('</div>\n')
 
         # content
         html = markdown.markdown(contents, ['def_list', 'codehilite'])
