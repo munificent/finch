@@ -54,6 +54,8 @@ Here's a little example to get you going. This little program doesn't draw, but 
 
 ## Getting Started
 
+**TODO: This is out of date. Finch uses gyp now.**
+
 Finch lives on github here: [https://github.com/munificent/finch](https://github.com/munificent/finch)
 
 To play around with it, sync it down. There is both an XCode project and a makefile. Use whichever you prefer. I don't have anything set up for Windows yet, but I'm keen if someone wants to throw a VS solution at me.

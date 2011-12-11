@@ -48,44 +48,41 @@ def formatfile(path):
             else:
                 contents = contents + line
 
+    html = markdown.markdown(contents, ['def_list', 'codehilite'])
+
     modified = datetime.fromtimestamp(os.path.getmtime(path))
     mod_str = modified.strftime('%B %d, %Y')
 
+    fields = {'title': title, 'html': html, 'mod': mod_str}
+
     # write the html output
     with open(htmlpath(basename), 'w') as out:
-        out.write('<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">\n')
-        out.write('<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en">\n')
-        out.write('<head>\n')
-        out.write('<meta http-equiv="Content-type" content="text/html;charset=UTF-8" />\n')
-
-        out.write('<title>The Finch Programming Language: ' + title + '</title>\n')
         out.write(
             '''
+            <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+            <html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en">
+            <head>
+            <meta http-equiv="Content-type" content="text/html;charset=UTF-8" />
+            <title>The Finch Programming Language: {title}</title>
             <link rel="stylesheet" type="text/css" href="http://fonts.googleapis.com/css?family=Copse|Rosario">
-            ''')
-        out.write('<link rel="stylesheet" type="text/css" href="styles.css" />\n')
-        out.write('<script src="jquery-1.3.2.min.js" type="text/javascript"></script>\n')
-        out.write('</head>\n')
-        out.write('<body id="top">\n')
-
-        out.write('<div class="content">\n')
-        out.write('<div class="header">\n')
-
-        # title
-        out.write('<h1><a href="index.html">Finch:</a> {0}</h1>\n'.format(title))
-
-        out.write('<p class="nav"><a href="index.html">Welcome</a> | <a href="expressions.html">Expressions</a></p>\n')
-        out.write('</div>\n')
-
-        # content
-        html = markdown.markdown(contents, ['def_list', 'codehilite'])
-        out.write(html)
-
-        out.write('<p class="footer">Last modified on {0} | email = robert, domain = stuffwithstuff.com</p>\n'.format(mod_str));
-
-        out.write('</div>\n')
-        out.write('</body>\n')
-        out.write('</html>')
+            <link rel="stylesheet" type="text/css" href="styles.css" />
+            </head>
+            <body id="top">
+            <div class="content">
+            <div class="header">
+            <h1><a href="index.html">Finch:</a> {title}</h1>
+            <p class="nav">
+                <a href="index.html">Welcome</a> |
+                <a href="expressions.html">Expressions</a> |
+                <a href="objects.html">Objects</a>
+            </p>
+            </div>
+            {html}
+            <p class="footer">Last modified on {mod} | email = robert, domain = stuffwithstuff.com</p>
+            </div>
+            </body>
+            </html>
+            '''.format(**fields))
 
     print "converted", basename
 

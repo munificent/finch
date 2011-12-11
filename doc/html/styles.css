@@ -50,6 +50,7 @@ code, pre, tt {
 
 code {
   padding: 0 2px;
+  white-space: nowrap;
 }
 
 pre {
