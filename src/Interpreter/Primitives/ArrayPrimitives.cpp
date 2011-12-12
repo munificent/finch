@@ -7,7 +7,7 @@
 
 namespace Finch
 {
-    PRIMITIVE(ArrayLength)
+    PRIMITIVE(ArrayCount)
     {
         ArrayObject * array = self->AsArray();
         ASSERT_NOT_NULL(array);

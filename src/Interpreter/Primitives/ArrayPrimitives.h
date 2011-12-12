@@ -8,7 +8,7 @@
 namespace Finch
 {
     // Primitive methods for array objects.
-    PRIMITIVE(ArrayLength);
+    PRIMITIVE(ArrayCount);
     PRIMITIVE(ArrayAdd);
     PRIMITIVE(ArrayAt);
     PRIMITIVE(ArrayAtPut);

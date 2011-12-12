@@ -205,7 +205,7 @@ Arrays :: (
   }
 
   each: block {
-    from: 0 to: self length - 1 do: {|i|
+    from: 0 to: self count - 1 do: {|i|
       block call: (self at: i)
     }
   }

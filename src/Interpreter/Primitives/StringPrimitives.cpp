@@ -8,7 +8,7 @@
 
 namespace Finch
 {
-    PRIMITIVE(StringLength)
+    PRIMITIVE(StringCount)
     {
         fiber.PushNumber(self->AsString().Length());
     }

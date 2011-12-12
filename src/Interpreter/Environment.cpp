@@ -21,9 +21,7 @@ namespace Finch
         mGlobals = Ref<Scope>(new Scope()); 
         
         // define Object
-        mObject = Object::NewObject(Ref<Object>(), "Object");
-        mGlobals->Define("Object", mObject);
-
+        mObject = MakeGlobal("Object");
         DynamicObject* objectObj = mObject->AsDynamic();
         objectObj->AddPrimitive("===",             ObjectSame);
         objectObj->AddPrimitive("to-string",       ObjectToString);
@@ -31,16 +29,15 @@ namespace Finch
         objectObj->AddPrimitive("parent:",         ObjectSetParent);
 
         // define Array prototype
-        mArrayPrototype = Object::NewObject(mObject, "Arrays");
+        mArrayPrototype = MakeGlobal("Arrays");
         DynamicObject* arrayObj = mArrayPrototype->AsDynamic();
-        arrayObj->AddPrimitive("length",      ArrayLength);
+        arrayObj->AddPrimitive("count",       ArrayCount);
         arrayObj->AddPrimitive("add:",        ArrayAdd);
         arrayObj->AddPrimitive("at:",         ArrayAt);
         arrayObj->AddPrimitive("at:put:",     ArrayAtPut);
-        mGlobals->Define("Arrays", mArrayPrototype);
 
         // define Blocks prototype
-        mBlockPrototype = Object::NewObject(mObject, "Blocks");
+        mBlockPrototype = MakeGlobal("Blocks");
         DynamicObject* blockObj = mBlockPrototype->AsDynamic();
         blockObj->AddPrimitive("call", BlockCall);
         blockObj->AddPrimitive("call:", BlockCall);
@@ -53,20 +50,15 @@ namespace Finch
         blockObj->AddPrimitive("call::::::::", BlockCall);
         blockObj->AddPrimitive("call:::::::::", BlockCall);
         blockObj->AddPrimitive("call::::::::::", BlockCall);
-        mGlobals->Define("Blocks", mBlockPrototype);
 
         // define Fiber prototype
-        mFiberPrototype = Object::NewObject(mObject, "Fibers");
-        mGlobals->Define("Fibers", mFiberPrototype);
-
+        mFiberPrototype = MakeGlobal("Fibers");
         DynamicObject* fiberObj = mFiberPrototype->AsDynamic();
         fiberObj->AddPrimitive("running?", FiberRunning);
         fiberObj->AddPrimitive("done?", FiberDone);
 
         // define Number prototype
-        mNumberPrototype = Object::NewObject(mObject, "Numbers");
-        mGlobals->Define("Numbers", mNumberPrototype);
-
+        mNumberPrototype = MakeGlobal("Numbers");
         DynamicObject* numberObj = mNumberPrototype->AsDynamic();
         numberObj->AddPrimitive("abs", NumberAbs);
         numberObj->AddPrimitive("neg", NumberNeg);
@@ -93,31 +85,24 @@ namespace Finch
         numberObj->AddPrimitive(">=",  NumberGreaterThanOrEqual);
         
         // define String prototype
-        mStringPrototype = Object::NewObject(mObject, "Strings");
-        mGlobals->Define("Strings", mStringPrototype);
-
+        mStringPrototype = MakeGlobal("Strings");
         DynamicObject* stringObj = mStringPrototype->AsDynamic();
-        stringObj->AddPrimitive("length",      StringLength);
+        stringObj->AddPrimitive("count",       StringCount);
         stringObj->AddPrimitive("at:",         StringAt);
         stringObj->AddPrimitive("from:count:", StringFromCount);
         stringObj->AddPrimitive("hash-code",   StringHashCode);
         stringObj->AddPrimitive("index-of:",   StringIndexOf);
 
         // define Ether
-        Ref<Object> ether = Object::NewObject(mObject, "Ether");
-        mGlobals->Define("Ether", ether);
+        MakeGlobal("Ether");
         
         // define IO
-        Ref<Object> io = Object::NewObject(mObject, "Io");
-        mGlobals->Define("Io", io);
-
+        Ref<Object> io = MakeGlobal("Io");
         DynamicObject* ioObj = io->AsDynamic();
         ioObj->AddPrimitive("read-file:", IoReadFile);
 
         // define bare primitive object
-        Ref<Object> primitives = Object::NewObject(mObject);
-        mGlobals->Define("#PRIM#", primitives);
-
+        Ref<Object> primitives = MakeGlobal("#PRIM#");
         DynamicObject* primsObj = primitives->AsDynamic();
         primsObj->AddPrimitive("string-concat:and:",       PrimitiveStringConcat);
         primsObj->AddPrimitive("string-compare:to:",       PrimitiveStringCompare);

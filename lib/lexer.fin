@@ -108,7 +108,7 @@ Lexers <- (||
     _source at: _pos - 1
   }
 
-  done? { _pos >= _source length }
+  done? { _pos >= _source count }
 
   advance-while: predicate {
     while: { self done? not } and: { predicate call: self current } do: {
@@ -160,7 +160,7 @@ Lexers <- (||
 
   // Reads the next token from the source. Doesn't do any newline normalization.
   next-token-raw {
-    if: _pos >= _source length then: { return nil }
+    if: _pos >= _source count then: { return nil }
 
     self skip-whitespace
     self skip-comment
