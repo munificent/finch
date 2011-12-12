@@ -103,7 +103,7 @@ Here, the `count <- 0` bit is exactly equivalent to initializing `_count` (with 
 
 Within the body of a method, you often want to get the object that the method is being invoked on. In Finch, that's called `self`:
 
-    :::finc
+    :::finch
     counter <- (||
       count <- 0
       increment { _count <- _count + 1 }
@@ -113,7 +113,7 @@ Within the body of a method, you often want to get the object that the method is
       }
     )
 
-Here, we're using `self` in order to call one method from another. Unlike Java and C++, but like JavaScript, you have to explicitly use `self` (or `this` in those languages)` to send a message to yourself.
+Here, we're using `self` in order to call one method from another. Unlike Java and C++, but like JavaScript, you have to explicitly use `self` (or `this` in those languages) to send a message to yourself.
 
 **TODO: Document bind operator here.**
 

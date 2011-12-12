@@ -26,6 +26,8 @@ Finch currently supports two atomic types: numbers and strings. Numbers are doub
     "another string"
     "supported escapes: \" \n \\"
 
+Finch also has a couple of special standard objects. The object `nil` is used to indicate the absence of a value. `true` and `false` are boolean values that you can use with things like `if:then:` and `while:do:`. Unlike numbers and strings, these aren't built into the language. They are just regular objects implemented in Finch code that happen to do useful things.
+
 ## Variables
 
 Variable names in Finch are more flexible than in most other languages. They must contain a letter or an underscore somewhere in the name, but pretty much everything else is fair game. All of these are valid variable names:
@@ -57,8 +59,9 @@ An *unary* message has a name but no arguments. You can send an unary message to
 
 ### Operators
 
-One or more punctuation characters defines an *operator*. You can define whatever operators you like, but don't go too crazy. The goal here is not to make your code look like comic strip profanity:
+A series of one or more punctuation characters is an *operator*. You can define whatever operators you like, but don't go too crazy. The goal here is not to make your code look like comic strip profanity:
 
+    :::finch
     // valid punctuation characters
     + - ! @ # $ % ^ & * = < > / ? ~
 
@@ -74,24 +77,27 @@ The above expression means "send a `+` message to `a`, passing in `b` as an argu
 
 Because of this, all operators have the same precedence and associativity (left to right). This is unlike most other languages with hard-coded precedence levels. Parentheses are your friends here.
 
+    :::finch
     1 + 2 * 3   // evaluates to 9 in Finch
     1 + (2 * 3) // evaluates to 7
 
 Because there are no built-in operators, there are no unary operators in Finch. Instead, it uses unary message for what would be an unary operator in another language:
 
-    // C/JS/etc.  Finch
-    -value        value neg
-    !condition    condition not
+    :::finch
+    // Finch            C/JS/etc.
+    value neg        // -value
+    condition not    // !condition
 
 ### Keyword Messages
 
-We've covered messages that take zero arguments (unary) and one (operators). To pass more than one argument, you use *keyword messages*. A keyword is a name followed by a colon (`:`), or just a colon by itself. A keyword message is formed by alternating keywords and arguments. An example will help here:
+We've covered messages that take zero arguments (unary) and one (operators). To pass more than one argument, you use *keyword messages*. A single *keyword* is a name terminated by a colon (`:`), or just a colon by itself. A keyword *message* is formed by alternating keywords and arguments. An example will help here:
 
     :::finch
     dictionary add-key: "some key" value: "the value"
 
 This sends the `add-key:value:` message to the `dictionary` object, passing in "some key" and "the value" as arguments. You can chain as many keywords as you want in a single message (within reason):
 
+    :::finch
     chef cook-soup: tomato appetizer: calimari entree: veal dessert: cake
 
 That sends a *single* `cook-soup:appetizer:entree:dessert:` message to `chef` with four arguments.
@@ -108,12 +114,12 @@ Most of Finch's control flow operations like `if:then:` and `while:do` are defin
 
 ## Sequences
 
-Multiple expressions can be sequenced together into a single expression by separating them with commas.
+Multiple expressions can be *sequenced* together into a single expression by separating them with commas.
 
     :::finch
     write: "hi", write: "bye"
 
-This code forms a single expression that writes "hi" and then "bye". A sequence just evaluates each of its expressions in order, and returns the result of the last one.
+This code forms a single expression that writes "hi" and then "bye". When executed, a sequence evaluates each of its expressions in order, and then returns the result of the last one.
 
 To make things a little cleaner, Finch also treats newlines as commas in places where that makes sense. In other words, we could write the above just as:
 
@@ -128,6 +134,23 @@ This doesn't mean *all* newlines will be treated as commas. If the end of a line
       2
 
 Since a `+` can't end an expression, the newline after is ignored and it continues onto the next line.
+
+## Cascades
+
+Sometimes you want to send a series of messages to the same object. To avoid making you repeat the receiver over and over, you can *cascade* messages by separating them with semicolons (`;`). Instead of doing:
+
+    :::finch
+    file write: "A line"
+    file << "Another line"
+    file write: "A third"
+    file close
+
+You can instead do:
+
+    :::finch
+    file write: "A line" ; << "Another line" ; "A third" ; close
+
+This style is emulated in other languages using [fluent interfaces](http://www.martinfowler.com/bliki/FluentInterface.html). In Finch, any object can be cascaded.
 
 ## Blocks
 
@@ -218,7 +241,7 @@ One way you can think of this is that short assignment always means "declare a n
 
 ## Arrays
 
-Finch has built-in support for resizable arrays. Most of the things you can do with arrays use normal message syntax, but there's also a little special sauce for creating arrays. If you surround a series of expressions with square brackets, it creates an array with an element for the value of each expression. Elements are separated with newlines or semi-colons like in a regular sequence. Enough talk:
+Finch has built-in support for resizable arrays. Most of the things you can do with arrays use normal message syntax, but there's also a little special sauce for creating arrays. If you surround a series of expressions with square brackets, it creates an array with an element for the value of each expression. Elements are separated with commas (or newlines) like a normal sequence. Enough talk:
 
     :::finch
     []             // creates an empty array
@@ -299,9 +322,9 @@ Is exactly the same as doing:
       band { _band }
     )
 
-## Combining Expressions: Precedence and Associativity
+## Precedence and Associativity
 
-OK, so we've got the building blocks. Now let's talk about how they interact. The two keys parts are precedence and associativity. Precedence determines which expression binds "tighter" when different expression types are mixed together. From lowest (loosest) to highest, we have: binds, sequences, assignment, keyword messages, operators, then unary messages. For example, given an expression like this:
+OK, so we've got the building blocks. Now let's talk about how they interact. The two keys parts are precedence and associativity. Precedence determines which expressions bind "tighter" when different expression types are mixed together. From lowest (loosest) to highest, we have: binds, sequences, assignment, keyword messages, operators, then unary messages. For example, given an expression like this:
 
     :::finch
     a <- 8 + 2 neg mod: 4 - 2
@@ -310,7 +333,7 @@ OK, so we've got the building blocks. Now let's talk about how they interact. Th
 Finch will parse that like this:
 
     :::finch
-    ((a <- ((8 + (2 neg)) mod: (4 - 2))); (write: a))
+    ((a <- ((8 + (2 neg)) mod: (4 - 2))), (write: a))
 
 Associativity controls how a series of the same type of expression is interpreted. Unary and operator messages associate to the left. A series of keywords will be parsed into a single keyword. Assignment is right-associative. Or, by example:
 

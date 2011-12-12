@@ -16,10 +16,10 @@ class FinchLexer(RegexLexer):
 
             # reserved words
             (r'(self|undefined)', Name.Builtin),
-            (r'(\<\-\-|\<\-|\.|;)', Operator),
+            (r'(\<\-\-|\<\-|\.|,|;)', Operator),
 
             # built-in operators and punctuation
-            (r'[,()\\\[\]{}]', Punctuation),
+            (r'[()\\\[\]{}]', Punctuation),
 
             # comments
             (r'//.*?\n', Comment.Single),

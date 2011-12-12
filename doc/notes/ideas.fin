@@ -1,6 +1,6 @@
 // some things contain a list of definitions (object literal and multibind) and
-// some things contain a sequence of expressions (list; block; etc.). it would be
-// good if each of those used the same basic grouping character so that; for
+// some things contain a sequence of expressions (list; block; etc.). it would
+// be good if each of those used the same basic grouping character so that; for
 // example curlies always means definitions inside.
 
 // what we need to group:
@@ -14,6 +14,7 @@
 // stuff to keep in mind:
 // - zero-argument blocks are very common; so should be lightweight
 // - most objects don't seem to have an explicit parent
+// - something involving parens seems to look best for objects
 
 ( ... )
 { ... }
@@ -27,8 +28,8 @@
 (| ... |)
 [| ... |]
 {| ... |}
-< ... >
-<|a b| ... >
+< ... >        // end of this is ambiguous: < a b > c
+<|a b| ... >   // end of this is ambiguous: < a b > c
 (: ... :)
 [: ... :]
 {: ... :}
@@ -37,91 +38,52 @@ map( ... )
 o( ... )
 
 // current:
-
 // block (args)
 {|arg| ... }
 { ... }
-
 // object (parent)
 (|parent| ... )
 (|| ... )
-
 // multibind
 existing :: ( ... )
-
 // list
 [1, 2, 3]
 []
-
 // map
 // n/a
 
 
 
 // idea 1:
-
 // block (args)
 {|arg| ... }
 { ... }
-
-// object (parent)
-[(parent) ... ]
-[ ... ]
-
-// multibind
-existing :: ( ... )
-
-// list
-[|1, 2, 3|]
-[||]
-
-// map
-[|"a" -> 1, "b" -> 2|]
-
-
-
-// idea 2:
-
-// block (args)
-{|arg| ... }
-{ ... }
-
 // object (parent)
 [|parent| ... ]
 [ ... ]
-
 // multibind
 existing :: ( ... )
-
 // list
-<1, 2, 3>
-< >
-
+(|1, 2, 3|)
+(||)
 // map
-<|"a": 1, "b": 2|>
-
+(|"a" -> 1, "b" -> 2|)
 
 
 // idea 2:
-
 // block (args)
 |arg| { ... }
 { ... }
-
 // object (parent)
 parent <: ( ... )
 (: ... :)
-
 // multibind
 existing :: ( ... )
-
 // list
 <1, 2, 3>
 < >
-
 // map
 <|"a": 1, "b": 2|>
-
 
 
 // kinds of object literals:
@@ -146,3 +108,24 @@ Point3D <- (|Point2D|
 Point3Ds <- (|Point2Ds|
   z { _z }
 )
+
+
+// discarded ideas:
+
+// idea 2:
+// block (args)
+{|arg| ... }
+{ ... }
+// object (parent)
+[|parent| ... ]
+[ ... ]
+// multibind
+existing :: ( ... )
+// list
+<1, 2, 3>
+< >
+// map
+<|"a": 1, "b": 2|>
+// no: '>' is ambiguous at end of list
+
+
