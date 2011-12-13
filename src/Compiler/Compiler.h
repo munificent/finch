@@ -2,6 +2,7 @@
 
 #include <iostream>
 
+#include "Array.h"
 #include "CodeBlock.h"
 #include "Expr.h"
 #include "Macros.h"
@@ -16,6 +17,8 @@ namespace Finch
     class Environment;
 
     // Compiles an expression AST to bytecode for execution by the interpreter.
+    // Each instance of this is used to compile a single block. It keeps track
+    // of the parent compiler which is its lexically-enclosing block.
     class Compiler : private IExprVisitor
     {
     public:
@@ -26,20 +29,7 @@ namespace Finch
                                               const Expr & expr);
 
     private:
-        struct Method
-        {
-            Method(int id)
-            :   id(id),
-                hasReturn(false) {}
-            
-            int id;
-            bool hasReturn;
-        };
-        
-        static void Compile(Environment & environment, const Expr & expr,
-                            CodeBlock & code, Method & method);
-
-        Compiler(Environment & environment, Method & method, CodeBlock & code);
+        Compiler(Environment & environment, Compiler * parent);
 
         virtual ~Compiler() {}
 
@@ -58,16 +48,25 @@ namespace Finch
         virtual void Visit(const UndefineExpr & expr);
         virtual void Visit(const VarExpr & expr);
 
-        void CompileBlock(const BlockExpr & expr);
-        void CompileMethod(const BlockExpr & expr, int methodId);
+        // Compiles the given block with this compiler.
+        void Compile(const Array<String> & params, const Expr & body, int methodId);
+        
+        // Compiles the given block or method contained within this compiler's
+        // lexical scope.
+        void CompileBlock(const BlockExpr & expr, int methodId);
         void CompileDefinitions(const DefineExpr & expr);
 
+        Compiler * GetEnclosingMethod();
+        int GetEnclosingMethodId();
+        void SetHasReturn();
+        
         static int sNextMethodId;
 
+        Compiler * mParent;
         Environment & mEnvironment;
-        Method & mMethod;
-        CodeBlock & mCode;
-
+        Ref<CodeBlock> mCode;
+        bool mHasReturn;
+        
         NO_COPY(Compiler);
     };
 }

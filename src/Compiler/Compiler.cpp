@@ -23,24 +23,17 @@ namespace Finch
     
     Ref<CodeBlock> Compiler::CompileTopLevel(Environment & environment, const Expr & expr)
     {
-        Method method = Method(0);
-        Ref<CodeBlock> code = Ref<CodeBlock>(new CodeBlock(Array<String>(), 0));
-        Compile(environment, expr, *code, method);
-        return code;
+        Compiler compiler = Compiler(environment, NULL);
+        compiler.Compile(Array<String>(), expr, 0);
+        
+        return compiler.mCode;
     }
     
-    void Compiler::Compile(Environment & environment, const Expr & expr,
-                           CodeBlock & code, Method & method)
-    {
-        Compiler compiler = Compiler(environment, method, code);
-        expr.Accept(compiler);
-        code.Write(OP_END_BLOCK);
-    }
-    
-    Compiler::Compiler(Environment & environment, Method & method, CodeBlock & code)
+    Compiler::Compiler(Environment & environment, Compiler * parent)
     :   mEnvironment(environment),
-        mMethod(method),
-        mCode(code)
+        mCode(),
+        mParent(parent),
+        mHasReturn(false)
     {
     }
 
@@ -53,7 +46,7 @@ namespace Finch
         }
 
         // pop them into an array object
-        mCode.Write(OP_CREATE_ARRAY, expr.Elements().Count());
+        mCode->Write(OP_CREATE_ARRAY, expr.Elements().Count());
     }
 
     void Compiler::Visit(const BindExpr & expr)
@@ -66,7 +59,7 @@ namespace Finch
 
     void Compiler::Visit(const BlockExpr & expr)
     {
-        CompileBlock(expr);
+        CompileBlock(expr, 0);
     }
     
     void Compiler::Visit(const MessageExpr & expr)
@@ -83,7 +76,7 @@ namespace Finch
             // the next send.
             if (i < messageCount - 1)
             {
-                mCode.Write(OP_DUP);
+                mCode->Write(OP_DUP);
             }
 
             const MessageSend & message = expr.Messages()[i];
@@ -97,13 +90,13 @@ namespace Finch
             // compile the message send
             int id = mEnvironment.Strings().Add(message.GetName());
             OpCode op = static_cast<OpCode>(OP_MESSAGE_0 + message.GetArguments().Count());
-            mCode.Write(op, id);
+            mCode->Write(op, id);
 
             // if we're cascading and have another send coming, discard the
             // return of this message.
             if (i < messageCount - 1)
             {
-                mCode.Write(OP_POP);
+                mCode->Write(OP_POP);
             }
         }
     }
@@ -113,23 +106,23 @@ namespace Finch
         int id = mEnvironment.Strings().Add(expr.Name());
         if (Expr::IsField(expr.Name()))
         {
-            mCode.Write(OP_LOAD_FIELD, id);
+            mCode->Write(OP_LOAD_FIELD, id);
         }
         else
         {
-            mCode.Write(OP_LOAD_LOCAL, id);
+            mCode->Write(OP_LOAD_LOCAL, id);
         }
     }
 
     void Compiler::Visit(const NumberExpr & expr)
     {
-        mCode.Write(OP_NUMBER_LITERAL, expr.Value());
+        mCode->Write(OP_NUMBER_LITERAL, expr.Value());
     }
 
     void Compiler::Visit(const ObjectExpr & expr)
     {
         expr.Parent()->Accept(*this);
-        mCode.Write(OP_MAKE_OBJECT);
+        mCode->Write(OP_MAKE_OBJECT);
         CompileDefinitions(expr);
     }
 
@@ -137,16 +130,16 @@ namespace Finch
     {
         expr.Result()->Accept(*this);
         if (expr.IsReturn()) {
-            mCode.Write(OP_RETURN, mMethod.id);
-            mMethod.hasReturn = true;
+            mCode->Write(OP_RETURN, GetEnclosingMethodId());
+            SetHasReturn();
         } else {
-            mCode.Write(OP_END_BLOCK);
+            mCode->Write(OP_END_BLOCK);
         }
     }
 
     void Compiler::Visit(const SelfExpr & expr)
     {
-        mCode.Write(OP_LOAD_SELF);
+        mCode->Write(OP_LOAD_SELF);
     }
 
     void Compiler::Visit(const SequenceExpr & expr)
@@ -156,7 +149,7 @@ namespace Finch
             expr.Expressions()[i]->Accept(*this);
 
             // discard all but the last expression's return value
-            if (i < expr.Expressions().Count() - 1) mCode.Write(OP_POP);
+            if (i < expr.Expressions().Count() - 1) mCode->Write(OP_POP);
         }
     }
 
@@ -167,11 +160,11 @@ namespace Finch
         int id = mEnvironment.Strings().Add(expr.Name());
         if (Expr::IsField(expr.Name()))
         {
-            mCode.Write(OP_SET_FIELD, id);
+            mCode->Write(OP_SET_FIELD, id);
         }
         else
         {
-            mCode.Write(OP_SET_LOCAL, id);
+            mCode->Write(OP_SET_LOCAL, id);
         }
     }
 
@@ -179,7 +172,7 @@ namespace Finch
     {
         // push string
         int id = mEnvironment.Strings().Add(expr.Value());
-        mCode.Write(OP_STRING_LITERAL, id);
+        mCode->Write(OP_STRING_LITERAL, id);
     }
 
     void Compiler::Visit(const UndefineExpr & expr)
@@ -187,61 +180,51 @@ namespace Finch
         int id = mEnvironment.Strings().Add(expr.Name());
         if (Expr::IsField(expr.Name()))
         {
-            mCode.Write(OP_UNDEF_FIELD, id);
+            mCode->Write(OP_UNDEF_FIELD, id);
         }
         else
         {
-            mCode.Write(OP_UNDEF_LOCAL, id);
+            mCode->Write(OP_UNDEF_LOCAL, id);
         }
     }
 
     void Compiler::Visit(const VarExpr & expr)
     {
         expr.Value()->Accept(*this);
-
+        
         int id = mEnvironment.Strings().Add(expr.Name());
         if (Expr::IsField(expr.Name()))
         {
-            mCode.Write(OP_DEF_FIELD, id);
+            mCode->Write(OP_DEF_FIELD, id);
         }
         else
         {
-            mCode.Write(OP_DEF_LOCAL, id);
+            mCode->Write(OP_DEF_LOCAL, id);
         }
     }
     
-    void Compiler::CompileBlock(const BlockExpr & expr)
+    void Compiler::Compile(const Array<String> & params, const Expr & body, int methodId)
     {
-        Ref<CodeBlock> code = Ref<CodeBlock>(
-            new CodeBlock(expr.Params(), 0));
-        
-        Compiler::Compile(mEnvironment, *expr.Body(), *code, mMethod);
-        
-        code->MarkTailCalls();
-        
-        int id = mEnvironment.Blocks().Add(code);
-        mCode.Write(OP_BLOCK_LITERAL, id);
+        mCode = Ref<CodeBlock>(new CodeBlock(params, methodId));
+        body.Accept(*this);
+        mCode->Write(OP_END_BLOCK);
     }
-    
-    void Compiler::CompileMethod(const BlockExpr & expr, int methodId)
+
+    void Compiler::CompileBlock(const BlockExpr & expr, int methodId)
     {
-        Method method = Method(methodId);
-        
-        Ref<CodeBlock> code = Ref<CodeBlock>(
-            new CodeBlock(expr.Params(), methodId));
-        
-        Compiler::Compile(mEnvironment, *expr.Body(), *code, method);
+        Compiler compiler = Compiler(mEnvironment, this);
+        compiler.Compile(expr.Params(), *expr.Body(), methodId);
         
         // if the method contains any non-local returns, we can't eliminate it
         // on a tail call because it needs to stay on the stack so the
         // non-local return can find it when unwinding.
-        if (!method.hasReturn)
+        if ((methodId == 0) || !compiler.mHasReturn)
         {
-            code->MarkTailCalls();
+            compiler.mCode->MarkTailCalls();
         }
         
-        int id = mEnvironment.Blocks().Add(code);
-        mCode.Write(OP_BLOCK_LITERAL, id);
+        int id = mEnvironment.Blocks().Add(compiler.mCode);
+        mCode->Write(OP_BLOCK_LITERAL, id);
     }
     
     void Compiler::CompileDefinitions(const DefineExpr & expr)
@@ -254,7 +237,7 @@ namespace Finch
             // definition to use so that the first copy is still there for
             // the next one. after all of the definitions are done, the object
             // will remain on the stack, to be the final result value.
-            mCode.Write(OP_DUP);
+            mCode->Write(OP_DUP);
 
             const Definition & definition = expr.Definitions()[i];
             int id = mEnvironment.Strings().Add(definition.GetName());
@@ -263,15 +246,44 @@ namespace Finch
                 BlockExpr & body = static_cast<BlockExpr &>(
                     *definition.GetBody());
                 // create a unique id for the method
-                CompileMethod(body, sNextMethodId++);
-                mCode.Write(OP_BIND_METHOD, id);
+                CompileBlock(body, sNextMethodId++);
+                mCode->Write(OP_BIND_METHOD, id);
             }
             else
             {
                 // compile the body
                 definition.GetBody()->Accept(*this);
-                mCode.Write(OP_BIND_OBJECT, id);
+                mCode->Write(OP_BIND_OBJECT, id);
             }
+        }
+    }
+    
+    Compiler * Compiler::GetEnclosingMethod()
+    {
+        Compiler * compiler = this;
+        while ((compiler != NULL) && (compiler->mCode->MethodId() == 0))
+        {
+            compiler = compiler->mParent;
+        }
+        
+        return compiler;
+    }
+    
+    int Compiler::GetEnclosingMethodId()
+    {
+        Compiler * compiler = GetEnclosingMethod();
+        if (compiler == NULL) return 0;
+
+        return compiler->mCode->MethodId();
+    }
+
+    void Compiler::SetHasReturn()
+    {
+        Compiler * compiler = GetEnclosingMethod();
+        
+        if (compiler != NULL)
+        {
+            compiler->mHasReturn = true;
         }
     }
 }

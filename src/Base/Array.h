@@ -60,6 +60,16 @@ namespace Finch
         // Gets whether or not the array is empty.
         bool IsEmpty() const { return mCount == 0; }
         
+        // Gets the index of the given item in the array or -1 if not found.
+        int IndexOf(const T & other) const
+        {
+            for (int i = 0; i < mCount; i++)
+            {
+                if (mItems[i] == other) return i;
+            }
+            return -1;
+        }
+        
         // Gets the maximum number of array the stack can hold before a
         // reallocation will occur.
         int Capacity() const { return mCapacity; }
