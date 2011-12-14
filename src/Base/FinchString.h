@@ -20,7 +20,7 @@ namespace Finch
         
         String(const char* chars);
 
-        String(char c);
+        explicit String(char c);
 
         String(const String & other)
         :   mData(other.mData)
@@ -40,6 +40,8 @@ namespace Finch
         // Concatenation operators.
         String       operator + (const String & other) const;
         String &     operator +=(const String & other);
+        String       operator + (char other) const;
+        String &     operator +=(char other);
         
         // Gets the raw character array for the string. Returns a reference to
         // a zero-length string, not NULL, if the string is empty.

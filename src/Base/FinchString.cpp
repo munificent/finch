@@ -98,7 +98,18 @@ namespace Finch
         *this = *this + other;
         return *this;
     }
-
+    
+    String String::operator +(char other) const
+    {
+        return String(*this, String(other));
+    }
+    
+    String & String::operator +=(char other)
+    {
+        *this = *this + String(other);
+        return *this;
+    }
+    
     const char* String::CString() const
     {
         if (mData.IsNull()) return sEmptyString;

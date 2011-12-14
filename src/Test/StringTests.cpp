@@ -26,7 +26,7 @@ namespace Finch
     
     void StringTests::TestFromChar()
     {
-        String a = 'b';
+        String a = String('b');
         EXPECT_EQUAL("b", a);
     }
     
