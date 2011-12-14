@@ -57,7 +57,7 @@ class FinchLexer(RegexLexer):
         ],
         'arglist': [
             (r'\|', Keyword.Declaration, '#pop'),
-            (r'[a-z][a-zA-Z_0-9`~!@#$%^&*\-=+\/?<>]*', Name.Variable), # variable name
+            (r'[a-zA-Z_0-9`~!@#$%^&*\-=+\/?<>]+', Name.Variable), # variable name
             (r'\s+', Whitespace), # everything else
         ],
     }

@@ -41,7 +41,7 @@ Much like unary, operator and keyword *messages*, object literals let you define
 
       // keyword
       greet: who and: who-else {
-        write-line: "Hi, " + who " and " + whoe-else
+        write-line: "Hi, " + who " and " + who-else
       }
     )
 
@@ -168,7 +168,7 @@ A class in other languages generally defines two things: a set of behavior that 
 
 In Finch, we define those as two separate objects. We call the former the "prototype" and the latter the "type object". The prototype's job is to be the parent that all instances of this type inherit from. That way, they all share the prototype's methods and behave the same.
 
-The type object's just is to contain the "static" methods that are relevant to the type but not any particular instance of it. Constructors are the most important part of this.
+The type object's job is to contain the "static" methods that are relevant to the type itself but not any particular instance of it. Constructors are the most important part of this.
 
 The convention in Finch is that the type object is named using a singular PascalCased noun, and the prototype is plural.
 
@@ -186,7 +186,7 @@ The convention in Finch is that the type object is named using a singular Pascal
 
 Here we're defining a two-dimensional point type. The `Point` object represents the type itself. It's one contribution is to define a constructor method that creates a new point instance. That method just returns an object literal with some state initialized and its parent correctly wired up to `Points`.
 
-`Points`, in turn, is the prototype. It has the methods that all points support. Here it's just accessors for the coordinates, a little `+` operator so you can do vector math, and a `toString` so it can display itself. We can use these like so:
+`Points`, in turn, is the prototype. It has the methods that all points support. Here it's just accessors for the coordinates, a little `+` operator so you can do vector math, and a `to-string` method so it can display itself. We can use these like so:
 
     :::finch
     a <- Point new-x: 2 y: 3
