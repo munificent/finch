@@ -75,4 +75,28 @@ Test suite: "Arrays" is: {
     Test that: (a at: 2) equals: 3
     Test that: (a at: 3) equals: 4
   }
+
+  Test test: "remove-at:" is: {
+    a <- [1, 2, 3, 4]
+    b <- a remove-at: 2
+
+    Test that: a count equals: 3
+    Test that: (a at: 0) equals: 1
+    Test that: (a at: 1) equals: 2
+    Test that: (a at: 2) equals: 4
+
+    Test that: b equals: 3
+  }
+
+  Test test: "remove-at: negative index" is: {
+    a <- [1, 2, 3, 4]
+    b <- a remove-at: -3
+
+    Test that: a count equals: 3
+    Test that: (a at: 0) equals: 1
+    Test that: (a at: 1) equals: 3
+    Test that: (a at: 2) equals: 4
+
+    Test that: b equals: 2
+  }
 }

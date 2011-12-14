@@ -58,5 +58,17 @@ namespace Finch
 
         fiber.Push(self);
     }
+    
+    PRIMITIVE(ArrayRemoveAt)
+    {
+        ArrayObject * array = self->AsArray();
+        ASSERT_NOT_NULL(array);
+        
+        int index = static_cast<int>(args[0]->AsNumber());
+        
+        // TODO(bob): Bounds check.
+        fiber.Push(array->Elements()[index]);
+        array->Elements().Remove(index);
+    }
 }
 

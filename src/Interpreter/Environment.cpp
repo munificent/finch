@@ -35,6 +35,7 @@ namespace Finch
         arrayObj->AddPrimitive("add:",        ArrayAdd);
         arrayObj->AddPrimitive("at:",         ArrayAt);
         arrayObj->AddPrimitive("at:put:",     ArrayAtPut);
+        arrayObj->AddPrimitive("remove-at:",  ArrayRemoveAt);
 
         // define Blocks prototype
         mBlockPrototype = MakeGlobal("Blocks");

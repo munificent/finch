@@ -12,5 +12,6 @@ namespace Finch
     PRIMITIVE(ArrayAdd);
     PRIMITIVE(ArrayAt);
     PRIMITIVE(ArrayAtPut);
+    PRIMITIVE(ArrayRemoveAt);
 }
 
