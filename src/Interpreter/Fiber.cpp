@@ -68,7 +68,7 @@ namespace Finch
 
                         const CodeBlock & code = mEnvironment.Blocks().Find(instruction.arg.id);
                         Ref<Object> block = Object::NewBlock(mEnvironment, code,
-                                closure, mCallStack.Peek().receiver);
+                                closure, Self());
 
                         PushOperand(block);
                     }
