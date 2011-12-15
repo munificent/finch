@@ -62,7 +62,7 @@ namespace Finch
                     }
 
                     // Just a ":" by itself.
-                    return Token(TOKEN_KEYWORD);
+                    return Token(TOKEN_KEYWORD, ":");
                 
                 case '-':
                     Advance();
