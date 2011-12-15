@@ -118,11 +118,11 @@ namespace Finch
     
     Ref<Expr> FinchParser::Bind()
     {
-        PARSE_RULE(target, Assignment());
+        PARSE_RULE(expr, Assignment());
         
-        if (Match(TOKEN_BIND))
+        while (Match(TOKEN_BIND))
         {
-            Ref<Expr> expr = Ref<Expr>(new BindExpr(target));
+            expr = Ref<Expr>(new BindExpr(expr));
 
             if (Match(TOKEN_LEFT_PAREN))
             {
@@ -134,11 +134,9 @@ namespace Finch
                 // single bind
                 PARSE_RULE(dummy, ParseDefine(expr));
             }
-
-            return expr;
         }
         
-        return target;
+        return expr;
     }
     
     Ref<Expr> FinchParser::Assignment()
@@ -310,7 +308,10 @@ namespace Finch
         else if (Match(TOKEN_BREAK))
         {
             Ref<Expr> result;
-            if (LookAhead(TOKEN_LINE)) {
+            if (LookAhead(TOKEN_LINE) ||
+                LookAhead(TOKEN_RIGHT_PAREN) ||
+                LookAhead(TOKEN_RIGHT_BRACE) ||
+                LookAhead(TOKEN_RIGHT_BRACKET)) {
                 // No return value so implicitly return Nil.
                 result = Ref<Expr>(new NameExpr("Nil"));
             } else {
@@ -321,7 +322,10 @@ namespace Finch
         else if (Match(TOKEN_RETURN))
         {
             Ref<Expr> result;
-            if (LookAhead(TOKEN_LINE)) {
+            if (LookAhead(TOKEN_LINE) ||
+                LookAhead(TOKEN_RIGHT_PAREN) ||
+                LookAhead(TOKEN_RIGHT_BRACE) ||
+                LookAhead(TOKEN_RIGHT_BRACKET)) {
                 // No return value so implicitly return Nil.
                 result = Ref<Expr>(new NameExpr("Nil"));
             } else {
