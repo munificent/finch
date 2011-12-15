@@ -211,6 +211,7 @@ namespace Finch
                     case 'n': text += "\n"; break;
                     case '"': text += "\""; break;
                     case '\\': text += "\\"; break;
+                    case 't': text += "\t"; break;
                     default:
                         return Token(TOKEN_ERROR, String::Format(
                                 "Unrecognized escape sequence \"%c\".", e));

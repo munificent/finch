@@ -4,6 +4,8 @@ Object :: (
 
   != right { (self = right) not }
 
+  && right { self if-true: { right } else: { self } }
+
   // Any non-true object is implicitly "false", so sending "not" to it
   // returns true.
   not { true }
