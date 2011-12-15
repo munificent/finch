@@ -322,6 +322,7 @@ files <- [
   "../../test/variables.fin"
 ]
 
+/*
 tokens <- 0
 errors <- 0
 lines <- 0
@@ -341,3 +342,4 @@ files each: {|file|
 }
 
 write-line: tokens + " tokens with " + errors + " errors in " + lines + " lines"
+*/

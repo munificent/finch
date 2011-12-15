@@ -1,0 +1,281 @@
+// TODO(bob): Really need to fix relative path loading.
+load: "../../lib/lexer.fin"
+load: "../../lib/ast.fin"
+
+Parser <- (||
+  new-tokens: tokens {
+    (|self traits|) init-tokens: tokens ; yourself
+  }
+
+  traits <- (||
+    init-tokens: tokens {
+      _tokens <- tokens
+      _read <- []
+    }
+
+    look-ahead: type {
+      self fill-look-ahead: 1
+      (_read at: 0) type = type
+    }
+
+    look-ahead: type1 : type2 {
+      self fill-look-ahead: 2
+      (_read at: 0) type = type1 and: {
+        (_read at: 1) type = type2
+      }
+    }
+
+    look-ahead: type1 : type2 : type3 {
+      self fill-look-ahead: 3
+      (_read at: 0) type = type1 and: {
+        (_read at: 2) type = type2 and: {
+          (_read at: 3) type = type3
+        }
+      }
+    }
+
+    match: type {
+      if: (self look-ahead: type) then: {
+        self consume
+        true
+      } else: {
+        false
+      }
+    }
+
+    // If the next token matches the given type, calls the block.
+    match: type then: then else: else {
+      if: (self look-ahead: type) then: {
+        then call: self consume
+      } else: else
+    }
+
+    // If the next token matches the given type, calls the block.
+    match: type then: block {
+      if: (self look-ahead: type) then: {
+        block call: self consume
+      }
+    }
+
+    // If the next token matches the given type, calls the block.
+    match: type1 : type2 then: block {
+      if: (self look-ahead: type1 : type2) then: {
+        block call: self consume : self consume
+      }
+    }
+
+    while-match: type do: block {
+      if: (self look-ahead: type) then: {
+        block call: self consume
+        self while-match: type do: block
+      }
+    }
+
+    current {
+      _read at: 0
+    }
+
+    consume {
+      self fill-look-ahead: 1
+      _read remove-at: 0
+    }
+
+    consume: type error: error {
+      // TODO: Should unwind or something!
+      if: (self look-ahead: type) then: {
+        self consume
+      } else: {
+        write-line: error
+        write-line: "Got " + self current
+
+        // TODO: Hack! Consume it anyway and continue for now.
+        self consume
+      }
+    }
+
+    consume: type {
+      self consume: type error: "Expect token " + type
+    }
+
+    fill-look-ahead: count {
+      while: { _read count < count } do: {
+        _read add: _tokens next-token
+      }
+    }
+  )
+)
+
+FinchParser <- (|Parser|
+  // TODO: Should be able to use 'super traits' here but before that works the
+  // expressions used to create fields need to be evaluated in the context of
+  // the enclosing object (i.e. self needs to be bound to the enclosing object).
+  traits <- (|Parser traits|
+    parse {
+      self expression
+    }
+
+    expression {
+      self sequence
+    }
+
+    sequence {
+      exprs <- self parse-sequence
+
+      // If there's just one, don't wrap it.
+      if: exprs count = 1 then: {
+        return exprs at: 0
+      }
+
+      Expr sequence: exprs
+    }
+
+    bind {
+      expr <- self assignment
+      self while-match: Token/Bind do: {
+        defines <- []
+        if: (self look-ahead: Token/LeftParen) then: {
+          defines <-- self parse-defines
+        } else: {
+          defines <-- [self parse-define]
+        }
+
+        expr <-- Expr bind-receiver: expr defines: defines
+      }
+      expr
+    }
+
+    assignment {
+      self cascade
+    }
+
+    cascade {
+      self keyword
+    }
+
+    keyword {
+      self operator
+    }
+
+    operator {
+      expr <- self unary
+      self while-match: Token/Operator do: {|operator|
+        right <- self unary
+        expr <-- Expr message-receiver: expr name: operator text args: [right]
+      }
+      expr
+    }
+
+    unary {
+      expr <- self primary
+      self while-match: Token/Name do: {|name|
+        expr <-- Expr message-receiver: expr name: name text args: []
+      }
+      expr
+    }
+
+    primary {
+      self match: Token/Number then: {|token|
+        return Expr number: token text
+      }
+
+      self match: Token/String then: {|token|
+        return Expr string: token text
+      }
+
+      self match: Token/Name then: {|token|
+        return Expr name: token text
+      }
+
+      self match: Token/LeftParen then: {
+        // TODO: Object literal.
+        expr <- self expression
+        self consume: Token/RightParen error: "Expect closing ')'."
+        return expr
+      }
+
+      write-line: "Could not parse " + self current type
+      self consume
+      nil
+    }
+
+    parse-sequence {
+      exprs <- [self bind]
+      self while-match: Token/Comma do: {
+        exprs add: self bind
+      }
+      exprs
+    }
+
+    parse-defines {
+      self consume: Token/LeftParen
+
+      defines <- []
+      loop: {
+        defines add: self parse-define
+
+        // TODO(bob): This is kinda nasty.
+        self match: Token/RightParen then: { return defines }
+        self consume: Token/Comma
+        self match: Token/RightParen then: { return defines }
+      }
+    }
+
+    parse-define {
+      self match: Token/Name : Token/Arrow then: {|name arrow|
+        // Field.
+        body <- self assignment
+        return Define name: name text body: body method?: false
+      }
+
+      self match: Token/Name then: {|name|
+        // Unary method.
+        body <- self parse-define-method: []
+        return Define name: name text body: body method?: true
+      }
+
+      self match: Token/Operator then: {|operator|
+        // Operator.
+        param <- (self consume: Token/Name) text
+
+        body <- self parse-define-method: [param]
+        return Define name: operator text body: body method?: true
+      }
+
+      if: (self look-ahead: Token/Keyword) then: {
+        name <- ""
+        params <- []
+
+        self while-match: Token/Keyword then: {|keyword|
+          name <-- name + keyword text
+          params add: (self consume: Token/Name) text
+        }
+
+        body <- self parse-define-method: params
+        return Define name: name body: body method?: true
+      }
+
+      // TODO(bob): Handle error.
+      write-line: "Unexpected token " + self current + " after bind."
+    }
+
+    parse-define-method: params {
+      // Parse the block.
+      self consume: Token/LeftBrace error: "Expect block body for method."
+      body <- self expression
+      self consume: Token/RightBrace error: "Expect '}' after method body."
+      Expr block-params: params body: body
+    }
+  )
+)
+
+files each: {|file|
+  write-line: file
+  source <- Io read-file: file
+  lexer <- Lexer new-path: file source: source
+  parser <- FinchParser new-tokens: lexer
+  loop: {
+    expr <- parser parse
+    if: expr = nil then: { break }
+    write-line: expr
+  }
+}

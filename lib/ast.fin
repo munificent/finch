@@ -1,0 +1,91 @@
+Expr <- (||)
+
+Expr :: (
+  bind-receiver: receiver defines: defines {
+    (|BindExprs| _receiver <- receiver, _defines <- defines )
+  }
+
+  block-params: params body: body {
+    (|BlockExprs| _params <- params, _body <- body )
+  }
+
+  message-receiver: receiver name: name args: args {
+    (|MessageExprs| _receiver <- receiver, _name <- name, _args <- args )
+  }
+
+  name: name { (|NameExprs| _name <- name ) }
+  number: value { (|NumberExprs| _value <- value ) }
+
+  object-parent: parent defines: defines {
+    (|ObjectExprs| _parent <- parent, _defines <- defines )
+  }
+
+  sequence: exprs { (|SequenceExprs| _exprs <- exprs ) }
+  string: value { (|StringExprs| _value <- value ) }
+)
+
+Exprs <- (||)
+
+DefineExprs <- (|Exprs|
+  defines { _defines }
+)
+
+BindExprs <- (|DefineExprs|
+  receiver { _receiver }
+  to-string {
+    _receiver to-string + " :: ( " + self defines + " )"
+  }
+)
+
+BlockExprs <- (|Exprs|
+  params { _params }
+  body { _body }
+)
+
+MessageExprs <- (|Exprs|
+  receiver { _receiver }
+  name { _name }
+  args { _args }
+  to-string {
+    "(" + _receiver to-string + " " + _name + _args + ")"
+  }
+)
+
+NameExprs <- (|Exprs|
+  name { _name }
+  to-string { _name }
+)
+
+NumberExprs <- (|Exprs|
+  value { _value }
+  to-string { _value to-string }
+)
+
+ObjectExprs <- (|DefineExprs|
+  parent { _parent }
+  to-string {
+    "(|" + _parent + "| " + self defines + " )"
+  }
+)
+
+SequenceExprs <- (|Exprs|
+  exprs { _exprs }
+  to-string { _exprs to-string }
+)
+
+StringExprs <- (|Exprs|
+  value { _value }
+  to-string { "\"" + _value + "\"" }
+)
+
+Define <- (||
+  name: name body: body method?: method? {
+    (|self traits| _name <- name, _body <- body, _method? <- method? )
+  }
+
+  traits <- (||
+    name { _name }
+    body { _body }
+    method? { _method? }
+  )
+)

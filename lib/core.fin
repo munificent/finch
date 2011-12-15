@@ -30,6 +30,8 @@ Object :: (
   call: a : b : c : d : e : f : g : h { self }
   call: a : b : c : d : e : f : g : h : i { self }
   call: a : b : c : d : e : f : g : h : i : j { self }
+
+  yourself { self }
 )
 
 true :: (
@@ -215,6 +217,15 @@ Arrays :: (
     self each: {|element| result add: (block call: element) }
     result
   }
+
+  to-string {
+    result <- "["
+    self each: {|e|
+      if: result != "[" then: { result <-- result + ", " }
+      result <-- result + e to-string
+    }
+    result + "]"
+  }
 )
 
 // Truthiness: only two things are true: the true object, and blocks that
@@ -298,4 +309,4 @@ Switches <- (||
 //write-line: "Base library loaded."
 
 // ###bob: temp; run tests
-load: "../../test/test.fin"
+//load: "../../test/test.fin"
