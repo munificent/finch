@@ -21,7 +21,16 @@ Expr :: (
   }
 
   sequence: exprs { (|SequenceExprs| _exprs <- exprs ) }
+
+  set-name: name value: value {
+    (|SetExprs| _name <- name, _value <- value )
+  }
+
   string: value { (|StringExprs| _value <- value ) }
+
+  var-name: name value: value {
+    (|VarExprs| _name <- name, _value <- value )
+  }
 )
 
 Exprs <- (||)
@@ -73,9 +82,19 @@ SequenceExprs <- (|Exprs|
   to-string { _exprs to-string }
 )
 
+SetExprs <- (|Exprs|
+  name { _name }
+  value { _value }
+)
+
 StringExprs <- (|Exprs|
   value { _value }
   to-string { "\"" + _value + "\"" }
+)
+
+VarExprs <- (|Exprs|
+  name { _name }
+  value { _value }
 )
 
 Define <- (||

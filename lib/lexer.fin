@@ -332,6 +332,15 @@ Lexers <- (||
   }
 
   make-token: type {
+    text <- (_source from: _start to: _pos)
+
+    if: text = "<-"        then: { type <-- Token/Arrow }
+    if: text = "<--"       then: { type <-- Token/LongArrow }
+    if: text = "self"      then: { type <-- Token/Self }
+    if: text = "undefined" then: { type <-- Token/Undefined }
+    if: text = "break"     then: { type <-- Token/Break }
+    if: text = "return"    then: { type <-- Token/Return }
+
     self make-token: type text: (_source from: _start to: _pos)
   }
 
