@@ -93,7 +93,7 @@ namespace Finch
                         array->Elements().Reverse();
 
                         // return the array
-                        Push(object);
+                        PushOperand(object);
                     }
                     break;
 
@@ -203,8 +203,8 @@ namespace Finch
                     {
                         // the stack has the target of the method and the body.
                         // the name is in the instruction.
-                        Ref<Object> body = mOperands.Pop();
-                        Ref<Object> target = mOperands.Pop();
+                        Ref<Object> body = PopOperand();
+                        Ref<Object> target = PopOperand();
                         String name = mEnvironment.Strings().Find(instruction.arg.id);
 
                         DynamicObject * object = target->AsDynamic();
@@ -222,8 +222,8 @@ namespace Finch
                         // the stack has the target of the object variable and
                         // the value.
                         // the name is in the instruction.
-                        Ref<Object> value = mOperands.Pop();
-                        Ref<Object> object = mOperands.Pop();
+                        Ref<Object> value = PopOperand();
+                        Ref<Object> object = PopOperand();
                         String name = mEnvironment.Strings().Find(instruction.arg.id);
 
                         object->ObjectScope()->Define(name, value);
@@ -235,7 +235,7 @@ namespace Finch
 
                 case OP_MAKE_OBJECT:
                     {
-                        Ref<Object> parent = mOperands.Pop();
+                        Ref<Object> parent = PopOperand();
                         PushOperand(Object::NewObject(parent));
                     }
                     break;
@@ -282,6 +282,11 @@ namespace Finch
                     {
                         int methodId = instruction.arg.id;
 
+                        // The return value is on top of the stack, but we may
+                        // need to discard some operands under it, so pull it
+                        // off.
+                        Ref<Object> result = PopOperand();
+                        
                         // find the enclosing method on the callstack
                         int frame;
                         for (frame = 0; frame < mCallStack.Count(); frame++) {
@@ -299,9 +304,21 @@ namespace Finch
 
                         // unwind until we reach the method
                         while (frame >= 0) {
+                            // Discard any leftover operands that this call
+                            // frame pushed.
+                            int numOperands = mCallStack.Peek().numOperands;
+                            while (mOperands.Count() > numOperands)
+                            {
+                                PopOperand();
+                            }
+                            
                             mCallStack.Pop();
                             frame--;
                         }
+                        
+                        // Restore the return value so that the code that called
+                        // this method can get it.
+                        PushOperand(result);
                     }
                     break;
 
@@ -378,7 +395,7 @@ namespace Finch
         }
 
         // push the call onto the stack
-        mCallStack.Push(CallFrame(scope, blockObj, self));
+        mCallStack.Push(CallFrame(scope, blockObj, self, mOperands.Count()));
     }
 
     void Fiber::CallBlock(Ref<Object> blockObj,
@@ -414,6 +431,8 @@ namespace Finch
         String string = mEnvironment.Strings().Find(message);
         Ref<Object> receiver = PopOperand();
 
+        //std::cout << "send '" << string << "' to " << receiver << std::endl;
+        
         receiver->Receive(receiver, *this, string, args);
     }
 
@@ -425,17 +444,12 @@ namespace Finch
     void Fiber::PushOperand(Ref<Object> object)
     {
         ASSERT(!object.IsNull(), "Cannot push a null object. (Should be Nil instead.)");
-
-        //std::cout << "push " << object << std::endl;
         mOperands.Push(object);
     }
 
     Ref<Object> Fiber::PopOperand()
     {
-        Ref<Object> object = mOperands.Pop();
-
-        //std::cout << "pop  " << object << std::endl;
-        return object;
+        return mOperands.Pop();
     }
 }
 

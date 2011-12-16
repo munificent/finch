@@ -73,18 +73,26 @@ namespace Finch
             // The current receiver.
             Ref<Object> receiver;
             
+            // The number of operands on the operand stack when this call frame
+            // was started. If we do a non-local return out of this frame, we
+            // use this to restore the stack to its proper size.
+            int numOperands;
+            
             CallFrame()
             :   address(0),
                 scope(),
                 block(),
-                receiver()
+                receiver(),
+                numOperands()
             {}
             
-            CallFrame(Ref<Scope> scope, Ref<Object> block, Ref<Object> receiver)
+            CallFrame(Ref<Scope> scope, Ref<Object> block, Ref<Object> receiver,
+                      int numOperands)
             :   address(0),
                 scope(scope),
                 block(block),
-                receiver(receiver)
+                receiver(receiver),
+                numOperands(numOperands)
             {}
             
             // Gets the code object for this frame.

@@ -219,15 +219,6 @@ Arrays :: (
     self each: {|element| result add: (block call: element) }
     result
   }
-
-  to-string {
-    result <- "["
-    self each: {|e|
-      if: result != "[" then: { result <-- result + ", " }
-      result <-- result + e to-string
-    }
-    result + "]"
-  }
 )
 
 // Truthiness: only two things are true: the true object, and blocks that
@@ -266,7 +257,7 @@ Object :: switch {
   outer-self <- self
   (|Switches|
     _value  <- outer-self
-    _done   <- false
+    _done?  <- false
     _result <- nil
   )
 }
