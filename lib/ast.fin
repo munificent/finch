@@ -1,6 +1,10 @@
 Expr <- (||)
 
 Expr :: (
+  array: elements {
+    (|ArrayExprs| _elements <- elements )
+  }
+
   bind-receiver: receiver defines: defines {
     (|BindExprs| _receiver <- receiver, _defines <- defines )
   }
@@ -36,6 +40,13 @@ Expr :: (
 )
 
 Exprs <- (||)
+
+ArrayExprs <- (|Exprs|
+  elements { _elements }
+  to-string {
+    _elements to-string
+  }
+)
 
 DefineExprs <- (|Exprs|
   defines { _defines }
@@ -79,7 +90,9 @@ ObjectExprs <- (|DefineExprs|
   }
 )
 
-SelfExprs <- (|Exprs|)
+SelfExprs <- (|Exprs|
+  to-string { "self" }
+)
 
 SequenceExprs <- (|Exprs|
   exprs { _exprs }
@@ -89,6 +102,7 @@ SequenceExprs <- (|Exprs|
 SetExprs <- (|Exprs|
   name { _name }
   value { _value }
+  to-string { _name + " <-- " + _value }
 )
 
 StringExprs <- (|Exprs|
@@ -99,6 +113,7 @@ StringExprs <- (|Exprs|
 VarExprs <- (|Exprs|
   name { _name }
   value { _value }
+  to-string { _name + " <- " + _value }
 )
 
 Define <- (||

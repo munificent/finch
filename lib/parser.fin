@@ -246,6 +246,20 @@ FinchParser <- (|Parser|
         return expr
       }
 
+      // Array.
+      self match: Token/LeftBracket then: {
+        elements <- nil
+        self match: Token/RightBracket then: {
+          // Allow empty arrays.
+          elements <-- []
+        } else: {
+          elements <-- self parse-sequence
+          self consume: Token/RightBracket
+        }
+
+        return Expr array: elements
+      }
+
       // Block.
       self match: Token/LeftBrace then: {
         // Parse the parameter list if present.
