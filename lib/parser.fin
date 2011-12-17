@@ -81,7 +81,7 @@ Parser <- (||
     consume {
       self fill-look-ahead: 1
       token <- _read remove-at: 0
-      write-line: "consume " + token
+      //write-line: "consume " + token
       token
     }
 
@@ -136,6 +136,7 @@ FinchParser <- (|Parser|
       self while-match: Token/Bind do: {
         defines <- []
         self if-look-ahead: Token/LeftParen then: {
+          self consume: Token/LeftParen
           defines <-- self parse-defines
         } else: {
           defines <-- [self parse-define]
@@ -212,8 +213,34 @@ FinchParser <- (|Parser|
         return Expr name: token text
       }
 
+      self match: Token/Self then: {|token|
+        return Expr self_
+      }
+
       self match: Token/LeftParen then: {
-        // TODO: Object literal.
+        self match: Token/Pipe then: {
+          // Object literal.
+          parent <- nil
+          self match: Token/Pipe then: {
+            // No explicit parent.
+            parent <-- nil
+          } else: {
+            parent <-- self assignment
+            self consume: Token/Pipe
+          }
+
+          defines <- nil
+          self match: Token/RightParen then: {
+            // No defines.
+            defines <-- []
+          } else: {
+            defines <-- self parse-defines
+          }
+
+          return Expr object-parent: parent defines: defines
+        }
+
+        // Just parentheses for grouping.
         expr <- self expression
         self consume: Token/RightParen error: "Expect closing ')'."
         return expr
@@ -247,7 +274,7 @@ FinchParser <- (|Parser|
         return Expr message-receiver: nil name: message args: args
       }
 
-      write-line: "Could not parse " + self current type
+      write-line: "Could not parse " + self current
       self consume
       nil
     }
@@ -255,14 +282,19 @@ FinchParser <- (|Parser|
     parse-sequence {
       exprs <- [self bind]
       self while-match: Token/Comma do: {
+        // There may be a trailing line after the last expression in a block.
+        // If we eat the line and then see a closing brace or eof, stop.
+        self if-look-ahead: Token/RightParen   then: { return exprs }
+        self if-look-ahead: Token/RightBracket then: { return exprs }
+        self if-look-ahead: Token/RightBrace   then: { return exprs }
+        self if-look-ahead: Token/Eof          then: { return exprs }
+
         exprs add: self bind
       }
       exprs
     }
 
     parse-defines {
-      self consume: Token/LeftParen
-
       defines <- []
       loop: {
         defines add: self parse-define

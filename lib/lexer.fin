@@ -41,16 +41,18 @@ Tokens <- (||
 
 SourceSpan <- (||
   new-file: file start: start end: end {
-    (|SourceSpans| _file <- file, _start <- start, _end <- end)
+    (|self proto| _file <- file, _start <- start, _end <- end)
   }
-)
 
-SourceSpans <- (||
-  file { _file }
-  start { _start }
-  end { _end }
+  proto <- (||
+    file { _file }
+    start { _start }
+    end { _end }
 
-  to-string { _file path + ":" + _start + ":" + _end }
+    to-string {
+      pos <- _file index-to-position: _start
+      _file path + ":" + pos line + "," + pos column }
+  )
 )
 
 SourceFile <- (||
@@ -62,6 +64,23 @@ SourceFile <- (||
 SourceFiles <- (||
   path { _path }
   source { _source }
+
+  // Given an index into the file, returns its line and column.
+  // TODO(bob): This is quite slow.
+  index-to-position: index {
+    line <- 1
+    column <- 1
+    from: 0 to: index - 1 do: {|i|
+      if: (_source at: i) = "\n" then: {
+        line <-- line + 1
+        column <-- 1
+      } else: {
+        column <-- column + 1
+      }
+    }
+
+    (|| line <- line, column <- column )
+  }
 )
 
 Strings :: (
@@ -73,8 +92,8 @@ Strings :: (
     "-+=/<>?~!,#$%^&*" contains: self
   }
 
-  alpha-or-operator? {
-    (self alpha?) or: { self operator? }
+  identifier? {
+    ((self alpha?) or: { self operator? }) or: { self digit? }
   }
 
   digit? {
@@ -211,6 +230,14 @@ Lexers <- (||
           return self make-token: Token/Keyword
         }
       } ;
+      case: c = "-" do: {
+        self advance
+        if: self current digit? then: {
+          return self read-number
+        } else: {
+          return self read-operator
+        }
+      } ;
       case: c whitespace? do: { self advance-while: {|c| c whitespace? } } ;
       case: c alpha?      do: { return self read-name } ;
       case: c operator?   do: { return self read-operator } ;
@@ -250,7 +277,7 @@ Lexers <- (||
   }
 
   read-name {
-    self advance-while: {|c| c alpha-or-operator? }
+    self advance-while: {|c| c identifier? }
 
     // See if it ends with a ":"
     type <- Token/Name
@@ -267,7 +294,7 @@ Lexers <- (||
     // encounters a letter.
     type <- Token/Operator
 
-    while: { self eof? not } and: { self current alpha-or-operator? } do: {
+    while: { self eof? not } and: { self current identifier? } do: {
       if: self current alpha? then: { type <-- Token/Name }
       self advance
     }

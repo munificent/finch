@@ -20,6 +20,8 @@ Expr :: (
     (|ObjectExprs| _parent <- parent, _defines <- defines )
   }
 
+  self_ { (|SelfExprs|) }
+
   sequence: exprs { (|SequenceExprs| _exprs <- exprs ) }
 
   set-name: name value: value {
@@ -76,6 +78,8 @@ ObjectExprs <- (|DefineExprs|
     "(|" + _parent + "| " + self defines + " )"
   }
 )
+
+SelfExprs <- (|Exprs|)
 
 SequenceExprs <- (|Exprs|
   exprs { _exprs }
