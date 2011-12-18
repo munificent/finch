@@ -3,6 +3,20 @@
 # See README for more.
 
 {
+  'target_defaults': {
+    'default_configuration': 'Debug',
+    'configurations': {
+      'Debug': {
+        'cflags': [ '-g', '-O0' ],
+        'defines': [ 'DEBUG' ],
+      },
+      'Release': {
+        'cflags': [ '-O3' ],
+        # v8 adds: '-fomit-frame-pointer', '-fdata-sections',
+        #          '-ffunction-sections'
+      },
+    },
+  },
   'targets': [
     {
       'target_name': 'finch',
