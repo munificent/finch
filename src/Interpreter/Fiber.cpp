@@ -201,35 +201,38 @@ namespace Finch
 
                 case OP_BIND_METHOD:
                     {
-                        // the stack has the target of the method and the body.
-                        // the name is in the instruction.
-                        Ref<Object> body = PopOperand();
-                        Ref<Object> target = PopOperand();
-                        String name = mEnvironment.Strings().Find(instruction.arg.id);
+                        // The id is the string table index of the name and the
+                        // code table index of the compiled body.
+                        int nameId = (instruction.arg.id & 0xffff0000) >> 16;
+                        int bodyId = instruction.arg.id & 0xffff;
 
+                        String name = mEnvironment.Strings().Find(nameId);
+                        const CodeBlock & code = mEnvironment.Blocks().Find(bodyId);
+
+                        // Capture the current scope.
+                        Ref<Scope> closure = frame.scope;
+                                                
+                        // Get the object we're attaching the method to. Don't
+                        // pop since the target is the result of a bind.
+                        Ref<Object> target = mOperands.Peek();
                         DynamicObject * object = target->AsDynamic();
                         ASSERT_NOT_NULL(object);
 
-                        object->AddMethod(target, *this, name, body);
-                        // note: does not push a result. the object the
-                        // definition is being applied to will still be on the
-                        // stack after this and is the result.
+                        object->AddMethod(target, *this, name, closure, code);
                     }
                     break;
 
                 case OP_BIND_OBJECT:
                     {
-                        // the stack has the target of the object variable and
-                        // the value.
-                        // the name is in the instruction.
+                        // The stack has the target of the object variable and
+                        // the value. The name is in the instruction.
                         Ref<Object> value = PopOperand();
-                        Ref<Object> object = PopOperand();
+                        
+                        // Don't pop since the target is the result of a bind.
+                        Ref<Object> object = mOperands.Peek();
                         String name = mEnvironment.Strings().Find(instruction.arg.id);
 
                         object->ObjectScope()->Define(name, value);
-                        // note: does not push a result. the object the
-                        // definition is being applied to will still be on the
-                        // stack after this and is the result.
                     }
                     break;
 

@@ -40,29 +40,20 @@ namespace Finch
     }
     
     void DynamicObject::AddMethod(Ref<Object> self, Fiber & fiber,
-                                  String name, Ref<Object> body)
+                                  String name, Ref<Scope> closure,
+                                  const CodeBlock & code)
     {
         if (name.Length() == 0)
         {
             fiber.Error("Cannot create a method with an empty name.");
             return;
         }
-        
-        BlockObject * originalBlock = body->AsBlock();
-        if (originalBlock == NULL)
-        {
-            fiber.Error("Body of method must be a block.");
-            return;
-        }
-        
-        //### bob: update doc
-        // make a copy of the block bound to our self
-        Ref<Object> blockCopy = Object::NewBlock(fiber.GetEnvironment(),
-                                                 originalBlock->GetCode(),
-                                                 originalBlock->Closure(), self);
+                
+        Ref<Object> body = Object::NewBlock(fiber.GetEnvironment(), code,
+                                            closure, self);
         
         // add the method
-        mMethods.Insert(name, blockCopy);
+        mMethods.Insert(name, body);
     }
     
     void DynamicObject::AddPrimitive(String message, PrimitiveMethod method)

@@ -53,7 +53,7 @@ namespace Finch
         
         // Compiles the given block or method contained within this compiler's
         // lexical scope.
-        void CompileBlock(const BlockExpr & expr, int methodId);
+        int CompileBlock(const BlockExpr & expr, int methodId);
         void CompileDefinitions(const DefineExpr & expr);
 
         Compiler * GetEnclosingMethod();

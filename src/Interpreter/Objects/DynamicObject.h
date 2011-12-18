@@ -41,8 +41,8 @@ namespace Finch
         virtual void Receive(Ref<Object> self, Fiber & fiber,
                              String message, const Array<Ref<Object> > & args);
         
-        void AddMethod(Ref<Object> self, Fiber & fiber,
-                       String name, Ref<Object> body);
+        void AddMethod(Ref<Object> self, Fiber & fiber, String name,
+                       Ref<Scope> closure, const CodeBlock & code);
         
         void AddPrimitive(String message, PrimitiveMethod method);
         

@@ -59,7 +59,8 @@ namespace Finch
 
     void Compiler::Visit(const BlockExpr & expr)
     {
-        CompileBlock(expr, 0);
+        int id = CompileBlock(expr, 0);
+        mCode->Write(OP_BLOCK_LITERAL, id);
     }
     
     void Compiler::Visit(const MessageExpr & expr)
@@ -210,7 +211,7 @@ namespace Finch
         mCode->Write(OP_END_BLOCK);
     }
 
-    void Compiler::CompileBlock(const BlockExpr & expr, int methodId)
+    int Compiler::CompileBlock(const BlockExpr & expr, int methodId)
     {
         Compiler compiler = Compiler(mEnvironment, this);
         compiler.Compile(expr.Params(), *expr.Body(), methodId);
@@ -223,8 +224,7 @@ namespace Finch
             compiler.mCode->MarkTailCalls();
         }
         
-        int id = mEnvironment.Blocks().Add(compiler.mCode);
-        mCode->Write(OP_BLOCK_LITERAL, id);
+        return mEnvironment.Blocks().Add(compiler.mCode);
     }
     
     void Compiler::CompileDefinitions(const DefineExpr & expr)
@@ -233,21 +233,19 @@ namespace Finch
         int count = expr.Definitions().Count();
         for (int i = 0; i < count; i++)
         {
-            // push another copy of the target on the stack for the this
-            // definition to use so that the first copy is still there for
-            // the next one. after all of the definitions are done, the object
-            // will remain on the stack, to be the final result value.
-            mCode->Write(OP_DUP);
-
             const Definition & definition = expr.Definitions()[i];
             int id = mEnvironment.Strings().Add(definition.GetName());
-
+            
             if (definition.IsMethod()) {
                 BlockExpr & body = static_cast<BlockExpr &>(
                     *definition.GetBody());
                 // create a unique id for the method
-                CompileBlock(body, sNextMethodId++);
-                mCode->Write(OP_BIND_METHOD, id);
+                int blockId = CompileBlock(body, sNextMethodId++);
+                
+                // TODO(bob): Hackish. Cram the name id and code id into int.
+                int arg = (blockId & 0xffff) | ((id & 0xffff) << 16);
+                
+                mCode->Write(OP_BIND_METHOD, arg);
             }
             else
             {
