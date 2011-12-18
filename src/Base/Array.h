@@ -46,7 +46,7 @@ namespace Finch
             mCapacity(0),
             mItems(NULL)
         {
-            Add(array);
+            AddAll(array);
         }
         
         ~Array()
@@ -84,7 +84,7 @@ namespace Finch
         }
         
         // Adds all of the items from the given array to this one.
-        void Add(const Array<T> & array)
+        void AddAll(const Array<T> & array)
         {
             EnsureCapacity(mCount + array.mCount);
             
@@ -128,7 +128,7 @@ namespace Finch
             if (&other == this) return *this;
             
             Clear();
-            Add(other);
+            AddAll(other);
             
             return *this;
         }
