@@ -180,6 +180,7 @@ Strings :: (
 
   contains: needle { (self index-of: needle) != -1 }
 
+  from: from { self from: from count: self count - from }
   from: from to: to { self from: from count: to - from }
 )
 
@@ -210,6 +211,15 @@ Arrays :: (
 
   each: block {
     from: 0 to: self count - 1 do: {|i|
+      block call: (self at: i)
+    }
+  }
+
+  each: block between: between {
+    first <- true
+    from: 0 to: self count - 1 do: {|i|
+      if: first not then: between
+      first <-- false
       block call: (self at: i)
     }
   }

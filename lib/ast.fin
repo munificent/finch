@@ -1,6 +1,4 @@
-Expr <- (||)
-
-Expr :: (
+Expr <- (||
   array: elements {
     (|ArrayExprs| _elements <- elements )
   }
@@ -43,9 +41,6 @@ Exprs <- (||)
 
 ArrayExprs <- (|Exprs|
   elements { _elements }
-  to-string {
-    _elements to-string
-  }
 )
 
 DefineExprs <- (|Exprs|
@@ -54,9 +49,6 @@ DefineExprs <- (|Exprs|
 
 BindExprs <- (|DefineExprs|
   receiver { _receiver }
-  to-string {
-    _receiver to-string + " :: ( " + self defines + " )"
-  }
 )
 
 BlockExprs <- (|Exprs|
@@ -68,60 +60,46 @@ MessageExprs <- (|Exprs|
   receiver { _receiver }
   name { _name }
   args { _args }
-  to-string {
-    "(" + _receiver to-string + " " + _name + _args + ")"
-  }
 )
 
 NameExprs <- (|Exprs|
   name { _name }
-  to-string { _name }
 )
 
 NumberExprs <- (|Exprs|
   value { _value }
-  to-string { _value to-string }
 )
 
 ObjectExprs <- (|DefineExprs|
   parent { _parent }
-  to-string {
-    "(|" + _parent + "| " + self defines + " )"
-  }
 )
 
-SelfExprs <- (|Exprs|
-  to-string { "self" }
-)
+SelfExprs <- (|Exprs|)
 
 SequenceExprs <- (|Exprs|
   exprs { _exprs }
-  to-string { _exprs to-string }
 )
 
 SetExprs <- (|Exprs|
   name { _name }
   value { _value }
-  to-string { _name + " <-- " + _value }
 )
 
 StringExprs <- (|Exprs|
   value { _value }
-  to-string { "\"" + _value + "\"" }
 )
 
 VarExprs <- (|Exprs|
   name { _name }
   value { _value }
-  to-string { _name + " <- " + _value }
 )
 
 Define <- (||
   name: name body: body method?: method? {
-    (|self traits| _name <- name, _body <- body, _method? <- method? )
+    (|self proto| _name <- name, _body <- body, _method? <- method? )
   }
 
-  traits <- (||
+  proto <- (||
     name { _name }
     body { _body }
     method? { _method? }

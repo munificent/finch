@@ -151,9 +151,12 @@ Lexers <- (||
   // Reads the next token from the source and handles newlines.
   next-token {
     loop: {
-      token <- self next-token-raw
+      if: self eof? then: {
+        span <- SourceSpan new-file: _file start: _pos end: _pos
+        return Token new: Token/Eof text: "" span: span
+      }
 
-      if: token = nil then: { return token }
+      token <- self next-token-raw
 
       done? <- true
       token type switch \
@@ -191,8 +194,6 @@ Lexers <- (||
   // Reads the next token from the source. Doesn't do any newline normalization.
   next-token-raw {
     loop: {
-      if: self eof? then: { return nil }
-
       _start <- _pos
       c <- self current
       true switch \

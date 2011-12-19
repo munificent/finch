@@ -1,6 +1,7 @@
 // TODO(bob): Really need to fix relative path loading.
 load: "../../lib/lexer.fin"
 load: "../../lib/ast.fin"
+load: "../../lib/pretty-print.fin"
 
 Parser <- (||
   new-tokens: tokens {
@@ -113,7 +114,9 @@ FinchParser <- (|Parser|
   // the enclosing object (i.e. self needs to be bound to the enclosing object).
   traits <- (|Parser traits|
     parse {
-      self expression
+      expr <- self expression
+      self consume: Token/Eof
+      expr
     }
 
     expression {
@@ -373,9 +376,6 @@ files each: {|file|
   source <- Io read-file: file
   lexer <- Lexer new-path: file source: source
   parser <- FinchParser new-tokens: lexer
-  loop: {
-    expr <- parser parse
-    if: expr = nil then: { break }
-    write-line: expr
-  }
+  expr <- parser parse
+  write-line: expr pretty-print
 }
