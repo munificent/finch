@@ -39,7 +39,7 @@ namespace Finch
         while (mIsRunning && mCallStack.Count() > 0)
         {
             CallFrame & frame = mCallStack.Peek();
-            const Instruction & instruction = frame.Block().GetCode()[frame.address];
+            const Instruction & instruction = (*frame.Block().Code())[frame.address];
 
             // advance past the instruction
             frame.address++;
@@ -50,23 +50,12 @@ namespace Finch
                     // do nothing
                     break;
 
-                case OP_NUMBER_LITERAL:
-                    PushOperand(Object::NewNumber(mEnvironment, instruction.arg.number));
-                    break;
-
-                case OP_STRING_LITERAL:
-                    {
-                        String string = mEnvironment.Strings().Find(instruction.arg.id);
-                        PushOperand(Object::NewString(mEnvironment, string));
-                    }
-                    break;
-
-                case OP_BLOCK_LITERAL:
+                case OP_BLOCK:
                     {
                         // capture the current scope
                         Ref<Scope> closure = frame.scope;
 
-                        const CodeBlock & code = mEnvironment.Blocks().Find(instruction.arg.id);
+                        Ref<CodeBlock> code = frame.Block().Code()->GetCodeBlock(instruction.arg.id);
                         Ref<Object> block = Object::NewBlock(mEnvironment, code,
                                 closure, Self());
 
@@ -74,6 +63,10 @@ namespace Finch
                     }
                     break;
 
+                case OP_CONSTANT:
+                    PushOperand(frame.Block().Code()->GetConstant(instruction.arg.id));
+                    break;
+                    
                 case OP_CREATE_ARRAY:
                     {
                         // create the array
@@ -207,7 +200,7 @@ namespace Finch
                         int bodyId = instruction.arg.id & 0xffff;
 
                         String name = mEnvironment.Strings().Find(nameId);
-                        const CodeBlock & code = mEnvironment.Blocks().Find(bodyId);
+                        Ref<CodeBlock> code = frame.Block().Code()->GetCodeBlock(bodyId);
 
                         // Capture the current scope.
                         Ref<Scope> closure = frame.scope;
@@ -293,7 +286,7 @@ namespace Finch
                         // find the enclosing method on the callstack
                         int frame;
                         for (frame = 0; frame < mCallStack.Count(); frame++) {
-                            if (mCallStack[frame].Block().GetCode().MethodId() == methodId) {
+                            if (mCallStack[frame].Block().Code()->MethodId() == methodId) {
                                 // found it
                                 break;
                             }

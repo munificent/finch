@@ -32,6 +32,18 @@ namespace Finch
         mInstructions.Add(instruction);
     }
     
+    int CodeBlock::AddConstant(Ref<Object> constant)
+    {
+        mConstants.Add(constant);
+        return mConstants.Count() - 1;
+    }
+    
+    int CodeBlock::AddCodeBlock(Ref<CodeBlock> codeBlock)
+    {
+        mCodeBlocks.Add(codeBlock);
+        return mCodeBlocks.Count() - 1;
+    }
+    
     void CodeBlock::MarkTailCalls()
     {
         for (int i = 1; i < mInstructions.Count(); i++)

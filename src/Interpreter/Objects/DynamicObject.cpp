@@ -41,7 +41,7 @@ namespace Finch
     
     void DynamicObject::AddMethod(Ref<Object> self, Fiber & fiber,
                                   String name, Ref<Scope> closure,
-                                  const CodeBlock & code)
+                                  Ref<CodeBlock> code)
     {
         if (name.Length() == 0)
         {

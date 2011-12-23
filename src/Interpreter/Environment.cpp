@@ -121,14 +121,8 @@ namespace Finch
 
     Ref<Object> Environment::CreateBlock(Ref<Expr> expr)
     {
-        // add it to the code table
         Ref<CodeBlock> code = Compiler::CompileTopLevel(*this, *expr);
-        mBlocks.Add(code);
-        
-        // wrap it in an object
-        //### bob: should look for other places that call NewBlock and see if
-        // they can be consolidated with this.
-        return Object::NewBlock(*this, *code, Ref<Scope>(), mNil);
+        return Object::NewBlock(*this, code, Ref<Scope>(), mNil);
     }
     
     Ref<Object> Environment::MakeGlobal(const char * name)

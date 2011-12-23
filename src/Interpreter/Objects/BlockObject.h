@@ -19,7 +19,7 @@ namespace Finch
     class BlockObject : public Object
     {
     public:
-        BlockObject(Ref<Object> parent, const CodeBlock & code,
+        BlockObject(Ref<Object> parent, Ref<CodeBlock> code,
                     Ref<Scope> closure, Ref<Object> self)
         :   Object(parent),
             mCode(code),
@@ -28,7 +28,7 @@ namespace Finch
         {}
         
         // Gets the names of the parameters this block takes.
-        const Array<String> & Params() const { return mCode.Params(); }
+        const Array<String> & Params() const { return mCode->Params(); }
 
         // Gets the scope enclosing the definition of this block.
         Ref<Scope> Closure() const { return mClosure; }
@@ -40,7 +40,7 @@ namespace Finch
         Ref<Object> Self() const { return mSelf; }
 
         // Gets the compiled bytecode for the block.
-        const CodeBlock & GetCode() const { return mCode; } 
+        Ref<CodeBlock> Code() const { return mCode; } 
         
         virtual BlockObject * AsBlock() { return this; }
         
@@ -50,9 +50,9 @@ namespace Finch
         }
         
     private:
-        const CodeBlock & mCode;
-              Ref<Scope>  mClosure;
-              Ref<Object> mSelf;
+        Ref<CodeBlock> mCode;
+        Ref<Scope>     mClosure;
+        Ref<Object>    mSelf;
     };
 }
 

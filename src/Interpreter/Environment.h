@@ -2,7 +2,6 @@
 
 #include <iostream>
 
-#include "BlockTable.h"
 #include "Macros.h"
 #include "Object.h"
 #include "Ref.h"
@@ -23,7 +22,6 @@ namespace Finch
     public:
         Environment();
         
-        BlockTable &  Blocks()  { return mBlocks; }
         StringTable & Strings() { return mStrings; }
         
         Ref<Scope>  Globals()       const { return mGlobals; }
@@ -41,8 +39,6 @@ namespace Finch
         
         Ref<Object> CreateBlock(Ref<Expr> expr);
     private:
-        
-        BlockTable  mBlocks;
         StringTable mStrings;
         
         Ref<Scope> mGlobals;

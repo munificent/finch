@@ -3,18 +3,19 @@
 #include <iostream>
 
 #include "Array.h"
-#include "Macros.h"
 #include "FinchString.h"
+#include "Macros.h"
+#include "Object.h"
+#include "Ref.h"
 
 namespace Finch
 {
     enum OpCode
     {                       // arg
         OP_NOTHING,         // (not used)
-        OP_NUMBER_LITERAL,  // number = value
-        OP_STRING_LITERAL,  // id = string table id of literal
-        OP_BLOCK_LITERAL,   // id = block table id of code
-
+        OP_BLOCK,           // id = id of code block
+        OP_CONSTANT,        // id = index of constant
+        
         OP_CREATE_ARRAY,    // id = number of elements to pop
 
         OP_POP,             // (not used)
@@ -99,18 +100,26 @@ namespace Finch
         // Gets the instruction at the given offset in the block.
         const Instruction & operator[](int i) const { return mInstructions[i]; }
 
+        Ref<Object> GetConstant(int index) const { return mConstants[index]; }
+        Ref<CodeBlock> GetCodeBlock(int index) const { return mCodeBlocks[index]; }
+        
         void Write(OpCode op);
         void Write(OpCode op, double number);
         void Write(OpCode op, int id);
 
+        int AddConstant(Ref<Object> constant);
+        int AddCodeBlock(Ref<CodeBlock> codeBlock);
+        
         // Finds any message sends that immediately precede OP_END_BLOCKs and
         // changes them to tail call instructions.
         void MarkTailCalls();
         
     private:        
-        Array<String>      mParams;
-        int                mMethodId;
-        Array<Instruction> mInstructions;
+        Array<String>           mParams;
+        int                     mMethodId;
+        Array<Instruction>      mInstructions;
+        Array<Ref<Object> >     mConstants;
+        Array<Ref<CodeBlock> >  mCodeBlocks;
 
         NO_COPY(CodeBlock);
     };

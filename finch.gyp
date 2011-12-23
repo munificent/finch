@@ -38,8 +38,6 @@
         'src/Base/Stack.h',
         'src/Base/StringTable.cpp',
         'src/Base/StringTable.h',
-        'src/Compiler/BlockTable.cpp',
-        'src/Compiler/BlockTable.h',
         'src/Compiler/CodeBlock.cpp',
         'src/Compiler/CodeBlock.h',
         'src/Compiler/Compiler.cpp',

@@ -60,7 +60,7 @@ namespace Finch
     void Compiler::Visit(const BlockExpr & expr)
     {
         int id = CompileBlock(expr, 0);
-        mCode->Write(OP_BLOCK_LITERAL, id);
+        mCode->Write(OP_BLOCK, id);
     }
     
     void Compiler::Visit(const MessageExpr & expr)
@@ -117,7 +117,9 @@ namespace Finch
 
     void Compiler::Visit(const NumberExpr & expr)
     {
-        mCode->Write(OP_NUMBER_LITERAL, expr.Value());
+        Ref<Object> number = Object::NewNumber(mEnvironment, expr.Value());
+        int index = mCode->AddConstant(number);
+        mCode->Write(OP_CONSTANT, index);
     }
 
     void Compiler::Visit(const ObjectExpr & expr)
@@ -171,9 +173,9 @@ namespace Finch
 
     void Compiler::Visit(const StringExpr & expr)
     {
-        // push string
-        int id = mEnvironment.Strings().Add(expr.Value());
-        mCode->Write(OP_STRING_LITERAL, id);
+        Ref<Object> string = Object::NewString(mEnvironment, expr.Value());
+        int index = mCode->AddConstant(string);
+        mCode->Write(OP_CONSTANT, index);
     }
 
     void Compiler::Visit(const UndefineExpr & expr)
@@ -210,7 +212,7 @@ namespace Finch
         body.Accept(*this);
         mCode->Write(OP_END_BLOCK);
     }
-
+    
     int Compiler::CompileBlock(const BlockExpr & expr, int methodId)
     {
         Compiler compiler = Compiler(mEnvironment, this);
@@ -224,7 +226,7 @@ namespace Finch
             compiler.mCode->MarkTailCalls();
         }
         
-        return mEnvironment.Blocks().Add(compiler.mCode);
+        return mCode->AddCodeBlock(compiler.mCode);
     }
     
     void Compiler::CompileDefinitions(const DefineExpr & expr)

@@ -42,7 +42,7 @@ namespace Finch
                              String message, const Array<Ref<Object> > & args);
         
         void AddMethod(Ref<Object> self, Fiber & fiber, String name,
-                       Ref<Scope> closure, const CodeBlock & code);
+                       Ref<Scope> closure, Ref<CodeBlock> code);
         
         void AddPrimitive(String message, PrimitiveMethod method);
         
