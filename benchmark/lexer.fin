@@ -1,0 +1,313 @@
+Token/None         <- ""
+Token/LeftParen    <- "left paren"
+Token/RightParen   <- "right paren"
+Token/LeftBracket  <- "left bracket"
+Token/RightBracket <- "right bracket"
+Token/LeftBrace    <- "left brace"
+Token/RightBrace   <- "right brace"
+Token/Comma        <- "comma" // Includes newlines too.
+Token/Semicolon    <- "semicolon"
+Token/Dot          <- "dot"
+Token/Pipe         <- "pipe"
+Token/Arrow        <- "arrow"
+Token/LongArrow    <- "long arrow"
+Token/Bind         <- "bind"
+Token/Self         <- "self"
+Token/Undefined    <- "undefined"
+Token/Break        <- "break"
+Token/Return       <- "return"
+Token/Number       <- "number"
+Token/String       <- "string"
+Token/Name         <- "name"
+Token/Operator     <- "operator"
+Token/Keyword      <- "keyword"
+Token/IgnoreLine   <- "ignore line"
+Token/Eof          <- "eof"
+Token/Error        <- "error"
+
+Token <- (||
+  new: type text: text span: span {
+    (|Tokens| _type <- type, _text <- text, _span <- span )
+  }
+)
+
+Tokens <- (||
+  type { _type }
+  text { _text }
+  span { _span }
+
+  to-string { "'" + _text + "' (" + _type + ") " + _span }
+)
+
+SourceSpan <- (||
+  new-file: file start: start end: end {
+    (|SourceSpans| _file <- file, _start <- start, _end <- end)
+  }
+)
+
+SourceSpans <- (||
+  file <- { _file <- it }
+  file { _file }
+  start { _start }
+  end { _end }
+
+  to-string { _file path + ":" + _start + ":" + _end }
+)
+
+SourceFile <- (||
+  new-path: path source: source {
+    (|SourceFiles| _path <- path, _source <- source)
+  }
+)
+
+SourceFiles <- (||
+  path { _path }
+  source { _source }
+)
+
+Strings :: (
+  alpha? {
+    "abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ_" contains: self
+  }
+
+  operator? {
+    "-+=/<>?~!,#$%^&*" contains: self
+  }
+
+  alpha-or-operator? {
+    (self alpha?) or: { self operator? }
+  }
+
+  digit? {
+    "0123456789" contains: self
+  }
+)
+
+Lexer <- (||
+  new-path: path source: source {
+    (|Lexers|
+      _file <- SourceFile new-path: path source: source
+      _source <- source
+      _pos <- 0
+      _start <- 0
+      _eat-newlines? <- true
+    )
+  }
+)
+
+Lexers <- (||
+  each: block {
+    token <- self next-token
+    while: { token != nil } do: {
+      block call: token
+      token <-- self next-token
+    }
+  }
+
+  advance {
+    _pos <- _pos + 1
+    _source at: _pos - 1
+  }
+
+  done? { _pos >= _source count }
+
+  advance-while: predicate {
+    while: { self done? not } and: { predicate call: self current } do: {
+      self advance
+    }
+  }
+
+  current { _source at: _pos }
+
+  // Reads the next token from the source and handles newlines.
+  next-token {
+    loop: {
+      token <- self next-token-raw
+
+      if: token = nil then: { return token }
+
+      done? <- true
+      token type switch \
+      case: Token/Comma do: {
+        if: _eat-newlines? then: {
+          // Discard newline.
+          done? <-- false
+        } else: {
+          // Discard any newlines after this one.
+          _eat-newlines? <- true
+        }
+      } ;
+      case: Token/IgnoreLine do: {
+        // Eat the ignore token.
+        done? <-- false
+
+        // And newlines after it.
+        _eat-newlines? <- true
+      } ;
+      case: Token/Keyword     do: { _eat-newlines? <- true } ;
+      case: Token/Operator    do: { _eat-newlines? <- true } ;
+      case: Token/Pipe        do: { _eat-newlines? <- true } ;
+      case: Token/Arrow       do: { _eat-newlines? <- true } ;
+      case: Token/LongArrow   do: { _eat-newlines? <- true } ;
+      case: Token/Semicolon   do: { _eat-newlines? <- true } ;
+      case: Token/LeftParen   do: { _eat-newlines? <- true } ;
+      case: Token/LeftBracket do: { _eat-newlines? <- true } ;
+      case: Token/LeftBrace   do: { _eat-newlines? <- true } ;
+      default: { _eat-newlines? <- false }
+
+      if: done? then: { return token }
+    }
+  }
+
+  // Reads the next token from the source. Doesn't do any newline normalization.
+  next-token-raw {
+    if: _pos >= _source count then: { return nil }
+
+    self skip-whitespace
+    self skip-comment
+
+    _start <- _pos
+
+    c <- self current
+    if: c = "("  then: { return self single-token: Token/LeftParen }
+    if: c = ")"  then: { return self single-token: Token/RightParen }
+    if: c = "["  then: { return self single-token: Token/LeftBracket }
+    if: c = "]"  then: { return self single-token: Token/RightBracket }
+    if: c = "{"  then: { return self single-token: Token/LeftBrace }
+    if: c = "}"  then: { return self single-token: Token/RightBrace }
+    if: c = ","  then: { return self single-token: Token/Comma }
+    if: c = "\n" then: { return self single-token: Token/Comma }
+    if: c = "\\" then: { return self single-token: Token/IgnoreLine }
+    if: c = ";"  then: { return self single-token: Token/Semicolon }
+    if: c = "."  then: { return self single-token: Token/Dot }
+    if: c = "|"  then: { return self single-token: Token/Pipe }
+
+    if: c = ":"  then: {
+      self advance
+      if: self current = ":" then: {
+        self advance
+        return self make-token: Token/Bind
+      } else: {
+        return self make-token: Token/Keyword
+      }
+    }
+
+    if: (c alpha?)    then: { return self read-name }
+    if: (c operator?) then: { return self read-operator }
+    if: (c = "\"")    then: { return self read-string }
+    if: (c digit?)    then: { return self read-number }
+
+    // If we got here, we failed to handle the current character.
+    self single-token: Token/Error
+  }
+
+  skip-whitespace {
+    self advance-while: {|c| c = " " }
+  }
+
+  skip-comment {
+    if: self current = "'" then: {
+      self advance-while: {|c| c != "\n" }
+    }
+  }
+
+  read-name {
+    self advance-while: {|c| c alpha-or-operator? }
+
+    // See if it ends with a ":"
+    type <- Token/Name
+    if: self current = ":" then: {
+      self advance
+      type <-- Token/Keyword
+    }
+
+    self make-token: type
+  }
+
+  read-operator {
+    // When token types are implemented; needs to switch to name if it
+    // encounters a letter.
+    type <- Token/Operator
+
+    while: { self done? not } and: { self current alpha-or-operator? } do: {
+      if: self current alpha? then: { type <-- Token/Name }
+      self advance
+    }
+
+    // See if it ends with a ":"
+    if: self current = ":" then: {
+      self advance
+      type <-- Token/Keyword
+    }
+
+    self make-token: type
+  }
+
+  read-string {
+    self advance
+
+    text <- ""
+    loop: {
+      if: self done? then: {
+        return self make-token: Token/Error text: "Unterminated string"
+      }
+
+      if: self current = "\"" then: {
+        self advance
+        return self make-token: Token/String text: text
+      }
+
+      // Handle string escapes.
+      if: self current = "\\" then: {
+        self advance
+
+        if: self done? then: {
+          return self make-token: Token/Error text:
+              "Unterminated string escape."
+        }
+
+        c <- self advance
+        c switch \
+        case: "n" do: { text <-- text + "\n" } ;
+        case: "\"" do: { text <-- text + "\"" } ;
+        case: "\\" do: { text <-- text + "\\" } ;
+        default: {
+          return self make-token: Token/Error text:
+              "Unrecognized string escape '" + c + "'."
+        }
+      } else: {
+        text <-- text + self current
+        self advance
+      }
+    }
+  }
+
+  read-number {
+    self advance-while: {|c| c digit? }
+    self make-token: Token/Number
+  }
+
+  single-token: type {
+    self advance
+    self make-token: type
+  }
+
+  make-token: type {
+    self make-token: type text: (_source from: _start to: _pos)
+  }
+
+  make-token: type text: text {
+    span <- SourceSpan new-file: _file start: _start end: _pos
+    Token new: type text: text span: span
+  }
+)
+
+file <- Io read-file: "../../benchmark/lexer.fin"
+tokens <- 0
+
+from: 1 to: 10 do: {|i|
+  lexer <- Lexer new-path: "../../benchmark/lexer.fin" source: file
+  lexer each: {|token| tokens <-- tokens + 1 }
+}
+
+write-line: tokens = 14070
