@@ -3,6 +3,8 @@
 #include <iostream>
 #include <cstdlib>
 
+#ifdef DEBUG
+
 #define ASSERT(condition, message)                      \
     if (!(condition)) {                                 \
         std::cout << "ASSERTION FAILED " << __FILE__    \
@@ -26,6 +28,15 @@
 
 #define ASSERT_STRING_NOT_EMPTY(value)                  \
     ASSERT(value.Length() > 0, "String " #value " cannot be empty.")
+
+#else
+
+#define ASSERT(condition, message)     ;
+#define ASSERT_NOT_NULL(value)         ;
+#define ASSERT_INDEX(index, max)       ;
+#define ASSERT_STRING_NOT_EMPTY(value) ;
+
+#endif
 
 // Use this inside a class declaration to prevent the compiler from creating
 // the default copy constructor and assignment operators for the class. Note
