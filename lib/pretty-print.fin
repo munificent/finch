@@ -1,0 +1,168 @@
+PrettyPrinter <- (||
+  new {
+    (|PrettyPrinter proto| _buffer <- [], _indent <- "" )
+  }
+
+  proto <- (||
+    to-string {
+      result <- ""
+      _buffer each: {|s| result <-- result + s }
+      result
+    }
+
+    write: string { _buffer add: string }
+    write-line: string {
+      _buffer add: string + "\n"
+    }
+
+    // TODO(bob): Use these:
+    indent { _indent <- _indent + "  " }
+    dedent { _indent <- _indent from: 2 }
+  )
+)
+
+
+Exprs :: (
+  to-string { self pretty-print }
+
+  pretty-print {
+    printer <- PrettyPrinter new
+    self print-to: printer
+    printer to-string
+  }
+
+  print-to: printer {
+    printer write: "<not impl>"
+  }
+)
+
+ArrayExprs :: print-to: printer {
+  printer write: "["
+
+  _elements each: {|element|
+    element print-to: printer
+  } between: {
+    printer write: ", "
+  }
+
+  printer write: "]"
+}
+
+BindExprs :: print-to: printer {
+  _receiver print-to: printer
+  printer write: " :: "
+
+  if: _defines count = 1 then: {
+    (_defines at: 0) print-to: printer
+  } else: {
+    printer write: "(\n"
+    self print-defines-to: printer
+    printer write: ")"
+  }
+}
+
+BlockExprs :: print-to: printer {
+  if: _params count = 0 then: {
+    printer write: "{ "
+  } else: {
+    printer write: "{|"
+
+    _params each: {|param|
+      printer write: param
+    } between: {
+      printer write: " "
+    }
+
+    printer write: "| "
+  }
+
+  _body print-to: printer
+
+  printer write: " }"
+}
+
+DefineExprs :: print-defines-to: printer {
+  _defines each: {|define|
+    define print-to: printer
+  } between: {
+    printer write: "\n"
+  }
+}
+
+Define proto :: print-to: printer {
+  printer write: _name
+
+  if: _method? then: {
+    // TODO(bob): Pull out params.
+    _body print-to: printer
+  } else: {
+    printer write: " <- "
+    _body print-to: printer
+  }
+}
+
+MessageExprs :: print-to: printer {
+  printer write: "("
+
+  // Will be nil for messages sent to Ether.
+  if: _receiver != nil then: {
+    _receiver print-to: printer
+    printer write: " "
+  }
+
+  printer write: _name
+
+  printer write: "<todo: message args>" // _args
+
+  printer write: ")"
+}
+
+NameExprs :: print-to: printer {
+  printer write: _name
+}
+
+NumberExprs :: print-to: printer {
+  printer write: _value
+}
+
+ObjectExprs :: print-to: printer {
+  if: _parent = nil then: {
+    printer write-line: "(||"
+  } else: {
+    printer write: "(|"
+    _parent print-to: printer
+    printer write-line: "|"
+  }
+
+  self print-defines-to: printer
+  printer write: ")"
+}
+
+SelfExprs :: print-to: printer {
+  printer write: "self"
+}
+
+SequenceExprs :: print-to: printer {
+  _exprs each: {|expr|
+    expr print-to: printer
+  } between: {
+    printer write: "\n"
+  }
+}
+
+SetExprs :: print-to: printer {
+  printer write: "<set not impl>"
+}
+
+StringExprs :: print-to: printer {
+  printer write: "\""
+  // TODO(bob): Handle escapes.
+  printer write: _value
+  printer write: "\""
+}
+
+VarExprs :: print-to: printer {
+  printer write: _name
+  printer write: " <- "
+  _value print-to: printer
+}
