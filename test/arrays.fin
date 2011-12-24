@@ -12,44 +12,44 @@ Test suite: "Arrays" is: {
   }
 
   Test test: "literal" is: {
-    Test that: [] count equals: 0
+    Test that: #[] count equals: 0
 
-    a <- [3, 4]
+    a <- #[3, 4]
     Test that: a count equals: 2
     Test that: (a at: 0) equals: 3
     Test that: (a at: 1) equals: 4
   }
 
   Test test: "count" is: {
-    Test that: [] count        equals: 0
-    Test that: [2] count       equals: 1
-    Test that: [2, 3] count    equals: 2
-    Test that: [2, 3, 4] count equals: 3
+    Test that: #[] count        equals: 0
+    Test that: #[2] count       equals: 1
+    Test that: #[2, 3] count    equals: 2
+    Test that: #[2, 3, 4] count equals: 3
   }
 
   Test test: "add:" is: {
-    Test that: ([] add: 2) count    equals: 1
-    Test that: (([1] add: 2) at: 1) equals: 2
+    Test that: (#[] add: 2) count    equals: 1
+    Test that: ((#[1] add: 2) at: 1) equals: 2
   }
 
   Test test: "at:" is: {
-    Test that: ([4, 5, 6] at: 0) equals: 4
-    Test that: ([4, 5, 6] at: 1) equals: 5
-    Test that: ([4, 5, 6] at: 2) equals: 6
-    Test that: ([4, 5, 6] at: -1) equals: 6
-    Test that: ([4, 5, 6] at: -2) equals: 5
-    Test that: ([4, 5, 6] at: -3) equals: 4
+    Test that: (#[4, 5, 6] at: 0) equals: 4
+    Test that: (#[4, 5, 6] at: 1) equals: 5
+    Test that: (#[4, 5, 6] at: 2) equals: 6
+    Test that: (#[4, 5, 6] at: -1) equals: 6
+    Test that: (#[4, 5, 6] at: -2) equals: 5
+    Test that: (#[4, 5, 6] at: -3) equals: 4
   }
 
   Test test: "at:put:" is: {
-    a <- [1, 2, 3]
+    a <- #[1, 2, 3]
     Test that: (a at: 1) equals: 2
     a at: 1 put: 5
     Test that: (a at: 1) equals: 5
   }
 
   Test test: "each:" is: {
-    a <- [1, 2, 3]
+    a <- #[1, 2, 3]
     c <- 0
     b <- a each: {|e| c <-- c + e }
 
@@ -57,7 +57,7 @@ Test suite: "Arrays" is: {
   }
 
   Test test: "map:" is: {
-    a <- [1, 2, 3]
+    a <- #[1, 2, 3]
     b <- a map: {|e| e + 1 }
 
     Test that: b count equals: 3
@@ -67,7 +67,7 @@ Test suite: "Arrays" is: {
   }
 
   Test test: "++" is: {
-    a <- [1, 2] ++ [3, 4]
+    a <- #[1, 2] ++ #[3, 4]
 
     Test that: a count equals: 4
     Test that: (a at: 0) equals: 1
@@ -77,7 +77,7 @@ Test suite: "Arrays" is: {
   }
 
   Test test: "remove-at:" is: {
-    a <- [1, 2, 3, 4]
+    a <- #[1, 2, 3, 4]
     b <- a remove-at: 2
 
     Test that: a count equals: 3
@@ -89,7 +89,7 @@ Test suite: "Arrays" is: {
   }
 
   Test test: "remove-at: negative index" is: {
-    a <- [1, 2, 3, 4]
+    a <- #[1, 2, 3, 4]
     b <- a remove-at: -3
 
     Test that: a count equals: 3

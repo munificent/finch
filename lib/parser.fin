@@ -11,7 +11,7 @@ Parser <- (||
   traits <- (||
     init-tokens: tokens {
       _tokens <- tokens
-      _read <- []
+      _read <- #[]
     }
 
     if-look-ahead: type then: then {
@@ -137,12 +137,12 @@ FinchParser <- (|Parser|
     bind {
       expr <- self assignment
       self while-match: Token/Bind do: {
-        defines <- []
+        defines <- #[]
         self if-look-ahead: Token/LeftParen then: {
           self consume: Token/LeftParen
           defines <-- self parse-defines
         } else: {
-          defines <-- [self parse-define]
+          defines <-- #[self parse-define]
         }
 
         expr <-- Expr bind-receiver: expr defines: defines
@@ -173,7 +173,7 @@ FinchParser <- (|Parser|
       expr <- self operator
 
       message <- ""
-      args <- []
+      args <- #[]
       self while-match: Token/Keyword do: {|keyword|
         message <-- message + keyword text
         args add: self operator
@@ -190,7 +190,7 @@ FinchParser <- (|Parser|
       expr <- self unary
       self while-match: Token/Operator do: {|operator|
         right <- self unary
-        expr <-- Expr message-receiver: expr name: operator text args: [right]
+        expr <-- Expr message-receiver: expr name: operator text args: #[right]
       }
       expr
     }
@@ -198,7 +198,7 @@ FinchParser <- (|Parser|
     unary {
       expr <- self primary
       self while-match: Token/Name do: {|name|
-        expr <-- Expr message-receiver: expr name: name text args: []
+        expr <-- Expr message-receiver: expr name: name text args: #[]
       }
       expr
     }
@@ -235,7 +235,7 @@ FinchParser <- (|Parser|
           defines <- nil
           self match: Token/RightParen then: {
             // No defines.
-            defines <-- []
+            defines <-- #[]
           } else: {
             defines <-- self parse-defines
           }
@@ -254,7 +254,7 @@ FinchParser <- (|Parser|
         elements <- nil
         self match: Token/RightBracket then: {
           // Allow empty arrays.
-          elements <-- []
+          elements <-- #[]
         } else: {
           elements <-- self parse-sequence
           self consume: Token/RightBracket
@@ -266,7 +266,7 @@ FinchParser <- (|Parser|
       // Block.
       self match: Token/LeftBrace then: {
         // Parse the parameter list if present.
-        params <- []
+        params <- #[]
         self match: Token/Pipe then: {
           self while-match: Token/Name do: {|name|
             params add: name text
@@ -283,7 +283,7 @@ FinchParser <- (|Parser|
       // Keyword send to Ether.
       self if-look-ahead: Token/Keyword then: {
         message <- ""
-        args <- []
+        args <- #[]
         self while-match: Token/Keyword do: {|keyword|
           message <-- keyword text
           args <- self operator
@@ -297,7 +297,7 @@ FinchParser <- (|Parser|
     }
 
     parse-sequence {
-      exprs <- [self bind]
+      exprs <- #[self bind]
       self while-match: Token/Comma do: {
         // There may be a trailing line after the last expression in a block.
         // If we eat the line and then see a closing brace or eof, stop.
@@ -312,7 +312,7 @@ FinchParser <- (|Parser|
     }
 
     parse-defines {
-      defines <- []
+      defines <- #[]
       loop: {
         defines add: self parse-define
 
@@ -332,7 +332,7 @@ FinchParser <- (|Parser|
 
       self match: Token/Name then: {|name|
         // Unary method.
-        body <- self parse-define-method: []
+        body <- self parse-define-method: #[]
         return Define name: name text body: body method?: true
       }
 
@@ -340,13 +340,13 @@ FinchParser <- (|Parser|
         // Operator.
         param <- (self consume: Token/Name) text
 
-        body <- self parse-define-method: [param]
+        body <- self parse-define-method: #[param]
         return Define name: operator text body: body method?: true
       }
 
       self if-look-ahead: Token/Keyword then: {
         name <- ""
-        params <- []
+        params <- #[]
 
         self while-match: Token/Keyword do: {|keyword|
           name <-- name + keyword text

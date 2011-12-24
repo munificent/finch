@@ -117,6 +117,8 @@ namespace Finch
 
     void Compiler::Visit(const NumberExpr & expr)
     {
+        // TODO(bob): Should check for duplicates. Only need one copy of any
+        // given constant.
         Ref<Object> number = Object::NewNumber(mEnvironment, expr.Value());
         int index = mCode->AddConstant(number);
         mCode->Write(OP_CONSTANT, index);
@@ -173,6 +175,8 @@ namespace Finch
 
     void Compiler::Visit(const StringExpr & expr)
     {
+        // TODO(bob): Should check for duplicates. Only need one copy of any
+        // given constant.
         Ref<Object> string = Object::NewString(mEnvironment, expr.Value());
         int index = mCode->AddConstant(string);
         mCode->Write(OP_CONSTANT, index);

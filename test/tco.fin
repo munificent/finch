@@ -1,11 +1,11 @@
 Test suite: "Tail Call Optimization" is: {
   Test test: "Self call" is: {
     recurse <- 1000
-    maxstack <- #PRIM# callstack-depth + 10 // add in a little flexibility
+    maxstack <- *primitive* callstack-depth + 10 // add in a little flexibility
     c <- {
       // make sure the callstack didn't grow
       if: recurse = 1 then: {
-        Test is-true: #PRIM# callstack-depth < maxstack
+        Test is-true: *primitive* callstack-depth < maxstack
       }
 
       // recursive tail call
@@ -19,11 +19,11 @@ Test suite: "Tail Call Optimization" is: {
 
   Test test: "Other call" is: {
     recurse <- 1000
-    maxstack <- #PRIM# callstack-depth + 10 // add in a little flexibility
+    maxstack <- *primitive* callstack-depth + 10 // add in a little flexibility
     c <- {
       // make sure the callstack didn't grow
       if: recurse = 1 then: {
-        Test is-true: #PRIM# callstack-depth < maxstack
+        Test is-true: *primitive* callstack-depth < maxstack
       }
 
       // recursive tail call

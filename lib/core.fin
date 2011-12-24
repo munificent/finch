@@ -97,20 +97,20 @@ Ether :: (
   write: text {
     // Make sure the argument is always converted to a string before
     // passing to the primitive version which can't do that.
-    #PRIM# write: text to-string
+    *primitive* write: text to-string
   }
 
   write-line: text {
     // Make sure the argument is always converted to a string before
     // passing to the primitive version which can't do that.
-    #PRIM# write: text to-string + "\n"
+    *primitive* write: text to-string + "\n"
   }
 )
 
 Blocks :: block? { true }
 
 Fiber <- (||
-  new: block { #PRIM# new-fiber: block }
+  new: block { *primitive* new-fiber: block }
 
   spawn: block {
     fiber <- Fiber new: block
@@ -119,10 +119,10 @@ Fiber <- (||
     fiber
   }
 
-  current { #PRIM# current-fiber }
+  current { *primitive* current-fiber }
 
   yield: value {
-    #PRIM# switch-to-fiber: Fiber current run-by passing: value
+    *primitive* switch-to-fiber: Fiber current run-by passing: value
   }
 
   yield { Fiber yield: nil }
@@ -133,7 +133,7 @@ Fibers :: (
 
   run: value {
     _run-by <- Fiber current
-    #PRIM# switch-to-fiber: self passing: value
+    *primitive* switch-to-fiber: self passing: value
   }
 
   run { self run: nil }
@@ -153,7 +153,7 @@ Numbers :: (
 
 Object :: (
   // Adding anything to a string converts it to a string and concatenates.
-  +string: left { #PRIM# string-concat: left and: self to-string }
+  +string: left { *primitive* string-concat: left and: self to-string }
 
   // Comparisons between unrelated types always return false.
   =number: left { false }
@@ -170,11 +170,11 @@ Strings :: (
   + right { right +string: self }
   = right { right =string: self }
 
-  =string: left { (#PRIM# string-compare: left to: self) = 0 }
-  <  right { (#PRIM# string-compare: self to: right) < 0 }
-  >  right { (#PRIM# string-compare: self to: right) > 0 }
-  <= right { (#PRIM# string-compare: self to: right) <= 0 }
-  >= right { (#PRIM# string-compare: self to: right) >= 0 }
+  =string: left { (*primitive* string-compare: left to: self) = 0 }
+  <  right { (*primitive* string-compare: self to: right) < 0 }
+  >  right { (*primitive* string-compare: self to: right) > 0 }
+  <= right { (*primitive* string-compare: self to: right) <= 0 }
+  >= right { (*primitive* string-compare: self to: right) >= 0 }
 
   starts-with: needle { (self index-of: needle) = 0 }
 
@@ -190,7 +190,7 @@ Array <- (||
   }
 
   count: count fill-with: element {
-    result <- []
+    result <- #[]
 
     from: 1 to: count do: {|i| result add: element }
     result
@@ -201,7 +201,7 @@ Arrays :: (
   array? { true }
 
   ++ right {
-    result <- []
+    result <- #[]
 
     self each: {|e| result add: e }
     right each: {|e| result add: e }
@@ -225,7 +225,7 @@ Arrays :: (
   }
 
   map: block {
-    result <- []
+    result <- #[]
     self each: {|element| result add: (block call: element) }
     result
   }

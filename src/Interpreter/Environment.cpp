@@ -103,7 +103,7 @@ namespace Finch
         ioObj->AddPrimitive("read-file:", IoReadFile);
 
         // define bare primitive object
-        Ref<Object> primitives = MakeGlobal("#PRIM#");
+        Ref<Object> primitives = MakeGlobal("*primitive*");
         DynamicObject* primsObj = primitives->AsDynamic();
         primsObj->AddPrimitive("string-concat:and:",       PrimitiveStringConcat);
         primsObj->AddPrimitive("string-compare:to:",       PrimitiveStringCompare);

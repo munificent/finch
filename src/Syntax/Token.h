@@ -19,9 +19,11 @@ namespace Finch
         TOKEN_RIGHT_BRACKET,
         TOKEN_LEFT_BRACE,
         TOKEN_RIGHT_BRACE,
-        TOKEN_SEMICOLON,
+        TOKEN_AT,
         TOKEN_DOT,
+        TOKEN_HASH,
         TOKEN_PIPE,
+        TOKEN_SEMICOLON,
         
         TOKEN_ARROW,
         TOKEN_LONG_ARROW,

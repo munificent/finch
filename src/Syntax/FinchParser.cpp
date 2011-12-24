@@ -371,8 +371,9 @@ namespace Finch
                 return expression;
             }
         }
-        else if (Match(TOKEN_LEFT_BRACKET))
+        else if (Match(TOKEN_HASH))
         {
+            CONSUME(TOKEN_LEFT_BRACKET, "Expect '[' to begin array literal.");
             Array<Ref<Expr> > expressions;
             
             // allow zero-element arrays
@@ -564,7 +565,7 @@ namespace Finch
     {
         //### bob: using stringstream here is gross
         std::stringstream error;
-        error << "Parse error on " << Current() << ": " << message;
+        error << "Parse error on '" << Current() << "': " << message;
         mErrorReporter.Error(String(error.str().c_str()));
 
         return Ref<Expr>();
