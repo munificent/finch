@@ -1,7 +1,7 @@
 write-line: "Running Finch test suite."
 
 // define a Test object the tests can use
-Test <- (||
+Test <- [
   _suite       <- ""
   _test        <- ""
   _test-shown? <- false
@@ -73,7 +73,7 @@ Test <- (||
     }
     write-line: ""
   }
-)
+]
 
 // run the test scripts
 //### bob: hack! path should be relative to this script's path!

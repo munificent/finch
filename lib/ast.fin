@@ -1,107 +1,107 @@
-Expr <- (||
+Expr <- [
   array: elements {
-    (|ArrayExprs| _elements <- elements )
+    [|ArrayExprs| _elements <- elements ]
   }
 
   bind-receiver: receiver defines: defines {
-    (|BindExprs| _receiver <- receiver, _defines <- defines )
+    [|BindExprs| _receiver <- receiver, _defines <- defines ]
   }
 
   block-params: params body: body {
-    (|BlockExprs| _params <- params, _body <- body )
+    [|BlockExprs| _params <- params, _body <- body ]
   }
 
   message-receiver: receiver name: name args: args {
-    (|MessageExprs| _receiver <- receiver, _name <- name, _args <- args )
+    [|MessageExprs| _receiver <- receiver, _name <- name, _args <- args ]
   }
 
-  name: name { (|NameExprs| _name <- name ) }
-  number: value { (|NumberExprs| _value <- value ) }
+  name: name { [|NameExprs| _name <- name ] }
+  number: value { [|NumberExprs| _value <- value ] }
 
   object-parent: parent defines: defines {
-    (|ObjectExprs| _parent <- parent, _defines <- defines )
+    [|ObjectExprs| _parent <- parent, _defines <- defines ]
   }
 
-  self_ { (|SelfExprs|) }
+  self_ { [|SelfExprs|] }
 
-  sequence: exprs { (|SequenceExprs| _exprs <- exprs ) }
+  sequence: exprs { [|SequenceExprs| _exprs <- exprs ] }
 
   set-name: name value: value {
-    (|SetExprs| _name <- name, _value <- value )
+    [|SetExprs| _name <- name, _value <- value ]
   }
 
-  string: value { (|StringExprs| _value <- value ) }
+  string: value { [|StringExprs| _value <- value ] }
 
   var-name: name value: value {
-    (|VarExprs| _name <- name, _value <- value )
+    [|VarExprs| _name <- name, _value <- value ]
   }
-)
+]
 
-Exprs <- (||)
+Exprs <- []
 
-ArrayExprs <- (|Exprs|
+ArrayExprs <- [|Exprs|
   elements { _elements }
-)
+]
 
-DefineExprs <- (|Exprs|
+DefineExprs <- [|Exprs|
   defines { _defines }
-)
+]
 
-BindExprs <- (|DefineExprs|
+BindExprs <- [|DefineExprs|
   receiver { _receiver }
-)
+]
 
-BlockExprs <- (|Exprs|
+BlockExprs <- [|Exprs|
   params { _params }
   body { _body }
-)
+]
 
-MessageExprs <- (|Exprs|
+MessageExprs <- [|Exprs|
   receiver { _receiver }
   name { _name }
   args { _args }
-)
+]
 
-NameExprs <- (|Exprs|
+NameExprs <- [|Exprs|
   name { _name }
-)
+]
 
-NumberExprs <- (|Exprs|
+NumberExprs <- [|Exprs|
   value { _value }
-)
+]
 
-ObjectExprs <- (|DefineExprs|
+ObjectExprs <- [|DefineExprs|
   parent { _parent }
-)
+]
 
-SelfExprs <- (|Exprs|)
+SelfExprs <- [|Exprs|)
 
-SequenceExprs <- (|Exprs|
+SequenceExprs <- [|Exprs|
   exprs { _exprs }
-)
+]
 
-SetExprs <- (|Exprs|
+SetExprs <- [|Exprs|
   name { _name }
   value { _value }
-)
+]
 
-StringExprs <- (|Exprs|
+StringExprs <- [|Exprs|
   value { _value }
-)
+]
 
-VarExprs <- (|Exprs|
+VarExprs <- [|Exprs|
   name { _name }
   value { _value }
-)
+]
 
-Define <- (||
+Define <- [
   name: name body: body method?: method? {
-    (|self proto| _name <- name, _body <- body, _method? <- method? )
+    [|self proto| _name <- name, _body <- body, _method? <- method? ]
   }
 
-  proto <- (||
+  proto <- [
     name { _name }
     body { _body }
     method? { _method? }
-  )
-)
+  ]
+]

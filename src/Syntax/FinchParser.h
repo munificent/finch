@@ -43,7 +43,7 @@ namespace Finch
         Ref<Expr> ParseKeyword(Ref<Expr> object);        
         Ref<Expr> ParseError(const char * message);
         
-        Ref<Expr> ParseDefines(Ref<Expr> expr);
+        Ref<Expr> ParseDefines(Ref<Expr> expr, TokenType endToken);
         Ref<Expr> ParseDefine(Ref<Expr> expr);
         Ref<Expr> ParseDefineBody(Ref<Expr> expr, String name,
                            const Array<String> & args);

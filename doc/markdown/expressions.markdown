@@ -63,7 +63,7 @@ A series of one or more punctuation characters is an *operator*. You can define 
 
     :::finch
     // valid punctuation characters
-    + - ! @ # $ % ^ & * = < > / ? ~
+    + - ! $ % ^ & * = < > / ? ~
 
     // can also be combined
     -- ?! ---@ <=/=> @*#%&#$@&!
@@ -241,18 +241,18 @@ One way you can think of this is that short assignment always means "declare a n
 
 ## Arrays
 
-Finch has built-in support for resizable arrays. Most of the things you can do with arrays use normal message syntax, but there's also a little special sauce for creating arrays. If you surround a series of expressions with square brackets, it creates an array with an element for the value of each expression. Elements are separated with commas (or newlines) like a normal sequence. Enough talk:
+Finch has built-in support for resizable arrays. Most of the things you can do with arrays use normal message syntax, but there's also a little special sauce for creating arrays. A hash (`#`) followed a series of expressions in square brackets creates an array with an element for the value of each expression. Elements are separated with commas (or newlines) like a normal sequence. Enough talk:
 
     :::finch
-    []             // creates an empty array
-    [1, 2, 3]      // a three-element array
-    [123, "text"]  // arrays can have elements of different types
-    [1 + 2, 3 neg] // expressions are fine too
+    #[]             // creates an empty array
+    #[1, 2, 3]      // a three-element array
+    #[123, "text"]  // arrays can have elements of different types
+    #[1 + 2, 3 neg] // expressions are fine too
 
     // newlines can separate elements too
-    ["first"
-     "second"
-     "third"]
+    #["first"
+      "second"
+      "third"]
 
 Arrays are objects like everything else, so they can be stored in variables, passed to methods, etc.
 

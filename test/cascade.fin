@@ -1,14 +1,14 @@
 Test suite: "Strings" is: {
   called <- ""
-  // make a couple of objects that implement to-string
-  obj <- (||
+  // make an object that implements to-string
+  obj <- [
     foo { called <-- called + "foo" }
     bar { called <-- called + "bar" }
     baz { called <-- called + "baz" }
     me { self }
     + other { called <-- called + other }
     add: a and: b { called <-- called + a + b }
-  )
+  ]
 
   Test test: "Unary" is: {
     called <-- ""

@@ -5,24 +5,22 @@ inspired by Smalltalk, Self, and Javascript.
 It is written in C++ with a hand-written lexer and parser. It has
 minimal dependencies. I want Finch to be:
 
-* Syntactically expressive yet minimal. Your code should look
-  beautiful and do what you want.
+*   Syntactically expressive yet minimal. Your code should look beautiful and
+    do what you want.
 
-* An example of a small, clean C++ codebase for an interpreter. If you
-  can read C++ and want to learn more about programming languages, I
-  hope Finch's code will be a good primer.
+*   An example of a small, clean C++ codebase for an interpreter. If you can
+    read C++ and want to learn more about programming languages, I hope Finch's
+    code will be a good primer.
 
-* A language in the Smalltalk family that's friendly to people coming
-  from a text file and curly brace background.
+*   A language in the Smalltalk family that's friendly to people coming from a
+    text file and curly brace background.
 
-* A minimal prototype-based dynamic language. I think prototypes are a
-  really cool paradigm, but Self is too complex (and mostly dead), and
-  Javascript is... well... Javascript.
+*   A minimal prototype-based dynamic language. I think prototypes are a really
+    cool paradigm, but Self goes too far, and Javascript doesn't go far enough.
 
-* Easily embeddable in other applications. I don't know if Finch ever
-  will have real use, but if it does, it will likely be as a
-  configuration or scripting language within a larger application,
-  much like Lua.
+*   Easily embeddable in other applications. I don't know if Finch ever will
+    have real use, but if it does, it will likely be as a configuration or
+    scripting language within a larger application, much like Lua.
 
 
 A Taste of the Language
@@ -32,7 +30,7 @@ Here's a little example to get you going. This little program doesn't
 draw, but it will tell you what turns to make to draw a dragon curve:
 
     // create an object and put it in a variable "dragon"
-    dragon <- (||
+    dragon <- [
       // define a "trace:" method for outputting the series of left and
       // right turns needed to draw a dragon curve.
       trace: depth {
@@ -48,7 +46,7 @@ draw, but it will tell you what turns to make to draw a dragon curve:
           self traceDepth: n - 1 turn: "L"
         }
       }
-    )
+    ]
 
     // now lets try it
     dragon trace: 5

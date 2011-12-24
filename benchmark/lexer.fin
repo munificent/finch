@@ -25,45 +25,45 @@ Token/IgnoreLine   <- "ignore line"
 Token/Eof          <- "eof"
 Token/Error        <- "error"
 
-Token <- (||
+Token <- [
   new: type text: text span: span {
-    (|Tokens| _type <- type, _text <- text, _span <- span )
+    [|Tokens| _type <- type, _text <- text, _span <- span ]
   }
-)
+]
 
-Tokens <- (||
+Tokens <- [
   type { _type }
   text { _text }
   span { _span }
 
   to-string { "'" + _text + "' (" + _type + ") " + _span }
-)
+]
 
-SourceSpan <- (||
+SourceSpan <- [
   new-file: file start: start end: end {
-    (|SourceSpans| _file <- file, _start <- start, _end <- end)
+    [|SourceSpans| _file <- file, _start <- start, _end <- end ]
   }
-)
+]
 
-SourceSpans <- (||
+SourceSpans <- [
   file <- { _file <- it }
   file { _file }
   start { _start }
   end { _end }
 
   to-string { _file path + ":" + _start + ":" + _end }
-)
+]
 
-SourceFile <- (||
+SourceFile <- [
   new-path: path source: source {
-    (|SourceFiles| _path <- path, _source <- source)
+    [|SourceFiles| _path <- path, _source <- source ]
   }
-)
+]
 
-SourceFiles <- (||
+SourceFiles <- [
   path { _path }
   source { _source }
-)
+]
 
 Strings :: (
   alpha? {
@@ -83,19 +83,19 @@ Strings :: (
   }
 )
 
-Lexer <- (||
+Lexer <- [
   new-path: path source: source {
-    (|Lexers|
+    [|Lexers|
       _file <- SourceFile new-path: path source: source
       _source <- source
       _pos <- 0
       _start <- 0
       _eat-newlines? <- true
-    )
+    ]
   }
-)
+]
 
-Lexers <- (||
+Lexers <- [
   each: block {
     token <- self next-token
     while: { token != nil } do: {
@@ -300,7 +300,7 @@ Lexers <- (||
     span <- SourceSpan new-file: _file start: _start end: _pos
     Token new: type text: text span: span
   }
-)
+]
 
 file <- Io read-file: "../../benchmark/lexer.fin"
 tokens <- 0

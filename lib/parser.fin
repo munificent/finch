@@ -3,12 +3,12 @@ load: "../../lib/lexer.fin"
 load: "../../lib/ast.fin"
 load: "../../lib/pretty-print.fin"
 
-Parser <- (||
+Parser <- [
   new-tokens: tokens {
-    (|self traits|) init-tokens: tokens ; yourself
+    [|self traits|] init-tokens: tokens ; yourself
   }
 
-  traits <- (||
+  traits <- [
     init-tokens: tokens {
       _tokens <- tokens
       _read <- #[]
@@ -105,14 +105,14 @@ Parser <- (||
         _read add: _tokens next-token
       }
     }
-  )
-)
+  ]
+]
 
-FinchParser <- (|Parser|
+FinchParser <- [|Parser|
   // TODO: Should be able to use 'super traits' here but before that works the
   // expressions used to create fields need to be evaluated in the context of
   // the enclosing object (i.e. self needs to be bound to the enclosing object).
-  traits <- (|Parser traits|
+  traits <- [|Parser traits|
     parse {
       expr <- self expression
       self consume: Token/Eof
@@ -368,8 +368,8 @@ FinchParser <- (|Parser|
       self consume: Token/RightBrace error: "Expect '}' after method body."
       Expr block-params: params body: body
     }
-  )
-)
+  ]
+]
 
 files each: {|file|
   write-line: file

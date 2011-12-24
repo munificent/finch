@@ -127,7 +127,7 @@ namespace Finch
             if (Match(TOKEN_LEFT_PAREN))
             {
                 // multiple bind
-                PARSE_RULE(dummy, ParseDefines(expr));
+                PARSE_RULE(dummy, ParseDefines(expr, TOKEN_RIGHT_PAREN));
             }
             else
             {
@@ -335,41 +335,40 @@ namespace Finch
         }
         else if (Match(TOKEN_LEFT_PAREN))
         {
+            // parenthesized expression
+            PARSE_RULE(expression, Expression());
+            CONSUME(TOKEN_RIGHT_PAREN, "Expect closing ')'.");
+            return expression;
+        }
+        else if (Match(TOKEN_LEFT_BRACKET))
+        {
+            // object literal
+            
+            // parse the parent, if given
+            Ref<Expr> parent;
             if (Match(TOKEN_PIPE))
             {
-                // object literal
-
-                // parse the parent
-                Ref<Expr> parent;
-                if (Match(TOKEN_PIPE))
-                {
-                    // no parent, so implicit "Object"
-                    parent = Ref<Expr>(new NameExpr("Object"));
-                }
-                else
-                {
-                    // TODO(bob): Macro isn't helping here. :(
-                    PARSE_RULE(tempParent, Assignment());
-                    parent = tempParent;
-                    CONSUME(TOKEN_PIPE, "Expect closing '|' after parent.");
-                }
-
-                Ref<Expr> object = Ref<Expr>(new ObjectExpr(parent));
-                
-                if (!Match(TOKEN_RIGHT_PAREN))
-                {
-                    PARSE_RULE(dummy, ParseDefines(object));
-                }
-
-                return object;
+                // TODO(bob): Macro isn't helping here. :(
+                PARSE_RULE(tempParent, Assignment());
+                parent = tempParent;
+                CONSUME(TOKEN_PIPE, "Expect closing '|' after parent.");
             }
             else
             {
-                // just a parenthesized expression
-                PARSE_RULE(expression, Expression());
-                CONSUME(TOKEN_RIGHT_PAREN, "Expect closing ')'.");
-                return expression;
+                // no parent, so implicit "Object"
+                // TODO(bob): Just leave null in AST and have compiler handle
+                // this?
+                parent = Ref<Expr>(new NameExpr("Object"));
             }
+            
+            Ref<Expr> object = Ref<Expr>(new ObjectExpr(parent));
+            
+            if (!Match(TOKEN_RIGHT_BRACKET))
+            {
+                PARSE_RULE(dummy, ParseDefines(object, TOKEN_RIGHT_BRACKET));
+            }
+            
+            return object;
         }
         else if (Match(TOKEN_HASH))
         {
@@ -459,14 +458,14 @@ namespace Finch
         return Ref<Expr>();
     }
     
-    Ref<Expr> FinchParser::ParseDefines(Ref<Expr> expr)
+    Ref<Expr> FinchParser::ParseDefines(Ref<Expr> expr, TokenType endToken)
     {
         while (true)
         {
             PARSE_RULE(dummy, ParseDefine(expr));
-            if (Match(TOKEN_RIGHT_PAREN)) break;
+            if (Match(endToken)) break;
             CONSUME(TOKEN_LINE, "Definitions must be separated by lines.");
-            if (Match(TOKEN_RIGHT_PAREN)) break;
+            if (Match(endToken)) break;
         }
         
         return expr;

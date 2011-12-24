@@ -12,14 +12,14 @@ Numbers :: (
 
 // This way, a user could come along and define their own type:
 
-Vector <- (||
-  new-x: x y: y { (|Vectors| _x <- x, _y <- y) }
-)
+Vector <- [
+  new-x: x y: y { [|Vectors| _x <- x, _y <- y ] }
+]
 
-Vectors <- (||
+Vectors <- [
   + other { other add-vector: self }
   add-vector: vec { Vector new-x: vec x + self x y: vec y + self y }
-)
+]
 
 Numbers :: (
   add-vector: vec { Vector new-x: vec x + self y: vec y + self }
@@ -28,5 +28,5 @@ Numbers :: (
 // And with that they can support addition between vectors and numbers
 // symmetrically:
 
-1 + (Vector new-x: 2 y: 3) ' (3, 4)
-(Vector new-x: 2 y: 3) + 1 ' (3, 4)
+1 + (Vector new-x: 2 y: 3) // (3, 4)
+(Vector new-x: 2 y: 3) + 1 // (3, 4)

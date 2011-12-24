@@ -11,16 +11,16 @@ When it comes to an object-oriented language, one of the most important things i
 You create an object by defining these things. The easiest way is with an *object literal*, like so:
 
     :::finch
-    (|| greet { write-line: "Hi!" } )
+    [ greet { write-line: "Hi!" } ]
 
-An object literal is a pair of parentheses. Inside the parentheses, before anything else, are a pair of pipes (`|`). For now, don't worry about what goes inside the pipes. After those are a series of *definitions*, separated by commas (or newlines).
+An object literal is a pair of square brackets. Inside the brackets are a series of *definitions*, separated by commas (or newlines).
 
 In the above example, we've defined one thing: an unary method named "greet" whose body is `{ write-line: "Hi!" }`. If we store our object in a variable like this:
 
     :::finch
-    greeter <- (||
+    greeter <- [
       greet { write-line: "Hi!" }
-    )
+    ]
 
 Then we can send it a message like so:
 
@@ -32,7 +32,7 @@ Then we can send it a message like so:
 Much like unary, operator and keyword *messages*, object literals let you define unary, operator, and keyword *methods*. They look like this:
 
     :::finch
-    greeter <- (||
+    greeter <- [
       // unary
       greet { write-line: "Hi!" }
 
@@ -43,7 +43,7 @@ Much like unary, operator and keyword *messages*, object literals let you define
       greet: who and: who-else {
         write-line: "Hi, " + who " and " + who-else
       }
-    )
+    ]
 
 When you send a message to the object, it will look for a matching method, bind the arguments to the method's parameters, and then call its block. So when you do:
 
@@ -57,14 +57,14 @@ It will bind `"Fred"` to `other` and then call the block.
 Within the body of a method, you can access and set state on the object itself. Doing so looks like working with regular variables, except their names start with an underscore (`_`).
 
     :::finch
-    counter <- (||
+    counter <- [
       increment {
         if: _count == nil then: { _count <- 0 }
         _count <- _count + 1
       }
 
       count { _count }
-    )
+    ]
 
 Here, the `increment` and `count` methods both use a `_count` field. You can think of fields as being a variable scope that encloses all methods and that they share. Within a method, you can create a field simply by assigning it.
 
@@ -80,22 +80,22 @@ That's why `greeter` defines a `count` method to explicitly expose that. The ide
 Often when you create an object you want it to start with some initial state. To make that easier, you can also initialize fields in an object literal. We can simplify our above example by doing:
 
     :::finch
-    counter <- (||
+    counter <- [
       _count <- 0
 
       increment { _count <- _count + 1 }
       count { _count }
-    )
+    ]
 
 ### Property Definitions
 
 While it's good that objects encapsulate their state, it's also pretty common for them to expose some of it with simply unary methods that just get a field. To make that easier, you can do this:
 
     :::finch
-    counter <- (||
+    counter <- [
       count <- 0
       increment { _count <- _count + 1 }
-    )
+    ]
 
 Here, the `count <- 0` bit is exactly equivalent to initializing `_count` (with the underscore!) to zero, and then defining an accessor method `count` that returns it.
 
@@ -104,14 +104,14 @@ Here, the `count <- 0` bit is exactly equivalent to initializing `_count` (with 
 Within the body of a method, you often want to get the object that the method is being invoked on. In Finch, that's called `self`:
 
     :::finch
-    counter <- (||
+    counter <- [
       count <- 0
       increment { _count <- _count + 1 }
       increment-twice {
         self increment
         self increment
       }
-    )
+    ]
 
 Here, we're using `self` in order to call one method from another. Unlike Java and C++, but like JavaScript, you have to explicitly use `self` (or `this` in those languages) to send a message to yourself.
 
@@ -119,17 +119,15 @@ Here, we're using `self` in order to call one method from another. Unlike Java a
 
 ## Inheritance
 
-Now we get to the pipes.
-
 Finch is a *prototype*-based language. That means it doesn't have classes. When you send a message to an object, it's the object itself that we look for the methods on. But Finch *does* support inheritance. Every object can have a *parent* object.
 
 When you send a message to an object, if it doesn't have a matching method, it delegates to its parent (which may in turn delegate to *its* parent, and so on, all the way up to `Object`, the root from which all objects ultimately descend).
 
-You specify an object's parent by placing an expression between the pipes in the literal. If you omit it, it defaults to `Object`.
+You specify an object's parent by placing an expression between pipes (`|`) at the beginning of the literal. If you omit it, it defaults to `Object`.
 
     :::finch
-    parent <- (|| inherited { "from parent" } )
-    child <- (|Parent| childish { "in child" } )
+    parent <- [ inherited { "from parent" } ]
+    child <- [|Parent| childish { "in child" } ]
 
     child childish // "in child"
     child inherited // "in parent"
@@ -137,23 +135,23 @@ You specify an object's parent by placing an expression between the pipes in the
 When an inherited method is called, `self` will still be the object that originally received the message, not the parent where the method was actually found. By example:
 
     :::finch
-    parent <- (||
+    parent <- [
       say-name { write-line: self name }
       name { "parent" }
-    )
+    ]
 
-    child <- (|| name { "child" } )
+    child <- [ name { "child" } ]
     child say-name // "child"
 
 Likewise, when you access fields in an inherited method, it will look for them in the original receiving object:
 
     :::finch
-    parent <- (||
+    parent <- [
       say-name { write-line: _name }
       _name <- "parent"
-    )
+    ]
 
-    child <- (|| _name <- "child" )
+    child <- [ _name <- "child" ]
     child say-name // "child"
 
 In the same way that methods are inherited, fields are too. When you access a field in an object, if it can't be found there, it will look up the parent chain to find it.
@@ -173,16 +171,16 @@ The type object's job is to contain the "static" methods that are relevant to th
 The convention in Finch is that the type object is named using a singular PascalCased noun, and the prototype is plural.
 
     :::finch
-    Point <- (||
-      new-x: x y: y { (|Points| _x <- x, _y <- y) }
-    )
+    Point <- [
+      new-x: x y: y { [|Points| _x <- x, _y <- y ] }
+    ]
 
-    Points <- (||
+    Points <- [
       x { _x }
       y { _y }
       + other { Point new-x: _x + other x y: _y + other y }
       toString { "(" + _x + ", " + _y + ")" }
-    )
+    ]
 
 Here we're defining a two-dimensional point type. The `Point` object represents the type itself. It's one contribution is to define a constructor method that creates a new point instance. That method just returns an object literal with some state initialized and its parent correctly wired up to `Points`.
 

@@ -4,9 +4,9 @@ Welcome and thanks for coming. You're here because, for some reason, you're inte
 
 ## What is Finch?
 
-[Finch](http://bitbucket.org/munificent/finch/) is a simple [bytecode](http://en.wikipedia.org/wiki/Bytecode) [interpreted](http://en.wikipedia.org/wiki/Interpreted_language), purely [object-oriented](http://en.wikipedia.org/wiki/Object-oriented_programming), [prototype-based](http://en.wikipedia.org/wiki/Prototype-based_programming), [dynamically-typed](http://en.wikipedia.org/wiki/Dynamic_programming_language) programming language. It's mostly inspired by [Smalltalk](http://www.smalltalk.org/main/), [Self](http://selflanguage.org/), and [Javascript](https://developer.mozilla.org/en/About_JavaScript).
+[Finch](http://github.com/munificent/finch/) is a simple [bytecode](http://en.wikipedia.org/wiki/Bytecode) [interpreted](http://en.wikipedia.org/wiki/Interpreted_language), purely [object-oriented](http://en.wikipedia.org/wiki/Object-oriented_programming), [prototype-based](http://en.wikipedia.org/wiki/Prototype-based_programming), [dynamically-typed](http://en.wikipedia.org/wiki/Dynamic_programming_language) programming language. It's mostly inspired by [Smalltalk](http://www.smalltalk.org/main/), [Self](http://selflanguage.org/), and [Javascript](https://developer.mozilla.org/en/About_JavaScript).
 
-It is written in C++ with a hand-written [lexer](http://bitbucket.org/munificent/finch/src/tip/src/Syntax/Lexer.h) and [parser](http://bitbucket.org/munificent/finch/src/tip/src/Syntax/FinchParser.h). It has minimal dependencies. I want Finch to be:
+It is written in C++ with a hand-written [lexer](https://github.com/munificent/finch/blob/master/src/Syntax/Lexer.h) and [parser](https://github.com/munificent/finch/blob/master/src/Syntax/FinchParser.h). It has minimal dependencies. I want Finch to be:
 
 *   Syntactically expressive yet minimal. Your code should look beautiful and
     do what you want.
@@ -31,7 +31,7 @@ Here's a little example to get you going. This little program doesn't draw, but 
 
     :::finch
     // create an object and put it in a variable "dragon"
-    dragon <- (||
+    dragon <- [
       // define a "trace:" method for outputting the series of left and
       // right turns needed to draw a dragon curve.
       trace: depth {
@@ -47,33 +47,31 @@ Here's a little example to get you going. This little program doesn't draw, but 
           self trace-depth: n - 1 turn: "L"
         }
       }
-    )
+    ]
 
     // now let's try it
     dragon trace: 5
 
 ## Getting Started
 
-**TODO: This is out of date. Finch uses gyp now.**
+Finch lives on github here: https://github.com/munificent/finch
 
-Finch lives on github here: [https://github.com/munificent/finch](https://github.com/munificent/finch)
+To play around with it, sync it down. Finch uses [GYP][] to generate projects or
+makefiles for your platform, which you then build to get an executable.
 
-To play around with it, sync it down. There is both an XCode project and a makefile. Use whichever you prefer. I don't have anything set up for Windows yet, but I'm keen if someone wants to throw a VS solution at me.
+1. Download GYP from: http://code.google.com/p/gyp/
+2. Clone the finch repo from github.
+3. In a terminal/command prompt, navigate to the root finch/ directory.
+4. Run GYP on this file: `<path to gyp>/gyp --depth=1`
+   Where `<path to gyp>` is wherever you downloaded GYP to in step 1.
+   This should spit out a project/makefile in the root directory for your
+   platform.
+5. Open that project in XCode or VS and build, or build the makefile.
+6. Ta-da! You should now have a Finch executable under a build/ directory.
 
-### Building on Mac OS X with XCode
+Let me know if you run into any problems.
 
-I mostly work on it in XCode. If you like that, here's how to get going:
-
-1. Open the XCode project at: `src/finch.xcodeproject`
-2. Build and run. Ta-da!
-
-### Building with make
-
-Thanks to [Steve Folta](http://www.folta.net/steve/), there is also a makefile for *nix users:
-
-1. `cd` to the root `finch` directory.
-2. `make`
-3. `./finch`
+[gyp]: http://code.google.com/p/gyp/
 
 ### Running Finch
 

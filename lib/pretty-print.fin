@@ -1,9 +1,9 @@
-PrettyPrinter <- (||
+PrettyPrinter <- [
   new {
-    (|PrettyPrinter proto| _buffer <- #[], _indent <- "" )
+    [|PrettyPrinter proto| _buffer <- #[], _indent <- "" ]
   }
 
-  proto <- (||
+  proto <- [
     to-string {
       result <- ""
       _buffer each: {|s| result <-- result + s }
@@ -18,8 +18,8 @@ PrettyPrinter <- (||
     // TODO(bob): Use these:
     indent { _indent <- _indent + "  " }
     dedent { _indent <- _indent from: 2 }
-  )
-)
+  ]
+]
 
 
 Exprs :: (
@@ -127,9 +127,9 @@ NumberExprs :: print-to: printer {
 
 ObjectExprs :: print-to: printer {
   if: _parent = nil then: {
-    printer write-line: "(||"
+    printer write-line: "["
   } else: {
-    printer write: "(|"
+    printer write: "[|"
     _parent print-to: printer
     printer write-line: "|"
   }

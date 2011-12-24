@@ -109,7 +109,7 @@ Ether :: (
 
 Blocks :: block? { true }
 
-Fiber <- (||
+Fiber <- [
   new: block { *primitive* new-fiber: block }
 
   spawn: block {
@@ -126,7 +126,7 @@ Fiber <- (||
   }
 
   yield { Fiber yield: nil }
-)
+]
 
 Fibers :: (
   fiber? { true }
@@ -184,7 +184,7 @@ Strings :: (
   from: from to: to { self from: from count: to - from }
 )
 
-Array <- (||
+Array <- [
   count: count {
     self count: count fill-with: nil
   }
@@ -195,7 +195,7 @@ Array <- (||
     from: 1 to: count do: {|i| result add: element }
     result
   }
-)
+]
 
 Arrays :: (
   array? { true }
@@ -265,14 +265,14 @@ Object :: (
 Object :: switch {
   // ### bob: having to do this is lame. :(
   outer-self <- self
-  (|Switches|
+  [|Switches|
     _value  <- outer-self
     _done?  <- false
     _result <- nil
-  )
+  ]
 }
 
-Switches <- (||
+Switches <- [
   case: case do: block {
     // If this switch has already matched a case, just do nothing.
     if: _done? not then: {
@@ -307,7 +307,7 @@ Switches <- (||
 
     _result
   }
-)
+]
 
 // ###bob: temp; run tests
 //load: "../../test/test.fin"

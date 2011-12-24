@@ -21,7 +21,7 @@ Test suite: "Return" is: {
 
   Test test: "return exits enclosing method" is: {
     a <- "0"
-    obj <- (||
+    obj <- [
       foo {
         a <-- a + "1"
         {
@@ -31,7 +31,7 @@ Test suite: "Return" is: {
         } call
         a <-- a + "4"
       }
-    )
+    ]
     obj foo
 
     Test that: a equals: "012"
@@ -39,23 +39,23 @@ Test suite: "Return" is: {
 
   Test test: "the method returns the value passed to return" is: {
     a <- "before"
-    obj <- (||
+    obj <- [
       foo {
         return "result"
         "bad"
       }
-    )
+    ]
 
     Test that: obj foo equals: "result"
   }
 
   Test test: "returns work even when passed to tail calls" is: {
     a <- "before"
-    obj <- (||
+    obj <- [
       foo {
         if: true then: { return "result" }
       }
-    )
+    ]
 
     Test that: obj foo equals: "result"
   }
@@ -64,10 +64,10 @@ Test suite: "Return" is: {
     // This is a regression test for a bug. If you did a return in the middle
     // of an expression, the other operands in the expression would be left on
     // the stack, causing all sorts of trouble.
-    obj <- (||
+    obj <- [
       foo { "left" + return "right" }
       bar { self foo }
-    )
+    ]
 
     Test that: obj bar equals: "right"
   }

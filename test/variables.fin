@@ -83,10 +83,10 @@ Test suite: "Variables" is: {
   }
 
   Test test: "Field" is: {
-    foo <- (||
+    foo <- [
       create { _field <- "field" }
       test { Test that: _field equals: "field" }
-    )
+    ]
 
     Test that: _field equals: nil
     foo create
@@ -95,13 +95,13 @@ Test suite: "Variables" is: {
   }
 
   Test test: "Assign to parent" is: {
-    parent <- (||
+    parent <- [
       _a <- "parent"
       get { _a }
-    )
-    child <- (|parent|
+    ]
+    child <- [|parent|
       assign { _a <-- "child" }
-    )
+    ]
 
     child assign
     Test that: child get equals: "child"

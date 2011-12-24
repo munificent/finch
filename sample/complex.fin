@@ -1,13 +1,13 @@
 // create the main factory object
-Complex <- (||
+Complex <- [
   // constructor
   new: real i: imaginary {
-    (|Complexes| _real <- real, _imaginary <- imaginary )
+    [|Complexes| _real <- real, _imaginary <- imaginary ]
   }
-)
+]
 
 // the prototypical complex number
-Complexes <- (||
+Complexes <- [
   _real <- 0
   _imaginary <- 0
 
@@ -37,7 +37,7 @@ Complexes <- (||
   magnitude {
     ((_real * _real) + (_imaginary * _imaginary)) sqrt
   }
-)
+]
 
 // allow creating complex numbers from normal ones
 Numbers :: i { Complex new: 0 i: self }
