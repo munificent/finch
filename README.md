@@ -31,16 +31,16 @@ A Taste of the Language
 Here's a little example to get you going. This little program doesn't
 draw, but it will tell you what turns to make to draw a dragon curve:
 
-    ' create an object and put it in a variable "dragon"
+    // create an object and put it in a variable "dragon"
     dragon <- (||
-      ' define a "trace:" method for outputting the series of left and
-      ' right turns needed to draw a dragon curve.
+      // define a "trace:" method for outputting the series of left and
+      // right turns needed to draw a dragon curve.
       trace: depth {
         self traceDepth: depth turn: "R"
-        writeLine: "" ' end the line
+        writeLine: "" // end the line
       }
 
-      ' the main recursive method
+      // the main recursive method
       traceDepth: n turn: turn {
         if: n > 0 then: {
           self traceDepth: n - 1 turn: "R"
@@ -50,7 +50,7 @@ draw, but it will tell you what turns to make to draw a dragon curve:
       }
     )
 
-    ' now lets try it
+    // now lets try it
     dragon trace: 5
 
 
@@ -66,7 +66,7 @@ makefiles for your platform, which you then build to get an executable.
 2. Clone the finch repo from github.
 3. In a terminal/command prompt, navigate to the root finch/ directory.
 4. Run GYP on this file: `<path to gyp>/gyp --depth=1`
-   Where <path to gyp> is wherever you downloaded GYP to in step 1.
+   Where `<path to gyp>` is wherever you downloaded GYP to in step 1.
    This should spit out a project/makefile in the root directory for your
    platform.
 5. Open that project in XCode or VS and build, or build the makefile.
@@ -86,14 +86,10 @@ you run it with a single argument, it expects that to be a path to a
 .fin script, and it will load and run that script.)
 
 Once you're in the REPL, you can load and execute a script using
-load:. The path must be relative to where the executable is. If you've
-built from XCode, you can run the tests like this:
+load:. The path must be relative to where the executable is right now (lame!).
+You can run the tests like this:
 
     >> load: "../../test/test.fin"
-
-If you built from a makefile, it's:
-
-    >> load: "test/test.fin"
 
 
 Where to Go from Here
