@@ -33,7 +33,7 @@ namespace Finch
     void LexerTests::Run()
     {
         // test the single character tokens
-        TestLex("()[]{}.|;",
+        TestLex("()[]{}.|,;",
             TOKEN_LEFT_PAREN,
             TOKEN_RIGHT_PAREN,
             TOKEN_LEFT_BRACKET,
@@ -42,11 +42,12 @@ namespace Finch
             TOKEN_RIGHT_BRACE,
             TOKEN_DOT,
             TOKEN_PIPE,
-            TOKEN_LINE, // ;
+            TOKEN_LINE, // ,
+            TOKEN_SEMICOLON,
             TOKEN_LINE, TOKEN_EOF);
         
         // test comments
-        TestLex("() ' this is ignored",
+        TestLex("() // this is ignored",
                 TOKEN_LEFT_PAREN,
                 TOKEN_RIGHT_PAREN,
                 TOKEN_LINE, TOKEN_EOF);
@@ -134,7 +135,8 @@ namespace Finch
         // edge cases:
         
         TestLex("<---",
-                TOKEN_OPERATOR);
+                TOKEN_OPERATOR,
+                TOKEN_LINE, TOKEN_EOF);
     }
     
     Token LexerTests::LexOne(const char * text)
@@ -156,7 +158,8 @@ namespace Finch
         while (true)
         {
             TokenType type = static_cast<TokenType>(va_arg(args, int));
-            EXPECT_EQUAL(type, lexer.ReadToken().Type());
+            Token token = lexer.ReadToken();
+            EXPECT_EQUAL(type, token.Type());
             
             if (type == TOKEN_EOF) break;
         }

@@ -12,8 +12,16 @@ namespace Finch
 
     void Test::ShowResults()
     {
-        cout << endl;
-        cout << (sTests - sFailed) << " tests passed out of " << sTests << "." << endl;
+        if (sFailed == 0)
+        {
+            cout << "SUCCESS: All " << sTests << " tests passed." << endl;
+        }
+        else
+        {
+            cout << endl;
+            cout << "FAILURE: " << (sTests - sFailed) <<
+                " tests passed out of " << sTests << "." << endl;
+        }
     }
 }
 

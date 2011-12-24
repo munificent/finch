@@ -309,7 +309,5 @@ Switches <- (||
   }
 )
 
-//write-line: "Base library loaded."
-
 // ###bob: temp; run tests
 //load: "../../test/test.fin"

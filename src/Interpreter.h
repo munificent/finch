@@ -24,7 +24,7 @@ namespace Finch
         
         // Reads from the given source and executes the results in a new fiber
         // in this interpreter.
-        void Interpret(ILineReader & reader);
+        void Interpret(ILineReader & reader, bool showResult);
         
         // Reads from the given source and executes the results as a block
         // within the given fiber.
@@ -52,7 +52,6 @@ namespace Finch
     private:
         Ref<Object> Run();
         Ref<Expr>   Parse(ILineReader & reader);
-        bool        Execute(Ref<Expr> expr);
 
         IInterpreterHost & mHost;
         Environment        mEnvironment;

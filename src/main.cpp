@@ -8,14 +8,6 @@
 #include "ReplLineReader.h"
 #include "StandaloneInterpreterHost.h"
 
-//#define UNIT_TESTS
-
-#ifdef UNIT_TESTS
-
-#include "TestMain.h"
-
-#endif
-
 using namespace Finch;
 
 using std::cout;
@@ -45,7 +37,7 @@ bool InterpretFile(Interpreter & interpreter, String filePath)
     Ref<ILineReader> reader = OpenFile(filePath);
     if (reader.IsNull()) return false;
     
-    interpreter.Interpret(*reader);
+    interpreter.Interpret(*reader, false);
     return true;
 }
 
@@ -59,11 +51,6 @@ PRIMITIVE(LoadFile)
 
 int main (int argc, char * const argv[])
 {
-    #ifdef UNIT_TESTS
-    TestMain::Run();
-    return 0;
-    #endif
-    
     StandaloneInterpreterHost host;
     Interpreter               interpreter(host);
     
@@ -94,7 +81,7 @@ int main (int argc, char * const argv[])
         while (true) {
             // ansi color: std::cout << "\033[0;32m";
             ReplLineReader reader;
-            interpreter.Interpret(reader);
+            interpreter.Interpret(reader, true);
         }
     }
     else if (argc == 2)

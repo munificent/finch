@@ -23,7 +23,7 @@ namespace Finch
             Array<int> array(5);
             
             EXPECT_EQUAL(0, array.Count());
-            EXPECT_EQUAL(5, array.Capacity());
+            EXPECT(array.Capacity() >= 5);
         }
     }
     

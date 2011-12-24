@@ -31,9 +31,26 @@ namespace Finch
         Interpreter & mInterpreter;
     };
     
-    void Interpreter::Interpret(ILineReader & reader)
+    void Interpreter::Interpret(ILineReader & reader, bool showResult)
     {
-        Execute(Parse(reader));
+        Ref<Expr> expr = Parse(reader);
+        
+        // bail if we failed to parse
+        if (expr.IsNull()) return;
+        
+        // create a starting fiber for the expression
+        Ref<Object> block = mEnvironment.CreateBlock(expr);
+        mCurrentFiber = Object::NewFiber(*this, block);
+        
+        // run the interpreter
+        Ref<Object> result = Run();
+        
+        if (showResult)
+        {
+            std::stringstream text;
+            text << *result << std::endl;
+            mHost.Output(String(text.str().c_str()));
+        }
     }
     
     void Interpreter::Interpret(ILineReader & reader, Fiber & fiber)
@@ -93,29 +110,6 @@ namespace Finch
         FinchParser    parser(normalizer, errorReporter);
         
         return parser.Parse();
-    }
-    
-    bool Interpreter::Execute(Ref<Expr> expr)
-    {        
-        // bail if we failed to parse
-        if (expr.IsNull()) return false;
-        
-        // create a starting fiber for the expression
-        Ref<Object> block = mEnvironment.CreateBlock(expr);
-        mCurrentFiber = Object::NewFiber(*this, block);
-        
-        // run the interpreter
-        Ref<Object> result = Run();
-        
-        // don't bother printing nil results
-        if (result != mEnvironment.Nil())
-        {
-            std::stringstream text;
-            text << *result << std::endl;
-            mHost.Output(String(text.str().c_str()));
-        }
-        
-        return true;
     }
     
     void Interpreter::SwitchToFiber(Ref<Object> fiber)
