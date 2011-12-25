@@ -22,7 +22,7 @@ PrettyPrinter <- [
 ]
 
 
-Exprs :: (
+Expr proto :: (
   to-string { self pretty-print }
 
   pretty-print {
@@ -36,7 +36,7 @@ Exprs :: (
   }
 )
 
-ArrayExprs :: print-to: printer {
+Expr array-proto :: print-to: printer {
   printer write: "#["
 
   _elements each: {|element|
@@ -48,7 +48,7 @@ ArrayExprs :: print-to: printer {
   printer write: "]"
 }
 
-BindExprs :: print-to: printer {
+Expr bind-proto :: print-to: printer {
   _receiver print-to: printer
   printer write: " :: "
 
@@ -61,7 +61,7 @@ BindExprs :: print-to: printer {
   }
 }
 
-BlockExprs :: print-to: printer {
+Expr block-proto :: print-to: printer {
   if: _params count = 0 then: {
     printer write: "{ "
   } else: {
@@ -81,7 +81,7 @@ BlockExprs :: print-to: printer {
   printer write: " }"
 }
 
-DefineExprs :: print-defines-to: printer {
+Expr define-proto :: print-defines-to: printer {
   _defines each: {|define|
     define print-to: printer
   } between: {
@@ -101,7 +101,7 @@ Define proto :: print-to: printer {
   }
 }
 
-MessageExprs :: print-to: printer {
+Expr message-proto :: print-to: printer {
   printer write: "("
 
   // Will be nil for messages sent to Ether.
@@ -117,15 +117,15 @@ MessageExprs :: print-to: printer {
   printer write: ")"
 }
 
-NameExprs :: print-to: printer {
+Expr name-proto :: print-to: printer {
   printer write: _name
 }
 
-NumberExprs :: print-to: printer {
+Expr number-proto :: print-to: printer {
   printer write: _value
 }
 
-ObjectExprs :: print-to: printer {
+Expr object-proto :: print-to: printer {
   if: _parent = nil then: {
     printer write-line: "["
   } else: {
@@ -138,11 +138,11 @@ ObjectExprs :: print-to: printer {
   printer write: ")"
 }
 
-SelfExprs :: print-to: printer {
+Expr self-proto :: print-to: printer {
   printer write: "self"
 }
 
-SequenceExprs :: print-to: printer {
+Expr sequence-proto :: print-to: printer {
   _exprs each: {|expr|
     expr print-to: printer
   } between: {
@@ -150,18 +150,18 @@ SequenceExprs :: print-to: printer {
   }
 }
 
-SetExprs :: print-to: printer {
+Expr set-proto :: print-to: printer {
   printer write: "<set not impl>"
 }
 
-StringExprs :: print-to: printer {
+Expr string-proto :: print-to: printer {
   printer write: "\""
   // TODO(bob): Handle escapes.
   printer write: _value
   printer write: "\""
 }
 
-VarExprs :: print-to: printer {
+Expr var-proto :: print-to: printer {
   printer write: _name
   printer write: " <- "
   _value print-to: printer

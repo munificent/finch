@@ -109,10 +109,7 @@ Parser <- [
 ]
 
 FinchParser <- [|Parser|
-  // TODO: Should be able to use 'super traits' here but before that works the
-  // expressions used to create fields need to be evaluated in the context of
-  // the enclosing object (i.e. self needs to be bound to the enclosing object).
-  traits <- [|Parser traits|
+  traits <- [|self traits|
     parse {
       expr <- self expression
       self consume: Token/Eof

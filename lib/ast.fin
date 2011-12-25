@@ -1,97 +1,97 @@
 Expr <- [
   array: elements {
-    [|ArrayExprs| _elements <- elements ]
+    [|self array-proto| _elements <- elements ]
   }
 
   bind-receiver: receiver defines: defines {
-    [|BindExprs| _receiver <- receiver, _defines <- defines ]
+    [|self bind-proto| _receiver <- receiver, _defines <- defines ]
   }
 
   block-params: params body: body {
-    [|BlockExprs| _params <- params, _body <- body ]
+    [|self block-proto| _params <- params, _body <- body ]
   }
 
   message-receiver: receiver name: name args: args {
-    [|MessageExprs| _receiver <- receiver, _name <- name, _args <- args ]
+    [|self message-proto| _receiver <- receiver, _name <- name, _args <- args ]
   }
 
-  name: name { [|NameExprs| _name <- name ] }
-  number: value { [|NumberExprs| _value <- value ] }
+  name: name { [|self name-proto| _name <- name ] }
+  number: value { [|self number-proto| _value <- value ] }
 
   object-parent: parent defines: defines {
-    [|ObjectExprs| _parent <- parent, _defines <- defines ]
+    [|self object-proto| _parent <- parent, _defines <- defines ]
   }
 
-  self_ { [|SelfExprs|] }
+  self_ { [|self self-proto|] }
 
-  sequence: exprs { [|SequenceExprs| _exprs <- exprs ] }
+  sequence: exprs { [|self sequence-proto| _exprs <- exprs ] }
 
   set-name: name value: value {
-    [|SetExprs| _name <- name, _value <- value ]
+    [|self set-proto| _name <- name, _value <- value ]
   }
 
-  string: value { [|StringExprs| _value <- value ] }
+  string: value { [|self string-proto| _value <- value ] }
 
   var-name: name value: value {
-    [|VarExprs| _name <- name, _value <- value ]
+    [|self var-proto| _name <- name, _value <- value ]
   }
-]
 
-Exprs <- []
+  proto <- []
 
-ArrayExprs <- [|Exprs|
-  elements { _elements }
-]
+  array-proto <- [|self proto|
+    elements { _elements }
+  ]
 
-DefineExprs <- [|Exprs|
-  defines { _defines }
-]
+  define-proto <- [|self proto|
+    defines { _defines }
+  ]
 
-BindExprs <- [|DefineExprs|
-  receiver { _receiver }
-]
+  bind-proto <- [|self define-proto|
+    receiver { _receiver }
+  ]
 
-BlockExprs <- [|Exprs|
-  params { _params }
-  body { _body }
-]
+  block-proto <- [|self proto|
+    params { _params }
+    body { _body }
+  ]
 
-MessageExprs <- [|Exprs|
-  receiver { _receiver }
-  name { _name }
-  args { _args }
-]
+  message-proto <- [|self proto|
+    receiver { _receiver }
+    name { _name }
+    args { _args }
+  ]
 
-NameExprs <- [|Exprs|
-  name { _name }
-]
+  name-proto <- [|self proto|
+    name { _name }
+  ]
 
-NumberExprs <- [|Exprs|
-  value { _value }
-]
+  number-proto <- [|self proto|
+    value { _value }
+  ]
 
-ObjectExprs <- [|DefineExprs|
-  parent { _parent }
-]
+  object-proto <- [|self define-proto|
+    parent { _parent }
+  ]
 
-SelfExprs <- [|Exprs|)
+  self-proto <- [|self proto|]
 
-SequenceExprs <- [|Exprs|
-  exprs { _exprs }
-]
+  sequence-proto <- [|self proto|
+    exprs { _exprs }
+  ]
 
-SetExprs <- [|Exprs|
-  name { _name }
-  value { _value }
-]
+  set-proto <- [|self proto|
+    name { _name }
+    value { _value }
+  ]
 
-StringExprs <- [|Exprs|
-  value { _value }
-]
+  string-proto <- [|self proto|
+    value { _value }
+  ]
 
-VarExprs <- [|Exprs|
-  name { _name }
-  value { _value }
+  var-proto <- [|self proto|
+    name { _name }
+    value { _value }
+  ]
 ]
 
 Define <- [
