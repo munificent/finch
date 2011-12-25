@@ -24,7 +24,7 @@ namespace Finch
         
         // Lexes and returns the next full Token read from the source. If the
         // ILineReader is out of lines, this will return an EOF Token.
-        virtual Token ReadToken();
+        virtual Ref<Token> ReadToken();
         
     private:
         bool IsDone() const;
@@ -34,11 +34,11 @@ namespace Finch
         char Advance();
                 
         void SkipBlockComment();
-        Token SingleToken(TokenType type);
-        Token ReadString();
-        Token ReadNumber();
-        Token ReadName();
-        Token ReadOperator();
+        Ref<Token> SingleToken(TokenType type);
+        Ref<Token> ReadString();
+        Ref<Token> ReadNumber();
+        Ref<Token> ReadName();
+        Ref<Token> ReadOperator();
         
         void AdvanceLine();
         
@@ -47,7 +47,7 @@ namespace Finch
         bool IsDigit(char c) const;
         bool IsOperator(char c) const;
         
-        ILineReader    & mReader;
+        ILineReader & mReader;
         
         bool    mNeedsLine;
         String  mLine;

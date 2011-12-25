@@ -12,11 +12,11 @@ namespace Finch
         return mReader.IsInfinite();
     }
     
-    Token Lexer::ReadToken()
+    Ref<Token> Lexer::ReadToken()
     {
         while (true)
         {
-            if (IsDone()) return Token(TOKEN_EOF);
+            if (IsDone()) return Ref<Token>(new Token(TOKEN_EOF));
             
             if (mNeedsLine)
             {
@@ -38,7 +38,7 @@ namespace Finch
                 case '\0':
                     // End of the line.
                     mNeedsLine = true;
-                    return Token(TOKEN_LINE);
+                    return Ref<Token>(new Token(TOKEN_LINE));
                     
                 case '(': return SingleToken(TOKEN_LEFT_PAREN);
                 case ')': return SingleToken(TOKEN_RIGHT_PAREN);
@@ -60,11 +60,11 @@ namespace Finch
                     {
                         // "::".
                         Advance();
-                        return Token(TOKEN_BIND);
+                        return Ref<Token>(new Token(TOKEN_BIND));
                     }
 
                     // Just a ":" by itself.
-                    return Token(TOKEN_KEYWORD, ":");
+                    return Ref<Token>(new Token(TOKEN_KEYWORD, ":"));
                 
                 case '-':
                     Advance();
@@ -78,7 +78,7 @@ namespace Finch
                         // Line comment, so ignore the rest of the line and
                         // emit the line token.
                         mNeedsLine = true;
-                        return Token(TOKEN_LINE);
+                        return Ref<Token>(new Token(TOKEN_LINE));
                     }
                     else if (Peek() == '*')
                     {
@@ -101,8 +101,8 @@ namespace Finch
                     // If we got here, we don't know what it is. Just eat it so
                     // we don't get stuck.
                     Advance();
-                    return Token(TOKEN_ERROR, String::Format(
-                        "Unrecognized character \"%c\".", c));
+                    return Ref<Token>(new Token(TOKEN_ERROR, String::Format(
+                        "Unrecognized character \"%c\".", c)));
             }
         }
     }
@@ -183,29 +183,29 @@ namespace Finch
         }
     }
     
-    Token Lexer::SingleToken(TokenType type)
+    Ref<Token> Lexer::SingleToken(TokenType type)
     {
         Advance();
-        return Token(type);
+        return Ref<Token>(new Token(type));
     }
     
-    Token Lexer::ReadString()
+    Ref<Token> Lexer::ReadString()
     {
         Advance();
         
         String text;
         while (true)
         {
-            if (IsDone()) return Token(TOKEN_ERROR, "Unterminated string.");
+            if (IsDone()) return Ref<Token>(new Token(TOKEN_ERROR, "Unterminated string."));
             
             char c = Advance();
-            if (c == '"') return Token(TOKEN_STRING, text);
+            if (c == '"') return Ref<Token>(new Token(TOKEN_STRING, text));
             
             // An escape sequence.
             if (c == '\\')
             {
-                if (IsDone()) return Token(TOKEN_ERROR,
-                        "Unterminated string escape.");
+                if (IsDone()) return Ref<Token>(new Token(TOKEN_ERROR,
+                        "Unterminated string escape."));
                 
                 char e = Advance();
                 switch (e)
@@ -215,8 +215,8 @@ namespace Finch
                     case '\\': text += "\\"; break;
                     case 't': text += "\t"; break;
                     default:
-                        return Token(TOKEN_ERROR, String::Format(
-                                "Unrecognized escape sequence \"%c\".", e));
+                        return Ref<Token>(new Token(TOKEN_ERROR, String::Format(
+                                "Unrecognized escape sequence \"%c\".", e)));
                 }
             }
             else
@@ -227,7 +227,7 @@ namespace Finch
         }
     }
     
-    Token Lexer::ReadNumber()
+    Ref<Token> Lexer::ReadNumber()
     {
         Advance();
         while (IsDigit(Peek())) Advance();
@@ -241,10 +241,10 @@ namespace Finch
 
         String text = mLine.Substring(mStart, mPos - mStart);
         double number = atof(text.CString());
-        return Token(TOKEN_NUMBER, number);
+        return Ref<Token>(new Token(TOKEN_NUMBER, number));
     }
     
-    Token Lexer::ReadName()
+    Ref<Token> Lexer::ReadName()
     {
         while (IsOperator(Peek()) || IsAlpha(Peek()) || IsDigit(Peek()))
         {
@@ -264,15 +264,15 @@ namespace Finch
         
         String name = mLine.Substring(mStart, mPos - mStart);
         
-        if (name == "break") return Token(TOKEN_BREAK);
-        if (name == "return") return Token(TOKEN_RETURN);
-        if (name == "self") return Token(TOKEN_SELF);
-        if (name == "undefined") return Token(TOKEN_UNDEFINED);
+        if (name == "break") return Ref<Token>(new Token(TOKEN_BREAK));
+        if (name == "return") return Ref<Token>(new Token(TOKEN_RETURN));
+        if (name == "self") return Ref<Token>(new Token(TOKEN_SELF));
+        if (name == "undefined") return Ref<Token>(new Token(TOKEN_UNDEFINED));
         
-        return Token(type, name);
+        return Ref<Token>(new Token(type, name));
     }
     
-    Token Lexer::ReadOperator()
+    Ref<Token> Lexer::ReadOperator()
     {
         while (IsOperator(Peek()))
         {
@@ -288,10 +288,10 @@ namespace Finch
         
         String name = mLine.Substring(mStart, mPos - mStart);
         
-        if (name == "<-") return Token(TOKEN_ARROW);
-        if (name == "<--") return Token(TOKEN_LONG_ARROW);
+        if (name == "<-") return Ref<Token>(new Token(TOKEN_ARROW));
+        if (name == "<--") return Ref<Token>(new Token(TOKEN_LONG_ARROW));
         
-        return Token(TOKEN_OPERATOR, name);
+        return Ref<Token>(new Token(TOKEN_OPERATOR, name));
     }
     
     void Lexer::AdvanceLine()

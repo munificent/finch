@@ -7,21 +7,21 @@ namespace Finch
         return mTokens.IsInfinite();
     }
     
-    Token LineNormalizer::ReadToken()
+    Ref<Token> LineNormalizer::ReadToken()
     {
-        Token token;
+        Ref<Token> token;
         
-        while (token.Type() == TOKEN_NONE)
+        while (token.IsNull())
         {
             token = mTokens.ReadToken();
             
-            switch (token.Type())
+            switch (token->Type())
             {
                 case TOKEN_LINE:
                     if (mEatNewlines)
                     {
                         // discard any lines
-                        token = Token();
+                        token.Clear();
                     }
                     else
                     {
@@ -32,7 +32,7 @@ namespace Finch
                     
                 case TOKEN_IGNORE_LINE:
                     // eat the ignore token
-                    token = Token();
+                    token.Clear();
                     
                     // and newlines after it
                     mEatNewlines = true;

@@ -67,10 +67,10 @@ namespace Finch
                 TOKEN_NUMBER,
                 TOKEN_LINE, TOKEN_EOF);
         
-        EXPECT_EQUAL(0,    LexOne("0").Number());
-        EXPECT_EQUAL(1,    LexOne("1").Number());
-        EXPECT_EQUAL(1234, LexOne("1234").Number());
-        EXPECT_EQUAL(-1,   LexOne("-1").Number());
+        EXPECT_EQUAL(0,    LexOne("0")->Number());
+        EXPECT_EQUAL(1,    LexOne("1")->Number());
+        EXPECT_EQUAL(1234, LexOne("1234")->Number());
+        EXPECT_EQUAL(-1,   LexOne("-1")->Number());
         
         // test strings
         TestLex("\"\" \"foo\"",
@@ -78,11 +78,11 @@ namespace Finch
                 TOKEN_STRING,
                 TOKEN_LINE, TOKEN_EOF);
         
-        EXPECT_EQUAL("",        LexOne("\"\"").Text());
-        EXPECT_EQUAL("a",       LexOne("\"a\"").Text());
-        EXPECT_EQUAL("foo",     LexOne("\"foo\"").Text());
-        EXPECT_EQUAL("fo\\o",   LexOne("\"fo\\\\o\"").Text());
-        EXPECT_EQUAL("\"\n\\",  LexOne("\"\\\"\\n\\\\\"").Text());
+        EXPECT_EQUAL("",        LexOne("\"\"")->Text());
+        EXPECT_EQUAL("a",       LexOne("\"a\"")->Text());
+        EXPECT_EQUAL("foo",     LexOne("\"foo\"")->Text());
+        EXPECT_EQUAL("fo\\o",   LexOne("\"fo\\\\o\"")->Text());
+        EXPECT_EQUAL("\"\n\\",  LexOne("\"\\\"\\n\\\\\"")->Text());
 
         // test identifiers
         TestLex("_a foo BarBang &foo fo9o!",
@@ -93,9 +93,7 @@ namespace Finch
                 TOKEN_NAME,
                 TOKEN_LINE, TOKEN_EOF);
 
-        TestLex("- + = / < > ? ~ ! @ # $ % ^ & * *$-+-==",
-                TOKEN_OPERATOR,
-                TOKEN_OPERATOR,
+        TestLex("- + = / < > ? ~ ! $ % ^ & * *$-+-==",
                 TOKEN_OPERATOR,
                 TOKEN_OPERATOR,
                 TOKEN_OPERATOR,
@@ -139,7 +137,7 @@ namespace Finch
                 TOKEN_LINE, TOKEN_EOF);
     }
     
-    Token LexerTests::LexOne(const char * text)
+    Ref<Token> LexerTests::LexOne(const char * text)
     {
         FixedLineReader reader(text);
         Lexer lexer(reader);
@@ -158,8 +156,8 @@ namespace Finch
         while (true)
         {
             TokenType type = static_cast<TokenType>(va_arg(args, int));
-            Token token = lexer.ReadToken();
-            EXPECT_EQUAL(type, token.Type());
+            Ref<Token> token = lexer.ReadToken();
+            EXPECT_EQUAL(type, token->Type());
             
             if (type == TOKEN_EOF) break;
         }

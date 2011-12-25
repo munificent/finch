@@ -143,7 +143,7 @@ namespace Finch
     {
         if (LookAhead(TOKEN_NAME, TOKEN_ARROW))
         {
-            String name = Consume().Text();
+            String name = Consume()->Text();
             
             Consume(); // the arrow
             
@@ -160,7 +160,7 @@ namespace Finch
         }
         else if (LookAhead(TOKEN_NAME, TOKEN_LONG_ARROW))
         {
-            String name = Consume().Text();
+            String name = Consume()->Text();
             
             Consume(); // the arrow
             
@@ -193,13 +193,13 @@ namespace Finch
                 if (LookAhead(TOKEN_NAME))
                 {
                     // unary
-                    String name = Consume().Text();
+                    String name = Consume()->Text();
                     expr->AddSend(name, args);
                 }
                 else if (LookAhead(TOKEN_OPERATOR))
                 {
                     // binary
-                    String name = Consume().Text();
+                    String name = Consume()->Text();
                     
                     // one arg
                     args.Add(Unary(dummy));
@@ -212,7 +212,7 @@ namespace Finch
                     while (LookAhead(TOKEN_KEYWORD))
                     {
                         // build the full method name
-                        name += Consume().Text();
+                        name += Consume()->Text();
                         
                         // parse each keyword's arg
                         args.Add(Operator(dummy));
@@ -246,7 +246,7 @@ namespace Finch
         
         while (LookAhead(TOKEN_OPERATOR))
         {
-            String op = Consume().Text();
+            String op = Consume()->Text();
             PARSE_RULE(arg, Unary(isMessage));
 
             Array<Ref<Expr> > args;
@@ -265,7 +265,7 @@ namespace Finch
         
         while (LookAhead(TOKEN_NAME))
         {
-            String message = Consume().Text();
+            String message = Consume()->Text();
             Array<Ref<Expr> > args;
             
             isMessage = true;
@@ -279,15 +279,15 @@ namespace Finch
     {
         if (LookAhead(TOKEN_NAME))
         {
-            return Ref<Expr>(new NameExpr(Consume().Text()));
+            return Ref<Expr>(new NameExpr(Consume()->Text()));
         }
         else if (LookAhead(TOKEN_NUMBER))
         {
-            return Ref<Expr>(new NumberExpr(Consume().Number()));
+            return Ref<Expr>(new NumberExpr(Consume()->Number()));
         }
         else if (LookAhead(TOKEN_STRING))
         {
-            return Ref<Expr>(new StringExpr(Consume().Text()));
+            return Ref<Expr>(new StringExpr(Consume()->Text()));
         }
         else if (LookAhead(TOKEN_KEYWORD))
         {
@@ -394,7 +394,7 @@ namespace Finch
             {
                 while (LookAhead(TOKEN_NAME))
                 {
-                    args.Add(Consume().Text());
+                    args.Add(Consume()->Text());
                 }
                 
                 CONSUME(TOKEN_PIPE, "Expect closing '|' after block arguments.");
@@ -443,7 +443,7 @@ namespace Finch
         
         while (LookAhead(TOKEN_KEYWORD))
         {
-            message += Consume().Text();
+            message += Consume()->Text();
             
             bool dummy;
             PARSE_RULE(arg, Operator(dummy));
@@ -479,7 +479,7 @@ namespace Finch
         if (LookAhead(TOKEN_NAME, TOKEN_ARROW))
         {
             // object variable
-            String name = Consume().Text();
+            String name = Consume()->Text();
             Consume(); // <-
 
             PARSE_RULE(body, Assignment());
@@ -507,18 +507,18 @@ namespace Finch
         else if (LookAhead(TOKEN_NAME))
         {
             // unary
-            String name = Consume().Text();
+            String name = Consume()->Text();
             
             PARSE_RULE(dummy, ParseDefineBody(expr, name, args));
         }
         else if (LookAhead(TOKEN_OPERATOR))
         {
             // binary
-            String name = Consume().Text();
+            String name = Consume()->Text();
             
             // one arg
             EXPECT(TOKEN_NAME, "Expect name after operator in a bind expression.");
-            args.Add(Consume().Text());
+            args.Add(Consume()->Text());
             
             PARSE_RULE(dummy, ParseDefineBody(expr, name, args));
         }
@@ -529,11 +529,11 @@ namespace Finch
             while (LookAhead(TOKEN_KEYWORD))
             {
                 // build the full method name
-                name += Consume().Text();
+                name += Consume()->Text();
                 
                 // parse each keyword's arg
                 EXPECT(TOKEN_NAME, "Expect name after keyword in a bind expression.");
-                args.Add(Consume().Text());
+                args.Add(Consume()->Text());
             }
             
             PARSE_RULE(dummy, ParseDefineBody(expr, name, args));

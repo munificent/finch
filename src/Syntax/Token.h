@@ -11,8 +11,6 @@ namespace Finch
     // The different types of Tokens that make up Finch source code.
     enum TokenType
     {
-        TOKEN_NONE,
-        
         TOKEN_LEFT_PAREN,
         TOKEN_RIGHT_PAREN,
         TOKEN_LEFT_BRACKET,
@@ -53,12 +51,6 @@ namespace Finch
     class Token
     {
     public:
-        Token()
-        :   mType(TOKEN_NONE),
-            mNumber(0),
-            mText()
-        {}
-        
         Token(TokenType type)
         :   mType(type),
             mNumber(0),

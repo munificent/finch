@@ -1,6 +1,7 @@
 #pragma once
 
 #include "Macros.h"
+#include "Ref.h"
 #include "Token.h"
 
 namespace Finch
@@ -17,7 +18,7 @@ namespace Finch
         virtual bool IsInfinite() const = 0;
         
         // Reads the next Token from the source.
-        virtual Token ReadToken() = 0;
+        virtual Ref<Token> ReadToken() = 0;
 
         virtual ~ITokenSource() {}
     };

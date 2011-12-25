@@ -21,7 +21,7 @@ namespace Finch
         bool IsInfinite() const;
         
         // Gets the Token the parser is currently looking at.
-        Token Current() { return mRead[0]; }
+        const Token & Current() { return *mRead[0]; }
         
         // Returns true if the current Token is the given type.
         bool LookAhead(TokenType type);
@@ -38,7 +38,7 @@ namespace Finch
         bool Match(TokenType type);
         
         // Consumes the current Token and advances the Parser.
-        Token Consume();
+        Ref<Token> Consume();
 
     private:
         void FillLookAhead(int count);
@@ -46,7 +46,7 @@ namespace Finch
         ITokenSource & mTokens;
         
         // The 2 here is the maximum number of lookahead tokens.
-        Queue<Token, 2> mRead;
+        Queue<Ref<Token>, 2> mRead;
         
         NO_COPY(Parser);
     };

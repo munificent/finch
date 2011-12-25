@@ -13,24 +13,24 @@ namespace Finch
     {
         FillLookAhead(1);
         
-        return mRead[0].Type() == type;
+        return mRead[0]->Type() == type;
     }
     
     bool Parser::LookAhead(TokenType current, TokenType next)
     {
         FillLookAhead(2);
 
-        return (mRead[0].Type() == current) &&
-               (mRead[1].Type() == next);
+        return (mRead[0]->Type() == current) &&
+               (mRead[1]->Type() == next);
     }
 
     bool Parser::LookAhead(TokenType first, TokenType second, TokenType third)
     {
         FillLookAhead(3);
         
-        return (mRead[0].Type() == first) &&
-               (mRead[1].Type() == second) &&
-               (mRead[2].Type() == third);
+        return (mRead[0]->Type() == first) &&
+               (mRead[1]->Type() == second) &&
+               (mRead[2]->Type() == third);
     }
 
     bool Parser::Match(TokenType type)
@@ -46,7 +46,7 @@ namespace Finch
         }
     }
     
-    Token Parser::Consume()
+    Ref<Token> Parser::Consume()
     {
         FillLookAhead(1);
         

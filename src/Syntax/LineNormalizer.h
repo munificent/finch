@@ -56,7 +56,7 @@ namespace Finch
         
         virtual bool IsInfinite() const;
         
-        virtual Token ReadToken();
+        virtual Ref<Token> ReadToken();
         
     private:
         ITokenSource & mTokens;

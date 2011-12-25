@@ -6,8 +6,6 @@ namespace Finch
     {
         switch (token.Type())
         {
-            case TOKEN_NONE:            cout << "none"; break;
-            
             case TOKEN_LEFT_PAREN:      cout << "left paren"; break;
             case TOKEN_RIGHT_PAREN:     cout << "right paren"; break;
             case TOKEN_LEFT_BRACKET:    cout << "left bracket"; break;
