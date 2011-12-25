@@ -72,4 +72,14 @@ Test suite: "Objects" is: {
     Test is-false: "hi" number?
     Test is-true:  "hi" string?
   }
+
+  Test test: "self inside an object literal is the new object" is: {
+    obj <- [
+        a { "a" }
+        _b <- self a
+        b { _b }
+    ]
+
+    Test that: obj b equals: "a"
+  }
 }

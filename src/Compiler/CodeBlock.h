@@ -36,7 +36,8 @@ namespace Finch
 
         OP_BIND_METHOD,     // id = method name
         OP_BIND_OBJECT,     // id = variable name
-        OP_MAKE_OBJECT,     // (not used)
+        OP_START_OBJECT,    // (not used)
+        OP_END_OBJECT,      // (not used)
 
         OP_MESSAGE_0,       // id = string table id of message name
         OP_MESSAGE_1,       // id = string table id of message name

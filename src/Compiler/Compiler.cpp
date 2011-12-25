@@ -127,8 +127,9 @@ namespace Finch
     void Compiler::Visit(const ObjectExpr & expr)
     {
         expr.Parent()->Accept(*this);
-        mCode->Write(OP_MAKE_OBJECT);
+        mCode->Write(OP_START_OBJECT);
         CompileDefinitions(expr);
+        mCode->Write(OP_END_OBJECT);
     }
 
     void Compiler::Visit(const ReturnExpr & expr)

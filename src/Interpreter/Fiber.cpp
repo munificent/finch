@@ -229,13 +229,19 @@ namespace Finch
                     }
                     break;
 
-                case OP_MAKE_OBJECT:
+                case OP_START_OBJECT:
                     {
                         Ref<Object> parent = PopOperand();
-                        PushOperand(Object::NewObject(parent));
+                        Ref<Object> object = Object::NewObject(parent);
+                        mObjects.Push(object);
+                        PushOperand(object);
                     }
                     break;
 
+                case OP_END_OBJECT:
+                    mObjects.Pop();
+                    break;
+                    
                 case OP_MESSAGE_0:
                 case OP_MESSAGE_1:
                 case OP_MESSAGE_2:
@@ -434,6 +440,9 @@ namespace Finch
 
     Ref<Object> Fiber::Self()
     {
+        // Within an object literal, self evaluates to the object.
+        if (mObjects.Count() > 0) return mObjects.Peek();
+        
         return mCallStack.Peek().receiver;
     }
 

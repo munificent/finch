@@ -113,6 +113,9 @@ namespace Finch
         Stack<Ref<Object> > mOperands; 
         Stack<CallFrame>    mCallStack;
         
+        // Object literals that are current being evaluated.
+        Stack<Ref<Object> > mObjects;
+        
         NO_COPY(Fiber);
     };
 }
