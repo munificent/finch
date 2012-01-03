@@ -7,6 +7,7 @@
 
 namespace Finch
 {
+    /*
     PRIMITIVE(ArrayCount)
     {
         ArrayObject * array = self->AsArray();
@@ -70,5 +71,6 @@ namespace Finch
         fiber.Push(array->Elements()[index]);
         array->Elements().Remove(index);
     }
+     */
 }
 

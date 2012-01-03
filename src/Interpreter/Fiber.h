@@ -11,6 +11,7 @@
 
 namespace Finch
 {
+    /*
     class Environment;
     class Expr;
     class Interpreter;
@@ -118,5 +119,6 @@ namespace Finch
         
         NO_COPY(Fiber);
     };
+     */
 }
 

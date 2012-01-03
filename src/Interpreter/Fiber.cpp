@@ -12,6 +12,7 @@
 
 namespace Finch
 {
+    /*
     using std::cout;
     using std::endl;
 
@@ -456,5 +457,6 @@ namespace Finch
     {
         return mOperands.Pop();
     }
+     */
 }
 

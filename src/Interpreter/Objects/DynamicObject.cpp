@@ -11,7 +11,7 @@ namespace Finch
     {
         stream << mName;
     }
-    
+    /*
     void DynamicObject::Receive(Ref<Object> self, Fiber & fiber, 
                                 String message, const Array<Ref<Object> > & args)
     {        
@@ -20,7 +20,6 @@ namespace Finch
         if (mMethods.Find(message, &method))
         {
             ASSERT_NOT_NULL(method->AsBlock());
-            
             fiber.CallMethod(self, method, args);
             return;
         }
@@ -48,7 +47,6 @@ namespace Finch
             fiber.Error("Cannot create a method with an empty name.");
             return;
         }
-                
         Ref<Object> body = Object::NewBlock(fiber.GetEnvironment(), code,
                                             closure, self);
         
@@ -60,4 +58,5 @@ namespace Finch
     {
         mPrimitives.Insert(message, method);
     }
+     */
 }

@@ -7,10 +7,12 @@
 
 namespace Finch
 {
+    /*
     PRIMITIVE(BlockCall)
     {
         ASSERT_NOT_NULL(self->AsBlock());
         fiber.CallBlock(self, args);
     }
+     */
 }
 

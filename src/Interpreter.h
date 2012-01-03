@@ -39,7 +39,7 @@ namespace Finch
         //### bob: should not be part of public api.
         Ref<Object> GetCurrentFiber() { return mCurrentFiber; }
         void SwitchToFiber(Ref<Object> fiber);
-        
+        /*
         // Binds an external function to a message handler for a named global
         // object.
         // - objectName The name of the global object to bind the method on.
@@ -48,7 +48,7 @@ namespace Finch
         //              message.
         void BindMethod(String objectName, String message,
                         PrimitiveMethod method);
-        
+        */
     private:
         Ref<Object> Run();
         Ref<Expr>   Parse(ILineReader & reader);

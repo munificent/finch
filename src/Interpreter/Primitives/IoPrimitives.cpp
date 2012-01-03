@@ -9,6 +9,7 @@
 
 namespace Finch
 {
+    /*
     using std::ifstream;
     using std::ios;
     using std::istreambuf_iterator;
@@ -41,5 +42,6 @@ namespace Finch
 
         fiber.PushString(String(str.c_str()));
     }
+     */
 }
 

@@ -7,6 +7,7 @@
 
 namespace Finch
 {
+    /*
     PRIMITIVE(PrimitiveStringConcat);
     PRIMITIVE(PrimitiveStringCompare);
 
@@ -16,5 +17,6 @@ namespace Finch
     PRIMITIVE(PrimitiveGetCurrentFiber);
     PRIMITIVE(PrimitiveSwitchToFiber);
     PRIMITIVE(PrimitiveGetCallstackDepth);
+*/
 }
 

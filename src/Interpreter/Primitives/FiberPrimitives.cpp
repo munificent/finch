@@ -9,6 +9,7 @@
 
 namespace Finch
 {
+    /*
     PRIMITIVE(FiberRunning)
     {
         FiberObject * fiberObj = self->AsFiber();
@@ -20,6 +21,6 @@ namespace Finch
         FiberObject * fiberObj = self->AsFiber();
         fiber.PushBool(fiberObj->GetFiber().IsDone());
     }
-
+     */
 }
 

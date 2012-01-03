@@ -13,6 +13,7 @@
 
 namespace Finch
 {
+    /*
     class DefineExpr;
     class Environment;
 
@@ -69,5 +70,6 @@ namespace Finch
         
         NO_COPY(Compiler);
     };
+     */
 }
 

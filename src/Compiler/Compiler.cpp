@@ -19,6 +19,7 @@
 
 namespace Finch
 {
+    /*
     int Compiler::sNextMethodId = 1;
     
     Ref<CodeBlock> Compiler::CompileTopLevel(Environment & environment, const Expr & expr)
@@ -291,5 +292,6 @@ namespace Finch
             compiler->mHasReturn = true;
         }
     }
+     */
 }
 

@@ -65,13 +65,15 @@ namespace Finch
         
         // and execute the code
         Array<Ref<Object> > noArgs;
+        /*
         fiber.CallBlock(block, noArgs);
+         */
     }
     
     Ref<Object> Interpreter::Run()
     {
         Ref<Object> result;
-        
+        /*
         while (!mCurrentFiber.IsNull())
         {
             FiberObject * fiber = mCurrentFiber->AsFiber();
@@ -95,7 +97,7 @@ namespace Finch
                 }
             }
         }
-        
+        */
         ASSERT(!result.IsNull(), "The last fiber should have completed and returned a value.");
         
         // the last fiber's result is the result of the entire execution
@@ -120,13 +122,15 @@ namespace Finch
         if (!mCurrentFiber.IsNull())
         {
             FiberObject * oldFiber = mCurrentFiber->AsFiber();
+            /*
             oldFiber->GetFiber().Pause();
+             */
         }
         
         // jump to the new one
         mCurrentFiber = fiber;
     }
-
+/*
     void Interpreter::BindMethod(String objectName, String message,
                                  PrimitiveMethod method)
     {
@@ -141,5 +145,5 @@ namespace Finch
         ASSERT_NOT_NULL(dynamicObj);
         
         dynamicObj->AddPrimitive(message, method);
-    }
+    }*/
 }

@@ -25,12 +25,14 @@ namespace Finch
     class FiberObject;
     class Interpreter;
     class Object;
+    /*
     class Fiber;
-    
-    // Function pointer type for a primitive Finch method implemented in C++.
+
+     // Function pointer type for a primitive Finch method implemented in C++.
     typedef void (*PrimitiveMethod)(Ref<Object> self, Fiber & fiber,
                                     String message, const Array<Ref<Object> > & args);
-    
+     */
+
     // Base class for an object in Finch. All values in Finch inherit from this.
     class Object
     {
@@ -46,10 +48,10 @@ namespace Finch
         static Ref<Object> NewFiber(Interpreter & interpreter, Ref<Object> block);
         
         virtual ~Object() {}
-        
+        /*
         virtual void Receive(Ref<Object> self, Fiber & fiber,
                              String message, const Array<Ref<Object> > & args);
-        
+        */
         virtual double          AsNumber() const { return 0; }
         virtual String          AsString() const { return ""; }
         virtual ArrayObject *   AsArray()        { return NULL; }

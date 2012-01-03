@@ -47,18 +47,20 @@ namespace Finch
         return Ref<Object>(new ArrayObject(env, env.ArrayPrototype(), length));
     }
 
+    /*
     Ref<Object> Object::NewBlock(Environment & env, Ref<CodeBlock> code,
                                  Ref<Scope> closure, Ref<Object> self)
     {
         return Ref<Object>(new BlockObject(env.BlockPrototype(), code, closure, self));
     }
+    */
     
     Ref<Object> Object::NewFiber(Interpreter & interpreter, Ref<Object> block)
     {
         return Ref<Object>(new FiberObject(interpreter.GetEnvironment().FiberPrototype(),
                                            interpreter, block));
     }
-
+/*
     void Object::Receive(Ref<Object> self, Fiber & fiber,
                                 String message, const Array<Ref<Object> > & args)
     {
@@ -83,7 +85,7 @@ namespace Finch
             fiber.PushNil();
         }
     }
-    
+    */
     Ref<Scope> Object::ObjectScope()
     {
         // lazy initialize

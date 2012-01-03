@@ -12,7 +12,7 @@ namespace Finch
     // sends "-number:" to 2, passing in itself as the argument. The primitives
     // here are those second messages. That means the operands are reversed:
     // self is the RHS and the arg is the LHS.
-    
+    /*
     PRIMITIVE(NumberAdd)
     {
         fiber.PushNumber(args[0]->AsNumber() + self->AsNumber());
@@ -132,5 +132,6 @@ namespace Finch
     {
         fiber.PushBool(self->AsNumber() >= args[0]->AsNumber());
     }
+     */
 }
 

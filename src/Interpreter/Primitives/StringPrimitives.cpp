@@ -8,6 +8,7 @@
 
 namespace Finch
 {
+    /*
     PRIMITIVE(StringCount)
     {
         fiber.PushNumber(self->AsString().Length());
@@ -53,5 +54,6 @@ namespace Finch
     {
         fiber.PushNumber(static_cast<double>(self->AsString().HashCode()));
     }
+     */
 }
 

@@ -18,7 +18,7 @@ namespace Finch
     // library so that the arguments can have toString called on them before
     // passing them to the primitives which expect them to already be in string
     // form.
-    
+    /*
     PRIMITIVE(PrimitiveStringConcat)
     {
         fiber.PushString(args[0]->AsString() + args[1]->AsString());
@@ -84,5 +84,6 @@ namespace Finch
     {
         fiber.PushNumber(fiber.GetCallstackDepth());
     }
+     */
 }
 

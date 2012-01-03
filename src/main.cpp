@@ -42,7 +42,7 @@ bool InterpretFile(Interpreter & interpreter, String filePath)
     interpreter.Interpret(*reader, false);
     return true;
 }
-
+/*
 PRIMITIVE(LoadFile)
 {
     String filePath = args[0]->AsString();
@@ -50,15 +50,15 @@ PRIMITIVE(LoadFile)
     
     fiber.GetInterpreter().Interpret(*reader, fiber);
 }
-
+*/
 int main (int argc, char * const argv[])
 {    
     StandaloneInterpreterHost host;
     Interpreter               interpreter(host);
-    
+    /*
     // Set up the standalone-provided behavior.
     interpreter.BindMethod("Ether", "load:", LoadFile);
-    
+    */
     // Figure out the absolute path to the core library, relative to the
     // executable. Assumes a directory layout like:
     // finch
@@ -69,13 +69,14 @@ int main (int argc, char * const argv[])
     strncpy(coreLibPath, argv[0], PATH_MAX);
     strncat(coreLibPath, "/../../../lib/core.fin", PATH_MAX);
     realpath(coreLibPath, fullPath);
-    
+    /*
     // Load the core library.
     if (!InterpretFile(interpreter, fullPath))
     {
         cout << "Could not load core library." << endl;
         return 2;
     }
+    */
     
     if (argc == 1)
     {

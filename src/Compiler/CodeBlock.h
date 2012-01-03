@@ -10,6 +10,7 @@
 
 namespace Finch
 {
+    /*
     enum OpCode
     {                       // arg
         OP_NOTHING,         // (not used)
@@ -124,5 +125,6 @@ namespace Finch
 
         NO_COPY(CodeBlock);
     };
+     */
 }
 

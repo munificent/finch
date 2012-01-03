@@ -8,7 +8,9 @@
 
 namespace Finch
 {
+    /*
     // Primitive methods for blocks.
     PRIMITIVE(BlockCall);
+     */
 }
 

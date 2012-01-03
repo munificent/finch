@@ -2,6 +2,7 @@
 
 namespace Finch
 {
+    /*
     CodeBlock::CodeBlock(const Array<String> & params, int methodId)
     :   mParams(params),
         mMethodId(methodId),
@@ -58,5 +59,6 @@ namespace Finch
             }
         }
     }
+     */
 }
 

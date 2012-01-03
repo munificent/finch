@@ -8,6 +8,7 @@
 
 namespace Finch
 {
+    /*
     // Primitive methods for numbers.
     PRIMITIVE(NumberAdd);
     PRIMITIVE(NumberSubtract);
@@ -35,5 +36,6 @@ namespace Finch
     PRIMITIVE(NumberGreaterThan);
     PRIMITIVE(NumberLessThanOrEqual);
     PRIMITIVE(NumberGreaterThanOrEqual);
+     */
 }
 

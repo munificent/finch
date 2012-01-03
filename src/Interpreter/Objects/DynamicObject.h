@@ -37,7 +37,7 @@ namespace Finch
         
         virtual String AsString() const     { return mName; }
         virtual DynamicObject * AsDynamic() { return this; }
-        
+        /*
         virtual void Receive(Ref<Object> self, Fiber & fiber,
                              String message, const Array<Ref<Object> > & args);
         
@@ -45,13 +45,15 @@ namespace Finch
                        Ref<Scope> closure, Ref<CodeBlock> code);
         
         void AddPrimitive(String message, PrimitiveMethod method);
-        
+         */
     private:
         void InitializeScope();
         
         String                              mName; //### bob: hack temp
         Dictionary<String, Ref<Object> >    mMethods;
+        /*
         Dictionary<String, PrimitiveMethod> mPrimitives;
+         */
     };    
 }
 

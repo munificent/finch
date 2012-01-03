@@ -9,6 +9,7 @@
 
 namespace Finch
 {
+    /*
     PRIMITIVE(ObjectToString)
     {
         fiber.PushString(self->AsString());
@@ -30,5 +31,6 @@ namespace Finch
         self->SetParent(args[0]);
         fiber.PushNil();
     }
+     */
 }
 
