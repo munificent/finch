@@ -47,13 +47,11 @@ namespace Finch
         return Ref<Object>(new ArrayObject(env, env.ArrayPrototype(), length));
     }
 
-    /*
-    Ref<Object> Object::NewBlock(Environment & env, Ref<CodeBlock> code,
-                                 Ref<Scope> closure, Ref<Object> self)
+    Ref<Object> Object::NewBlock(Environment & env, Ref<BlockExemplar> block,
+                                 Ref<Object> self)
     {
-        return Ref<Object>(new BlockObject(env.BlockPrototype(), code, closure, self));
+        return Ref<Object>(new BlockObject(env.BlockPrototype(), block, self));
     }
-    */
     
     Ref<Object> Object::NewFiber(Interpreter & interpreter, Ref<Object> block)
     {

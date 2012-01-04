@@ -12,6 +12,30 @@
 
 namespace Finch
 {
+    Fiber::Fiber(Interpreter & interpreter, Ref<Object> block)
+    :   mIsRunning(false),
+        mInterpreter(interpreter)
+    {
+        // TODO(bob): Add block to callstack.
+    }
+    
+    bool Fiber::IsDone() const
+    {
+        // TODO(bob): Implement:
+        return true;
+        /*
+        return mCallStack.Count() == 0;
+         */
+    }
+    
+    Ref<Object> Fiber::Execute()
+    {
+        // TODO(bob): Implement!
+        
+        return Ref<Object>(Object::NewString(
+            mInterpreter.GetEnvironment(), "implement me"));
+    }
+    
     /*
     using std::cout;
     using std::endl;
@@ -24,11 +48,6 @@ namespace Finch
         // push the starting block
         // when not in any method, self is Nil
         CallMethod(mEnvironment.Nil(), block, Array<Ref<Object> >());
-    }
-
-    bool Fiber::IsDone() const
-    {
-        return mCallStack.Count() == 0;
     }
 
     Ref<Object> Fiber::Execute()

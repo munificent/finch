@@ -19,6 +19,11 @@
 
 namespace Finch
 {
+    Ref<BlockExemplar> Compiler::CompileExpression(const Expr & expr)
+    {
+        return Ref<BlockExemplar>(new BlockExemplar());
+    }
+    
     /*
     int Compiler::sNextMethodId = 1;
     

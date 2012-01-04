@@ -131,10 +131,8 @@ namespace Finch
 
     Ref<Object> Environment::CreateBlock(Ref<Expr> expr)
     {
-        /*
-        Ref<CodeBlock> code = Compiler::CompileTopLevel(*this, *expr);
-        return Object::NewBlock(*this, code, Ref<Scope>(), mNil);
-         */
+        Ref<BlockExemplar> exemplar = Compiler::CompileExpression(*expr);
+        return Object::NewBlock(*this, exemplar, mNil);
     }
     
     Ref<Object> Environment::MakeGlobal(const char * name)

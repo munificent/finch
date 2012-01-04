@@ -8,8 +8,16 @@
 #include "Object.h"
 #include "Ref.h"
 
+// TODO(bob): Rename file.
+
 namespace Finch
 {
+    // A compiled block. This contains the state that all blocks created from
+    // evaluating the same chunk of code share: the compiled bytecode, constant
+    // table etc. It does not contain the closure: that's owned by BlockObject.
+    class BlockExemplar
+    {
+    };
     /*
     enum OpCode
     {                       // arg

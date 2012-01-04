@@ -19,11 +19,11 @@ namespace Finch
     class BlockObject : public Object
     {
     public:
-        BlockObject(Ref<Object> parent, /*Ref<CodeBlock> code,
-                    Ref<Scope> closure,*/ Ref<Object> self)
+        BlockObject(Ref<Object> parent, Ref<BlockExemplar> exemplar,
+                    /*Ref<Scope> closure,*/ Ref<Object> self)
         :   Object(parent),
-/*            mCode(code),
-            mClosure(closure), */
+            mExemplar(exemplar),
+        //            mClosure(closure), */
             mSelf(self)
         {}
         
@@ -54,8 +54,8 @@ namespace Finch
         }
         
     private:
+        Ref<BlockExemplar> mExemplar;
         /*
-        Ref<CodeBlock> mCode;
         Ref<Scope>     mClosure;
          */
         Ref<Object>    mSelf;

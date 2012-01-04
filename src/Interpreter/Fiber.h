@@ -11,11 +11,10 @@
 
 namespace Finch
 {
-    /*
     class Environment;
     class Expr;
     class Interpreter;
-    
+
     // A single bytecode execution thread in the interpreter. A Fiber has a
     // virtual callstack and is responsible for executing bytecode. In other
     // words, it's where stuff actually happens.
@@ -23,13 +22,14 @@ namespace Finch
     {
     public:
         Fiber(Interpreter & interpreter, Ref<Object> block);
-        
+
         bool IsRunning() const { return mIsRunning && !IsDone(); }
         
         bool IsDone() const;
 
         Ref<Object> Execute();
         
+        /*
         Interpreter & GetInterpreter() { return mInterpreter; }
         Environment & GetEnvironment() { return mEnvironment; }
 
@@ -56,8 +56,9 @@ namespace Finch
         // Gets the current number of stack frames on the callstack. Used as a
         // diagnostic to ensure that tail call optimization is working.
         int GetCallstackDepth() const;
-        
+        */
     private:
+        /*
         // A single stack frame on the virtual callstack.
         struct CallFrame
         {
@@ -106,19 +107,18 @@ namespace Finch
         
         void PushOperand(Ref<Object> object);
         Ref<Object> PopOperand();
-        
+        */
         bool mIsRunning;
-        
         Interpreter & mInterpreter;
+        /*
         Environment & mEnvironment;
         Stack<Ref<Object> > mOperands; 
         Stack<CallFrame>    mCallStack;
         
         // Object literals that are currently being evaluated.
         Stack<Ref<Object> > mObjects;
-        
+        */
         NO_COPY(Fiber);
     };
-     */
 }
 

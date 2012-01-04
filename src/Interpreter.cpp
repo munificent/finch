@@ -35,14 +35,14 @@ namespace Finch
     {
         Ref<Expr> expr = Parse(reader);
         
-        // bail if we failed to parse
+        // Bail if we failed to parse.
         if (expr.IsNull()) return;
         
-        // create a starting fiber for the expression
+        // Create a starting fiber for the expression.
         Ref<Object> block = mEnvironment.CreateBlock(expr);
         mCurrentFiber = Object::NewFiber(*this, block);
         
-        // run the interpreter
+        // Run the interpreter.
         Ref<Object> result = Run();
         
         if (showResult)
@@ -73,7 +73,7 @@ namespace Finch
     Ref<Object> Interpreter::Run()
     {
         Ref<Object> result;
-        /*
+
         while (!mCurrentFiber.IsNull())
         {
             FiberObject * fiber = mCurrentFiber->AsFiber();
@@ -85,6 +85,7 @@ namespace Finch
                 // forget the old fiber completely
                 mCurrentFiber = Ref<Object>();
                 
+                /*
                 // and switch back to the previous one
                 if (!mLastFiber.IsNull())
                 {
@@ -95,9 +96,10 @@ namespace Finch
                     
                     SwitchToFiber(mLastFiber);
                 }
+                 */
             }
         }
-        */
+
         ASSERT(!result.IsNull(), "The last fiber should have completed and returned a value.");
         
         // the last fiber's result is the result of the entire execution

@@ -16,15 +16,13 @@ namespace Finch
     {
     public:
         FiberObject(Ref<Object> parent, Interpreter & interpreter, Ref<Object> block)
-        :   Object(parent)/*,
-            mFiber(interpreter, block)*/
+        :   Object(parent),
+            mFiber(interpreter, block)
         {}
         
-        /*
         virtual FiberObject * AsFiber() { return this; }
         
         Fiber & GetFiber() { return mFiber; }
-        */
         
         virtual void Trace(ostream & stream) const
         {
@@ -32,9 +30,7 @@ namespace Finch
         }
         
     private:
-        /*
         Fiber mFiber;
-         */
     };
 }
 
