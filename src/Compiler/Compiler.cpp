@@ -19,9 +19,19 @@
 
 namespace Finch
 {
-    Ref<BlockExemplar> Compiler::CompileExpression(const Expr & expr)
+    Ref<BlockExemplar> Compiler::CompileExpression(Environment & environment, const Expr & expr)
     {
-        return Ref<BlockExemplar>(new BlockExemplar());
+        Ref<BlockExemplar> exemplar = Ref<BlockExemplar>(
+            new BlockExemplar(Array<String>()));
+        
+        // TODO(bob): Temp!
+        int constant = exemplar->AddConstant(
+            Object::NewString(environment, "constant!"));
+        exemplar->Write(OP_CONSTANT, constant, 0);
+        exemplar->Write(OP_RETURN, 0);
+        exemplar->SetNumRegisters(1);
+        
+        return exemplar;
     }
     
     /*

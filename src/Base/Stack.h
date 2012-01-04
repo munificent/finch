@@ -36,7 +36,7 @@ namespace Finch
             ASSERT(!IsEmpty(), "Cannot pop an empty stack.");
             
             T popped = mItems[-1];
-            mItems.Remove(-1);
+            mItems.RemoveAt(-1);
             
             return popped;
         }

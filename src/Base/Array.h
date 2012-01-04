@@ -105,10 +105,10 @@ namespace Finch
         // Removes the item at the given index. Indexes are zero-based from the
         // beginning of the array. Negative indexes are from the end of the
         // array and go forward, so that -1 is the last item in the array.
-        void Remove(int index)
+        void RemoveAt(int index)
         {
             if (index < 0) index = mCount + index;
-            ASSERT_INDEX(index, mCount);
+            ASSERT_RANGE(index, mCount);
             
             // shift items up
             for (int i = index; i < mCount - 1; i++)
@@ -139,7 +139,7 @@ namespace Finch
         T & operator[] (int index)
         {
             if (index < 0) index = mCount + index;
-            ASSERT_INDEX(index, mCount);
+            ASSERT_RANGE(index, mCount);
             
             return mItems[index];
         }
@@ -150,7 +150,7 @@ namespace Finch
         const T & operator[] (int index) const
         {
             if (index < 0) index = mCount + index;
-            ASSERT_INDEX(index, mCount);
+            ASSERT_RANGE(index, mCount);
             
             return mItems[index];
         }

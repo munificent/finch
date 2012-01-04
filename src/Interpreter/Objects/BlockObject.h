@@ -41,10 +41,12 @@ namespace Finch
         // block.
         Ref<Object> Self() const { return mSelf; }
 
-        /*
+        int GetNumRegisters() const { return mExemplar->GetNumRegisters(); }
+        
+        const Ref<Object> GetConstant(int index) const { return mExemplar->GetConstant(index); }
+        
         // Gets the compiled bytecode for the block.
-        Ref<CodeBlock> Code() const { return mCode; } 
-        */
+        const Array<Instruction> & GetCode() const { return mExemplar->GetCode(); } 
         
         virtual BlockObject * AsBlock() { return this; }
         

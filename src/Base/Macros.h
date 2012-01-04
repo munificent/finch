@@ -16,11 +16,11 @@
 #define ASSERT_NOT_NULL(value)                          \
     ASSERT(value != NULL, "Expression " #value " cannot be null.")
 
-#define ASSERT_INDEX(index, max)                        \
-    if (((index) < 0) || ((index) >= max)) {            \
+#define ASSERT_RANGE(value, max)                        \
+    if (((value) < 0) || ((value) >= max)) {            \
         std::cout << "ASSERTION FAILED " << __FILE__    \
                   << ":" << __LINE__ << " - "           \
-                  << "Index " << index                  \
+                  << "Value " << value                  \
                   << " was out of range [0, " << max    \
                   << ")." << std::endl;                 \
         abort();                                        \

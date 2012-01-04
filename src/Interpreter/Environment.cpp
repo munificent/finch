@@ -131,7 +131,7 @@ namespace Finch
 
     Ref<Object> Environment::CreateBlock(Ref<Expr> expr)
     {
-        Ref<BlockExemplar> exemplar = Compiler::CompileExpression(*expr);
+        Ref<BlockExemplar> exemplar = Compiler::CompileExpression(*this, *expr);
         return Object::NewBlock(*this, exemplar, mNil);
     }
     

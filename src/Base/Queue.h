@@ -63,7 +63,7 @@ namespace Finch
         // etc.
         T & operator[] (int index)
         {
-            ASSERT_INDEX(index, mCount);
+            ASSERT_RANGE(index, mCount);
             
             return mItems[Wrap(mHead - mCount + index)];
         }

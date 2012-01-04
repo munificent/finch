@@ -12,12 +12,50 @@
 
 namespace Finch
 {
+    // TODO(bob): We expect this to be 32 bits. Is there a better way to specify
+    // this?
+    typedef unsigned int Instruction;
+    
+    enum OpCode
+    {
+        OP_CONSTANT, // A = index of constant, B = dest register
+        OP_RETURN    // A = register with result to return
+    };
+        
     // A compiled block. This contains the state that all blocks created from
     // evaluating the same chunk of code share: the compiled bytecode, constant
     // table etc. It does not contain the closure: that's owned by BlockObject.
     class BlockExemplar
     {
+    public:
+        // Creates a new BlockExemplar with the given parameters.
+        BlockExemplar(const Array<String> & params);
+        
+        // Gets the names of the parameters that this block expects.
+        const Array<String> & GetParams() const { return mParams; }
+        
+        int  GetNumRegisters() const { return mNumRegisters; }
+        void SetNumRegisters(int numRegisters) { mNumRegisters = numRegisters; }
+        
+        // Adds the given object to the constant pool and returns its index.
+        int AddConstant(Ref<Object> object);
+        
+        // Gets the constant at the given index in the constant table.
+        const Ref<Object> GetConstant(int index) const { return mConstants[index]; }
+
+        // Gets the bytecode for this block.
+        const Array<Instruction> & GetCode() const { return mCode; }
+        
+        // Writes an instruction.
+        void Write(OpCode op, int a = 0xff, int b = 0xff, int c = 0xff);
+        
+    private:
+        Array<String>       mParams;
+        Array<Instruction>  mCode;
+        Array<Ref<Object> > mConstants;
+        int                 mNumRegisters;
     };
+    
     /*
     enum OpCode
     {                       // arg
@@ -124,7 +162,7 @@ namespace Finch
         // changes them to tail call instructions.
         void MarkTailCalls();
         
-    private:        
+    private:
         Array<String>           mParams;
         int                     mMethodId;
         Array<Instruction>      mInstructions;

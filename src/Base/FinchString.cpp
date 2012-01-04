@@ -82,7 +82,7 @@ namespace Finch
     
     const char & String::operator[] (int index) const
     {
-        ASSERT_INDEX(index, Length() + 1); // allow accessing the terminator
+        ASSERT_RANGE(index, Length() + 1); // allow accessing the terminator
 
         if (mData.IsNull()) return sEmptyString[0];
         return mData->chars[index];
@@ -154,7 +154,7 @@ namespace Finch
             startIndex = Length() + startIndex;
         }
         
-        ASSERT_INDEX(startIndex, Length());
+        ASSERT_RANGE(startIndex, Length());
         
         int length = Length() - startIndex;
         char* heap = new char[length + 1];
@@ -176,7 +176,7 @@ namespace Finch
             count = Length() + count - startIndex;
         }
         
-        ASSERT_INDEX(startIndex, Length());
+        ASSERT_RANGE(startIndex, Length());
         ASSERT(startIndex + count <= Length(), "Range must not go past end of string.");
         
         char* heap = new char[count + 1];

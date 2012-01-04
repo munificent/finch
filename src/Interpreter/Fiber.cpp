@@ -14,32 +14,93 @@ namespace Finch
 {
     Fiber::Fiber(Interpreter & interpreter, Ref<Object> block)
     :   mIsRunning(false),
-        mInterpreter(interpreter)
+        mInterpreter(interpreter),
+        mStack(),
+        mCallFrames()
     {
-        // TODO(bob): Add block to callstack.
+        CallBlock(block, Array<Ref<Object> >());
     }
     
     bool Fiber::IsDone() const
     {
-        // TODO(bob): Implement:
-        return true;
-        /*
-        return mCallStack.Count() == 0;
-         */
+        return mCallFrames.Count() == 0;
     }
     
     Ref<Object> Fiber::Execute()
     {
         // TODO(bob): Implement!
+        mIsRunning = true;
+        
+        // Continue processing bytecode until the entire callstack has returned
+        // or we pause and switch to another fiber.
+        while (mIsRunning)
+        {
+            CallFrame & frame = mCallFrames.Peek();
+            
+            // Read and decode the next instruction.
+            Instruction instruction = frame.Block().GetCode()[frame.ip++];
+            OpCode op = static_cast<OpCode>((instruction & 0xff000000) >> 24);
+            int a = (instruction & 0x00ff0000) >> 16;
+            int b = (instruction & 0x0000ff00) >> 8;
+            int c = instruction & 0x000000ff;
+            
+            switch (op)
+            {
+                case OP_CONSTANT:
+                    Store(frame, b, frame.Block().GetConstant(a));
+                    break;
+                    
+                case OP_RETURN:
+                {
+                    Ref<Object> result = Load(frame, a);
+                    
+                    mCallFrames.Pop();
+                    
+                    if (mCallFrames.Count() > 0)
+                    {
+                        // Discard the frame's registers.
+                        CallFrame & caller = mCallFrames.Peek();
+                        int newStackSize = caller.stackStart +
+                            caller.Block().GetNumRegisters();
+                        
+                        // TODO(bob): Make this a single array op.
+                        while (mStack.Count() > newStackSize)
+                        {
+                            mStack.RemoveAt(mStack.Count() - 1);
+                        }
+                        
+                        // TODO(bob): Need to store the result in the caller's
+                        // destination register.
+                    }
+                    else
+                    {
+                        return result;
+                    }
+
+                    break;
+                }
+                    
+                default:
+                    ASSERT(false, "Unknown opcode.");
+            }
+        }
         
         return Ref<Object>(Object::NewString(
             mInterpreter.GetEnvironment(), "implement me"));
     }
     
-    /*
-    using std::cout;
-    using std::endl;
+    Ref<Object> Fiber::Load(const CallFrame & frame, int reg)
+    {
+        return mStack[frame.stackStart + reg];
+    }
+    
+    void Fiber::Store(const CallFrame & frame, int reg, Ref<Object> value)
+    {
+        mStack[frame.stackStart + reg] = value;
+    }
 
+    
+    /*
     Fiber::Fiber(Interpreter & interpreter, Ref<Object> block)
     :   mIsRunning(false),
         mInterpreter(interpreter),
@@ -419,14 +480,27 @@ namespace Finch
         // push the call onto the stack
         mCallStack.Push(CallFrame(scope, blockObj, self, mOperands.Count()));
     }
-
+*/
     void Fiber::CallBlock(Ref<Object> blockObj,
                                 const Array<Ref<Object> > & args)
     {
         BlockObject & block = *(blockObj->AsBlock());
+        /*
         CallMethod(block.Self(), blockObj, args);
+         */
+        // TODO(bob): Mostly temp...
+        
+        // Allocate this frame's registers.
+        int stackStart = mStack.Count();
+        // TODO(bob): Make this a single operation on Array.
+        while (mStack.Count() < stackStart + block.GetNumRegisters())
+        {
+            mStack.Add(Ref<Object>());
+        }
+        
+        mCallFrames.Push(CallFrame(blockObj, stackStart));
     }
-
+/*
     void Fiber::Error(const String & message)
     {
         mInterpreter.GetHost().Error(message);

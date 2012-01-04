@@ -45,11 +45,11 @@ namespace Finch
         void CallMethod(Ref<Object> self,
                         Ref<Object> blockObj,
                         const Array<Ref<Object> > & args);
-        
+        */
         // Pushes the given block onto the call stack.
         void CallBlock(Ref<Object> blockObj,
                        const Array<Ref<Object> > & args);
-        
+        /*
         // Displays a runtime error to the user.
         void Error(const String & message);
         
@@ -58,20 +58,23 @@ namespace Finch
         int GetCallstackDepth() const;
         */
     private:
-        /*
         // A single stack frame on the virtual callstack.
         struct CallFrame
         {
-            // The instruction pointer. Stores the index of the current bytecode instruction in the
-            // block of code for this frame.
-            int address;
+            // The instruction pointer. Stores the index of the current bytecode
+            // instruction in the bytecode for this frame.
+            int ip;
             
+            // The index on the stack of the first register for this frame.
+            int stackStart;
+            
+            /*
             // The local variable scope.
             Ref<Scope> scope;
-            
+            */
             // The block of code being executed by this frame.
             Ref<Object> block;
-            
+            /*
             // The current receiver.
             Ref<Object> receiver;
             
@@ -79,28 +82,31 @@ namespace Finch
             // was started. If we do a non-local return out of this frame, we
             // use this to restore the stack to its proper size.
             int numOperands;
+            */
             
             CallFrame()
-            :   address(0),
-                scope(),
-                block(),
-                receiver(),
-                numOperands()
+            :   ip(0),
+                stackStart(0),
+                block()
             {}
             
-            CallFrame(Ref<Scope> scope, Ref<Object> block, Ref<Object> receiver,
-                      int numOperands)
-            :   address(0),
-                scope(scope),
-                block(block),
-                receiver(receiver),
-                numOperands(numOperands)
+            CallFrame(Ref<Object> block, int stackStart)
+            :   ip(0),
+                stackStart(0),
+                block(block)
             {}
-            
+
             // Gets the code object for this frame.
             const BlockObject & Block() const { return *(block->AsBlock()); }
         };
         
+        // Loads a register for the given callframe.
+        Ref<Object> Load(const CallFrame & frame, int reg);
+        
+        // Stores a register for the given callframe.
+        void Store(const CallFrame & frame, int reg, Ref<Object> value);
+        
+        /*
         void        SendMessage(int message, int numArgs);
         Ref<Object> Self();
         Ref<Scope>  CurrentScope() { return mCallStack.Peek().scope; }
@@ -112,9 +118,10 @@ namespace Finch
         Interpreter & mInterpreter;
         /*
         Environment & mEnvironment;
-        Stack<Ref<Object> > mOperands; 
-        Stack<CallFrame>    mCallStack;
-        
+        */
+        Array<Ref<Object> > mStack;
+        Stack<CallFrame>    mCallFrames;
+        /*
         // Object literals that are currently being evaluated.
         Stack<Ref<Object> > mObjects;
         */

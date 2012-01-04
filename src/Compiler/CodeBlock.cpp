@@ -2,14 +2,37 @@
 
 namespace Finch
 {
-    /*
-    CodeBlock::CodeBlock(const Array<String> & params, int methodId)
+    BlockExemplar::BlockExemplar(const Array<String> & params)
     :   mParams(params),
-        mMethodId(methodId),
-        mInstructions()
+        mCode(),
+        mConstants(),
+        mNumRegisters(0)
     {
     }
 
+    int BlockExemplar::AddConstant(Ref<Object> object)
+    {
+        // TODO(bob): Unify duplicates.
+        mConstants.Add(object);
+        return mConstants.Count() - 1;
+    }
+
+    // Writes an instruction.
+    void BlockExemplar::Write(OpCode op, int a, int b, int c)
+    {
+        ASSERT_RANGE(a, 256);
+        ASSERT_RANGE(b, 256);
+        ASSERT_RANGE(c, 256);
+        
+        Instruction instruction = (op << 24) |
+                                  ((a & 0xff) << 16) |
+                                  ((b & 0xff) << 8) |
+                                  (c & 0xff);
+        
+        mCode.Add(instruction);
+    }
+
+    /*
     void CodeBlock::Write(OpCode op)
     {
         Write(op, 0);
