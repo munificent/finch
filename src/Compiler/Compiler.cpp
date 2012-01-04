@@ -24,16 +24,101 @@ namespace Finch
         Ref<BlockExemplar> exemplar = Ref<BlockExemplar>(
             new BlockExemplar(Array<String>()));
         
-        // TODO(bob): Temp!
-        int constant = exemplar->AddConstant(
-            Object::NewString(environment, "constant!"));
-        exemplar->Write(OP_CONSTANT, constant, 0);
+        Compiler compiler(environment, exemplar);
+        // TODO(bob): Using 0 here is a temp hack. Should allocate register for
+        // result.
+        expr.Accept(compiler, 0);
         exemplar->Write(OP_RETURN, 0);
         exemplar->SetNumRegisters(1);
         
         return exemplar;
     }
     
+    Compiler::Compiler(Environment & environment, Ref<BlockExemplar> exemplar)
+    :   mEnvironment(environment),
+        mExemplar(exemplar)
+    {}
+    
+    void Compiler::Visit(const ArrayExpr & expr, int dest)
+    {
+        ASSERT(false, "Compiling ArrayExpr not implemented yet.");
+    }
+    
+    void Compiler::Visit(const BindExpr & expr, int dest)
+    {
+        ASSERT(false, "Compiling BindExpr not implemented yet.");
+    }
+    
+    void Compiler::Visit(const BlockExpr & expr, int dest)
+    {
+        ASSERT(false, "Compiling BlockExpr not implemented yet.");
+    }
+    
+    void Compiler::Visit(const MessageExpr & expr, int dest)
+    {
+        ASSERT(false, "Compiling MessageExpr not implemented yet.");
+    }
+    
+    void Compiler::Visit(const NameExpr & expr, int dest)
+    {
+        ASSERT(false, "Compiling NameExpr not implemented yet.");
+    }
+    
+    void Compiler::Visit(const NumberExpr & expr, int dest)
+    {
+        Ref<Object> number = Object::NewNumber(mEnvironment, expr.GetValue());
+        CompileConstant(number, dest);
+    }
+    
+    void Compiler::Visit(const ObjectExpr & expr, int dest)
+    {
+        ASSERT(false, "Compiling ObjectExpr not implemented yet.");
+    }
+    
+    void Compiler::Visit(const ReturnExpr & expr, int dest)
+    {
+        ASSERT(false, "Compiling ReturnExpr not implemented yet.");
+    }
+    
+    void Compiler::Visit(const SelfExpr & expr, int dest)
+    {
+        ASSERT(false, "Compiling SelfExpr not implemented yet.");
+    }
+    
+    void Compiler::Visit(const SequenceExpr & expr, int dest)
+    {
+        ASSERT(false, "Compiling SequenceExpr not implemented yet.");
+    }
+    
+    void Compiler::Visit(const SetExpr & expr, int dest)
+    {
+        ASSERT(false, "Compiling SetExpr not implemented yet.");
+    }
+    
+    void Compiler::Visit(const StringExpr & expr, int dest)
+    {
+        Ref<Object> string = Object::NewString(mEnvironment, expr.GetValue());
+        CompileConstant(string, dest);
+    }
+    
+    void Compiler::Visit(const UndefineExpr & expr, int dest)
+    {
+        ASSERT(false, "Compiling UndefineExpr not implemented yet.");
+    }
+    
+    void Compiler::Visit(const VarExpr & expr, int dest)
+    {
+        ASSERT(false, "Compiling VarExpr not implemented yet.");
+    }
+    
+    void Compiler::CompileConstant(Ref<Object> constant, int dest)
+    {
+        // TODO(bob): Should check for duplicates. Only need one copy of any
+        // given constant.
+        int index = mExemplar->AddConstant(constant);
+        mExemplar->Write(OP_CONSTANT, index, dest);
+    }
+
     /*
     int Compiler::sNextMethodId = 1;
     
@@ -131,15 +216,6 @@ namespace Finch
         }
     }
 
-    void Compiler::Visit(const NumberExpr & expr)
-    {
-        // TODO(bob): Should check for duplicates. Only need one copy of any
-        // given constant.
-        Ref<Object> number = Object::NewNumber(mEnvironment, expr.Value());
-        int index = mCode->AddConstant(number);
-        mCode->Write(OP_CONSTANT, index);
-    }
-
     void Compiler::Visit(const ObjectExpr & expr)
     {
         expr.Parent()->Accept(*this);
@@ -188,15 +264,6 @@ namespace Finch
         {
             mCode->Write(OP_SET_LOCAL, id);
         }
-    }
-
-    void Compiler::Visit(const StringExpr & expr)
-    {
-        // TODO(bob): Should check for duplicates. Only need one copy of any
-        // given constant.
-        Ref<Object> string = Object::NewString(mEnvironment, expr.Value());
-        int index = mCode->AddConstant(string);
-        mCode->Write(OP_CONSTANT, index);
     }
 
     void Compiler::Visit(const UndefineExpr & expr)

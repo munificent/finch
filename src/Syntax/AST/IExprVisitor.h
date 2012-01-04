@@ -48,5 +48,27 @@ namespace Finch
         virtual void Visit(const UndefineExpr & expr) = 0;
         virtual void Visit(const VarExpr & expr) = 0;
     };
+    
+    // TODO(bob): Move into separate file or unify if we don't need ExprVisitor.
+    class IExprCompiler
+    {
+    public:
+        virtual ~IExprCompiler() {}
+        
+        virtual void Visit(const ArrayExpr & expr, int dest) = 0;
+        virtual void Visit(const BindExpr & expr, int dest) = 0;
+        virtual void Visit(const BlockExpr & expr, int dest) = 0;
+        virtual void Visit(const MessageExpr & expr, int dest) = 0;
+        virtual void Visit(const NameExpr & expr, int dest) = 0;
+        virtual void Visit(const NumberExpr & expr, int dest) = 0;
+        virtual void Visit(const ObjectExpr & expr, int dest) = 0;
+        virtual void Visit(const ReturnExpr & expr, int dest) = 0;
+        virtual void Visit(const SequenceExpr & expr, int dest) = 0;
+        virtual void Visit(const SelfExpr & expr, int dest) = 0;
+        virtual void Visit(const SetExpr & expr, int dest) = 0;
+        virtual void Visit(const StringExpr & expr, int dest) = 0;
+        virtual void Visit(const UndefineExpr & expr, int dest) = 0;
+        virtual void Visit(const VarExpr & expr, int dest) = 0;
+    };
 }
 

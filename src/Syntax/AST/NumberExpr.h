@@ -19,7 +19,7 @@ namespace Finch
         :   mValue(value)
         {}
         
-        double Value() const { return mValue; }
+        double GetValue() const { return mValue; }
         
         virtual void Trace(ostream & stream) const
         {

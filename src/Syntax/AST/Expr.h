@@ -8,16 +8,21 @@
 #include "Ref.h"
 #include "FinchString.h"
 
-#define EXPRESSION_VISITOR                                       \
-        virtual void Accept(IExprVisitor & visitor) const        \
-        {                                                        \
-            visitor.Visit(*this);                                \
+#define EXPRESSION_VISITOR                                              \
+        virtual void Accept(IExprVisitor & visitor) const               \
+        {                                                               \
+            visitor.Visit(*this);                                       \
+        }                                                               \
+        virtual void Accept(IExprCompiler & compiler, int dest) const   \
+        {                                                               \
+            compiler.Visit(*this, dest);                                \
         }
 
 namespace Finch
 {
     using std::ostream;
     
+    class IExprCompiler;
     class IExprVisitor;
     class Object;
         
@@ -37,6 +42,7 @@ namespace Finch
         
         // The visitor pattern.
         virtual void Accept(IExprVisitor & visitor) const = 0;
+        virtual void Accept(IExprCompiler & compiler, int dest) const = 0;
         
         virtual void Trace(std::ostream & stream) const = 0;
     };

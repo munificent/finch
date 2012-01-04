@@ -13,7 +13,7 @@
 
 namespace Finch
 {
-    class Compiler : private IExprVisitor
+    class Compiler : private IExprCompiler
     {
     public:
         // Compiles the given expression to a new top-level block. Used for
@@ -21,25 +21,31 @@ namespace Finch
         static Ref<BlockExemplar> CompileExpression(Environment & environment, const Expr & expr);
         
     private:
-        Compiler();
+        Compiler(Environment & environment, Ref<BlockExemplar> exemplar);
         
         virtual ~Compiler() {}
-        /*
-        virtual void Visit(const ArrayExpr & expr);
-        virtual void Visit(const BindExpr & expr);
-        virtual void Visit(const BlockExpr & expr);
-        virtual void Visit(const MessageExpr & expr);
-        virtual void Visit(const NameExpr & expr);
-        virtual void Visit(const NumberExpr & expr);
-        virtual void Visit(const ObjectExpr & expr);
-        virtual void Visit(const ReturnExpr & expr);
-        virtual void Visit(const SequenceExpr & expr);
-        virtual void Visit(const SelfExpr & expr);
-        virtual void Visit(const SetExpr & expr);
-        virtual void Visit(const StringExpr & expr);
-        virtual void Visit(const UndefineExpr & expr);
-        virtual void Visit(const VarExpr & expr);
-         */
+
+        virtual void Visit(const ArrayExpr & expr, int dest);
+        virtual void Visit(const BindExpr & expr, int dest);
+        virtual void Visit(const BlockExpr & expr, int dest);
+        virtual void Visit(const MessageExpr & expr, int dest);
+        virtual void Visit(const NameExpr & expr, int dest);
+        virtual void Visit(const NumberExpr & expr, int dest);
+        virtual void Visit(const ObjectExpr & expr, int dest);
+        virtual void Visit(const ReturnExpr & expr, int dest);
+        virtual void Visit(const SequenceExpr & expr, int dest);
+        virtual void Visit(const SelfExpr & expr, int dest);
+        virtual void Visit(const SetExpr & expr, int dest);
+        virtual void Visit(const StringExpr & expr, int dest);
+        virtual void Visit(const UndefineExpr & expr, int dest);
+        virtual void Visit(const VarExpr & expr, int dest);
+        
+        void CompileConstant(Ref<Object> constant, int dest);
+        
+        Environment & mEnvironment;
+        Ref<BlockExemplar> mExemplar;
+        
+        NO_COPY(Compiler);
     };
     
     /*
