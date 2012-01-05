@@ -49,8 +49,7 @@ namespace Finch
                         const Array<Ref<Object> > & args);
         */
         // Pushes the given block onto the call stack.
-        void CallBlock(Ref<Object> blockObj,
-                       const Array<Ref<Object> > & args);
+        void CallBlock(Ref<Object> blockObj, ArgReader & args);
 
         // Displays a runtime error to the user.
         void Error(const String & message);

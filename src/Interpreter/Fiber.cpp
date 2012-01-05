@@ -18,7 +18,8 @@ namespace Finch
         mStack(),
         mCallFrames()
     {
-        CallBlock(block, Array<Ref<Object> >());
+        ArgReader args(mStack, 0, 0);
+        CallBlock(block, args);
     }
     
     bool Fiber::IsDone() const
@@ -568,25 +569,25 @@ namespace Finch
         mCallStack.Push(CallFrame(scope, blockObj, self, mOperands.Count()));
     }
 */
-    void Fiber::CallBlock(Ref<Object> blockObj,
-                                const Array<Ref<Object> > & args)
+    
+    void Fiber::CallBlock(Ref<Object> blockObj, ArgReader & args)
     {
         BlockObject & block = *(blockObj->AsBlock());
-        /*
-        CallMethod(block.Self(), blockObj, args);
-         */
-        // TODO(bob): Mostly temp...
         
+        // TODO(bob): Need to handle binding self.
+
         // Allocate this frame's registers.
-        int stackStart = mStack.Count();
+        int stackStart = args.GetStackStart();
+        
         // TODO(bob): Make this a single operation on Array.
-        while (mStack.Count() < stackStart + block.GetNumRegisters())
+        while (mStack.Count() < args.GetStackStart() + block.GetNumRegisters())
         {
             mStack.Add(Ref<Object>());
         }
         
-        mCallFrames.Push(CallFrame(blockObj, stackStart));
+        mCallFrames.Push(CallFrame(blockObj, args.GetStackStart()));
     }
+
 
     void Fiber::Error(const String & message)
     {

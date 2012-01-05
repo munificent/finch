@@ -36,6 +36,8 @@ namespace Finch
             mNumArgs(numArgs)
         {}
         
+        int GetStackStart() const { return mFirstArg; }
+        
         Ref<Object> & operator[] (int index)
         {
             ASSERT_RANGE(index, mNumArgs);

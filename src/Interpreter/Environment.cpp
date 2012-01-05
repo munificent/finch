@@ -41,20 +41,18 @@ namespace Finch
 */
         // define Blocks prototype
         mBlockPrototype = MakeGlobal("Blocks");
-        DynamicObject* blockObj = mBlockPrototype->AsDynamic();
-        /*
-        blockObj->AddPrimitive("call", BlockCall);
-        blockObj->AddPrimitive("call:", BlockCall);
-        blockObj->AddPrimitive("call::", BlockCall);
-        blockObj->AddPrimitive("call:::", BlockCall);
-        blockObj->AddPrimitive("call::::", BlockCall);
-        blockObj->AddPrimitive("call:::::", BlockCall);
-        blockObj->AddPrimitive("call::::::", BlockCall);
-        blockObj->AddPrimitive("call:::::::", BlockCall);
-        blockObj->AddPrimitive("call::::::::", BlockCall);
-        blockObj->AddPrimitive("call:::::::::", BlockCall);
-        blockObj->AddPrimitive("call::::::::::", BlockCall);
-*/
+        AddPrimitive(mBlockPrototype, "call", BlockCall);
+        AddPrimitive(mBlockPrototype, "call:", BlockCall);
+        AddPrimitive(mBlockPrototype, "call::", BlockCall);
+        AddPrimitive(mBlockPrototype, "call:::", BlockCall);
+        AddPrimitive(mBlockPrototype, "call::::", BlockCall);
+        AddPrimitive(mBlockPrototype, "call:::::", BlockCall);
+        AddPrimitive(mBlockPrototype, "call::::::", BlockCall);
+        AddPrimitive(mBlockPrototype, "call:::::::", BlockCall);
+        AddPrimitive(mBlockPrototype, "call::::::::", BlockCall);
+        AddPrimitive(mBlockPrototype, "call:::::::::", BlockCall);
+        AddPrimitive(mBlockPrototype, "call::::::::::", BlockCall);
+
         // define Fiber prototype
         mFiberPrototype = MakeGlobal("Fibers");
         DynamicObject* fiberObj = mFiberPrototype->AsDynamic();
