@@ -92,12 +92,11 @@ namespace Finch
         // define String prototype
         mStringPrototype = MakeGlobal("Strings");
         AddPrimitive(mStringPrototype, "count",       StringCount);
-        /*
-        stringObj->AddPrimitive("at:",         StringAt);
-        stringObj->AddPrimitive("from:count:", StringFromCount);
-        stringObj->AddPrimitive("hash-code",   StringHashCode);
-        stringObj->AddPrimitive("index-of:",   StringIndexOf);
-*/
+        AddPrimitive(mStringPrototype, "at:",         StringAt);
+        AddPrimitive(mStringPrototype, "from:count:", StringFromCount);
+        AddPrimitive(mStringPrototype, "hash-code",   StringHashCode);
+        AddPrimitive(mStringPrototype, "index-of:",   StringIndexOf);
+
         // define Ether
         MakeGlobal("Ether");
         

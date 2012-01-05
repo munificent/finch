@@ -41,9 +41,9 @@ namespace Finch
         Ref<Object> Nil();
         Ref<Object> CreateBool(bool value);
         Ref<Object> CreateNumber(double value);
-        /*
-        void PushString(const String & value);
+        Ref<Object> CreateString(const String & value);
         
+        /*
         void CallMethod(Ref<Object> self,
                         Ref<Object> blockObj,
                         const Array<Ref<Object> > & args);

@@ -13,7 +13,6 @@ namespace Finch
         return fiber.CreateNumber(self->AsString().Length());
     }
     
-    /*
     PRIMITIVE(StringAt)
     {
         String thisString = self->AsString();
@@ -22,12 +21,12 @@ namespace Finch
         if ((index >= 0) && (index < thisString.Length()))
         {
             String substring = String(thisString[index]);
-            fiber.PushString(substring);
+            return fiber.CreateString(substring);
         }
         else
         {
             // out of bounds
-            fiber.PushNil();
+            return fiber.Nil();
         }
     }
     
@@ -39,7 +38,7 @@ namespace Finch
         
         // TODO(bob): Bounds check.
         String substring = String(thisString.Substring(from, count));
-        fiber.PushString(substring);
+        return fiber.CreateString(substring);
     }
     
     PRIMITIVE(StringIndexOf)
@@ -47,13 +46,12 @@ namespace Finch
         String thisString = self->AsString();
         String needle     = args[0]->AsString();
         
-        fiber.PushNumber(thisString.IndexOf(needle));
+        return fiber.CreateNumber(thisString.IndexOf(needle));
     }
     
     PRIMITIVE(StringHashCode)
     {
-        fiber.PushNumber(static_cast<double>(self->AsString().HashCode()));
+        return fiber.CreateNumber(static_cast<double>(self->AsString().HashCode()));
     }
-     */
 }
 

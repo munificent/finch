@@ -529,12 +529,13 @@ namespace Finch
     {
         return Object::NewNumber(GetEnvironment(), value);
     }
-/*
-    void Fiber::PushString(const String & value)
+
+    Ref<Object> Fiber::CreateString(const String & value)
     {
-        Push(Object::NewString(mEnvironment, value));
+        return Object::NewString(GetEnvironment(), value);
     }
 
+    /*
     void Fiber::CallMethod(Ref<Object> self, Ref<Object> blockObj,
                                  const Array<Ref<Object> > & args)
     {
