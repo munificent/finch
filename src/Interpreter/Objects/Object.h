@@ -8,9 +8,8 @@
 #include "FinchString.h"
 #include "Scope.h"
 
-#define PRIMITIVE(name)                                             \
-        void name(Ref<Object> self, Fiber & fiber,              \
-             String message, const Array<Ref<Object> > & args)
+#define PRIMITIVE(name)                                                     \
+        Ref<Object> name(Fiber & fiber, Ref<Object> self, ArgReader & args)
 
 namespace Finch
 {
@@ -22,17 +21,36 @@ namespace Finch
     class BlockObject;
     class DynamicObject;
     class Environment;
+    class Fiber;
     class FiberObject;
     class Interpreter;
     class Object;
-    /*
-    class Fiber;
 
-     // Function pointer type for a primitive Finch method implemented in C++.
-    typedef void (*PrimitiveMethod)(Ref<Object> self, Fiber & fiber,
-                                    String message, const Array<Ref<Object> > & args);
-     */
-
+    // TODO(bob): Move to other file.
+    class ArgReader
+    {
+    public:
+        ArgReader(Array<Ref<Object> > & stack, int firstArg, int numArgs)
+        :   mStack(stack),
+            mFirstArg(firstArg),
+            mNumArgs(numArgs)
+        {}
+        
+        Ref<Object> & operator[] (int index)
+        {
+            ASSERT_RANGE(index, mNumArgs);
+            return mStack[mFirstArg + index];
+        }
+        
+    private:
+        int mFirstArg;
+        int mNumArgs;
+        Array<Ref<Object> > & mStack;
+    };
+    
+    typedef Ref<Object> (*PrimitiveMethod)(Fiber & fiber, Ref<Object> self,
+                                           ArgReader & args);
+    
     // Base class for an object in Finch. All values in Finch inherit from this.
     class Object
     {
@@ -48,10 +66,14 @@ namespace Finch
         static Ref<Object> NewFiber(Interpreter & interpreter, Ref<Object> block);
         
         virtual ~Object() {}
+        
         /*
         virtual void Receive(Ref<Object> self, Fiber & fiber,
                              String message, const Array<Ref<Object> > & args);
         */
+        
+        virtual PrimitiveMethod FindPrimitive(int messageId) { return NULL; }
+        
         virtual double          AsNumber() const { return 0; }
         virtual String          AsString() const { return ""; }
         virtual ArrayObject *   AsArray()        { return NULL; }
@@ -61,7 +83,7 @@ namespace Finch
         
         Ref<Scope> ObjectScope();
         
-        Ref<Object> GetParent() { return mParent; }
+        Ref<Object> Parent() { return mParent; }
         void        SetParent(Ref<Object> parent) { mParent = parent; }
         
         virtual void Trace(ostream & stream) const = 0;

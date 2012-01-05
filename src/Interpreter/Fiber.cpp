@@ -49,7 +49,54 @@ namespace Finch
                 case OP_CONSTANT:
                     Store(frame, b, frame.Block().GetConstant(a));
                     break;
+                
+                case OP_BLOCK:
+                {
+                    // Create a new block from the exemplar.
+                    Ref<BlockExemplar> exemplar = frame.Block().GetExemplar(a);
                     
+                    // TODO(bob): Capture closure.
+                    
+                    // TODO(bob): Should use enclosing self instead of Nil.
+                    Ref<Object> block = Object::NewBlock(
+                        GetEnvironment(), exemplar, GetEnvironment().Nil());
+                    Store(frame, b, block);
+                    break;
+                }
+                
+                case OP_MESSAGE_0:
+                case OP_MESSAGE_1:
+                case OP_MESSAGE_2:
+                case OP_MESSAGE_3:
+                case OP_MESSAGE_4:
+                case OP_MESSAGE_5:
+                case OP_MESSAGE_6:
+                case OP_MESSAGE_7:
+                case OP_MESSAGE_8:
+                case OP_MESSAGE_9:
+                case OP_MESSAGE_10:
+                {
+                    /*
+                     OP_MESSAGE_0,  // A = index of message name in string table, 
+                     OP_MESSAGE_1,  // B = register of receiver (args follow),
+                     OP_MESSAGE_2,  // C = dest register
+                     */
+                    int numArgs = op - OP_MESSAGE_0;
+                    
+                    Ref<Object> result = SendMessage(a, b, numArgs);
+                    
+                    // A non-null result means the message was handled by a
+                    // primitive that immediately calculated the result.
+                    // Otherwise it's a normal method which will push a new
+                    // callframe. When that method returns, it will handle
+                    // setting the result on the caller.
+                    if (!result.IsNull())
+                    {
+                        Store(frame, c, result);
+                    }
+                    break;
+                }
+                
                 case OP_RETURN:
                 {
                     Ref<Object> result = Load(frame, a);
@@ -99,6 +146,44 @@ namespace Finch
         mStack[frame.stackStart + reg] = value;
     }
 
+    Environment & Fiber::GetEnvironment()
+    {
+        return mInterpreter.GetEnvironment();
+    }
+    
+    Ref<Object> Fiber::SendMessage(int messageId, int receiverReg, int numArgs)
+    {
+        Ref<Object> self = Load(mCallFrames.Peek(), receiverReg);
+        Ref<Object> receiver = self;
+
+        // Walk the parent chain looking for a method that matches the message.
+        while (true)
+        {
+            // See if the object has a primitive bound to that name.
+            PrimitiveMethod primitive = receiver->FindPrimitive(messageId);
+            if (primitive != NULL)
+            {
+                ArgReader args(mStack, receiverReg + 1, numArgs);
+                return primitive(*this, self, args);
+            }
+            
+            // TODO(bob): Look for a method.
+            
+            // Not found yet, so walk up the parent chain until we bottom out
+            // at Object.
+            if (receiver == GetEnvironment().ObjectPrototype()) break;
+            receiver = receiver->Parent();
+        }
+        
+        // If we got here, the object didn't handle the message.
+        String messageName = GetEnvironment().Strings().Find(messageId);
+        String error = String::Format("Object '%s' did not handle message '%s'",
+            receiver->AsString().CString(), messageName.CString());
+        Error(error);
+
+        // Unhandled messages just return nil.
+        return GetEnvironment().Nil();
+    }
     
     /*
     Fiber::Fiber(Interpreter & interpreter, Ref<Object> block)
@@ -428,22 +513,23 @@ namespace Finch
     {
         PushOperand(object);
     }
+     */
 
-    void Fiber::PushNil()
+    Ref<Object> Fiber::Nil()
     {
-        Push(mEnvironment.Nil());
+        return GetEnvironment().Nil();
     }
 
-    void Fiber::PushBool(bool value)
+    Ref<Object> Fiber::CreateBool(bool value)
     {
-        PushOperand(value ? mEnvironment.True() : mEnvironment.False());
+        return value ? GetEnvironment().True() : GetEnvironment().False();
     }
-
-    void Fiber::PushNumber(double value)
+    
+    Ref<Object> Fiber::CreateNumber(double value)
     {
-        Push(Object::NewNumber(mEnvironment, value));
+        return Object::NewNumber(GetEnvironment(), value);
     }
-
+/*
     void Fiber::PushString(const String & value)
     {
         Push(Object::NewString(mEnvironment, value));
@@ -500,12 +586,13 @@ namespace Finch
         
         mCallFrames.Push(CallFrame(blockObj, stackStart));
     }
-/*
+
     void Fiber::Error(const String & message)
     {
         mInterpreter.GetHost().Error(message);
     }
-
+    
+    /*
     int Fiber::GetCallstackDepth() const
     {
         return mCallStack.Count();

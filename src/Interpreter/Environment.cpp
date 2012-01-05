@@ -65,38 +65,34 @@ namespace Finch
         
         // define Number prototype
         mNumberPrototype = MakeGlobal("Numbers");
-        DynamicObject* numberObj = mNumberPrototype->AsDynamic();
-        /*
-        numberObj->AddPrimitive("abs", NumberAbs);
-        numberObj->AddPrimitive("neg", NumberNeg);
-        numberObj->AddPrimitive("mod:", NumberMod);
-        numberObj->AddPrimitive("floor", NumberFloor);
-        numberObj->AddPrimitive("ceiling", NumberCeiling);
-        numberObj->AddPrimitive("sqrt",  NumberSqrt);
-        numberObj->AddPrimitive("sin",   NumberSin);
-        numberObj->AddPrimitive("cos",   NumberCos);
-        numberObj->AddPrimitive("tan",   NumberTan);
-        numberObj->AddPrimitive("asin",  NumberAsin);
-        numberObj->AddPrimitive("acos",  NumberAcos);
-        numberObj->AddPrimitive("atan",  NumberAtan);
-        numberObj->AddPrimitive("atan:", NumberAtan2);
-        numberObj->AddPrimitive("+number:", NumberAdd);
-        numberObj->AddPrimitive("-number:", NumberSubtract);
-        numberObj->AddPrimitive("*number:", NumberMultiply);
-        numberObj->AddPrimitive("/number:", NumberDivide);
-        numberObj->AddPrimitive("=number:", NumberEquals);
-        numberObj->AddPrimitive("!=",  NumberNotEquals);
-        numberObj->AddPrimitive("<",   NumberLessThan);
-        numberObj->AddPrimitive(">",   NumberGreaterThan);
-        numberObj->AddPrimitive("<=",  NumberLessThanOrEqual);
-        numberObj->AddPrimitive(">=",  NumberGreaterThanOrEqual);
-        */
+        AddPrimitive(mNumberPrototype, "abs", NumberAbs);
+        AddPrimitive(mNumberPrototype, "neg", NumberNeg);
+        AddPrimitive(mNumberPrototype, "mod:", NumberMod);
+        AddPrimitive(mNumberPrototype, "floor", NumberFloor);
+        AddPrimitive(mNumberPrototype, "ceiling", NumberCeiling);
+        AddPrimitive(mNumberPrototype, "sqrt",  NumberSqrt);
+        AddPrimitive(mNumberPrototype, "sin",   NumberSin);
+        AddPrimitive(mNumberPrototype, "cos",   NumberCos);
+        AddPrimitive(mNumberPrototype, "tan",   NumberTan);
+        AddPrimitive(mNumberPrototype, "asin",  NumberAsin);
+        AddPrimitive(mNumberPrototype, "acos",  NumberAcos);
+        AddPrimitive(mNumberPrototype, "atan",  NumberAtan);
+        AddPrimitive(mNumberPrototype, "atan:", NumberAtan2);
+        AddPrimitive(mNumberPrototype, "+number:", NumberAdd);
+        AddPrimitive(mNumberPrototype, "-number:", NumberSubtract);
+        AddPrimitive(mNumberPrototype, "*number:", NumberMultiply);
+        AddPrimitive(mNumberPrototype, "/number:", NumberDivide);
+        AddPrimitive(mNumberPrototype, "=number:", NumberEquals);
+        AddPrimitive(mNumberPrototype, "!=",  NumberNotEquals);
+        AddPrimitive(mNumberPrototype, "<",   NumberLessThan);
+        AddPrimitive(mNumberPrototype, ">",   NumberGreaterThan);
+        AddPrimitive(mNumberPrototype, "<=",  NumberLessThanOrEqual);
+        AddPrimitive(mNumberPrototype, ">=",  NumberGreaterThanOrEqual);
         
         // define String prototype
         mStringPrototype = MakeGlobal("Strings");
-        DynamicObject* stringObj = mStringPrototype->AsDynamic();
+        AddPrimitive(mStringPrototype, "count",       StringCount);
         /*
-        stringObj->AddPrimitive("count",       StringCount);
         stringObj->AddPrimitive("at:",         StringAt);
         stringObj->AddPrimitive("from:count:", StringFromCount);
         stringObj->AddPrimitive("hash-code",   StringHashCode);
@@ -141,6 +137,13 @@ namespace Finch
         mGlobals->Define(name, global);
         
         return global;
+    }
+    
+    void Environment::AddPrimitive(Ref<Object> object, String message,
+                                   PrimitiveMethod primitive)
+    {
+        int id = mStrings.Add(message);
+        object->AsDynamic()->AddPrimitive(id, primitive);
     }
 }
 

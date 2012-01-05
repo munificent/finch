@@ -8,9 +8,9 @@
 
 namespace Finch
 {
-    /*
     // Primitive methods for string objects.
     PRIMITIVE(StringCount);
+    /*
     PRIMITIVE(StringAt);
     PRIMITIVE(StringFromCount);
     PRIMITIVE(StringIndexOf);

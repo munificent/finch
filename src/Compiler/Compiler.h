@@ -42,8 +42,12 @@ namespace Finch
         
         void CompileConstant(Ref<Object> constant, int dest);
         
+        int ReserveRegister();
+        void ReleaseRegister();
+        
         Environment & mEnvironment;
         Ref<BlockExemplar> mExemplar;
+        int mInUseRegisters;
         
         NO_COPY(Compiler);
     };

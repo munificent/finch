@@ -14,6 +14,8 @@ namespace Finch
 {
     using std::ostream;
     
+    class BlockExemplar;
+    
     // Object class for a block: an invokable expression and the scope that
     // encloses it.
     class BlockObject : public Object
@@ -44,6 +46,7 @@ namespace Finch
         int GetNumRegisters() const { return mExemplar->GetNumRegisters(); }
         
         const Ref<Object> GetConstant(int index) const { return mExemplar->GetConstant(index); }
+        const Ref<BlockExemplar> GetExemplar(int index) const { return mExemplar->GetExemplar(index); }
         
         // Gets the compiled bytecode for the block.
         const Array<Instruction> & GetCode() const { return mExemplar->GetCode(); } 

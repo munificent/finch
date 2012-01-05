@@ -4,8 +4,9 @@
 
 #include "Macros.h"
 #include "Expr.h"
-#include "IExprVisitor.h"
 #include "FinchString.h"
+#include "IExprVisitor.h"
+#include "Identifier.h"
 
 namespace Finch
 {
@@ -16,20 +17,19 @@ namespace Finch
     {
     public:
         NameExpr(String name)
-        :   mName(name)
+        :   mIdentifier(name)
         {}
         
-        String Name() const { return mName; }
+        Identifier & GetIdentifier() { return mIdentifier; }
         
         virtual void Trace(ostream & stream) const
         {
-            stream << mName;
+            stream << mIdentifier.Name();
         }
-            
+        
         EXPRESSION_VISITOR
         
     private:
-        String  mName;
+        Identifier mIdentifier;
     };
 }
-

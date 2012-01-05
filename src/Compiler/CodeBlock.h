@@ -18,8 +18,20 @@ namespace Finch
     
     enum OpCode
     {
-        OP_CONSTANT, // A = index of constant, B = dest register
-        OP_RETURN    // A = register with result to return
+        OP_CONSTANT,   // A = index of constant, B = dest register
+        OP_BLOCK,      // A = index of example, B = dest register
+        OP_MESSAGE_0,  // A = index of message name in string table, 
+        OP_MESSAGE_1,  // B = register of receiver (args follow),
+        OP_MESSAGE_2,  // C = dest register
+        OP_MESSAGE_3,
+        OP_MESSAGE_4,
+        OP_MESSAGE_5,
+        OP_MESSAGE_6,
+        OP_MESSAGE_7,
+        OP_MESSAGE_8,
+        OP_MESSAGE_9,
+        OP_MESSAGE_10,
+        OP_RETURN,     // A = register with result to return
     };
         
     // A compiled block. This contains the state that all blocks created from
@@ -40,9 +52,15 @@ namespace Finch
         // Adds the given object to the constant pool and returns its index.
         int AddConstant(Ref<Object> object);
         
-        // Gets the constant at the given index in the constant table.
+        // Gets the constant at the given index in the constant pool.
         const Ref<Object> GetConstant(int index) const { return mConstants[index]; }
-
+        
+        // Adds the given exemplar to the pool and returns its index.
+        int AddExemplar(Ref<BlockExemplar> exemplar);
+        
+        // Gets the exemplar at the given index in the pool.
+        const Ref<BlockExemplar> GetExemplar(int index) const { return mExemplars[index]; }
+        
         // Gets the bytecode for this block.
         const Array<Instruction> & GetCode() const { return mCode; }
         
@@ -53,6 +71,8 @@ namespace Finch
         Array<String>       mParams;
         Array<Instruction>  mCode;
         Array<Ref<Object> > mConstants;
+        // Exemplars for blocks defined within this one.
+        Array<Ref<BlockExemplar> > mExemplars;
         int                 mNumRegisters;
     };
     

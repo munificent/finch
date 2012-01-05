@@ -8,15 +8,14 @@
 
 namespace Finch
 {
-    /*
     // Primitive methods for numbers.
     PRIMITIVE(NumberAdd);
     PRIMITIVE(NumberSubtract);
     PRIMITIVE(NumberMultiply);
     PRIMITIVE(NumberDivide);
+
     PRIMITIVE(NumberAbs);
     PRIMITIVE(NumberNeg);
-    
     PRIMITIVE(NumberSqrt);
     PRIMITIVE(NumberSin);
     PRIMITIVE(NumberCos);
@@ -36,6 +35,5 @@ namespace Finch
     PRIMITIVE(NumberGreaterThan);
     PRIMITIVE(NumberLessThanOrEqual);
     PRIMITIVE(NumberGreaterThanOrEqual);
-     */
 }
 

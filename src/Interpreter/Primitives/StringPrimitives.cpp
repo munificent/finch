@@ -8,12 +8,12 @@
 
 namespace Finch
 {
-    /*
     PRIMITIVE(StringCount)
     {
-        fiber.PushNumber(self->AsString().Length());
+        return fiber.CreateNumber(self->AsString().Length());
     }
     
+    /*
     PRIMITIVE(StringAt)
     {
         String thisString = self->AsString();

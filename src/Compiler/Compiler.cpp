@@ -25,18 +25,23 @@ namespace Finch
             new BlockExemplar(Array<String>()));
         
         Compiler compiler(environment, exemplar);
-        // TODO(bob): Using 0 here is a temp hack. Should allocate register for
-        // result.
-        expr.Accept(compiler, 0);
-        exemplar->Write(OP_RETURN, 0);
-        exemplar->SetNumRegisters(1);
+        
+        // TODO(bob): Reserve registers for the params.
+        
+        int resultRegister = compiler.ReserveRegister();
+
+        expr.Accept(compiler, resultRegister);
+        exemplar->Write(OP_RETURN, resultRegister);
+        
+        compiler.ReleaseRegister();
         
         return exemplar;
     }
     
     Compiler::Compiler(Environment & environment, Ref<BlockExemplar> exemplar)
     :   mEnvironment(environment),
-        mExemplar(exemplar)
+        mExemplar(exemplar),
+        mInUseRegisters(0)
     {}
     
     void Compiler::Visit(const ArrayExpr & expr, int dest)
@@ -51,12 +56,49 @@ namespace Finch
     
     void Compiler::Visit(const BlockExpr & expr, int dest)
     {
-        ASSERT(false, "Compiling BlockExpr not implemented yet.");
+        // TODO(bob): Params.
+        Ref<BlockExemplar> exemplar = Compiler::CompileExpression(
+            mEnvironment, *expr.Body());
+        int index = mExemplar->AddExemplar(exemplar);
+        mExemplar->Write(OP_BLOCK, index, dest);
+        // TODO(bob): Once closures are implemented, need to write  code to
+        // load upvals.
     }
     
     void Compiler::Visit(const MessageExpr & expr, int dest)
     {
-        ASSERT(false, "Compiling MessageExpr not implemented yet.");
+        // Load the receiver.
+        int receiverReg = ReserveRegister();
+        expr.Receiver()->Accept(*this, receiverReg);
+        
+        // Compile each of the message sends.
+        for (int i = 0; i < expr.Messages().Count(); i++)
+        {
+            const MessageSend & message = expr.Messages()[i];
+            
+            // Compile the arguments.
+            for (int arg = 0; arg < message.GetArguments().Count(); arg++)
+            {
+                int argReg = ReserveRegister();
+                message.GetArguments()[arg]->Accept(*this, argReg);
+            }
+            
+            // Compile the message send.
+            int messageId = mEnvironment.Strings().Add(message.GetName());
+            OpCode op = static_cast<OpCode>(OP_MESSAGE_0 +
+                message.GetArguments().Count());
+            
+            mExemplar->Write(op, messageId, receiverReg, dest);
+            
+            // Free the argument registers.
+            for (int arg = 0; arg < message.GetArguments().Count(); arg++)
+            {
+                ReleaseRegister();
+            }
+        }
+        
+        // Free the receiver register.
+        ReleaseRegister();
     }
     
     void Compiler::Visit(const NameExpr & expr, int dest)
@@ -117,6 +159,23 @@ namespace Finch
         // given constant.
         int index = mExemplar->AddConstant(constant);
         mExemplar->Write(OP_CONSTANT, index, dest);
+    }
+
+    int Compiler::ReserveRegister()
+    {
+        mInUseRegisters++;
+        
+        if (mExemplar->GetNumRegisters() < mInUseRegisters)
+        {
+            mExemplar->SetNumRegisters(mInUseRegisters);
+        }
+        
+        return mInUseRegisters - 1;
+    }
+    
+    void Compiler::ReleaseRegister()
+    {
+        mInUseRegisters--;
     }
 
     /*

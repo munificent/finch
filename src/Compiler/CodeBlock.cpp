@@ -16,7 +16,13 @@ namespace Finch
         mConstants.Add(object);
         return mConstants.Count() - 1;
     }
-
+    
+    int BlockExemplar::AddExemplar(Ref<BlockExemplar> exemplar)
+    {
+        mExemplars.Add(exemplar);
+        return mExemplars.Count() - 1;
+    }
+    
     // Writes an instruction.
     void BlockExemplar::Write(OpCode op, int a, int b, int c)
     {

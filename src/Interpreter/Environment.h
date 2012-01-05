@@ -53,6 +53,8 @@ namespace Finch
         Ref<Object> mFalse;
         
         Ref<Object> MakeGlobal(const char * name);
+        void AddPrimitive(Ref<Object> object, String message,
+                          PrimitiveMethod primitive);
         
         NO_COPY(Environment);
     };

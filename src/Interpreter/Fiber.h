@@ -37,9 +37,11 @@ namespace Finch
         
         // Pushes the given value onto the operand stack.
         void Push(Ref<Object> object);
-        void PushNil();
-        void PushBool(bool value);
-        void PushNumber(double value);
+         */
+        Ref<Object> Nil();
+        Ref<Object> CreateBool(bool value);
+        Ref<Object> CreateNumber(double value);
+        /*
         void PushString(const String & value);
         
         void CallMethod(Ref<Object> self,
@@ -49,10 +51,11 @@ namespace Finch
         // Pushes the given block onto the call stack.
         void CallBlock(Ref<Object> blockObj,
                        const Array<Ref<Object> > & args);
-        /*
+
         // Displays a runtime error to the user.
         void Error(const String & message);
         
+        /*
         // Gets the current number of stack frames on the callstack. Used as a
         // diagnostic to ensure that tail call optimization is working.
         int GetCallstackDepth() const;
@@ -106,8 +109,10 @@ namespace Finch
         // Stores a register for the given callframe.
         void Store(const CallFrame & frame, int reg, Ref<Object> value);
         
+        Environment & GetEnvironment();
+        
+        Ref<Object> SendMessage(int messageId, int receiverReg, int numArgs);
         /*
-        void        SendMessage(int message, int numArgs);
         Ref<Object> Self();
         Ref<Scope>  CurrentScope() { return mCallStack.Peek().scope; }
         

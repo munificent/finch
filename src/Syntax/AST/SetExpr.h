@@ -7,6 +7,7 @@
 #include "IExprVisitor.h"
 #include "Ref.h"
 #include "FinchString.h"
+#include "Identifier.h"
 
 namespace Finch
 {
@@ -17,23 +18,23 @@ namespace Finch
     {
     public:
         SetExpr(String name, Ref<Expr> value)
-        :   mName(name),
+        :   mIdentifier(name),
             mValue(value)
         {}
         
-        String    Name()  const { return mName; }
+        Identifier & GetIdentifier() { return mIdentifier; }
         Ref<Expr> Value() const { return mValue; }
         
         virtual void Trace(ostream & stream) const
         {
-            stream << mName << " <-- " << mValue;
+            stream << mIdentifier.Name() << " <-- " << mValue;
         }
             
         EXPRESSION_VISITOR
         
     private:
         // the name of the variable
-        String mName;
+        Identifier mIdentifier;
         
         // the value
         Ref<Expr> mValue;
