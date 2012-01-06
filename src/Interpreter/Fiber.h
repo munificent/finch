@@ -54,6 +54,7 @@ namespace Finch
         // Displays a runtime error to the user.
         void Error(const String & message);
         
+        void TraceStack() const;
         /*
         // Gets the current number of stack frames on the callstack. Used as a
         // diagnostic to ensure that tail call optimization is working.
@@ -94,7 +95,7 @@ namespace Finch
             
             CallFrame(Ref<Object> block, int stackStart)
             :   ip(0),
-                stackStart(0),
+                stackStart(stackStart),
                 block(block)
             {}
 

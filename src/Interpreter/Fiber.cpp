@@ -1,4 +1,5 @@
 #include <iostream>
+#include <iomanip> // For debug tracing.
 
 #include "ArrayObject.h"
 #include "BlockObject.h"
@@ -12,6 +13,9 @@
 
 namespace Finch
 {
+    using std::cout;
+    using std::endl;
+    
     Fiber::Fiber(Interpreter & interpreter, Ref<Object> block)
     :   mIsRunning(false),
         mInterpreter(interpreter),
@@ -48,11 +52,14 @@ namespace Finch
             switch (op)
             {
                 case OP_CONSTANT:
+                    //cout << "CONSTANT " << a << " -> " << b << endl;
                     Store(frame, b, frame.Block().GetConstant(a));
+                    TraceStack();
                     break;
                 
                 case OP_BLOCK:
                 {
+                    //cout << "BLOCK    " << a << " -> " << b << endl;
                     // Create a new block from the exemplar.
                     Ref<BlockExemplar> exemplar = frame.Block().GetExemplar(a);
                     
@@ -62,6 +69,7 @@ namespace Finch
                     Ref<Object> block = Object::NewBlock(
                         GetEnvironment(), exemplar, GetEnvironment().Nil());
                     Store(frame, b, block);
+                    TraceStack();
                     break;
                 }
                 
@@ -77,11 +85,8 @@ namespace Finch
                 case OP_MESSAGE_9:
                 case OP_MESSAGE_10:
                 {
-                    /*
-                     OP_MESSAGE_0,  // A = index of message name in string table, 
-                     OP_MESSAGE_1,  // B = register of receiver (args follow),
-                     OP_MESSAGE_2,  // C = dest register
-                     */
+                    String name = GetEnvironment().Strings().Find(a);
+                    //cout << "MESSAGE  " << name << " " << b << " -> " << c << endl;
                     int numArgs = op - OP_MESSAGE_0;
                     
                     Ref<Object> result = SendMessage(a, b, numArgs);
@@ -95,18 +100,20 @@ namespace Finch
                     {
                         Store(frame, c, result);
                     }
+                    TraceStack();
                     break;
                 }
                 
                 case OP_RETURN:
                 {
+                    //cout << "RETURN   " << a << endl;
                     Ref<Object> result = Load(frame, a);
                     
                     mCallFrames.Pop();
                     
                     if (mCallFrames.Count() > 0)
                     {
-                        // Discard the frame's registers.
+                        // Discard the callee frame's registers.
                         CallFrame & caller = mCallFrames.Peek();
                         int newStackSize = caller.stackStart +
                             caller.Block().GetNumRegisters();
@@ -117,11 +124,15 @@ namespace Finch
                             mStack.RemoveAt(mStack.Count() - 1);
                         }
                         
-                        // TODO(bob): Need to store the result in the caller's
-                        // destination register.
+                        // Store the result back in the caller's dest register.
+                        Instruction messageInstruction = caller.Block().GetCode()[caller.ip - 1];
+                        int dest = messageInstruction & 0x000000ff; // c
+                        Store(caller, dest, result);
+                        TraceStack();
                     }
                     else
                     {
+                        TraceStack();
                         return result;
                     }
 
@@ -157,6 +168,8 @@ namespace Finch
         Ref<Object> self = Load(mCallFrames.Peek(), receiverReg);
         Ref<Object> receiver = self;
 
+        ASSERT(!receiver.IsNull(), "Should have receiver.");
+        
         // Walk the parent chain looking for a method that matches the message.
         while (true)
         {
@@ -510,10 +523,6 @@ namespace Finch
         return Ref<Object>();
     }
 
-    void Fiber::Push(Ref<Object> object)
-    {
-        PushOperand(object);
-    }
      */
 
     Ref<Object> Fiber::Nil()
@@ -577,8 +586,6 @@ namespace Finch
         // TODO(bob): Need to handle binding self.
 
         // Allocate this frame's registers.
-        int stackStart = args.GetStackStart();
-        
         // TODO(bob): Make this a single operation on Array.
         while (mStack.Count() < args.GetStackStart() + block.GetNumRegisters())
         {
@@ -592,6 +599,33 @@ namespace Finch
     void Fiber::Error(const String & message)
     {
         mInterpreter.GetHost().Error(message);
+    }
+    
+    void Fiber::TraceStack() const
+    {
+        // Uncomment to trace ops.
+        // TODO(bob): Set up a nice #define to enable this.
+        /*
+        using namespace std;
+        
+        int j = mCallFrames.Count() - 1;
+        for (int i = 0; i < mStack.Count(); i++)
+        {
+            if (j >= 0 && mCallFrames[j].stackStart == i)
+            {
+                cout << " | ";
+                j--;
+            }
+            else
+            {
+                cout << " - ";
+            }
+
+            cout << left << setw(10) << mStack[i];
+            
+        }
+        cout << endl;
+         */
     }
     
     /*
@@ -627,17 +661,6 @@ namespace Finch
         if (mObjects.Count() > 0) return mObjects.Peek();
         
         return mCallStack.Peek().receiver;
-    }
-
-    void Fiber::PushOperand(Ref<Object> object)
-    {
-        ASSERT(!object.IsNull(), "Cannot push a null object. (Should be Nil instead.)");
-        mOperands.Push(object);
-    }
-
-    Ref<Object> Fiber::PopOperand()
-    {
-        return mOperands.Pop();
     }
      */
 }

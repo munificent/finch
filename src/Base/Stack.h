@@ -52,10 +52,18 @@ namespace Finch
         // Gets the item at the given index in the stack. Index zero is the
         // top of the stack, and indices increase towards the bottom of the
         // stack.
+        const T & operator[] (int index) const
+        {
+            ASSERT_RANGE(index, Count());
+            return mItems[-1 - index];
+        }
+        
+        // Gets the item at the given index in the stack. Index zero is the
+        // top of the stack, and indices increase towards the bottom of the
+        // stack.
         T & operator[] (int index)
         {
-            ASSERT_INDEX(index, Count());
-            
+            ASSERT_RANGE(index, Count());
             return mItems[-1 - index];
         }
         

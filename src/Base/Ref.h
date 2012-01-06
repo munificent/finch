@@ -126,7 +126,7 @@ namespace Finch
     {
         if (ref.IsNull())
         {
-            cout << "(null reference)";
+            cout << "(nullref)";
         }
         else
         {
