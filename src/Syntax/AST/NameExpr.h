@@ -6,7 +6,6 @@
 #include "Expr.h"
 #include "FinchString.h"
 #include "IExprVisitor.h"
-#include "Identifier.h"
 
 namespace Finch
 {
@@ -17,19 +16,19 @@ namespace Finch
     {
     public:
         NameExpr(String name)
-        :   mIdentifier(name)
+        :   mName(name)
         {}
         
-        Identifier & GetIdentifier() { return mIdentifier; }
+        String GetName() { return mName; }
         
         virtual void Trace(ostream & stream) const
         {
-            stream << mIdentifier.Name();
+            stream << mName;
         }
         
         EXPRESSION_VISITOR
         
     private:
-        Identifier mIdentifier;
+        String mName;
     };
 }

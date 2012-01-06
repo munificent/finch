@@ -81,7 +81,10 @@ namespace Finch
         if (IsInfinite())
         {
             // skip past Sequence() otherwise we'll keep reading lines forever
-            PARSE_RULE(expr, Bind());
+            // TODOO(bob): This is wrong, actually. It means if you enter:
+            //   1, 2, 3
+            // on the REPL, it will stop after 1. :(
+            PARSE_RULE(expr, Variable());
             IGNORE(TOKEN_LINE);
             
             return expr;
@@ -116,6 +119,40 @@ namespace Finch
         return Ref<Expr>(new SequenceExpr(expressions));
     }
     
+    Ref<Expr> FinchParser::Variable()
+    {
+        // The grammar is carefully constrained to only allow variables to be
+        // declared at the "top level" of a block and not inside nested
+        // expressions. This is important in order to have a simple single-pass
+        // compiler. Doing so requires that we don't have any temporary (i.e.
+        // non local variable) registers in use at the point that we are
+        // defining a new local. All that means is that variable declarations
+        // (a <- "foo") shouldn't be allowed in the middle of message sends.
+        // So the grammar must be careful to disallow this:
+        //
+        //   foo bar: "baz" bang: (a <- "blah")
+        //
+
+        if (LookAhead(TOKEN_NAME, TOKEN_ARROW))
+        {
+            String name = Consume()->Text();
+            
+            Consume(); // the arrow
+            
+            // handle assigning the special "undefined" value
+            if (Match(TOKEN_UNDEFINED))
+            {
+                return Ref<Expr>(new UndefineExpr(name));
+            }
+            else
+            {
+                PARSE_RULE(value, Variable());
+                return Ref<Expr>(new VarExpr(name, value));
+            }
+        }
+        else return Cascade();
+    }
+    
     Ref<Expr> FinchParser::Bind()
     {
         PARSE_RULE(expr, Assignment());
@@ -141,24 +178,7 @@ namespace Finch
     
     Ref<Expr> FinchParser::Assignment()
     {
-        if (LookAhead(TOKEN_NAME, TOKEN_ARROW))
-        {
-            String name = Consume()->Text();
-            
-            Consume(); // the arrow
-            
-            // handle assigning the special "undefined" value
-            if (Match(TOKEN_UNDEFINED))
-            {
-                return Ref<Expr>(new UndefineExpr(name));
-            }
-            else
-            {
-                PARSE_RULE(value, Assignment());
-                return Ref<Expr>(new VarExpr(name, value));
-            }
-        }
-        else if (LookAhead(TOKEN_NAME, TOKEN_LONG_ARROW))
+        if (LookAhead(TOKEN_NAME, TOKEN_LONG_ARROW))
         {
             String name = Consume()->Text();
             
@@ -336,7 +356,7 @@ namespace Finch
         else if (Match(TOKEN_LEFT_PAREN))
         {
             // parenthesized expression
-            PARSE_RULE(expression, Expression());
+            PARSE_RULE(expression, Bind());
             CONSUME(TOKEN_RIGHT_PAREN, "Expect closing ')'.");
             return expression;
         }
@@ -414,7 +434,7 @@ namespace Finch
     
     Ref<Expr> FinchParser::ParseSequence(Array<Ref<Expr> > & expressions)
     {
-        PARSE_RULE(expression, Bind());
+        PARSE_RULE(expression, Variable());
         expressions.Add(expression);
         
         while (Match(TOKEN_LINE))
@@ -427,7 +447,7 @@ namespace Finch
             if (LookAhead(TOKEN_RIGHT_BRACE)) break;
             if (LookAhead(TOKEN_EOF)) break;
             
-            PARSE_RULE(next, Bind());
+            PARSE_RULE(next, Variable());
             expressions.Add(next);
         }
         

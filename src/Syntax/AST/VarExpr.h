@@ -17,23 +17,23 @@ namespace Finch
     {
     public:
         VarExpr(String name, Ref<Expr> value)
-        :   mIdentifier(name),
+        :   mName(name),
             mValue(value)
         {}
         
-        Identifier & GetIdentifier() { return mIdentifier; }
+        String GetName() { return mName; }
         Ref<Expr> Value() const { return mValue; }
         
         virtual void Trace(ostream & stream) const
         {
-            stream << mIdentifier.Name() << " <- " << mValue;
+            stream << mName << " <- " << mValue;
         }
             
         EXPRESSION_VISITOR
         
     private:
         // the name of the variable
-        Identifier mIdentifier;
+        String mName;
         
         // the initial value
         Ref<Expr> mValue;

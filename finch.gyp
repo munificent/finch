@@ -84,8 +84,6 @@
       'src/Syntax/AST/DefineExpr.h',
       'src/Syntax/AST/Expr.cpp',
       'src/Syntax/AST/Expr.h',
-      'src/Syntax/AST/Identifier.cpp',
-      'src/Syntax/AST/Identifier.h',
       'src/Syntax/AST/IExprVisitor.h',
       'src/Syntax/AST/MessageExpr.h',
       'src/Syntax/AST/NameExpr.h',

@@ -12,7 +12,7 @@ namespace Finch
     class IErrorReporter;
     class ILineReader;
     class MessageExpr;
-    
+        
     // Parser for the Finch grammar.
     class FinchParser : public Parser
     {
@@ -31,6 +31,7 @@ namespace Finch
         // The grammar productions, from lowest to highest precedence.
         Ref<Expr> Expression();
         Ref<Expr> Sequence();
+        Ref<Expr> Variable();
         Ref<Expr> Bind();
         Ref<Expr> Assignment();
         Ref<Expr> Cascade();
