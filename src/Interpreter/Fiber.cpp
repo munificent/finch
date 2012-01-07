@@ -74,7 +74,9 @@ namespace Finch
                 }
                 
                 case OP_MOVE:
+                    //cout << "MOVE     " << a << " -> " << b << endl;
                     Store(frame, b, Load(frame, a));
+                    TraceStack();
                     break;
                     
                 case OP_MESSAGE_0:
@@ -89,7 +91,7 @@ namespace Finch
                 case OP_MESSAGE_9:
                 case OP_MESSAGE_10:
                 {
-                    String name = GetEnvironment().Strings().Find(a);
+                    //String name = GetEnvironment().Strings().Find(a);
                     //cout << "MESSAGE  " << name << " " << b << " -> " << c << endl;
                     int numArgs = op - OP_MESSAGE_0;
                     
@@ -618,19 +620,19 @@ namespace Finch
         {
             if (j >= 0 && mCallFrames[j].stackStart == i)
             {
-                cout << " | ";
+                cout << " || ";
                 j--;
             }
             else
             {
-                cout << " - ";
+                cout << " | ";
             }
 
             cout << left << setw(10) << mStack[i];
             
         }
         cout << endl;
-         */
+        */
     }
     
     /*

@@ -21,6 +21,11 @@ namespace Finch
         static Ref<BlockExemplar> CompileExpression(Environment & environment, const Expr & expr);
         
     private:
+        // Every expression except the last in a sequence discards its result
+        // value. This special register number is used to avoid some unnecessary
+        // instructions if we know the result will be trashed anyway.
+        const static int DISCARD_REGISTER = -1;
+        
         static Ref<BlockExemplar> CompileBlock(Environment & environment,
             const Array<String> params, const Expr & expr);
 

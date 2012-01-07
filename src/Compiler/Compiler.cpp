@@ -21,6 +21,12 @@ namespace Finch
 {
     Ref<BlockExemplar> Compiler::CompileExpression(Environment & environment, const Expr & expr)
     {
+        // TODO(bob): This isn't right. It's creating a new block for each 
+        // top level expression entered into the REPL. That means that variables
+        // declared here won't be shared across the session. If you do:
+        // >> a <- "hi"
+        // >> a
+        // You'll get an error. We'll have to do something smarter here.
         Array<String> params;
         return CompileBlock(environment, params, expr);
     }
@@ -33,6 +39,9 @@ namespace Finch
         
         Compiler compiler(environment, exemplar);
         
+        // Result register goes first.
+        int resultRegister = compiler.ReserveRegister();
+        
         // Reserve registers for the params.
         for (int i = 0; i < params.Count(); i++)
         {
@@ -40,8 +49,6 @@ namespace Finch
             compiler.mLocals.Add(params[i]);
         }
         
-        int resultRegister = compiler.ReserveRegister();
-
         expr.Accept(compiler, resultRegister);
         exemplar->Write(OP_RETURN, resultRegister);
                 
@@ -114,7 +121,9 @@ namespace Finch
     
     void Compiler::Visit(const NameExpr & expr, int dest)
     {
-        int index = mLocals.IndexOf(expr.Name());
+        // This assumes that locals always get allocated starting at register
+        // 1.
+        int index = mLocals.IndexOf(expr.Name()) + 1;
         
         // TODO(bob): Handle unknown name.
         // TODO(bob): Handle names defined in outer scopes.
@@ -146,7 +155,13 @@ namespace Finch
     
     void Compiler::Visit(const SequenceExpr & expr, int dest)
     {
-        ASSERT(false, "Compiling SequenceExpr not implemented yet.");
+        // Compile each expression.
+        for (int i = 0; i < expr.Expressions().Count(); i++)
+        {
+            // TODO(bob): Use DISCARD_REGISTER for all but last expr and make
+            // compiler use that to avoid some unnecessary work.
+            expr.Expressions()[i]->Accept(*this, dest);
+        }
     }
     
     void Compiler::Visit(const SetExpr & expr, int dest)
@@ -167,7 +182,24 @@ namespace Finch
     
     void Compiler::Visit(const VarExpr & expr, int dest)
     {
-        ASSERT(false, "Compiling VarExpr not implemented yet.");
+        // Doing <- on an existing name just assigns.
+        int local = mLocals.IndexOf(expr.Name());
+        if (local == -1) {
+            // Create a new local.
+            local = ReserveRegister();
+            mLocals.Add(expr.Name());
+            
+            // Local variable registers should always be contiguous starting
+            // at register 1. NameExpr assumes that.
+            ASSERT(local == mLocals.Count(), "Local should be in right register.");
+        }
+        
+        // Evaluate the value and store in the local.
+        expr.Value()->Accept(*this, local);
+
+        // Also copy to the destination register.
+        // Handles cases like: foo: bar <- baz
+        mExemplar->Write(OP_MOVE, local, dest);
     }
     
     void Compiler::CompileConstant(Ref<Object> constant, int dest)
