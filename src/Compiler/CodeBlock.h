@@ -20,6 +20,7 @@ namespace Finch
     {
         OP_CONSTANT,   // A = index of constant, B = dest register
         OP_BLOCK,      // A = index of example, B = dest register
+        OP_MOVE,       // A = source register, B = dest register
         OP_MESSAGE_0,  // A = index of message name in string table, 
         OP_MESSAGE_1,  // B = register of receiver (args follow),
         OP_MESSAGE_2,  // C = dest register

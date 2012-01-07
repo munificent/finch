@@ -19,7 +19,7 @@ namespace Finch
         :   mName(name)
         {}
         
-        String GetName() { return mName; }
+        String Name() const { return mName; }
         
         virtual void Trace(ostream & stream) const
         {

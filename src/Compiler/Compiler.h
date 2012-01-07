@@ -21,6 +21,9 @@ namespace Finch
         static Ref<BlockExemplar> CompileExpression(Environment & environment, const Expr & expr);
         
     private:
+        static Ref<BlockExemplar> CompileBlock(Environment & environment,
+            const Array<String> params, const Expr & expr);
+
         Compiler(Environment & environment, Ref<BlockExemplar> exemplar);
         
         virtual ~Compiler() {}
@@ -48,6 +51,9 @@ namespace Finch
         Environment & mEnvironment;
         Ref<BlockExemplar> mExemplar;
         int mInUseRegisters;
+        
+        // Names of local variables declared in this block.
+        Array<String> mLocals;
         
         NO_COPY(Compiler);
     };

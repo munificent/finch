@@ -21,7 +21,7 @@ namespace Finch
             mValue(value)
         {}
         
-        String GetName() { return mName; }
+        String Name() const { return mName; }
         Ref<Expr> Value() const { return mValue; }
         
         virtual void Trace(ostream & stream) const

@@ -21,27 +21,38 @@ namespace Finch
 {
     Ref<BlockExemplar> Compiler::CompileExpression(Environment & environment, const Expr & expr)
     {
+        Array<String> params;
+        return CompileBlock(environment, params, expr);
+    }
+    
+    Ref<BlockExemplar> Compiler::CompileBlock(Environment & environment,
+        const Array<String> params, const Expr & expr)
+    {
         Ref<BlockExemplar> exemplar = Ref<BlockExemplar>(
             new BlockExemplar(Array<String>()));
         
         Compiler compiler(environment, exemplar);
         
-        // TODO(bob): Reserve registers for the params.
+        // Reserve registers for the params.
+        for (int i = 0; i < params.Count(); i++)
+        {
+            compiler.ReserveRegister();
+            compiler.mLocals.Add(params[i]);
+        }
         
         int resultRegister = compiler.ReserveRegister();
 
         expr.Accept(compiler, resultRegister);
         exemplar->Write(OP_RETURN, resultRegister);
-        
-        compiler.ReleaseRegister();
-        
+                
         return exemplar;
     }
     
     Compiler::Compiler(Environment & environment, Ref<BlockExemplar> exemplar)
     :   mEnvironment(environment),
         mExemplar(exemplar),
-        mInUseRegisters(0)
+        mInUseRegisters(0),
+        mLocals()
     {}
     
     void Compiler::Visit(const ArrayExpr & expr, int dest)
@@ -57,8 +68,8 @@ namespace Finch
     void Compiler::Visit(const BlockExpr & expr, int dest)
     {
         // TODO(bob): Params.
-        Ref<BlockExemplar> exemplar = Compiler::CompileExpression(
-            mEnvironment, *expr.Body());
+        Ref<BlockExemplar> exemplar = Compiler::CompileBlock(
+            mEnvironment, expr.Params(), *expr.Body());
         int index = mExemplar->AddExemplar(exemplar);
         mExemplar->Write(OP_BLOCK, index, dest);
         // TODO(bob): Once closures are implemented, need to write  code to
@@ -103,7 +114,13 @@ namespace Finch
     
     void Compiler::Visit(const NameExpr & expr, int dest)
     {
-        ASSERT(false, "Compiling NameExpr not implemented yet.");
+        int index = mLocals.IndexOf(expr.Name());
+        
+        // TODO(bob): Handle unknown name.
+        // TODO(bob): Handle names defined in outer scopes.
+        
+        // Copy the local to the destination register.
+        mExemplar->Write(OP_MOVE, index, dest);
     }
     
     void Compiler::Visit(const NumberExpr & expr, int dest)

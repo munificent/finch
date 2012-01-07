@@ -73,6 +73,10 @@ namespace Finch
                     break;
                 }
                 
+                case OP_MOVE:
+                    Store(frame, b, Load(frame, a));
+                    break;
+                    
                 case OP_MESSAGE_0:
                 case OP_MESSAGE_1:
                 case OP_MESSAGE_2:
@@ -584,7 +588,8 @@ namespace Finch
         BlockObject & block = *(blockObj->AsBlock());
         
         // TODO(bob): Need to handle binding self.
-
+        // TODO(bob): Need to handle param/arg count mismatch.
+        
         // Allocate this frame's registers.
         // TODO(bob): Make this a single operation on Array.
         while (mStack.Count() < args.GetStackStart() + block.GetNumRegisters())
