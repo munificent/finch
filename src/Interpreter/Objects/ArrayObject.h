@@ -16,9 +16,9 @@ namespace Finch
     class ArrayObject : public Object
     {
     public:
-        ArrayObject(Environment & environment, Ref<Object> parent, int length)
+        ArrayObject(Ref<Object> parent, int length)
         :   Object(parent),
-            mElements(length, environment.Nil())
+            mElements(length)
         {
         }
         

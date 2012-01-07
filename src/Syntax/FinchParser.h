@@ -40,7 +40,6 @@ namespace Finch
         Ref<Expr> Unary(bool & isMessage);
         Ref<Expr> Primary();
         
-        Ref<Expr> ParseSequence(Array<Ref<Expr> > & expressions);
         Ref<Expr> ParseKeyword(Ref<Expr> object);        
         Ref<Expr> ParseError(const char * message);
         

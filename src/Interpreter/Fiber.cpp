@@ -73,6 +73,24 @@ namespace Finch
                     break;
                 }
                 
+                case OP_ARRAY:
+                {
+                    // Create the empty array with enough capacity. Subsequent
+                    // OP_ARRAY_ELEMENT instructions will fill it.
+                    Ref<Object> array = Object::NewArray(GetEnvironment(), a);
+                    Store(frame, b, array);
+                    break;
+                }
+                    
+                case OP_ARRAY_ELEMENT:
+                {
+                    // Add the item to the array.
+                    Ref<Object> element = Load(frame, a);
+                    Ref<Object> array = Load(frame, b);
+                    array->AsArray()->Elements().Add(element);
+                    break;
+                }
+                    
                 case OP_MOVE:
                     //cout << "MOVE     " << a << " -> " << b << endl;
                     Store(frame, b, Load(frame, a));

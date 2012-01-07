@@ -64,7 +64,22 @@ namespace Finch
     
     void Compiler::Visit(const ArrayExpr & expr, int dest)
     {
-        ASSERT(false, "Compiling ArrayExpr not implemented yet.");
+        // Create the empty array.
+        // TODO(bob): Only allows arrays up to 255 elements. Should use two
+        // registers for size.
+        mExemplar->Write(OP_ARRAY, expr.Elements().Count(), dest);
+        
+        // Write the instructions to add each item.
+        int elementReg = ReserveRegister();
+        for (int i = 0; i < expr.Elements().Count(); i++)
+        {
+            // Evaluate the element and store it in new register.
+            expr.Elements()[i]->Accept(*this, elementReg);
+            
+            // Now add it to the array.
+            mExemplar->Write(OP_ARRAY_ELEMENT, elementReg, dest);
+        }
+        ReleaseRegister();
     }
     
     void Compiler::Visit(const BindExpr & expr, int dest)

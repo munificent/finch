@@ -18,12 +18,14 @@ namespace Finch
     
     enum OpCode
     {
-        OP_CONSTANT,   // A = index of constant, B = dest register
-        OP_BLOCK,      // A = index of example, B = dest register
-        OP_MOVE,       // A = source register, B = dest register
-        OP_MESSAGE_0,  // A = index of message name in string table, 
-        OP_MESSAGE_1,  // B = register of receiver (args follow),
-        OP_MESSAGE_2,  // C = dest register
+        OP_CONSTANT,        // A = index of constant, B = dest register
+        OP_BLOCK,           // A = index of example, B = dest register
+        OP_ARRAY,           // A = initial capacity, B = dest register
+        OP_ARRAY_ELEMENT,   // A = element register, B = dest array register
+        OP_MOVE,            // A = source register, B = dest register
+        OP_MESSAGE_0,       // A = index of message name in string table, 
+        OP_MESSAGE_1,       // B = register of receiver (args follow),
+        OP_MESSAGE_2,       // C = dest register
         OP_MESSAGE_3,
         OP_MESSAGE_4,
         OP_MESSAGE_5,

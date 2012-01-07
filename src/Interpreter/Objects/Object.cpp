@@ -42,9 +42,9 @@ namespace Finch
         return Ref<Object>(new StringObject(env.StringPrototype(), value));
     }
     
-    Ref<Object> Object::NewArray(Environment & env, int length)
+    Ref<Object> Object::NewArray(Environment & env, int capacity)
     {
-        return Ref<Object>(new ArrayObject(env, env.ArrayPrototype(), length));
+        return Ref<Object>(new ArrayObject(env.ArrayPrototype(), capacity));
     }
 
     Ref<Object> Object::NewBlock(Environment & env, Ref<BlockExemplar> block,

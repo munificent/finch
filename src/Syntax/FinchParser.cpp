@@ -111,7 +111,22 @@ namespace Finch
     Ref<Expr> FinchParser::Sequence()
     {
         Array<Ref<Expr> > expressions;
-        PARSE_RULE(dummy, ParseSequence(expressions));
+        
+        while (true)
+        {
+            PARSE_RULE(expression, Variable());
+            expressions.Add(expression);
+            
+            if (!Match(TOKEN_LINE)) break;
+            
+            // there may be a trailing line after the last expression in a
+            // block. if we eat the line and then see a closing brace or eof,
+            // just stop here.
+            if (LookAhead(TOKEN_RIGHT_PAREN)) break;
+            if (LookAhead(TOKEN_RIGHT_BRACKET)) break;
+            if (LookAhead(TOKEN_RIGHT_BRACE)) break;
+            if (LookAhead(TOKEN_EOF)) break;
+        }
         
         // if there's just one, don't wrap it in a sequence
         if (expressions.Count() == 1) return expressions[0];
@@ -398,7 +413,19 @@ namespace Finch
             // allow zero-element arrays
             if (!LookAhead(TOKEN_RIGHT_BRACKET))
             {
-                PARSE_RULE(dummy, ParseSequence(expressions));
+                PARSE_RULE(expression, Assignment());
+                expressions.Add(expression);
+                
+                while (Match(TOKEN_LINE))
+                {
+                    // there may be a trailing line after the last expression in a
+                    // a block. if we eat the line and then see a closing brace
+                    // or eof, just stop here.
+                    if (LookAhead(TOKEN_RIGHT_BRACKET)) break;
+                    
+                    PARSE_RULE(next, Assignment());
+                    expressions.Add(next);
+                }
             }
             
             CONSUME(TOKEN_RIGHT_BRACKET, "Expect closing ']'.");
@@ -430,29 +457,6 @@ namespace Finch
             return Ref<Expr>(new BlockExpr(args, body));
         }
         else return ParseError("Unexpected token.");
-    }
-    
-    Ref<Expr> FinchParser::ParseSequence(Array<Ref<Expr> > & expressions)
-    {
-        PARSE_RULE(expression, Variable());
-        expressions.Add(expression);
-        
-        while (Match(TOKEN_LINE))
-        {
-            // there may be a trailing line after the last expression in a
-            // block. if we eat the line and then see a closing brace or eof,
-            // just stop here.
-            if (LookAhead(TOKEN_RIGHT_PAREN)) break;
-            if (LookAhead(TOKEN_RIGHT_BRACKET)) break;
-            if (LookAhead(TOKEN_RIGHT_BRACE)) break;
-            if (LookAhead(TOKEN_EOF)) break;
-            
-            PARSE_RULE(next, Variable());
-            expressions.Add(next);
-        }
-        
-        // just return a random non-null expression to show success
-        return expressions[0];
     }
 
     // Parses just the message send part of a keyword message: "foo: a bar: b"
