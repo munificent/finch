@@ -84,7 +84,11 @@ namespace Finch
     
     void Compiler::Visit(const BindExpr & expr, int dest)
     {
-        ASSERT(false, "Compiling BindExpr not implemented yet.");
+        // Evaluate the object that stuff is being bound to.
+        expr.Target()->Accept(*this, dest);
+        
+        // Bind the definitions.
+        CompileDefinitions(expr, dest);
     }
     
     void Compiler::Visit(const BlockExpr & expr, int dest)
@@ -282,14 +286,14 @@ namespace Finch
                 
                 // TODO(bob): Right now, we're only giving 8-bits to the name,
                 // which will run out quickly.
-                mExemplar->Write(OP_DEFINE_METHOD, name, exemplar, dest);
+                mExemplar->Write(OP_DEF_METHOD, name, exemplar, dest);
             }
             else
             {
                 // Compile the initializer.
                 int value = ReserveRegister();
                 definition.GetBody()->Accept(*this, value);
-                mExemplar->Write(OP_DEFINE_FIELD, name, value, dest);
+                mExemplar->Write(OP_DEF_FIELD, name, value, dest);
                 ReleaseRegister();
             }
         }

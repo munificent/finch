@@ -160,7 +160,7 @@ namespace Finch
                     break;
                 }
                     
-                case OP_DEFINE_METHOD:
+                case OP_DEF_METHOD:
                 {
                     Ref<BlockExemplar> exemplar = frame.Block().GetExemplar(b);
                     
@@ -181,7 +181,7 @@ namespace Finch
                     break;
                 }
                     
-                case OP_DEFINE_FIELD:
+                case OP_DEF_FIELD:
                 {
                     // Get the object we're attaching the field to.
                     DynamicObject * object = Load(frame, c)->AsDynamic();

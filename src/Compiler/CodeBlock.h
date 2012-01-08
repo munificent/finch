@@ -38,10 +38,10 @@ namespace Finch
         OP_MESSAGE_10,
         OP_GET_FIELD,     // A = index of field in string table, B = dest reg
         OP_SET_FIELD,     // A = index of field in string table, B = value reg
-        OP_DEFINE_METHOD, // A = index of method name in string table,
+        OP_DEF_METHOD,    // A = index of method name in string table,
                           // B = index of method body exemplar,
                           // C = object method is being defined on
-        OP_DEFINE_FIELD,  // A = index of field name in string table,
+        OP_DEF_FIELD,     // A = index of field name in string table,
                           // B = register with field value,
                           // C = object field is being defined on
         OP_RETURN,        // A = register with result to return
