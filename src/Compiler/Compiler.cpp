@@ -210,24 +210,43 @@ namespace Finch
     
     void Compiler::Visit(const VarExpr & expr, int dest)
     {
-        // Doing <- on an existing name just assigns.
-        int local = mLocals.IndexOf(expr.Name());
-        if (local == -1) {
-            // Create a new local.
-            local = ReserveRegister();
-            mLocals.Add(expr.Name());
+        if (Expr::IsField(expr.Name()))
+        {
+            // Evaluate the value.
+            int value = ReserveRegister();
+            expr.Value()->Accept(*this, value);
             
-            // Local variable registers should always be contiguous starting
-            // at register 1. NameExpr assumes that.
-            ASSERT(local == mLocals.Count(), "Local should be in right register.");
+            int name = mEnvironment.Strings().Add(expr.Name());
+            mExemplar->Write(OP_SET_FIELD, name, value);
+            
+            // Also copy to the destination register.
+            // Handles cases like: foo: _bar <- baz
+            mExemplar->Write(OP_MOVE, value, dest);
+            
+            ReleaseRegister();
         }
-        
-        // Evaluate the value and store in the local.
-        expr.Value()->Accept(*this, local);
-
-        // Also copy to the destination register.
-        // Handles cases like: foo: bar <- baz
-        mExemplar->Write(OP_MOVE, local, dest);
+        else
+        {
+            // Doing <- on an existing name just assigns.
+            int local = mLocals.IndexOf(expr.Name());
+            if (local == -1) {
+                // Create a new local.
+                local = ReserveRegister();
+                mLocals.Add(expr.Name());
+                
+                // Local variable registers should always be contiguous starting
+                // at register 1. NameExpr assumes that.
+                ASSERT(local == mLocals.Count(),
+                    "Local should be in right register.");
+            }
+            
+            // Evaluate the value and store in the local.
+            expr.Value()->Accept(*this, local);
+            
+            // Also copy to the destination register.
+            // Handles cases like: foo: bar <- baz
+            mExemplar->Write(OP_MOVE, local, dest);
+        }
     }
     
     int Compiler::CompileNestedBlock(const BlockExpr & block)
@@ -320,45 +339,6 @@ namespace Finch
         CompileDefinitions(expr);
     }
     
-    void Compiler::Visit(const MessageExpr & expr)
-    {
-        // push the first copy of the receiver onto the stack
-        expr.Receiver()->Accept(*this);
-
-        // compile each of the message sends
-        int messageCount = expr.Messages().Count();
-        for (int i = 0; i < messageCount; i++)
-        {
-            // push another copy of the receiver on the stack for the this
-            // message send to use so that the first copy is still there for
-            // the next send.
-            if (i < messageCount - 1)
-            {
-                mCode->Write(OP_DUP);
-            }
-
-            const MessageSend & message = expr.Messages()[i];
-
-            // compile the arguments
-            for (int arg = 0; arg < message.GetArguments().Count(); arg++)
-            {
-                message.GetArguments()[arg]->Accept(*this);
-            }
-
-            // compile the message send
-            int id = mEnvironment.Strings().Add(message.GetName());
-            OpCode op = static_cast<OpCode>(OP_MESSAGE_0 + message.GetArguments().Count());
-            mCode->Write(op, id);
-
-            // if we're cascading and have another send coming, discard the
-            // return of this message.
-            if (i < messageCount - 1)
-            {
-                mCode->Write(OP_POP);
-            }
-        }
-    }
-
     void Compiler::Visit(const NameExpr & expr)
     {
         int id = mEnvironment.Strings().Add(expr.Name());

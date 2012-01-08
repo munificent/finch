@@ -154,6 +154,12 @@ namespace Finch
                     break;
                 }
                     
+                case OP_SET_FIELD:
+                {
+                    Self()->SetField(a, Load(frame, b));
+                    break;
+                }
+                    
                 case OP_DEFINE_METHOD:
                 {
                     Ref<BlockExemplar> exemplar = frame.Block().GetExemplar(b);
