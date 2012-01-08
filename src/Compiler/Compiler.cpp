@@ -135,16 +135,24 @@ namespace Finch
     
     void Compiler::Visit(const NameExpr & expr, int dest)
     {
-        // This assumes that locals always get allocated starting at register
-        // 1.
-        int index = mLocals.IndexOf(expr.Name()) + 1;
-        
-        // TODO(bob): Handle unknown name.
-        // TODO(bob): Handle names defined in outer scopes.
-        // TODO(bob): If it's a field name, compile to field lookup.
-        
-        // Copy the local to the destination register.
-        mExemplar->Write(OP_MOVE, index, dest);
+        if (Expr::IsField(expr.Name()))
+        {
+            // Accessing a field.
+            int index = mEnvironment.Strings().Add(expr.Name());
+            mExemplar->Write(OP_GET_FIELD, index, dest);
+        }
+        else
+        {
+            // It's a lexical variable name. Here, we assume that locals always
+            // get allocated starting at register 1.
+            int index = mLocals.IndexOf(expr.Name()) + 1;
+            
+            // TODO(bob): Handle unknown name.
+            // TODO(bob): Handle names defined in outer scopes.
+            
+            // Copy the local to the destination register.
+            mExemplar->Write(OP_MOVE, index, dest);
+        }
     }
     
     void Compiler::Visit(const NumberExpr & expr, int dest)

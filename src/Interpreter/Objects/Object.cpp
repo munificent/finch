@@ -58,51 +58,6 @@ namespace Finch
         return Ref<Object>(new FiberObject(interpreter.GetEnvironment().FiberPrototype(),
                                            interpreter, block));
     }
-/*
-    void Object::Receive(Ref<Object> self, Fiber & fiber,
-                                String message, const Array<Ref<Object> > & args)
-    {
-        // walk up the parent chain until it loops back on itself at
-        // the prototype object: the object from whence all others are born
-        if (&(*mParent) != this)
-        {
-            // we're using thisRef and not the parent's own this reference
-            // on purpose. this way, if you send a "copy" message to some
-            // object a few links down the parent chain from Object, you'll
-            // get a copy of *that* object, and not Object itself where "copy"
-            // is implemented.
-            mParent->Receive(self, fiber, message, args);
-        }
-        else
-        {
-            //### bob: should do some sort of message not handled thing here
-            String error = String::Format("Object '%s' did not handle message '%s'",
-                                          self->AsString().CString(),
-                                          message.CString());
-            fiber.Error(error);
-            fiber.PushNil();
-        }
-    }
-    */
-    Ref<Scope> Object::ObjectScope()
-    {
-        // lazy initialize
-        if (mScope.IsNull())
-        {
-            // walk up the parent chain until it loops back on itself at
-            // the prototype object: the object from whence all others are born
-            if (&(*mParent) != this)
-            {
-                mScope = Ref<Scope>(new Scope(mParent->ObjectScope()));
-            }
-            else
-            {
-                mScope = Ref<Scope>(new Scope());
-            }
-        }
-        
-        return mScope;
-    }
 
     ostream & operator<<(ostream & cout, const Object & object)
     {

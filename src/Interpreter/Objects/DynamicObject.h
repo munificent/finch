@@ -41,6 +41,9 @@ namespace Finch
         virtual Ref<Object>     FindMethod(int messageId);
         virtual PrimitiveMethod FindPrimitive(int messageId);
 
+        virtual Ref<Object>     GetField(int name);
+        virtual void            SetField(int name, Ref<Object> value);
+
         /*
         virtual void Receive(Ref<Object> self, Fiber & fiber,
                              String message, const Array<Ref<Object> > & args);
@@ -56,6 +59,7 @@ namespace Finch
         void InitializeScope();
         
         String                      mName; //### bob: hack temp
+        IdTable<Ref<Object> >       mFields;
         IdTable<Ref<Object> >       mMethods;
         IdTable<PrimitiveMethod>    mPrimitives;
     };    

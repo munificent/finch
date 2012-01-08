@@ -23,7 +23,6 @@ namespace Finch
         return Ref<Object>();
     }
     
-    
     PrimitiveMethod DynamicObject::FindPrimitive(int messageId)
     {
         PrimitiveMethod primitive;
@@ -33,6 +32,41 @@ namespace Finch
         }
         
         return NULL;
+    }
+    
+    Ref<Object> DynamicObject::GetField(int name)
+    {
+        // Walk up the parent chain until it loops back on itself at Object.
+        Object & object = *this;
+        while (true)
+        {
+            DynamicObject * dynamic = object.AsDynamic();
+            
+            // Only dynamic objects have fields, so skip others in the
+            // inheritance chain.
+            if (dynamic == NULL) continue;
+            
+            Ref<Object> field;
+            if (dynamic->mFields.Find(name, &field))
+            {
+                // Found it.
+                return field;
+            }
+
+            // If we're at the root of the inheritance chain, then stop.
+            if (&(*object.Parent()) == &object) break;
+
+            // Walk up the parent chain.
+            object = *object.Parent();
+        }
+        
+        // If we get here, it wasn't found.
+        return Ref<Object>();
+    }
+    
+    void DynamicObject::SetField(int name, Ref<Object> value)
+    {
+        mFields.Insert(name, value);
     }
     
     /*
@@ -61,23 +95,7 @@ namespace Finch
         // if we got here, the message wasn't handled
         Object::Receive(self, fiber, message, args);
     }
-    
-    void DynamicObject::AddMethod(Ref<Object> self, Fiber & fiber,
-                                  String name, Ref<Scope> closure,
-                                  Ref<CodeBlock> code)
-    {
-        if (name.Length() == 0)
-        {
-            fiber.Error("Cannot create a method with an empty name.");
-            return;
-        }
-        Ref<Object> body = Object::NewBlock(fiber.GetEnvironment(), code,
-                                            closure, self);
-        
-        // add the method
-        mMethods.Insert(name, body);
-    }
-     */
+    */
     
     void DynamicObject::AddMethod(int messageId, Ref<Object> method)
     {

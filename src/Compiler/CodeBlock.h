@@ -36,6 +36,7 @@ namespace Finch
         OP_MESSAGE_8,
         OP_MESSAGE_9,
         OP_MESSAGE_10,
+        OP_GET_FIELD,     // A = index of field in string table, B = dest reg
         OP_DEFINE_METHOD, // A = index of method name in string table,
                           // B = index of method body exemplar,
                           // C = object method is being defined on

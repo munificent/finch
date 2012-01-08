@@ -141,7 +141,19 @@ namespace Finch
                     TraceStack();
                     break;
                 }
-                                    
+                case OP_GET_FIELD:
+                {
+                    Ref<Object> field = Self()->GetField(a);
+                    if (field.IsNull())
+                    {
+                        // TODO(bob): Should this be an error instead?
+                        field = Nil();
+                    }
+                    
+                    Store(frame, b, field);
+                    break;
+                }
+                    
                 case OP_DEFINE_METHOD:
                 {
                     Ref<BlockExemplar> exemplar = frame.Block().GetExemplar(b);
@@ -155,6 +167,8 @@ namespace Finch
                     
                     // Get the object we're attaching the method to.
                     DynamicObject * object = Load(frame, c)->AsDynamic();
+                    // TODO(bob): What should this do if you try to bind a
+                    // method to something non-dynamic?
                     ASSERT_NOT_NULL(object);
                     
                     object->AddMethod(a, body);
@@ -163,12 +177,13 @@ namespace Finch
                     
                 case OP_DEFINE_FIELD:
                 {
-                    ASSERT(false, "Not implemented!");
-                    /*
-                     OP_DEFINE_FIELD,  // A = index of field name in string table,
-                     // B = register with field value,
-                     // C = object field is being defined on
-                     */
+                    // Get the object we're attaching the field to.
+                    DynamicObject * object = Load(frame, c)->AsDynamic();
+                    // TODO(bob): What should this do if you try to bind a
+                    // field to something non-dynamic?
+                    ASSERT_NOT_NULL(object);
+                    
+                    object->SetField(a, Load(frame, b));
                     break;
                 }
                     
@@ -231,6 +246,7 @@ namespace Finch
         return mInterpreter.GetEnvironment();
     }
     
+    // TODO(bob): Move this into Object?
     Ref<Object> Fiber::SendMessage(int messageId, int receiverReg, int numArgs)
     {
         Ref<Object> self = Load(mCallFrames.Peek(), receiverReg);

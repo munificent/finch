@@ -74,17 +74,21 @@ namespace Finch
                              String message, const Array<Ref<Object> > & args);
         */
         
-        virtual Ref<Object>     FindMethod(int messageId) { return Ref<Object>(); }
-        virtual PrimitiveMethod FindPrimitive(int messageId) { return NULL; }
+        // TODO(bob): It seems weird that these are on Object even though only
+        // DynamicObject supports them.
+        // TODO(bob): Should make a typedef for string table IDs.
+        virtual Ref<Object>     FindMethod(int name) { return Ref<Object>(); }
+        virtual PrimitiveMethod FindPrimitive(int name) { return NULL; }
         
+        virtual Ref<Object>     GetField(int name) { return Ref<Object>(); }
+        virtual void            SetField(int name, Ref<Object> value) {}
+
         virtual double          AsNumber() const { return 0; }
         virtual String          AsString() const { return ""; }
         virtual ArrayObject *   AsArray()        { return NULL; }
         virtual BlockObject *   AsBlock()        { return NULL; }
         virtual DynamicObject * AsDynamic()      { return NULL; }
         virtual FiberObject *   AsFiber()        { return NULL; }
-        
-        Ref<Scope> ObjectScope();
         
         Ref<Object> Parent() { return mParent; }
         void        SetParent(Ref<Object> parent) { mParent = parent; }
@@ -99,7 +103,6 @@ namespace Finch
         
     private:
         Ref<Object> mParent;
-        Ref<Scope>  mScope;
     };
     
     ostream & operator<<(ostream & cout, const Object & object);
