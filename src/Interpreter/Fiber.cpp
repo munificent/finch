@@ -23,7 +23,9 @@ namespace Finch
         mCallFrames()
     {
         ArgReader args(mStack, 0, 0);
-        CallBlock(block, args);
+        
+        // Top-level blocks outside of any method bind self to nil.
+        CallBlock(interpreter.GetEnvironment().Nil(), block, args);
     }
     
     bool Fiber::IsDone() const
@@ -74,9 +76,8 @@ namespace Finch
                     
                     // TODO(bob): Capture closure.
                     
-                    // TODO(bob): Should use enclosing self instead of Nil.
-                    Ref<Object> block = Object::NewBlock(
-                        GetEnvironment(), exemplar, GetEnvironment().Nil());
+                    Ref<Object> block = Object::NewBlock(GetEnvironment(),
+                        exemplar, Self());
                     Store(frame, b, block);
                     TraceStack();
                     break;
@@ -104,6 +105,10 @@ namespace Finch
                     //cout << "MOVE     " << a << " -> " << b << endl;
                     Store(frame, b, Load(frame, a));
                     TraceStack();
+                    break;
+                    
+                case OP_SELF:
+                    Store(frame, a, Self());
                     break;
                     
                 case OP_MESSAGE_0:
@@ -242,7 +247,7 @@ namespace Finch
             {
                 // TODO(bob): Handle binding self.
                 ArgReader args(mStack, receiverReg + 1, numArgs);
-                CallBlock(method, args);
+                CallBlock(self, method, args);
                 return Ref<Object>();
             }
             
@@ -268,6 +273,16 @@ namespace Finch
 
         // Unhandled messages just return nil.
         return GetEnvironment().Nil();
+    }
+    
+    Ref<Object> Fiber::Self()
+    {
+        /*
+        // Within an object literal, self evaluates to the object.
+        if (mObjects.Count() > 0) return mObjects.Peek();
+        */
+        
+        return mCallFrames.Peek().receiver;
     }
     
     /*
@@ -650,7 +665,7 @@ namespace Finch
     }
 */
     
-    void Fiber::CallBlock(Ref<Object> blockObj, ArgReader & args)
+    void Fiber::CallBlock(Ref<Object> receiver, Ref<Object> blockObj, ArgReader & args)
     {
         BlockObject & block = *(blockObj->AsBlock());
         
@@ -664,7 +679,7 @@ namespace Finch
             mStack.Add(Ref<Object>());
         }
         
-        mCallFrames.Push(CallFrame(blockObj, args.GetStackStart()));
+        mCallFrames.Push(CallFrame(args.GetStackStart(), receiver, blockObj));
     }
 
 
@@ -725,14 +740,6 @@ namespace Finch
         //std::cout << "send '" << string << "' to " << receiver << std::endl;
         
         receiver->Receive(receiver, *this, string, args);
-    }
-
-    Ref<Object> Fiber::Self()
-    {
-        // Within an object literal, self evaluates to the object.
-        if (mObjects.Count() > 0) return mObjects.Peek();
-        
-        return mCallStack.Peek().receiver;
     }
      */
 }

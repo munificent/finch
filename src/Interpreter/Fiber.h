@@ -49,7 +49,7 @@ namespace Finch
                         const Array<Ref<Object> > & args);
         */
         // Pushes the given block onto the call stack.
-        void CallBlock(Ref<Object> blockObj, ArgReader & args);
+        void CallBlock(Ref<Object> receiver, Ref<Object> blockObj, ArgReader & args);
 
         // Displays a runtime error to the user.
         void Error(const String & message);
@@ -70,32 +70,24 @@ namespace Finch
             
             // The index on the stack of the first register for this frame.
             int stackStart;
-            
-            /*
-            // The local variable scope.
-            Ref<Scope> scope;
-            */
-            // The block of code being executed by this frame.
-            Ref<Object> block;
-            /*
+
             // The current receiver.
             Ref<Object> receiver;
             
-            // The number of operands on the operand stack when this call frame
-            // was started. If we do a non-local return out of this frame, we
-            // use this to restore the stack to its proper size.
-            int numOperands;
-            */
+            // The block of code being executed by this frame.
+            Ref<Object> block;
             
             CallFrame()
             :   ip(0),
                 stackStart(0),
+                receiver(),
                 block()
             {}
             
-            CallFrame(Ref<Object> block, int stackStart)
+            CallFrame(int stackStart, Ref<Object> receiver, Ref<Object> block)
             :   ip(0),
                 stackStart(stackStart),
+                receiver(receiver),
                 block(block)
             {}
 
@@ -112,9 +104,10 @@ namespace Finch
         Environment & GetEnvironment();
         
         Ref<Object> SendMessage(int messageId, int receiverReg, int numArgs);
-        /*
+
         Ref<Object> Self();
-        Ref<Scope>  CurrentScope() { return mCallStack.Peek().scope; }
+        /*
+         Ref<Scope>  CurrentScope() { return mCallStack.Peek().scope; }
         
         void PushOperand(Ref<Object> object);
         Ref<Object> PopOperand();

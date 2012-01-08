@@ -9,8 +9,10 @@ namespace Finch
 {
     PRIMITIVE(BlockCall)
     {
-        ASSERT_NOT_NULL(self->AsBlock());
-        fiber.CallBlock(self, args);
+        BlockObject * block = self->AsBlock();
+        ASSERT_NOT_NULL(block);
+        
+        fiber.CallBlock(block->Self(), self, args);
     }
 }
 

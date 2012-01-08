@@ -22,10 +22,9 @@ namespace Finch
     {
     public:
         BlockObject(Ref<Object> parent, Ref<BlockExemplar> exemplar,
-                    /*Ref<Scope> closure,*/ Ref<Object> self)
+                    Ref<Object> self)
         :   Object(parent),
             mExemplar(exemplar),
-        //            mClosure(closure), */
             mSelf(self)
         {}
         

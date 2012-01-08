@@ -170,7 +170,7 @@ namespace Finch
     
     void Compiler::Visit(const SelfExpr & expr, int dest)
     {
-        ASSERT(false, "Compiling SelfExpr not implemented yet.");
+        mExemplar->Write(OP_SELF, dest);
     }
     
     void Compiler::Visit(const SequenceExpr & expr, int dest)
@@ -304,30 +304,12 @@ namespace Finch
     {
     }
 
-    void Compiler::Visit(const ArrayExpr & expr)
-    {
-        // evaluate and push all of the elements onto the stack
-        for (int i = 0; i < expr.Elements().Count(); i++)
-        {
-            expr.Elements()[i]->Accept(*this);
-        }
-
-        // pop them into an array object
-        mCode->Write(OP_CREATE_ARRAY, expr.Elements().Count());
-    }
-
     void Compiler::Visit(const BindExpr & expr)
     {
         // push the first copy of the target onto the stack
         expr.Target()->Accept(*this);
 
         CompileDefinitions(expr);
-    }
-
-    void Compiler::Visit(const BlockExpr & expr)
-    {
-        int id = CompileBlock(expr, 0);
-        mCode->Write(OP_BLOCK, id);
     }
     
     void Compiler::Visit(const MessageExpr & expr)
@@ -380,14 +362,6 @@ namespace Finch
         {
             mCode->Write(OP_LOAD_LOCAL, id);
         }
-    }
-
-    void Compiler::Visit(const ObjectExpr & expr)
-    {
-        expr.Parent()->Accept(*this);
-        mCode->Write(OP_START_OBJECT);
-        CompileDefinitions(expr);
-        mCode->Write(OP_END_OBJECT);
     }
 
     void Compiler::Visit(const ReturnExpr & expr)
