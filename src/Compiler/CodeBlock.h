@@ -20,6 +20,7 @@ namespace Finch
     {
         OP_CONSTANT,        // A = index of constant, B = dest register
         OP_BLOCK,           // A = index of example, B = dest register
+        OP_OBJECT,          // A = parent register and dest register
         OP_ARRAY,           // A = initial capacity, B = dest register
         OP_ARRAY_ELEMENT,   // A = element register, B = dest array register
         OP_MOVE,            // A = source register, B = dest register
@@ -34,7 +35,13 @@ namespace Finch
         OP_MESSAGE_8,
         OP_MESSAGE_9,
         OP_MESSAGE_10,
-        OP_RETURN,     // A = register with result to return
+        OP_DEFINE_METHOD, // A = index of method name in string table,
+                          // B = index of method body exemplar,
+                          // C = object method is being defined on
+        OP_DEFINE_FIELD,  // A = index of field name in string table,
+                          // B = register with field value,
+                          // C = object field is being defined on
+        OP_RETURN,        // A = register with result to return
     };
         
     // A compiled block. This contains the state that all blocks created from

@@ -38,6 +38,7 @@ namespace Finch
         virtual String AsString() const     { return mName; }
         virtual DynamicObject * AsDynamic() { return this; }
         
+        virtual Ref<Object>     FindMethod(int messageId);
         virtual PrimitiveMethod FindPrimitive(int messageId);
 
         /*
@@ -48,14 +49,15 @@ namespace Finch
                        Ref<Scope> closure, Ref<CodeBlock> code);
         
          */
+        void AddMethod(int messageId, Ref<Object> method);
         void AddPrimitive(int messageId, PrimitiveMethod method);
         
     private:
         void InitializeScope();
         
-        String                              mName; //### bob: hack temp
-        Dictionary<String, Ref<Object> >    mMethods;
-        IdTable<PrimitiveMethod>            mPrimitives;
+        String                      mName; //### bob: hack temp
+        IdTable<Ref<Object> >       mMethods;
+        IdTable<PrimitiveMethod>    mPrimitives;
     };    
 }
 

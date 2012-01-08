@@ -74,6 +74,7 @@ namespace Finch
                              String message, const Array<Ref<Object> > & args);
         */
         
+        virtual Ref<Object>     FindMethod(int messageId) { return Ref<Object>(); }
         virtual PrimitiveMethod FindPrimitive(int messageId) { return NULL; }
         
         virtual double          AsNumber() const { return 0; }

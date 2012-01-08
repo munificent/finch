@@ -89,12 +89,9 @@ namespace Finch
     
     void Compiler::Visit(const BlockExpr & expr, int dest)
     {
-        // TODO(bob): Params.
-        Ref<BlockExemplar> exemplar = Compiler::CompileBlock(
-            mEnvironment, expr.Params(), *expr.Body());
-        int index = mExemplar->AddExemplar(exemplar);
+        int index = CompileNestedBlock(expr);
         mExemplar->Write(OP_BLOCK, index, dest);
-        // TODO(bob): Once closures are implemented, need to write  code to
+        // TODO(bob): Once closures are implemented, need to write code to
         // load upvals.
     }
     
@@ -117,6 +114,8 @@ namespace Finch
             }
             
             // Compile the message send.
+            // TODO(bob): Right now, we're only giving 8-bits to the name, which
+            // will run out quickly.
             int messageId = mEnvironment.Strings().Add(message.GetName());
             OpCode op = static_cast<OpCode>(OP_MESSAGE_0 +
                 message.GetArguments().Count());
@@ -142,6 +141,7 @@ namespace Finch
         
         // TODO(bob): Handle unknown name.
         // TODO(bob): Handle names defined in outer scopes.
+        // TODO(bob): If it's a field name, compile to field lookup.
         
         // Copy the local to the destination register.
         mExemplar->Write(OP_MOVE, index, dest);
@@ -155,7 +155,12 @@ namespace Finch
     
     void Compiler::Visit(const ObjectExpr & expr, int dest)
     {
-        ASSERT(false, "Compiling ObjectExpr not implemented yet.");
+        // Compile the parent.
+        // TODO(bob): Enable this once closures are working so we can resolve
+        // 'Object'.
+        //expr.Parent()->Accept(*this, dest);
+        mExemplar->Write(OP_OBJECT, dest);
+        CompileDefinitions(expr, dest);
     }
     
     void Compiler::Visit(const ReturnExpr & expr, int dest)
@@ -217,6 +222,13 @@ namespace Finch
         mExemplar->Write(OP_MOVE, local, dest);
     }
     
+    int Compiler::CompileNestedBlock(const BlockExpr & block)
+    {
+        Ref<BlockExemplar> exemplar = Compiler::CompileBlock(
+            mEnvironment, block.Params(), *block.Body());
+        return mExemplar->AddExemplar(exemplar);
+    }
+    
     void Compiler::CompileConstant(Ref<Object> constant, int dest)
     {
         // TODO(bob): Should check for duplicates. Only need one copy of any
@@ -224,7 +236,38 @@ namespace Finch
         int index = mExemplar->AddConstant(constant);
         mExemplar->Write(OP_CONSTANT, index, dest);
     }
-
+    
+    void Compiler::CompileDefinitions(const DefineExpr & expr, int dest)
+    {
+        // Compile each of the definitions.
+        int count = expr.Definitions().Count();
+        for (int i = 0; i < count; i++)
+        {
+            const Definition & definition = expr.Definitions()[i];
+            int name = mEnvironment.Strings().Add(definition.GetName());
+            
+            if (definition.IsMethod()) {
+                BlockExpr & body = static_cast<BlockExpr &>(
+                    *definition.GetBody());
+                
+                // Create a unique id for the method.
+                int exemplar = CompileNestedBlock(body);
+                
+                // TODO(bob): Right now, we're only giving 8-bits to the name,
+                // which will run out quickly.
+                mExemplar->Write(OP_DEFINE_METHOD, name, exemplar, dest);
+            }
+            else
+            {
+                // Compile the initializer.
+                int value = ReserveRegister();
+                definition.GetBody()->Accept(*this, value);
+                mExemplar->Write(OP_DEFINE_FIELD, name, value, dest);
+                ReleaseRegister();
+            }
+        }
+    }
+    
     int Compiler::ReserveRegister()
     {
         mInUseRegisters++;

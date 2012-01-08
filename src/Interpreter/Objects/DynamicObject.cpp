@@ -12,6 +12,18 @@ namespace Finch
         stream << mName;
     }
     
+    Ref<Object> DynamicObject::FindMethod(int messageId)
+    {
+        Ref<Object> method;
+        if (mMethods.Find(messageId, &method))
+        {
+            return method;
+        }
+        
+        return Ref<Object>();
+    }
+    
+    
     PrimitiveMethod DynamicObject::FindPrimitive(int messageId)
     {
         PrimitiveMethod primitive;
@@ -67,6 +79,11 @@ namespace Finch
     }
      */
     
+    void DynamicObject::AddMethod(int messageId, Ref<Object> method)
+    {
+        mMethods.Insert(messageId, method);
+    }
+
     void DynamicObject::AddPrimitive(int messageId, PrimitiveMethod method)
     {
         mPrimitives.Insert(messageId, method);

@@ -13,6 +13,8 @@
 
 namespace Finch
 {
+    class DefineExpr;
+    
     class Compiler : private IExprCompiler
     {
     public:
@@ -48,8 +50,10 @@ namespace Finch
         virtual void Visit(const UndefineExpr & expr, int dest);
         virtual void Visit(const VarExpr & expr, int dest);
         
+        int CompileNestedBlock(const BlockExpr & block);
         void CompileConstant(Ref<Object> constant, int dest);
-        
+        void CompileDefinitions(const DefineExpr & expr, int dest);
+
         int ReserveRegister();
         void ReleaseRegister();
         

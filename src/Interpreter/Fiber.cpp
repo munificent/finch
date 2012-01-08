@@ -57,6 +57,15 @@ namespace Finch
                     TraceStack();
                     break;
                 
+                case OP_OBJECT:
+                {
+                    // TODO(bob): Support parents.
+                    Ref<Object> parent = GetEnvironment().ObjectPrototype();
+                    Ref<Object> object = Object::NewObject(parent);
+                    Store(frame, a, object);
+                    break;
+                }
+                    
                 case OP_BLOCK:
                 {
                     //cout << "BLOCK    " << a << " -> " << b << endl;
@@ -127,7 +136,37 @@ namespace Finch
                     TraceStack();
                     break;
                 }
-                
+                                    
+                case OP_DEFINE_METHOD:
+                {
+                    Ref<BlockExemplar> exemplar = frame.Block().GetExemplar(b);
+                    
+                    // TODO(bob): Lot of overlap here with OP_BLOCK.
+                    // TODO(bob): Capture closure.
+                    // TODO(bob): Should use enclosing self instead of Nil.
+                    Ref<Object> body = Object::NewBlock(GetEnvironment(),
+                        exemplar, GetEnvironment().Nil());
+                    // TODO(bob): Capture upvals.
+                    
+                    // Get the object we're attaching the method to.
+                    DynamicObject * object = Load(frame, c)->AsDynamic();
+                    ASSERT_NOT_NULL(object);
+                    
+                    object->AddMethod(a, body);
+                    break;
+                }
+                    
+                case OP_DEFINE_FIELD:
+                {
+                    ASSERT(false, "Not implemented!");
+                    /*
+                     OP_DEFINE_FIELD,  // A = index of field name in string table,
+                     // B = register with field value,
+                     // C = object field is being defined on
+                     */
+                    break;
+                }
+                    
                 case OP_RETURN:
                 {
                     //cout << "RETURN   " << a << endl;
@@ -197,6 +236,16 @@ namespace Finch
         // Walk the parent chain looking for a method that matches the message.
         while (true)
         {
+            // See if the object has a method bound to that name.
+            Ref<Object> method = receiver->FindMethod(messageId);
+            if (!method.IsNull())
+            {
+                // TODO(bob): Handle binding self.
+                ArgReader args(mStack, receiverReg + 1, numArgs);
+                CallBlock(method, args);
+                return Ref<Object>();
+            }
+            
             // See if the object has a primitive bound to that name.
             PrimitiveMethod primitive = receiver->FindPrimitive(messageId);
             if (primitive != NULL)
@@ -204,8 +253,6 @@ namespace Finch
                 ArgReader args(mStack, receiverReg + 1, numArgs);
                 return primitive(*this, self, args);
             }
-            
-            // TODO(bob): Look for a method.
             
             // Not found yet, so walk up the parent chain until we bottom out
             // at Object.
