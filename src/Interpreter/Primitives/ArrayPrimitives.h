@@ -7,13 +7,11 @@
 
 namespace Finch
 {
-    /*
     // Primitive methods for array objects.
     PRIMITIVE(ArrayCount);
     PRIMITIVE(ArrayAdd);
     PRIMITIVE(ArrayAt);
     PRIMITIVE(ArrayAtPut);
     PRIMITIVE(ArrayRemoveAt);
-     */
 }
 

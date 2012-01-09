@@ -31,14 +31,12 @@ namespace Finch
         
         // Arrays.
         mArrayPrototype = MakeGlobal("Arrays");
-        DynamicObject* arrayObj = mArrayPrototype->AsDynamic();
-        /*
-        arrayObj->AddPrimitive("count",       ArrayCount);
-        arrayObj->AddPrimitive("add:",        ArrayAdd);
-        arrayObj->AddPrimitive("at:",         ArrayAt);
-        arrayObj->AddPrimitive("at:put:",     ArrayAtPut);
-        arrayObj->AddPrimitive("remove-at:",  ArrayRemoveAt);
-*/
+        AddPrimitive(mArrayPrototype, "count",       ArrayCount);
+        AddPrimitive(mArrayPrototype, "add:",        ArrayAdd);
+        AddPrimitive(mArrayPrototype, "at:",         ArrayAt);
+        AddPrimitive(mArrayPrototype, "at:put:",     ArrayAtPut);
+        AddPrimitive(mArrayPrototype, "remove-at:",  ArrayRemoveAt);
+
         // Blocks.
         mBlockPrototype = MakeGlobal("Blocks");
         AddPrimitive(mBlockPrototype, "call", BlockCall);

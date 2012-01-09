@@ -7,13 +7,12 @@
 
 namespace Finch
 {
-    /*
     PRIMITIVE(ArrayCount)
     {
         ArrayObject * array = self->AsArray();
         ASSERT_NOT_NULL(array);
         
-        fiber.PushNumber(array->Elements().Count());
+        return fiber.CreateNumber(array->Elements().Count());
     }
     
     PRIMITIVE(ArrayAdd)
@@ -22,7 +21,7 @@ namespace Finch
         ASSERT_NOT_NULL(array);
         
         array->Elements().Add(args[0]);
-        fiber.Push(self);
+        return self;
     }
     
     PRIMITIVE(ArrayAt)
@@ -35,12 +34,12 @@ namespace Finch
         // allow negative indexes to index backwards from end
         if ((index >= -array->Elements().Count()) && (index < array->Elements().Count()))
         {
-            fiber.Push(array->Elements()[index]);
+            return array->Elements()[index];
         }
         else
         {
             // out of bounds
-            fiber.PushNil();
+            return fiber.Nil();
         }
     }
     
@@ -57,7 +56,7 @@ namespace Finch
             array->Elements()[index] = args[1];
         }
 
-        fiber.Push(self);
+        return self;
     }
     
     PRIMITIVE(ArrayRemoveAt)
@@ -68,9 +67,9 @@ namespace Finch
         int index = static_cast<int>(args[0]->AsNumber());
         
         // TODO(bob): Bounds check.
-        fiber.Push(array->Elements()[index]);
-        array->Elements().Remove(index);
+        Ref<Object> removed = array->Elements()[index];
+        array->Elements().RemoveAt(index);
+        return removed;
     }
-     */
 }
 
