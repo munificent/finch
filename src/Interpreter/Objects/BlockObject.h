@@ -16,6 +16,70 @@ namespace Finch
     
     class BlockExemplar;
     
+    // TODO(bob): Move into separate file.
+    // TODO(bob): If we get rid of Ref<T> and use pointers and a more direct
+    // value representation, this can be much simpler and we can get rid of
+    // the weird passing in the stack thing.
+    class Upvalue
+    {
+    public:
+        // Default constructor so we can use it in Array<T>.
+        Upvalue()
+        :   mStackIndex(-1)
+        {}
+        
+        Upvalue(int stackIndex)
+        :   mStackIndex(stackIndex)
+        {}
+        
+        Ref<Object> Get(Array<Ref<Object> > & stack) const
+        {
+            if (IsOpen())
+            {
+                return stack[mStackIndex];
+            }
+            else
+            {
+                return mValue;
+            }
+        }
+        
+        void Set(Array<Ref<Object> > & stack, Ref<Object> value)
+        {
+            if (IsOpen())
+            {
+                stack[mStackIndex] = value;
+            }
+            else
+            {
+                mValue = value;
+            }
+        }
+        
+        void Close(Array<Ref<Object> > & stack)
+        {
+            // Capture the value.
+            mValue = stack[mStackIndex];
+            
+            // Detach from the stack.
+            mStackIndex = -1;
+        }
+        
+        int Index() const
+        {
+            return mStackIndex;
+        }
+        
+        bool IsOpen() const
+        {
+            return mStackIndex != -1;
+        }
+        
+    private:
+        int mStackIndex;    // Will be -1 if Upvalue is closed.
+        Ref<Object> mValue; // Only use when Upvalue is closed.
+    };
+    
     // Object class for a block: an invokable expression and the scope that
     // encloses it.
     class BlockObject : public Object
@@ -37,14 +101,14 @@ namespace Finch
 
         int GetNumRegisters() const { return mExemplar->GetNumRegisters(); }
         
-        const Ref<Object> GetConstant(int index) const { return mExemplar->GetConstant(index); }
-        const Ref<BlockExemplar> GetExemplar(int index) const { return mExemplar->GetExemplar(index); }
+        const Ref<Object> GetConstant(int index) const;
+        const Ref<BlockExemplar> GetExemplar(int index) const;
         
         // Gets the compiled bytecode for the block.
-        const Array<Instruction> & GetCode() const { return mExemplar->GetCode(); } 
+        const Array<Instruction> & GetCode() const;
         
-        void AddUpvalue(Ref<Object> upvalue) { mUpvalues.Add(upvalue); }
-        Ref<Object> GetUpvalue(int index) const { return mUpvalues[index]; }
+        void AddUpvalue(Ref<Upvalue> upvalue);
+        Ref<Upvalue> GetUpvalue(int index) const;
         
         virtual BlockObject * AsBlock() { return this; }
         
@@ -54,9 +118,9 @@ namespace Finch
         }
         
     private:
-        Ref<BlockExemplar>   mExemplar;
-        Ref<Object>          mSelf;
-        Array<Ref<Object> >  mUpvalues;
+        Ref<BlockExemplar>      mExemplar;
+        Ref<Object>             mSelf;
+        Array<Ref<Upvalue> >    mUpvalues;
     };
 }
 

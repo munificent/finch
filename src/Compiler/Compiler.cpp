@@ -246,23 +246,22 @@ namespace Finch
             }
             else if (resolvedUpvalue.IsValid())
             {
-                ASSERT(false, "Setting upvalues not implemented yet.");
-                /*
-                // Load the upvalue into the destination register.
-                mExemplar->Write(OP_GET_UPVALUE, resolvedUpvalue.Slot(), dest);
-                 */
+                // Evaluate the value.
+                int valueReg = ReserveRegister();
+                expr.Value()->Accept(*this, valueReg);
+                
+                // Store the upvalue.
+                mExemplar->Write(OP_SET_UPVALUE, resolvedUpvalue.Slot(), valueReg);
+                
+                // Also copy to the destination register.
+                // Handles cases like: foo: some-upval <- baz
+                mExemplar->Write(OP_MOVE, valueReg, dest);
+                
+                ReleaseRegister();
             }
             else
             {
-                ASSERT(false, "Setting globals not implemented yet.");
-                /*
-                // We couldn't find the name, so assume it's a global. This
-                // allows for mutually recursive references to top-level names:
-                // as long as the name is initialized before it's actually
-                // accessed at runtime, this will work.
-                int index = mEnvironment.DefineGlobal(expr.Name());
-                mExemplar->Write(OP_GET_GLOBAL, index, dest);
-                 */
+                CompileSetGlobal(expr.Name(), *expr.Value(), dest);
             }
         }
     }
@@ -336,12 +335,14 @@ namespace Finch
         int local = compiler->mLocals.IndexOf(name);
         if (local != -1)
         {
+            // Locals always get allocated starting at register 1.
+            local++;
+            
             if (compiler == this)
             {
                 // It's defined in the current scope, so resolve it as local.
                 *outIsLocal = true;
-                // Locals always get allocated starting at register 1.
-                *outIndex = local + 1;
+                *outIndex = local;
             }
             
             *outUpvalue = Upvalue(/* name */ true, local);

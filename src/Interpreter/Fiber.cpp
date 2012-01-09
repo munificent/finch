@@ -96,7 +96,8 @@ namespace Finch
                         switch (captureOp)
                         {
                             case OP_CAPTURE_LOCAL:
-                                blockObj->AddUpvalue(Load(frame, captureIndex));
+                                blockObj->AddUpvalue(CaptureUpvalue(
+                                    frame.stackStart + captureIndex));
                                 break;
                                 
                             case OP_CAPTURE_UPVALUE:
@@ -173,13 +174,18 @@ namespace Finch
                 }
                     
                 case OP_GET_UPVALUE:
-                    Store(frame, b, frame.Block().GetUpvalue(a));
+                {
+                    Ref<Upvalue> upvalue = frame.Block().GetUpvalue(a);
+                    Store(frame, b, upvalue->Get(mStack));
                     break;
+                }
                     
                 case OP_SET_UPVALUE:
-                    // A = index of upvalue, B = value reg
-                    ASSERT(false, "OP_SET_UPVALUE not implemented yet.");
+                {
+                    Ref<Upvalue> upvalue = frame.Block().GetUpvalue(a);
+                    upvalue->Set(mStack, Load(frame, b));
                     break;
+                }
                     
                 case OP_GET_FIELD:
                 {
@@ -251,6 +257,18 @@ namespace Finch
                         CallFrame & caller = mCallFrames.Peek();
                         int newStackSize = caller.stackStart +
                             caller.Block().GetNumRegisters();
+                        
+                        // Close any open upvalues that are being popped off
+                        // the stack.
+                        for (int i = mOpenUpvalues.Count() - 1; i >= 0; i--)
+                        {
+                            Ref<Upvalue> upvalue = mOpenUpvalues[i];
+                            if (upvalue->Index() >= newStackSize)
+                            {
+                                upvalue->Close(mStack);
+                                mOpenUpvalues.RemoveAt(i);
+                            }
+                        }
                         
                         // TODO(bob): Make this a single array op.
                         while (mStack.Count() > newStackSize)
@@ -699,40 +717,6 @@ namespace Finch
         return Object::NewString(GetEnvironment(), value);
     }
 
-    /*
-    void Fiber::CallMethod(Ref<Object> self, Ref<Object> blockObj,
-                                 const Array<Ref<Object> > & args)
-    {
-        BlockObject & block = *(blockObj->AsBlock());
-
-        // create a new local scope for the block
-        Ref<Scope> scope;
-        if (block.Closure().IsNull())
-        {
-            // if the block doesn't have a closure, that means its a top-level
-            // one. in that case, we use global directly (instead of a *child* 
-            // of global scope) so that variables defined in it are shared with
-            // other top-level blocks.
-            scope = mEnvironment.Globals();
-        }
-        else
-        {
-            scope = Ref<Scope>(new Scope(block.Closure()));
-        }
-
-        // bind the arguments to the parameters. missing arguments will be
-        // filled with Nil, and extra arguments will be ignored.
-        for (int i = 0; i < block.Params().Count(); i++)
-        {
-            Ref<Object> arg = (i < args.Count()) ? args[i] : mEnvironment.Nil();
-            scope->Define(block.Params()[i], arg);
-        }
-
-        // push the call onto the stack
-        mCallStack.Push(CallFrame(scope, blockObj, self, mOperands.Count()));
-    }
-*/
-    
     void Fiber::CallBlock(Ref<Object> receiver, Ref<Object> blockObj, ArgReader & args)
     {
         BlockObject & block = *(blockObj->AsBlock());
@@ -754,6 +738,26 @@ namespace Finch
     void Fiber::Error(const String & message)
     {
         mInterpreter.GetHost().Error(message);
+    }
+    
+    
+    Ref<Upvalue> Fiber::CaptureUpvalue(int stackIndex)
+    {
+        // See if we already have an open upvalue for that variable.
+        // TODO(bob): Shouldn't use an Array for this. Too slow to remove.
+        // Instead, make Upvalue a linked list.
+        for (int i = 0; i < mOpenUpvalues.Count(); i++)
+        {
+            if (mOpenUpvalues[i]->Index() == stackIndex)
+            {
+                return mOpenUpvalues[i];
+            }
+        }
+        
+        // Not closed over already, so create it.
+        Ref<Upvalue> upvalue = Ref<Upvalue>(new Upvalue(stackIndex));
+        mOpenUpvalues.Add(upvalue);
+        return upvalue;
     }
     
     void Fiber::TraceStack() const
@@ -787,27 +791,6 @@ namespace Finch
     int Fiber::GetCallstackDepth() const
     {
         return mCallStack.Count();
-    }
-
-    void Fiber::SendMessage(int message, int numArgs)
-    {
-        // pop the arguments. note that we fill the array from back to front
-        // because the arguments are on the stack from first to last (so that they
-        // were correctly evaluated from left to right) and now we're popping them
-        // off from last to first.
-        Array<Ref<Object> > args(numArgs, mEnvironment.Nil());
-        for (int i = numArgs - 1; i >= 0; i--)
-        {
-            args[i] = PopOperand();
-        }
-
-        // send the message
-        String string = mEnvironment.Strings().Find(message);
-        Ref<Object> receiver = PopOperand();
-
-        //std::cout << "send '" << string << "' to " << receiver << std::endl;
-        
-        receiver->Receive(receiver, *this, string, args);
     }
      */
 }

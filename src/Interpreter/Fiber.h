@@ -14,7 +14,8 @@ namespace Finch
     class Environment;
     class Expr;
     class Interpreter;
-
+    class Upvalue;
+    
     // A single bytecode execution thread in the interpreter. A Fiber has a
     // virtual callstack and is responsible for executing bytecode. In other
     // words, it's where stuff actually happens.
@@ -106,6 +107,9 @@ namespace Finch
         Ref<Object> SendMessage(int messageId, int receiverReg, int numArgs);
 
         Ref<Object> Self();
+        
+        Ref<Upvalue> CaptureUpvalue(int stackIndex);
+        
         /*
          Ref<Scope>  CurrentScope() { return mCallStack.Peek().scope; }
         
@@ -117,8 +121,10 @@ namespace Finch
         /*
         Environment & mEnvironment;
         */
-        Array<Ref<Object> > mStack;
-        Stack<CallFrame>    mCallFrames;
+        Array<Ref<Object> >  mStack;
+        Stack<CallFrame>     mCallFrames;
+        Array<Ref<Upvalue> > mOpenUpvalues;
+        
         /*
         // Object literals that are currently being evaluated.
         Stack<Ref<Object> > mObjects;

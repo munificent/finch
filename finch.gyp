@@ -47,6 +47,7 @@
       'src/Interpreter/FileLineReader.h',
       'src/Interpreter/Objects/ArrayObject.h',
       'src/Interpreter/Objects/BlockObject.h',
+      'src/Interpreter/Objects/BlockObject.cpp',
       'src/Interpreter/Objects/DynamicObject.cpp',
       'src/Interpreter/Objects/DynamicObject.h',
       'src/Interpreter/Objects/FiberObject.h',
