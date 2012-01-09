@@ -165,7 +165,7 @@ namespace Finch
                 return Ref<Expr>(new VarExpr(name, value));
             }
         }
-        else return Cascade();
+        else return Bind();
     }
     
     Ref<Expr> FinchParser::Bind()
