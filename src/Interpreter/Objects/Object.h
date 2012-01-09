@@ -91,12 +91,13 @@ namespace Finch
         virtual FiberObject *   AsFiber()        { return NULL; }
         
         Ref<Object> Parent() { return mParent; }
+        // TODO(bob): Only used to set Object's parent to itself. Can we get
+        // rid of this?
         void        SetParent(Ref<Object> parent) { mParent = parent; }
         
         virtual void Trace(ostream & stream) const = 0;
         
     protected:
-        Object() : mParent(Ref<Object>()) {}
         Object(Ref<Object> parent) : mParent(parent) {}
         
         Ref<Object> Parent() const { return mParent; }

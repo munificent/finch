@@ -8,12 +8,9 @@
 
 namespace Finch
 {
-    /*
     // Primitive methods for dynamic (i.e. regular) objects.
     PRIMITIVE(ObjectToString);
     PRIMITIVE(ObjectSame);
     PRIMITIVE(ObjectGetParent);
-    PRIMITIVE(ObjectSetParent);
-     */
 }
 

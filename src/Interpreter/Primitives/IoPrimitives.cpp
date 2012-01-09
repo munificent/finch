@@ -9,7 +9,6 @@
 
 namespace Finch
 {
-    /*
     using std::ifstream;
     using std::ios;
     using std::istreambuf_iterator;
@@ -24,8 +23,7 @@ namespace Finch
         if (stream.fail())
         {
             fiber.Error(String::Format("Could not open file '%s'.", path.CString()));
-            fiber.PushNil();
-            return;
+            return fiber.Nil();
         }
         
         // From: http://stackoverflow.com/questions/2602013/read-whole-ascii-file-into-c-stdstring.
@@ -40,8 +38,7 @@ namespace Finch
         str.assign((istreambuf_iterator<char>(stream)),
                    istreambuf_iterator<char>());
 
-        fiber.PushString(String(str.c_str()));
+        return fiber.CreateString(String(str.c_str()));
     }
-     */
 }
 

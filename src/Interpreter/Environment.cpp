@@ -21,13 +21,9 @@ namespace Finch
         
         // Object.
         mObject = MakeGlobal("Object");
-        DynamicObject* objectObj = mObject->AsDynamic();
-        /*
-        objectObj->AddPrimitive("===",             ObjectSame);
-        objectObj->AddPrimitive("to-string",       ObjectToString);
-        objectObj->AddPrimitive("parent",          ObjectGetParent);
-        objectObj->AddPrimitive("parent:",         ObjectSetParent);
-         */
+        AddPrimitive(mObject, "===",             ObjectSame);
+        AddPrimitive(mObject, "to-string",       ObjectToString);
+        AddPrimitive(mObject, "parent",          ObjectGetParent);
         
         // Arrays.
         mArrayPrototype = MakeGlobal("Arrays");
@@ -98,10 +94,8 @@ namespace Finch
         
         // Io.
         Ref<Object> io = MakeGlobal("Io");
-        DynamicObject* ioObj = io->AsDynamic();
-        /*
-        ioObj->AddPrimitive("read-file:", IoReadFile);
-*/
+        AddPrimitive(io, "read-file:", IoReadFile);
+
         // Bare primitive object.
         Ref<Object> primitives = MakeGlobal("*primitive*");
         DynamicObject* primsObj = primitives->AsDynamic();

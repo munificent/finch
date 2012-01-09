@@ -7,10 +7,8 @@
 
 namespace Finch
 {
-    /*
     // Primitive methods for IO.
     PRIMITIVE(IoReadFile);
-     */
 }
 
 

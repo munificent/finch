@@ -9,28 +9,20 @@
 
 namespace Finch
 {
-    /*
     PRIMITIVE(ObjectToString)
     {
-        fiber.PushString(self->AsString());
+        return fiber.CreateString(self->AsString());
     }
     
     PRIMITIVE(ObjectSame)
     {
-        // reference equality
-        fiber.PushBool(self == args[0]);
+        // Reference equality.
+        return fiber.CreateBool(self == args[0]);
     }
     
     PRIMITIVE(ObjectGetParent)
     {
-        fiber.Push(self->GetParent());
+        return self->Parent();
     }
-    
-    PRIMITIVE(ObjectSetParent)
-    {
-        self->SetParent(args[0]);
-        fiber.PushNil();
-    }
-     */
 }
 

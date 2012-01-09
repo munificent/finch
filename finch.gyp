@@ -73,6 +73,8 @@
       'src/Interpreter/Primitives.h',
       'src/Interpreter/Scope.cpp',
       'src/Interpreter/Scope.h',
+      'src/Interpreter/Upvalue.cpp',
+      'src/Interpreter/Upvalue.h',
       'src/Interpreter.cpp',
       'src/Interpreter.h',
       'src/ReplLineReader.cpp',
