@@ -56,35 +56,6 @@ namespace Finch
         OP_CAPTURE_LOCAL,   // A = register of local
         OP_CAPTURE_UPVALUE  // A = index of upvalue
     };
-    
-    // TODO(bob): Rename to distinction between compile-time and runtime one.
-    class Upvalue
-    {
-    public:
-        // Default constructor so we can use this in Arrays.
-        Upvalue()
-        :   mIsLocal(false),
-            mIndex(-1),
-            mSlot(-1)
-        {}
-        
-        Upvalue(bool isLocal, int index)
-        :   mIsLocal(isLocal),
-            mIndex(index),
-            mSlot(-1)
-        {}
-        
-        bool IsValid() const { return mIndex != -1; }
-        bool IsLocal() const { return mIsLocal; }
-        int Index() const { return mIndex; }
-        void SetSlot(int slot) { mSlot = slot; }
-        int Slot() const { return mSlot; }
-        
-    private:
-        bool mIsLocal;
-        int  mIndex;
-        int  mSlot;
-    };
         
     // A compiled block. This contains the state that all blocks created from
     // evaluating the same chunk of code share: the compiled bytecode, constant
