@@ -28,11 +28,10 @@ namespace Finch
         // instructions if we know the result will be trashed anyway.
         const static int DISCARD_REGISTER = -1;
         
-        static Ref<BlockExemplar> CompileBlock(Environment & environment,
-            const Array<String> params, const Expr & expr);
-
-        Compiler(Environment & environment, Ref<BlockExemplar> exemplar);
+        Compiler(Environment & environment, Compiler * parent);
         
+        void Compile(const Array<String> & params, const Expr & expr);
+
         virtual ~Compiler() {}
 
         virtual void Visit(const ArrayExpr & expr, int dest);
@@ -50,7 +49,10 @@ namespace Finch
         virtual void Visit(const UndefineExpr & expr, int dest);
         virtual void Visit(const VarExpr & expr, int dest);
         
-        int CompileNestedBlock(const BlockExpr & block);
+        void ResolveName(Compiler * compiler, const String & name,
+            Upvalue * outUpvalue, bool * outIsLocal, int * outIndex,
+            Upvalue * outResolvedUpvalue);
+        void CompileNestedBlock(const BlockExpr & block, int dest);
         void CompileConstant(Ref<Object> constant, int dest);
         void CompileDefinitions(const DefineExpr & expr, int dest);
 
@@ -58,19 +60,20 @@ namespace Finch
         void ReleaseRegister();
         
         Environment & mEnvironment;
+        // The compiler for the block containing the block this one is compiling
+        // or NULL if this is compiling a top-level block.
+        Compiler * mParent;
         Ref<BlockExemplar> mExemplar;
         int mInUseRegisters;
         
         // Names of local variables declared in this block.
         Array<String> mLocals;
-        
+        Array<Upvalue> mUpvalues;
+
         NO_COPY(Compiler);
     };
     
     /*
-    class DefineExpr;
-    class Environment;
-
     // Compiles an expression AST to bytecode for execution by the interpreter.
     // Each instance of this is used to compile a single block. It keeps track
     // of the parent compiler which is its lexically-enclosing block.
@@ -84,25 +87,6 @@ namespace Finch
                                               const Expr & expr);
 
     private:
-        Compiler(Environment & environment, Compiler * parent);
-
-        virtual ~Compiler() {}
-
-        virtual void Visit(const ArrayExpr & expr);
-        virtual void Visit(const BindExpr & expr);
-        virtual void Visit(const BlockExpr & expr);
-        virtual void Visit(const MessageExpr & expr);
-        virtual void Visit(const NameExpr & expr);
-        virtual void Visit(const NumberExpr & expr);
-        virtual void Visit(const ObjectExpr & expr);
-        virtual void Visit(const ReturnExpr & expr);
-        virtual void Visit(const SequenceExpr & expr);
-        virtual void Visit(const SelfExpr & expr);
-        virtual void Visit(const SetExpr & expr);
-        virtual void Visit(const StringExpr & expr);
-        virtual void Visit(const UndefineExpr & expr);
-        virtual void Visit(const VarExpr & expr);
-
         // Compiles the given block with this compiler.
         void Compile(const Array<String> & params, const Expr & body, int methodId);
         

@@ -78,6 +78,36 @@ namespace Finch
                     
                     Ref<Object> block = Object::NewBlock(GetEnvironment(),
                         exemplar, Self());
+                    
+                    BlockObject * blockObj = block->AsBlock();
+                    
+                    // Capture upvalues.
+                    for (int i = 0; i < exemplar->GetNumUpvalues(); i++)
+                    {
+                        Instruction capture = frame.Block().GetCode()[frame.ip++];
+                        OpCode captureOp = static_cast<OpCode>((capture & 0xff000000) >> 24);
+                        int captureIndex = (capture & 0x00ff0000) >> 16;
+                        
+                        // TODO(bob): This is wrong. This is capturing the
+                        // *value* when it should capture the *variable. If
+                        // other code assigns to the captured variable's, this
+                        // new block won't see the change.
+                        // To fix this, we need Lua's Upvalue objects.
+                        switch (captureOp)
+                        {
+                            case OP_CAPTURE_LOCAL:
+                                blockObj->AddUpvalue(Load(frame, captureIndex));
+                                break;
+                                
+                            case OP_CAPTURE_UPVALUE:
+                                blockObj->AddUpvalue(frame.Block().GetUpvalue(captureIndex));
+                                break;
+                                
+                            default:
+                                ASSERT(false, "Unexpected capture pseudo-op.");
+                        }
+                    }
+                    
                     Store(frame, b, block);
                     TraceStack();
                     break;
@@ -141,6 +171,16 @@ namespace Finch
                     TraceStack();
                     break;
                 }
+                    
+                case OP_GET_UPVALUE:
+                    Store(frame, b, frame.Block().GetUpvalue(a));
+                    break;
+                    
+                case OP_SET_UPVALUE:
+                    // A = index of upvalue, B = value reg
+                    ASSERT(false, "OP_SET_UPVALUE not implemented yet.");
+                    break;
+                    
                 case OP_GET_FIELD:
                 {
                     Ref<Object> field = Self()->GetField(a);
@@ -162,22 +202,13 @@ namespace Finch
                     
                 case OP_DEF_METHOD:
                 {
-                    Ref<BlockExemplar> exemplar = frame.Block().GetExemplar(b);
-                    
-                    // TODO(bob): Lot of overlap here with OP_BLOCK.
-                    // TODO(bob): Capture closure.
-                    // TODO(bob): Should use enclosing self instead of Nil.
-                    Ref<Object> body = Object::NewBlock(GetEnvironment(),
-                        exemplar, GetEnvironment().Nil());
-                    // TODO(bob): Capture upvals.
-                    
                     // Get the object we're attaching the method to.
                     DynamicObject * object = Load(frame, c)->AsDynamic();
                     // TODO(bob): What should this do if you try to bind a
                     // method to something non-dynamic?
                     ASSERT_NOT_NULL(object);
                     
-                    object->AddMethod(a, body);
+                    object->AddMethod(a, Load(frame, b));
                     break;
                 }
                     
@@ -229,6 +260,7 @@ namespace Finch
                 }
                     
                 default:
+                    std::cout << op << std::endl;
                     ASSERT(false, "Unknown opcode.");
             }
         }

@@ -36,6 +36,8 @@ namespace Finch
         OP_MESSAGE_8,
         OP_MESSAGE_9,
         OP_MESSAGE_10,
+        OP_GET_UPVALUE,   // A = index of upvalue, B = dest reg
+        OP_SET_UPVALUE,   // A = index of upvalue, B = value reg
         OP_GET_FIELD,     // A = index of field in string table, B = dest reg
         OP_SET_FIELD,     // A = index of field in string table, B = value reg
         OP_DEF_METHOD,    // A = index of method name in string table,
@@ -45,6 +47,41 @@ namespace Finch
                           // B = register with field value,
                           // C = object field is being defined on
         OP_RETURN,        // A = register with result to return
+        
+        // TODO(bob): There are pseudo-ops that only appear following an
+        // OP_BLOCK instruction. If we want to minimize the number of ops, we
+        // could reuse existing opcodes for these.
+        OP_CAPTURE_LOCAL,   // A = register of local
+        OP_CAPTURE_UPVALUE  // A = index of upvalue
+    };
+    
+    // TODO(bob): Rename to distinction between compile-time and runtime one.
+    class Upvalue
+    {
+    public:
+        // Default constructor so we can use this in Arrays.
+        Upvalue()
+        :   mIsLocal(false),
+            mIndex(-1),
+            mSlot(-1)
+        {}
+        
+        Upvalue(bool isLocal, int index)
+        :   mIsLocal(isLocal),
+            mIndex(index),
+            mSlot(-1)
+        {}
+        
+        bool IsValid() const { return mIndex != -1; }
+        bool IsLocal() const { return mIsLocal; }
+        int Index() const { return mIndex; }
+        void SetSlot(int slot) { mSlot = slot; }
+        int Slot() const { return mSlot; }
+        
+    private:
+        bool mIsLocal;
+        int  mIndex;
+        int  mSlot;
     };
         
     // A compiled block. This contains the state that all blocks created from
@@ -61,6 +98,9 @@ namespace Finch
         
         int  GetNumRegisters() const { return mNumRegisters; }
         void SetNumRegisters(int numRegisters) { mNumRegisters = numRegisters; }
+        
+        int  GetNumUpvalues() const { return mNumUpvalues; }
+        void SetNumUpvalues(int numUpvalues) { mNumUpvalues = numUpvalues; }
         
         // Adds the given object to the constant pool and returns its index.
         int AddConstant(Ref<Object> object);
@@ -80,6 +120,11 @@ namespace Finch
         // Writes an instruction.
         void Write(OpCode op, int a = 0xff, int b = 0xff, int c = 0xff);
         
+#ifdef DEBUG
+        void DumpInstruction(Environment & environment, const String & prefix, Instruction instruction);
+        void DebugDump(Environment & environment, const String & prefix);
+#endif
+        
     private:
         Array<String>       mParams;
         Array<Instruction>  mCode;
@@ -87,8 +132,9 @@ namespace Finch
         // Exemplars for blocks defined within this one.
         Array<Ref<BlockExemplar> > mExemplars;
         int                 mNumRegisters;
+        int                 mNumUpvalues;
     };
-    
+
     /*
     enum OpCode
     {                       // arg

@@ -28,39 +28,48 @@ namespace Finch
         // >> a
         // You'll get an error. We'll have to do something smarter here.
         Array<String> params;
-        return CompileBlock(environment, params, expr);
-    }
-    
-    Ref<BlockExemplar> Compiler::CompileBlock(Environment & environment,
-        const Array<String> params, const Expr & expr)
-    {
-        Ref<BlockExemplar> exemplar = Ref<BlockExemplar>(
-            new BlockExemplar(Array<String>()));
         
-        Compiler compiler(environment, exemplar);
+        Compiler compiler(environment, NULL);
+        compiler.Compile(params, expr);
+        
+        /*
+        // TODO(bob): Testing!
+        compiler.mExemplar->DebugDump(environment, "");
+        */
+        
+        return compiler.mExemplar;
+    }
+        
+    Compiler::Compiler(Environment & environment, Compiler * parent)
+    :   mEnvironment(environment),
+        mParent(parent),
+        mExemplar(),
+        mInUseRegisters(0),
+        mLocals()
+    {}
+
+    void Compiler::Compile(const Array<String> & params, const Expr & expr)
+    {
+        mExemplar = Ref<BlockExemplar>(new BlockExemplar(params));
         
         // Result register goes first.
-        int resultRegister = compiler.ReserveRegister();
+        int resultRegister = ReserveRegister();
         
         // Reserve registers for the params.
         for (int i = 0; i < params.Count(); i++)
         {
-            compiler.ReserveRegister();
-            compiler.mLocals.Add(params[i]);
+            ReserveRegister();
+            mLocals.Add(params[i]);
         }
         
-        expr.Accept(compiler, resultRegister);
-        exemplar->Write(OP_RETURN, resultRegister);
-                
-        return exemplar;
+        expr.Accept(*this, resultRegister);
+        mExemplar->Write(OP_RETURN, resultRegister);
+        
+        // Now that all upvalues for this block are known (and its contained
+        // blocks have also been compiled, which due to closure flattening may
+        // upvalues to this block), we can store the number of upvalues.
+        mExemplar->SetNumUpvalues(mUpvalues.Count());
     }
-    
-    Compiler::Compiler(Environment & environment, Ref<BlockExemplar> exemplar)
-    :   mEnvironment(environment),
-        mExemplar(exemplar),
-        mInUseRegisters(0),
-        mLocals()
-    {}
     
     void Compiler::Visit(const ArrayExpr & expr, int dest)
     {
@@ -93,10 +102,7 @@ namespace Finch
     
     void Compiler::Visit(const BlockExpr & expr, int dest)
     {
-        int index = CompileNestedBlock(expr);
-        mExemplar->Write(OP_BLOCK, index, dest);
-        // TODO(bob): Once closures are implemented, need to write code to
-        // load upvals.
+        CompileNestedBlock(expr, dest);
     }
     
     void Compiler::Visit(const MessageExpr & expr, int dest)
@@ -147,18 +153,35 @@ namespace Finch
         }
         else
         {
-            // It's a lexical variable name. Here, we assume that locals always
-            // get allocated starting at register 1.
-            int index = mLocals.IndexOf(expr.Name()) + 1;
+            Upvalue upvalue;
+            bool isLocal;
+            int index;
+            Upvalue resolvedUpvalue;
+            ResolveName(this, expr.Name(), &upvalue, &isLocal, &index,
+                        &resolvedUpvalue);
             
-            // TODO(bob): Handle unknown name.
-            // TODO(bob): Handle names defined in outer scopes.
-            
-            // Copy the local to the destination register.
-            mExemplar->Write(OP_MOVE, index, dest);
+            if (isLocal)
+            {
+                // Copy the local to the destination register.
+                mExemplar->Write(OP_MOVE, index, dest);
+            }
+            else if (resolvedUpvalue.IsValid())
+            {
+                // Load the upvalue into the destination register.
+                mExemplar->Write(OP_GET_UPVALUE, resolvedUpvalue.Slot(), dest);
+            }
+            else
+            {
+                // TODO(bob): If we couldn't find a name at all, we should
+                // add it to the global scope with a special "undefined" value.
+                // Later definitions can then fill that in. That way the REPL
+                // works nicely and you can have circular references at the top
+                // level.
+                ASSERT(false, "Globals aren't implemented yet.");
+            }
         }
     }
-    
+        
     void Compiler::Visit(const NumberExpr & expr, int dest)
     {
         Ref<Object> number = Object::NewNumber(mEnvironment, expr.GetValue());
@@ -253,11 +276,93 @@ namespace Finch
         }
     }
     
-    int Compiler::CompileNestedBlock(const BlockExpr & block)
+    void Compiler::ResolveName(Compiler * compiler, const String & name,
+                               Upvalue * outUpvalue, bool * outIsLocal,
+                               int * outIndex, Upvalue * outResolvedUpvalue)
     {
-        Ref<BlockExemplar> exemplar = Compiler::CompileBlock(
-            mEnvironment, block.Params(), *block.Body());
-        return mExemplar->AddExemplar(exemplar);
+        // Bail if we run out of scopes.
+        if (compiler == NULL)
+        {
+            // TODO(bob): Support globals. For now, just resolve it to an
+            // invalid Upvalue.
+            *outIsLocal = false;
+            *outResolvedUpvalue = Upvalue();
+            
+            // Set to an invalid empty upvalue.
+            *outUpvalue = Upvalue();
+            return;
+        }
+        
+        // See if the name is defined here.
+        int local = compiler->mLocals.IndexOf(name);
+        if (local != -1)
+        {
+            if (compiler == this)
+            {
+                // It's defined in the current scope, so resolve it as local.
+                *outIsLocal = true;
+                // Locals always get allocated starting at register 1.
+                *outIndex = local + 1;
+            }
+            
+            *outUpvalue = Upvalue(/* name */ true, local);
+            return;
+        }
+        
+        // Recurse upwards.
+        // TODO(bob): Can we just reuse outUpvalue?
+        Upvalue upvalue;
+        ResolveName(compiler->mParent, name, &upvalue, outIsLocal, outIndex,
+                    outResolvedUpvalue);
+        
+        // Just unwind if we never found the name in any scope.
+        if (!upvalue.IsValid())
+        {
+            *outUpvalue = upvalue;
+            return;
+        }
+        
+        // Add an upvalue to this scope. This flattens the closure: if we refer
+        // to a variable defined outside of our immediately enclosing block,
+        // each intervening block will copy that variable into its upvalues so
+        // we can walk it down to the block that uses it.
+        upvalue.SetSlot(compiler->mUpvalues.Count());
+        compiler->mUpvalues.Add(upvalue);
+        
+        if (compiler == this)
+        {
+            // Resolve the name as an upvar.
+            *outIsLocal = false;
+            *outResolvedUpvalue = upvalue;
+        }
+        
+        *outUpvalue = Upvalue(/* name */ false, upvalue.Slot());
+    }
+    
+    void Compiler::CompileNestedBlock(const BlockExpr & block, int dest)
+    {
+        Compiler compiler(mEnvironment, this);
+        compiler.Compile(block.Params(), *block.Body());
+        
+        int index = mExemplar->AddExemplar(compiler.mExemplar);
+        
+        mExemplar->Write(OP_BLOCK, index, dest);
+
+        // Capture the upvalues.
+        for (int i = 0; i < compiler.mUpvalues.Count(); i++)
+        {
+            Upvalue & upvalue = compiler.mUpvalues[i];
+            if (upvalue.IsLocal())
+            {
+                // Closing over a local.
+                mExemplar->Write(OP_CAPTURE_LOCAL, upvalue.Index());
+            }
+            else
+            {
+                // Closing over an upvalue.
+                mExemplar->Write(OP_CAPTURE_UPVALUE, upvalue.Index());
+            }
+        }
     }
     
     void Compiler::CompileConstant(Ref<Object> constant, int dest)
@@ -277,25 +382,27 @@ namespace Finch
             const Definition & definition = expr.Definitions()[i];
             int name = mEnvironment.Strings().Add(definition.GetName());
             
+            int value = ReserveRegister();
+
             if (definition.IsMethod()) {
                 BlockExpr & body = static_cast<BlockExpr &>(
                     *definition.GetBody());
                 
-                // Create a unique id for the method.
-                int exemplar = CompileNestedBlock(body);
+                // TODO(bob): Create a unique id for the method.
+                CompileNestedBlock(body, value);
                 
                 // TODO(bob): Right now, we're only giving 8-bits to the name,
                 // which will run out quickly.
-                mExemplar->Write(OP_DEF_METHOD, name, exemplar, dest);
+                mExemplar->Write(OP_DEF_METHOD, name, value, dest);
             }
             else
             {
                 // Compile the initializer.
-                int value = ReserveRegister();
                 definition.GetBody()->Accept(*this, value);
                 mExemplar->Write(OP_DEF_FIELD, name, value, dest);
-                ReleaseRegister();
             }
+            
+            ReleaseRegister();
         }
     }
     

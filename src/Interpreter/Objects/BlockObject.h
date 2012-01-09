@@ -25,16 +25,9 @@ namespace Finch
                     Ref<Object> self)
         :   Object(parent),
             mExemplar(exemplar),
-            mSelf(self)
+            mSelf(self),
+            mUpvalues(exemplar->GetNumUpvalues())
         {}
-        
-        /*
-        // Gets the names of the parameters this block takes.
-        const Array<String> & Params() const { return mCode->Params(); }
-        
-        // Gets the scope enclosing the definition of this block.
-        Ref<Scope> Closure() const { return mClosure; }
-         */
         
         bool IsMethod() const { return !mSelf.IsNull(); }
         
@@ -50,6 +43,9 @@ namespace Finch
         // Gets the compiled bytecode for the block.
         const Array<Instruction> & GetCode() const { return mExemplar->GetCode(); } 
         
+        void AddUpvalue(Ref<Object> upvalue) { mUpvalues.Add(upvalue); }
+        Ref<Object> GetUpvalue(int index) const { return mUpvalues[index]; }
+        
         virtual BlockObject * AsBlock() { return this; }
         
         virtual void Trace(ostream & stream) const
@@ -58,11 +54,9 @@ namespace Finch
         }
         
     private:
-        Ref<BlockExemplar> mExemplar;
-        /*
-        Ref<Scope>     mClosure;
-         */
-        Ref<Object>    mSelf;
+        Ref<BlockExemplar>   mExemplar;
+        Ref<Object>          mSelf;
+        Array<Ref<Object> >  mUpvalues;
     };
 }
 

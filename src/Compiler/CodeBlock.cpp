@@ -1,5 +1,9 @@
 #include "CodeBlock.h"
 
+#ifdef DEBUG
+#include "Environment.h"
+#endif
+
 namespace Finch
 {
     BlockExemplar::BlockExemplar(const Array<String> & params)
@@ -38,42 +42,102 @@ namespace Finch
         mCode.Add(instruction);
     }
 
-    /*
-    void CodeBlock::Write(OpCode op)
+#ifdef DEBUG
+    void BlockExemplar::DumpInstruction(Environment & environment, const String & prefix, Instruction instruction)
     {
-        Write(op, 0);
-    }
-    
-    void CodeBlock::Write(OpCode op, double number)
-    {
-        Instruction instruction;
-        instruction.op = op;
-        instruction.arg.number = number;
+        using namespace std;
         
-        mInstructions.Add(instruction);
-    }
-    
-    void CodeBlock::Write(OpCode op, int id)
-    {
-        Instruction instruction;
-        instruction.op = op;
-        instruction.arg.id = id;
+        cout << prefix;
         
-        mInstructions.Add(instruction);
+        OpCode op = static_cast<OpCode>((instruction & 0xff000000) >> 24);
+        int a = (instruction & 0x00ff0000) >> 16;
+        int b = (instruction & 0x0000ff00) >> 8;
+        int c = instruction & 0x000000ff;
+        switch (op)
+        {
+            case OP_CONSTANT:
+                cout << "CONSTANT     " << a << " (" << mConstants[a] << ") -> " << b;
+                break;
+            case OP_BLOCK:
+                cout << "BLOCK        " << a << " -> " << b;
+                break;
+            case OP_OBJECT:
+                cout << "OBJECT       " << a;
+                break;
+            case OP_ARRAY:
+                cout << "ARRAY        [" << a << "] -> " << b;
+                break;
+            case OP_ARRAY_ELEMENT:
+                cout << "ARRAY_ELEM   " << a << " -> " << b;
+                break;
+            case OP_MOVE:
+                cout << "MOVE         " << a << " -> " << b;
+                break;
+            case OP_SELF:
+                cout << "SELF         -> " << a;
+                break;
+            case OP_MESSAGE_0:
+            case OP_MESSAGE_1:
+            case OP_MESSAGE_2:
+            case OP_MESSAGE_3:
+            case OP_MESSAGE_4:
+            case OP_MESSAGE_5:
+            case OP_MESSAGE_6:
+            case OP_MESSAGE_7:
+            case OP_MESSAGE_8:
+            case OP_MESSAGE_9:
+            case OP_MESSAGE_10:
+                cout << "MESSAGE_" << (op - OP_MESSAGE_0) << "   '" << environment.Strings().Find(a) << "' " << b << " -> " << c;
+                break;
+            case OP_GET_UPVALUE:
+                cout << "GET_UPVALUE  " << a << " -> " << b;
+                break;
+            case OP_SET_UPVALUE:
+                cout << "SET_UPVALUE  " << a << " -> " << b;
+                break;
+            case OP_GET_FIELD:
+                cout << "GET_FIELD    '" << environment.Strings().Find(a) << "' -> " << b;
+                break;
+            case OP_SET_FIELD:
+                cout << "SET_FIELD    '" << environment.Strings().Find(a) << "' -> " << b;
+                break;
+            case OP_DEF_METHOD:
+                cout << "DEF_METHOD   '" << environment.Strings().Find(a) << "' " << b << " -> " << c;
+                break;
+            case OP_DEF_FIELD:
+                cout << "DEF_FIELD    '" << environment.Strings().Find(a) << "' " << b << " -> " << c;
+                break;
+            case OP_RETURN:
+                cout << "RETURN       " << a;
+                break;
+            case OP_CAPTURE_LOCAL:   // A = register of local
+                cout << "CAP_LOCAL    " << a;
+                break;
+            case OP_CAPTURE_UPVALUE:
+                cout << "CAP_UPVALUE  " << a;
+                break;
+            default:
+                cout << "UNKNOWN OP " << op;
+        }
+        cout << endl;
+        
+        // Dump the child block too.
+        if (op == OP_BLOCK)
+        {
+            mExemplars[a]->DebugDump(environment, prefix + "  ");
+        }
     }
     
-    int CodeBlock::AddConstant(Ref<Object> constant)
+    void BlockExemplar::DebugDump(Environment & environment, const String & prefix)
     {
-        mConstants.Add(constant);
-        return mConstants.Count() - 1;
+        for (int i = 0; i < mCode.Count(); i++)
+        {
+            DumpInstruction(environment, prefix, mCode[i]);
+        }
     }
+#endif
     
-    int CodeBlock::AddCodeBlock(Ref<CodeBlock> codeBlock)
-    {
-        mCodeBlocks.Add(codeBlock);
-        return mCodeBlocks.Count() - 1;
-    }
-    
+    /*    
     void CodeBlock::MarkTailCalls()
     {
         for (int i = 1; i < mInstructions.Count(); i++)
