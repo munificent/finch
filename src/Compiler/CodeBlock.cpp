@@ -99,7 +99,13 @@ namespace Finch
                 cout << "GET_FIELD    '" << environment.Strings().Find(a) << "' -> " << b;
                 break;
             case OP_SET_FIELD:
-                cout << "SET_FIELD    '" << environment.Strings().Find(a) << "' -> " << b;
+                cout << "SET_FIELD    '" << environment.Strings().Find(a) << "' <- " << b;
+                break;
+            case OP_GET_GLOBAL:
+                cout << "GET_GLOBAL   " << a << " -> " << b;
+                break;
+            case OP_SET_GLOBAL:
+                cout << "SET_GLOBAL   " << a << " <- " << b;
                 break;
             case OP_DEF_METHOD:
                 cout << "DEF_METHOD   '" << environment.Strings().Find(a) << "' " << b << " -> " << c;

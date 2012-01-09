@@ -17,10 +17,9 @@ namespace Finch
 {
     Environment::Environment()
     {
-        // build the global scope
-        mGlobals = Ref<Scope>(new Scope()); 
+        // Build the global scope.
         
-        // define Object
+        // Object.
         mObject = MakeGlobal("Object");
         DynamicObject* objectObj = mObject->AsDynamic();
         /*
@@ -29,7 +28,8 @@ namespace Finch
         objectObj->AddPrimitive("parent",          ObjectGetParent);
         objectObj->AddPrimitive("parent:",         ObjectSetParent);
          */
-        // define Array prototype
+        
+        // Arrays.
         mArrayPrototype = MakeGlobal("Arrays");
         DynamicObject* arrayObj = mArrayPrototype->AsDynamic();
         /*
@@ -39,7 +39,7 @@ namespace Finch
         arrayObj->AddPrimitive("at:put:",     ArrayAtPut);
         arrayObj->AddPrimitive("remove-at:",  ArrayRemoveAt);
 */
-        // define Blocks prototype
+        // Blocks.
         mBlockPrototype = MakeGlobal("Blocks");
         AddPrimitive(mBlockPrototype, "call", BlockCall);
         AddPrimitive(mBlockPrototype, "call:", BlockCall);
@@ -53,7 +53,7 @@ namespace Finch
         AddPrimitive(mBlockPrototype, "call:::::::::", BlockCall);
         AddPrimitive(mBlockPrototype, "call::::::::::", BlockCall);
 
-        // define Fiber prototype
+        // Fibers.
         mFiberPrototype = MakeGlobal("Fibers");
         DynamicObject* fiberObj = mFiberPrototype->AsDynamic();
         /*
@@ -61,7 +61,7 @@ namespace Finch
         fiberObj->AddPrimitive("done?", FiberDone);
 */
         
-        // define Number prototype
+        // Numbers.
         mNumberPrototype = MakeGlobal("Numbers");
         AddPrimitive(mNumberPrototype, "abs", NumberAbs);
         AddPrimitive(mNumberPrototype, "neg", NumberNeg);
@@ -87,7 +87,7 @@ namespace Finch
         AddPrimitive(mNumberPrototype, "<=",  NumberLessThanOrEqual);
         AddPrimitive(mNumberPrototype, ">=",  NumberGreaterThanOrEqual);
         
-        // define String prototype
+        // Strings.
         mStringPrototype = MakeGlobal("Strings");
         AddPrimitive(mStringPrototype, "count",       StringCount);
         AddPrimitive(mStringPrototype, "at:",         StringAt);
@@ -95,16 +95,16 @@ namespace Finch
         AddPrimitive(mStringPrototype, "hash-code",   StringHashCode);
         AddPrimitive(mStringPrototype, "index-of:",   StringIndexOf);
 
-        // define Ether
+        // Ether.
         MakeGlobal("Ether");
         
-        // define IO
+        // Io.
         Ref<Object> io = MakeGlobal("Io");
         DynamicObject* ioObj = io->AsDynamic();
         /*
         ioObj->AddPrimitive("read-file:", IoReadFile);
 */
-        // define bare primitive object
+        // Bare primitive object.
         Ref<Object> primitives = MakeGlobal("*primitive*");
         DynamicObject* primsObj = primitives->AsDynamic();
         /*
@@ -116,22 +116,56 @@ namespace Finch
         primsObj->AddPrimitive("switch-to-fiber:passing:", PrimitiveSwitchToFiber);
         primsObj->AddPrimitive("callstack-depth",          PrimitiveGetCallstackDepth);
         */
-        // make the special values
+        
+        // The special singleton values.
         mNil = MakeGlobal("nil");
         mTrue = MakeGlobal("true");
         mFalse = MakeGlobal("false");
     }
 
+    int Environment::DefineGlobal(const String & name)
+    {
+        int nameId = mStrings.Add(name);
+        
+        int index;
+        if (mGlobalNames.Find(nameId, &index))
+        {
+            // Already exists, so use that slot.
+            return index;
+        }
+        
+        // New global.
+        mGlobalNames.Insert(nameId, mGlobals.Count());
+        
+        // Add an empty slot. Here, "empty" means that the global has been
+        // declared but hasn't been initialized yet.
+        mGlobals.Add(Ref<Object>());
+        return mGlobals.Count() - 1;
+    }
+
+    Ref<Object> Environment::GetGlobal(int index)
+    {
+        return mGlobals[index];
+    }
+    
+    void Environment::SetGlobal(int index, Ref<Object> value)
+    {
+        mGlobals[index] = value;
+    }
+
+    // TODO(bob): Come up with better name for this.
     Ref<Object> Environment::CreateBlock(Ref<Expr> expr)
     {
-        Ref<BlockExemplar> exemplar = Compiler::CompileExpression(*this, *expr);
+        Ref<BlockExemplar> exemplar = Compiler::CompileTopLevel(*this, *expr);
         return Object::NewBlock(*this, exemplar, mNil);
     }
     
     Ref<Object> Environment::MakeGlobal(const char * name)
     {
+        int id = mStrings.Add(name);
         Ref<Object> global = Object::NewObject(mObject, name);
-        mGlobals->Define(name, global);
+        mGlobals.Add(global);
+        mGlobalNames.Insert(id, mGlobals.Count() - 1);
         
         return global;
     }

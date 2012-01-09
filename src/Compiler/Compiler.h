@@ -20,7 +20,7 @@ namespace Finch
     public:
         // Compiles the given expression to a new top-level block. Used for
         // compiling REPL expressions.
-        static Ref<BlockExemplar> CompileExpression(Environment & environment, const Expr & expr);
+        static Ref<BlockExemplar> CompileTopLevel(Environment & environment, const Expr & expr);
         
     private:
         // Every expression except the last in a sequence discards its result

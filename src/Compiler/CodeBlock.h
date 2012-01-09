@@ -40,6 +40,8 @@ namespace Finch
         OP_SET_UPVALUE,   // A = index of upvalue, B = value reg
         OP_GET_FIELD,     // A = index of field in string table, B = dest reg
         OP_SET_FIELD,     // A = index of field in string table, B = value reg
+        OP_GET_GLOBAL,    // A = index of global, B = dest reg
+        OP_SET_GLOBAL,    // A = index of global, B = value reg
         OP_DEF_METHOD,    // A = index of method name in string table,
                           // B = index of method body exemplar,
                           // C = object method is being defined on

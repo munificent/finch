@@ -19,16 +19,9 @@
 
 namespace Finch
 {
-    Ref<BlockExemplar> Compiler::CompileExpression(Environment & environment, const Expr & expr)
+    Ref<BlockExemplar> Compiler::CompileTopLevel(Environment & environment, const Expr & expr)
     {
-        // TODO(bob): This isn't right. It's creating a new block for each 
-        // top level expression entered into the REPL. That means that variables
-        // declared here won't be shared across the session. If you do:
-        // >> a <- "hi"
-        // >> a
-        // You'll get an error. We'll have to do something smarter here.
         Array<String> params;
-        
         Compiler compiler(environment, NULL);
         compiler.Compile(params, expr);
         
@@ -145,7 +138,13 @@ namespace Finch
     
     void Compiler::Visit(const NameExpr & expr, int dest)
     {
-        if (Expr::IsField(expr.Name()))
+        if (mParent == NULL)
+        {
+            // Accessing a top-level name, so it's a global.
+            int index = mEnvironment.DefineGlobal(expr.Name());
+            mExemplar->Write(OP_GET_GLOBAL, index, dest);
+        }
+        else if (Expr::IsField(expr.Name()))
         {
             // Accessing a field.
             int index = mEnvironment.Strings().Add(expr.Name());
@@ -172,12 +171,12 @@ namespace Finch
             }
             else
             {
-                // TODO(bob): If we couldn't find a name at all, we should
-                // add it to the global scope with a special "undefined" value.
-                // Later definitions can then fill that in. That way the REPL
-                // works nicely and you can have circular references at the top
-                // level.
-                ASSERT(false, "Globals aren't implemented yet.");
+                // We couldn't find the name, so assume it's a global. This
+                // allows for mutually recursive references to top-level names:
+                // as long as the name is initialized before it's actually
+                // accessed at runtime, this will work.
+                int index = mEnvironment.DefineGlobal(expr.Name());
+                mExemplar->Write(OP_GET_GLOBAL, index, dest);
             }
         }
     }
@@ -237,7 +236,25 @@ namespace Finch
     
     void Compiler::Visit(const VarExpr & expr, int dest)
     {
-        if (Expr::IsField(expr.Name()))
+        if (mParent == NULL)
+        {
+            // We're at the top level, so it's a global.
+            
+            // Evaluate the value.
+            int value = ReserveRegister();
+            expr.Value()->Accept(*this, value);
+            
+            // We're compiling a top-level expression, so define it as a global.
+            int index = mEnvironment.DefineGlobal(expr.Name());
+            mExemplar->Write(OP_SET_GLOBAL, index, value);
+            
+            // Also copy to the destination register.
+            // Handles cases like: foo: some-global <- baz
+            mExemplar->Write(OP_MOVE, value, dest);
+            
+            ReleaseRegister();
+        }
+        else if (Expr::IsField(expr.Name()))
         {
             // Evaluate the value.
             int value = ReserveRegister();
@@ -276,6 +293,8 @@ namespace Finch
         }
     }
     
+    // TODO(bob): The number of args here is a bit hairy. Once SetExpr is
+    // implemented and using this, see if we can clean it up a bit.
     void Compiler::ResolveName(Compiler * compiler, const String & name,
                                Upvalue * outUpvalue, bool * outIsLocal,
                                int * outIndex, Upvalue * outResolvedUpvalue)

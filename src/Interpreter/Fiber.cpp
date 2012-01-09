@@ -200,6 +200,20 @@ namespace Finch
                     break;
                 }
                     
+                case OP_GET_GLOBAL:
+                {
+                    Ref<Object> value = GetEnvironment().GetGlobal(a);
+                    // TODO(bob): Handle undefined globals.
+                    Store(frame, b, value);
+                    break;
+                }
+                    
+                case OP_SET_GLOBAL:
+                {
+                    GetEnvironment().SetGlobal(a, Load(frame, b));
+                    break;
+                }
+                
                 case OP_DEF_METHOD:
                 {
                     // Get the object we're attaching the method to.

@@ -23,9 +23,7 @@ namespace Finch
         Environment();
         
         StringTable & Strings() { return mStrings; }
-        
-        Ref<Scope>  Globals()       const { return mGlobals; }
-
+                
         // Get the core built-in objects.
         Ref<Object> ObjectPrototype()   const { return mObject; }
         Ref<Object> ArrayPrototype()    const { return mArrayPrototype; }
@@ -37,11 +35,21 @@ namespace Finch
         Ref<Object> True()              const { return mTrue; }
         Ref<Object> False()             const { return mFalse; }
         
+        // Creates an indexed slot for a global with the given name. If a global
+        // with that name already exists, will return that slot.
+        int DefineGlobal(const String & name);
+        Ref<Object> GetGlobal(int index);
+        void SetGlobal(int index, Ref<Object> value);
+        
         Ref<Object> CreateBlock(Ref<Expr> expr);
     private:
         StringTable mStrings;
         
-        Ref<Scope> mGlobals;
+        // Indexed collection of global variables.
+        Array<Ref<Object> > mGlobals;
+        // Maps global variable names to their indices. Used by the compiler.
+        IdTable<int> mGlobalNames;
+        
         Ref<Object> mObject;
         Ref<Object> mArrayPrototype;
         Ref<Object> mBlockPrototype;
