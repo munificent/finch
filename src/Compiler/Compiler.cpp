@@ -220,7 +220,51 @@ namespace Finch
     
     void Compiler::Visit(const SetExpr & expr, int dest)
     {
-        ASSERT(false, "Compiling SetExpr not implemented yet.");
+        if (mParent == NULL)
+        {
+            // Globals behave the same with <- and <--.
+            CompileSetGlobal(expr.Name(), *expr.Value(), dest);
+        }
+        else if (Expr::IsField(expr.Name()))
+        {
+            // Fields behave the same with <- and <--.
+            CompileSetField(expr.Name(), *expr.Value(), dest);
+        }
+        else
+        {
+            Upvalue upvalue;
+            bool isLocal;
+            int index;
+            Upvalue resolvedUpvalue;
+            ResolveName(this, expr.Name(), &upvalue, &isLocal, &index,
+                        &resolvedUpvalue);
+            
+            if (isLocal)
+            {
+                // Evaluate the value directly into the local.
+                expr.Value()->Accept(*this, index);
+            }
+            else if (resolvedUpvalue.IsValid())
+            {
+                ASSERT(false, "Setting upvalues not implemented yet.");
+                /*
+                // Load the upvalue into the destination register.
+                mExemplar->Write(OP_GET_UPVALUE, resolvedUpvalue.Slot(), dest);
+                 */
+            }
+            else
+            {
+                ASSERT(false, "Setting globals not implemented yet.");
+                /*
+                // We couldn't find the name, so assume it's a global. This
+                // allows for mutually recursive references to top-level names:
+                // as long as the name is initialized before it's actually
+                // accessed at runtime, this will work.
+                int index = mEnvironment.DefineGlobal(expr.Name());
+                mExemplar->Write(OP_GET_GLOBAL, index, dest);
+                 */
+            }
+        }
     }
     
     void Compiler::Visit(const StringExpr & expr, int dest)
@@ -239,35 +283,11 @@ namespace Finch
         if (mParent == NULL)
         {
             // We're at the top level, so it's a global.
-            
-            // Evaluate the value.
-            int value = ReserveRegister();
-            expr.Value()->Accept(*this, value);
-            
-            // We're compiling a top-level expression, so define it as a global.
-            int index = mEnvironment.DefineGlobal(expr.Name());
-            mExemplar->Write(OP_SET_GLOBAL, index, value);
-            
-            // Also copy to the destination register.
-            // Handles cases like: foo: some-global <- baz
-            mExemplar->Write(OP_MOVE, value, dest);
-            
-            ReleaseRegister();
+            CompileSetGlobal(expr.Name(), *expr.Value(), dest);
         }
         else if (Expr::IsField(expr.Name()))
         {
-            // Evaluate the value.
-            int value = ReserveRegister();
-            expr.Value()->Accept(*this, value);
-            
-            int name = mEnvironment.Strings().Add(expr.Name());
-            mExemplar->Write(OP_SET_FIELD, name, value);
-            
-            // Also copy to the destination register.
-            // Handles cases like: foo: _bar <- baz
-            mExemplar->Write(OP_MOVE, value, dest);
-            
-            ReleaseRegister();
+            CompileSetField(expr.Name(), *expr.Value(), dest);
         }
         else
         {
@@ -358,6 +378,38 @@ namespace Finch
         *outUpvalue = Upvalue(/* name */ false, upvalue.Slot());
     }
     
+    void Compiler::CompileSetGlobal(const String & name, const Expr & value, int dest)
+    {
+        // Evaluate the value.
+        int valueReg = ReserveRegister();
+        value.Accept(*this, valueReg);
+        
+        // We're compiling a top-level expression, so define it as a global.
+        int index = mEnvironment.DefineGlobal(name);
+        mExemplar->Write(OP_SET_GLOBAL, index, valueReg);
+        
+        // Also copy to the destination register.
+        // Handles cases like: foo: some-global <- baz
+        mExemplar->Write(OP_MOVE, valueReg, dest);
+        
+        ReleaseRegister();
+    }
+    
+    void Compiler::CompileSetField(const String & name, const Expr & value, int dest)
+    {
+        int valueReg = ReserveRegister();
+        value.Accept(*this, valueReg);
+        
+        int nameId = mEnvironment.Strings().Add(name);
+        mExemplar->Write(OP_SET_FIELD, nameId, valueReg);
+        
+        // Also copy to the destination register.
+        // Handles cases like: foo: _bar <- baz
+        mExemplar->Write(OP_MOVE, valueReg, dest);
+        
+        ReleaseRegister();
+    }
+
     void Compiler::CompileNestedBlock(const BlockExpr & block, int dest)
     {
         Compiler compiler(mEnvironment, this);
