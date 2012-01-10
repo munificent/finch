@@ -69,14 +69,13 @@ int main (int argc, char * const argv[])
     strncpy(coreLibPath, argv[0], PATH_MAX);
     strncat(coreLibPath, "/../../../lib/core.fin", PATH_MAX);
     realpath(coreLibPath, fullPath);
-    /*
+
     // Load the core library.
     if (!InterpretFile(interpreter, fullPath))
     {
         cout << "Could not load core library." << endl;
         return 2;
     }
-    */
     
     if (argc == 1)
     {
