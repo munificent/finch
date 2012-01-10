@@ -228,7 +228,7 @@ namespace Finch
             
             // note that we shouldn't have to worry about an infinite loop here
             // the previous call will ensure there are open spaces in the table
-            while ((mTable[index].key > 0) &&
+            while ((mTable[index].key != EMPTY) &&
                    (mTable[index].key != key))
             {
                 index = (index + 1) % mTableSize;
@@ -323,11 +323,6 @@ namespace Finch
             Pair * oldTable = mTable;
             mTable = new Pair[mTableSize];
             
-            for (int i = 0; i < mTableSize; i++)
-            {
-                mTable[i].key = EMPTY;
-            }
-            
             // move the existing items over
             if (oldTable != NULL)
             {
@@ -354,6 +349,8 @@ namespace Finch
         {
             int    key;
             TValue value;
+            
+            Pair() : key(EMPTY) {}
         };
         
         Pair * mTable;
