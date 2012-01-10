@@ -11,10 +11,12 @@
 #include "Interpreter.h"
 #include "Fiber.h"
 
-#ifdef DEBUG
+#ifdef TRACE_INSTRUCTIONS
 #define TRACE_INSTRUCTION(instruction) TraceInstruction(instruction)
+#define TRACE_STACK() TraceStack()
 #else
 #define TRACE_INSTRUCTION(instruction) 0
+#define TRACE_STACK() 0
 #endif
 
 namespace Finch
@@ -287,6 +289,7 @@ namespace Finch
                     }
                     else
                     {
+                        TRACE_STACK();
                         return result;
                     }
 
@@ -297,6 +300,8 @@ namespace Finch
                     std::cout << op << std::endl;
                     ASSERT(false, "Unknown opcode.");
             }
+
+            TRACE_STACK();
         }
         
         return Ref<Object>(Object::NewString(
@@ -326,6 +331,9 @@ namespace Finch
 
         ASSERT(!receiver.IsNull(), "Should have receiver.");
         
+        ArgReader args(mStack, mCallFrames.Peek().stackStart + receiverReg + 1,
+                       numArgs);
+
         // Walk the parent chain looking for a method that matches the message.
         while (true)
         {
@@ -333,8 +341,6 @@ namespace Finch
             Ref<Object> method = receiver->FindMethod(messageId);
             if (!method.IsNull())
             {
-                // TODO(bob): Handle binding self.
-                ArgReader args(mStack, receiverReg + 1, numArgs);
                 CallBlock(self, method, args);
                 return Ref<Object>();
             }
@@ -343,7 +349,6 @@ namespace Finch
             PrimitiveMethod primitive = receiver->FindPrimitive(messageId);
             if (primitive != NULL)
             {
-                ArgReader args(mStack, receiverReg + 1, numArgs);
                 return primitive(*this, self, args);
             }
             
@@ -753,7 +758,7 @@ namespace Finch
         return upvalue;
     }
     
-#ifdef DEBUG
+#ifdef TRACE_INSTRUCTIONS
     void Fiber::TraceInstruction(Instruction instruction)
     {
         using namespace std;
@@ -889,13 +894,18 @@ namespace Finch
         }
         
         cout << String::Format("%-14s %-20s  ", opName.CString(), action.CString());
+    }
+    
+    void Fiber::TraceStack()
+    {
+        using namespace std;
         
         int j = mCallFrames.Count() - 1;
         for (int i = 0; i < mStack.Count(); i++)
         {
             if (j >= 0 && mCallFrames[j].stackStart == i)
             {
-                cout << " || ";
+                cout << " > ";
                 j--;
             }
             else

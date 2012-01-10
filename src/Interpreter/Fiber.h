@@ -55,10 +55,6 @@ namespace Finch
         // Displays a runtime error to the user.
         void Error(const String & message);
         
-#ifdef DEBUG
-        void TraceInstruction(Instruction instruction);
-#endif
-        
         /*
         // Gets the current number of stack frames on the callstack. Used as a
         // diagnostic to ensure that tail call optimization is working.
@@ -112,6 +108,11 @@ namespace Finch
         Ref<Object> Self();
         
         Ref<Upvalue> CaptureUpvalue(int stackIndex);
+        
+#ifdef TRACE_INSTRUCTIONS
+        void TraceInstruction(Instruction instruction);
+        void TraceStack();
+#endif
         
         /*
          Ref<Scope>  CurrentScope() { return mCallStack.Peek().scope; }

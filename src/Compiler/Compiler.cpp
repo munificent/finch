@@ -45,15 +45,25 @@ namespace Finch
     {
         mExemplar = Ref<BlockExemplar>(new BlockExemplar(params));
         
-        // Result register goes first.
-        int resultRegister = ReserveRegister();
-        
-        // Reserve registers for the params.
+        // Reserve registers for the params. These have to go first because the
+        // caller will place them here.
         for (int i = 0; i < params.Count(); i++)
         {
             ReserveRegister();
             mLocals.Add(params[i]);
         }
+        
+        // TODO(bob): Instead of having an explicit register for the return,
+        // which is often redundant since the result will be in some previous
+        // register anyway many times, maybe pass a special DONT_CARE register
+        // and have the visitors know to provide a register as needed and then
+        // set some mReturnRegister member variable that we then use for the
+        // RETURN instruction.
+        // Result register goes after params.
+        int resultRegister = ReserveRegister();
+        // TODO(bob): Hackish. Add a fake local for it so that the indices in
+        // mLocals correctly map local names -> register.
+        mLocals.Add("(return)");
         
         expr.Accept(*this, resultRegister);
         mExemplar->Write(OP_RETURN, resultRegister);
@@ -298,8 +308,8 @@ namespace Finch
                 mLocals.Add(expr.Name());
                 
                 // Local variable registers should always be contiguous starting
-                // at register 1. NameExpr assumes that.
-                ASSERT(local == mLocals.Count(),
+                // at register 0. NameExpr assumes that.
+                ASSERT(local == mLocals.Count() - 1,
                     "Local should be in right register.");
             }
             
@@ -335,9 +345,6 @@ namespace Finch
         int local = compiler->mLocals.IndexOf(name);
         if (local != -1)
         {
-            // Locals always get allocated starting at register 1.
-            local++;
-            
             if (compiler == this)
             {
                 // It's defined in the current scope, so resolve it as local.
