@@ -11,6 +11,12 @@
 #include "Interpreter.h"
 #include "Fiber.h"
 
+#ifdef DEBUG
+#define TRACE_INSTRUCTION(instruction) TraceInstruction(instruction)
+#else
+#define TRACE_INSTRUCTION(instruction) 0
+#endif
+
 namespace Finch
 {
     using std::cout;
@@ -51,12 +57,13 @@ namespace Finch
             int b = (instruction & 0x0000ff00) >> 8;
             int c = instruction & 0x000000ff;
             
+            TRACE_INSTRUCTION(instruction);
+            
             switch (op)
             {
                 case OP_CONSTANT:
                     //cout << "CONSTANT " << a << " -> " << b << endl;
                     Store(frame, b, frame.Block().GetConstant(a));
-                    TraceStack();
                     break;
                 
                 case OP_OBJECT:
@@ -110,7 +117,6 @@ namespace Finch
                     }
                     
                     Store(frame, b, block);
-                    TraceStack();
                     break;
                 }
                 
@@ -135,7 +141,6 @@ namespace Finch
                 case OP_MOVE:
                     //cout << "MOVE     " << a << " -> " << b << endl;
                     Store(frame, b, Load(frame, a));
-                    TraceStack();
                     break;
                     
                 case OP_SELF:
@@ -169,7 +174,6 @@ namespace Finch
                     {
                         Store(frame, c, result);
                     }
-                    TraceStack();
                     break;
                 }
                     
@@ -280,11 +284,9 @@ namespace Finch
                         Instruction messageInstruction = caller.Block().GetCode()[caller.ip - 1];
                         int dest = messageInstruction & 0x000000ff; // c
                         Store(caller, dest, result);
-                        TraceStack();
                     }
                     else
                     {
-                        TraceStack();
                         return result;
                     }
 
@@ -372,15 +374,6 @@ namespace Finch
     }
     
     /*
-    Fiber::Fiber(Interpreter & interpreter, Ref<Object> block)
-    :   mIsRunning(false),
-        mInterpreter(interpreter),
-        mEnvironment(interpreter.GetEnvironment())
-    {
-        // push the starting block
-        // when not in any method, self is Nil
-        CallMethod(mEnvironment.Nil(), block, Array<Ref<Object> >());
-    }
 
     Ref<Object> Fiber::Execute()
     {
@@ -760,12 +753,142 @@ namespace Finch
         return upvalue;
     }
     
-    void Fiber::TraceStack() const
+#ifdef DEBUG
+    void Fiber::TraceInstruction(Instruction instruction)
     {
-        // Uncomment to trace ops.
-        // TODO(bob): Set up a nice #define to enable this.
-        /*
         using namespace std;
+        
+        OpCode op = static_cast<OpCode>((instruction & 0xff000000) >> 24);
+        int a = (instruction & 0x00ff0000) >> 16;
+        int b = (instruction & 0x0000ff00) >> 8;
+        int c = instruction & 0x000000ff;
+        
+        String opName;
+        String action;
+        switch (op)
+        {
+            case OP_CONSTANT:
+                opName = "CONSTANT";
+                action = String::Format("%d -> %d", a, b);
+                break;
+                
+            case OP_OBJECT:
+                opName = "OBJECT";
+                action = String::Format("-> %d", a);
+                break;
+                
+            case OP_BLOCK:
+                opName = "BLOCK";
+                action = String::Format("b%d -> %d", a, b);
+                break;
+                
+            case OP_ARRAY:
+                opName = "ARRAY";
+                action = String::Format("[%d] -> %d", a, b);
+                break;
+                
+            case OP_ARRAY_ELEMENT:
+                opName = "ARRAY_ELEMENT";
+                action = String::Format("%d -> %d", a, b);
+                break;
+                
+            case OP_MOVE:
+                opName = "MOVE";
+                action = String::Format("%d -> %d", a, b);
+                break;
+                
+            case OP_SELF:
+                opName = "SELF";
+                action = String::Format("self -> %d", a);
+                break;
+                
+            case OP_MESSAGE_0:
+            case OP_MESSAGE_1:
+            case OP_MESSAGE_2:
+            case OP_MESSAGE_3:
+            case OP_MESSAGE_4:
+            case OP_MESSAGE_5:
+            case OP_MESSAGE_6:
+            case OP_MESSAGE_7:
+            case OP_MESSAGE_8:
+            case OP_MESSAGE_9:
+            case OP_MESSAGE_10:
+            {
+                opName = String::Format("MESSAGE_%d", op - OP_MESSAGE_0);
+                String name = GetEnvironment().Strings().Find(a);
+                action = String::Format("'%s' %d -> %d", name.CString(), b, c);
+                break;
+            }
+                
+            case OP_GET_UPVALUE:
+                opName = "GET_UPVALUE";
+                action = String::Format("u%d -> %d", a, b);
+                break;
+                
+            case OP_SET_UPVALUE:
+                opName = "SET_UPVALUE";
+                action = String::Format("u%d <- %d", a, b);
+                break;
+                
+            case OP_GET_FIELD:
+            {
+                opName = "GET_FIELD";
+                String name = GetEnvironment().Strings().Find(a);
+                action = String::Format("'%s' -> %d", name.CString(), b);
+                break;
+            }
+                
+            case OP_SET_FIELD:
+            {
+                opName = "SET_FIELD";
+                String name = GetEnvironment().Strings().Find(a);
+                action = String::Format("'%s' <- %d", name.CString(), b);
+                break;
+            }
+                
+            case OP_GET_GLOBAL:
+            {
+                opName = "GET_GLOBAL";
+                String name = GetEnvironment().Strings().Find(a);
+                action = String::Format("'%s' -> %d", name.CString(), b);
+                break;
+            }
+                
+            case OP_SET_GLOBAL:
+            {
+                opName = "SET_GLOBAL";
+                String name = GetEnvironment().Strings().Find(a);
+                action = String::Format("'%s' <- %d", name.CString(), b);
+                break;
+            }
+                
+            case OP_DEF_METHOD:
+            {
+                opName = "DEF_METHOD";
+                String name = GetEnvironment().Strings().Find(a);
+                action = String::Format("'%s' %d -> %d", name.CString(), b, c);
+                break;
+            }
+                
+            case OP_DEF_FIELD: // a name, b value, c obj
+            {
+                opName = "DEF_FIELD";
+                String name = GetEnvironment().Strings().Find(a);
+                action = String::Format("'%s' %d -> %d", name.CString(), b, c);
+                break;
+            }
+                
+            case OP_RETURN:
+                opName = "RETURN";
+                action = String::Format("%d", a);
+                break;
+                
+            default:
+                opName = String::Format("UNKNOWN OP(%d)", op);
+                action = "";
+        }
+        
+        cout << String::Format("%-14s %-20s  ", opName.CString(), action.CString());
         
         int j = mCallFrames.Count() - 1;
         for (int i = 0; i < mStack.Count(); i++)
@@ -784,8 +907,8 @@ namespace Finch
             
         }
         cout << endl;
-        */
     }
+#endif
     
     /*
     int Fiber::GetCallstackDepth() const

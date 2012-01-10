@@ -8,13 +8,13 @@
 #include "Ref.h"
 #include "Scope.h"
 #include "Stack.h"
+#include "Upvalue.h"
 
 namespace Finch
 {
     class Environment;
     class Expr;
     class Interpreter;
-    class Upvalue;
     
     // A single bytecode execution thread in the interpreter. A Fiber has a
     // virtual callstack and is responsible for executing bytecode. In other
@@ -55,7 +55,10 @@ namespace Finch
         // Displays a runtime error to the user.
         void Error(const String & message);
         
-        void TraceStack() const;
+#ifdef DEBUG
+        void TraceInstruction(Instruction instruction);
+#endif
+        
         /*
         // Gets the current number of stack frames on the callstack. Used as a
         // diagnostic to ensure that tail call optimization is working.
