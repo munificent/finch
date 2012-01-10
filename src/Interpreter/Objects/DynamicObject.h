@@ -44,14 +44,6 @@ namespace Finch
         virtual Ref<Object>     GetField(int name);
         virtual void            SetField(int name, Ref<Object> value);
 
-        /*
-        virtual void Receive(Ref<Object> self, Fiber & fiber,
-                             String message, const Array<Ref<Object> > & args);
-        
-        void AddMethod(Ref<Object> self, Fiber & fiber, String name,
-                       Ref<Scope> closure, Ref<CodeBlock> code);
-        
-         */
         void AddMethod(int messageId, Ref<Object> method);
         void AddPrimitive(int messageId, PrimitiveMethod method);
         

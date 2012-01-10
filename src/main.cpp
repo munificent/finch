@@ -42,23 +42,23 @@ bool InterpretFile(Interpreter & interpreter, String filePath)
     interpreter.Interpret(*reader, false);
     return true;
 }
-/*
+
 PRIMITIVE(LoadFile)
 {
     String filePath = args[0]->AsString();
     Ref<ILineReader> reader = OpenFile(filePath);
     
-    fiber.GetInterpreter().Interpret(*reader, fiber);
+    fiber.GetInterpreter().Interpret(*reader, false);
 }
-*/
+
 int main (int argc, char * const argv[])
 {    
     StandaloneInterpreterHost host;
     Interpreter               interpreter(host);
-    /*
+
     // Set up the standalone-provided behavior.
     interpreter.BindMethod("Ether", "load:", LoadFile);
-    */
+
     // Figure out the absolute path to the core library, relative to the
     // executable. Assumes a directory layout like:
     // finch

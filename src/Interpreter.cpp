@@ -40,7 +40,7 @@ namespace Finch
         
         // Create a starting fiber for the expression.
         Ref<Object> block = mEnvironment.CreateBlock(expr);
-        mCurrentFiber = Object::NewFiber(*this, block);
+        SwitchToFiber(Object::NewFiber(*this, block));
         
         // Run the interpreter.
         Ref<Object> result = Run();
@@ -51,23 +51,6 @@ namespace Finch
             text << *result << std::endl;
             mHost.Output(String(text.str().c_str()));
         }
-    }
-    
-    void Interpreter::Interpret(ILineReader & reader, Fiber & fiber)
-    {
-        Ref<Expr> expr = Parse(reader);
-        
-        // bail if we failed to parse
-        if (expr.IsNull()) return;
-        
-        // create a block for the expression
-        Ref<Object> block = mEnvironment.CreateBlock(expr);
-        
-        // and execute the code
-        Array<Ref<Object> > noArgs;
-        /*
-        fiber.CallBlock(block, noArgs);
-         */
     }
     
     Ref<Object> Interpreter::Run()
@@ -85,18 +68,20 @@ namespace Finch
                 // forget the old fiber completely
                 mCurrentFiber = Ref<Object>();
                 
-                /*
                 // and switch back to the previous one
                 if (!mLastFiber.IsNull())
                 {
                     // push the ending fiber's final value to the fiber we're
                     // switching to. this lets the dying fiber pass its result
                     // as the resuming fiber's return value from "run".
+                    // TODO(bob): Figure out how to get this working with
+                    // registers.
+                    /*
                     mLastFiber->AsFiber()->GetFiber().Push(result);
+                    */
                     
                     SwitchToFiber(mLastFiber);
                 }
-                 */
             }
         }
 
@@ -124,15 +109,13 @@ namespace Finch
         if (!mCurrentFiber.IsNull())
         {
             FiberObject * oldFiber = mCurrentFiber->AsFiber();
-            /*
             oldFiber->GetFiber().Pause();
-             */
         }
         
         // jump to the new one
         mCurrentFiber = fiber;
     }
-/*
+
     void Interpreter::BindMethod(String objectName, String message,
                                  PrimitiveMethod method)
     {
@@ -140,12 +123,14 @@ namespace Finch
         ASSERT_STRING_NOT_EMPTY(message);
         ASSERT_NOT_NULL(method);
         
-        Ref<Object> object = mEnvironment.Globals()->LookUp(objectName);
+        int globalIndex = mEnvironment.DefineGlobal(objectName);
+        Ref<Object> object = mEnvironment.GetGlobal(globalIndex);
         ASSERT(!object.IsNull(), "Must be an existing global variable.");
 
         DynamicObject* dynamicObj = object->AsDynamic();
         ASSERT_NOT_NULL(dynamicObj);
         
-        dynamicObj->AddPrimitive(message, method);
-    }*/
+        int messageId = mEnvironment.Strings().Add(message);
+        dynamicObj->AddPrimitive(messageId, method);
+    }
 }

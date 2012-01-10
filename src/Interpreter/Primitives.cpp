@@ -18,22 +18,21 @@ namespace Finch
     // library so that the arguments can have toString called on them before
     // passing them to the primitives which expect them to already be in string
     // form.
-    /*
     PRIMITIVE(PrimitiveStringConcat)
     {
-        fiber.PushString(args[0]->AsString() + args[1]->AsString());
+        return fiber.CreateString(args[0]->AsString() + args[1]->AsString());
     }
     
     PRIMITIVE(PrimitiveStringCompare)
     {
-        fiber.PushNumber(args[0]->AsString().CompareTo(args[1]->AsString()));
+        return fiber.CreateNumber(args[0]->AsString().CompareTo(args[1]->AsString()));
     }
     
     PRIMITIVE(PrimitiveWrite)
     {
         String text = args[0]->AsString();
         fiber.GetInterpreter().GetHost().Output(text);
-        fiber.PushNil();
+        return fiber.Nil();
     }
     
     // Primitives for manipulating fibers.
@@ -45,16 +44,15 @@ namespace Finch
         if (block == NULL)
         {
             fiber.Error("Must pass in a block object to create a new fiber.");
-            fiber.PushNil();
-            return;
+            return fiber.Nil();
         }
         
-        fiber.Push(Object::NewFiber(fiber.GetInterpreter(), args[0]));
+        return Object::NewFiber(fiber.GetInterpreter(), args[0]);
     }
     
     PRIMITIVE(PrimitiveGetCurrentFiber)
     {
-        fiber.Push(fiber.GetInterpreter().GetCurrentFiber());
+        return fiber.GetInterpreter().GetCurrentFiber();
     }
     
     PRIMITIVE(PrimitiveSwitchToFiber)
@@ -65,15 +63,20 @@ namespace Finch
         // if you try to run a completed fiber, it does nothing
         if (fiberObj->GetFiber().IsDone())
         {
-            fiber.PushNil();
-            return;
+            return fiber.Nil();
         }
         
         // pass the value to the new fiber
+        // TODO(bob): Figure out how to do this with registers.
+        /*
         fiberObj->GetFiber().Push(args[1]);
+        */
         
         // run the new fiber
         fiber.GetInterpreter().SwitchToFiber(args[0]);
+        
+        // TODO(bob): What should we return here?
+        return Ref<Object>();
         
         // note that unlike other primitives, we are *not* pushing a result
         // onto the stack of the calling fiber here. when we switch back to
@@ -82,8 +85,7 @@ namespace Finch
     
     PRIMITIVE(PrimitiveGetCallstackDepth)
     {
-        fiber.PushNumber(fiber.GetCallstackDepth());
+        return fiber.CreateNumber(fiber.GetCallstackDepth());
     }
-     */
 }
 

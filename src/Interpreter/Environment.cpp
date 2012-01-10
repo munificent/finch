@@ -98,16 +98,13 @@ namespace Finch
 
         // Bare primitive object.
         Ref<Object> primitives = MakeGlobal("*primitive*");
-        DynamicObject* primsObj = primitives->AsDynamic();
-        /*
-        primsObj->AddPrimitive("string-concat:and:",       PrimitiveStringConcat);
-        primsObj->AddPrimitive("string-compare:to:",       PrimitiveStringCompare);
-        primsObj->AddPrimitive("write:",                   PrimitiveWrite);
-        primsObj->AddPrimitive("new-fiber:",               PrimitiveNewFiber);
-        primsObj->AddPrimitive("current-fiber",            PrimitiveGetCurrentFiber);
-        primsObj->AddPrimitive("switch-to-fiber:passing:", PrimitiveSwitchToFiber);
-        primsObj->AddPrimitive("callstack-depth",          PrimitiveGetCallstackDepth);
-        */
+        AddPrimitive(primitives, "string-concat:and:",       PrimitiveStringConcat);
+        AddPrimitive(primitives, "string-compare:to:",       PrimitiveStringCompare);
+        AddPrimitive(primitives, "write:",                   PrimitiveWrite);
+        AddPrimitive(primitives, "new-fiber:",               PrimitiveNewFiber);
+        AddPrimitive(primitives, "current-fiber",            PrimitiveGetCurrentFiber);
+        AddPrimitive(primitives, "switch-to-fiber:passing:", PrimitiveSwitchToFiber);
+        AddPrimitive(primitives, "callstack-depth",          PrimitiveGetCallstackDepth);
         
         // The special singleton values.
         mNil = MakeGlobal("nil");
@@ -154,11 +151,9 @@ namespace Finch
     
     Ref<Object> Environment::MakeGlobal(const char * name)
     {
-        int id = mStrings.Add(name);
+        int index = DefineGlobal(String(name));
         Ref<Object> global = Object::NewObject(mObject, name);
-        mGlobals.Add(global);
-        mGlobalNames.Insert(id, mGlobals.Count() - 1);
-        
+        SetGlobal(index, global);
         return global;
     }
     

@@ -10,6 +10,8 @@
 #include "Stack.h"
 #include "Upvalue.h"
 
+//#define TRACE_INSTRUCTIONS
+
 namespace Finch
 {
     class Environment;
@@ -30,36 +32,24 @@ namespace Finch
 
         Ref<Object> Execute();
         
-        /*
         Interpreter & GetInterpreter() { return mInterpreter; }
-        Environment & GetEnvironment() { return mEnvironment; }
 
         void Pause() { mIsRunning = false; }
-        
-        // Pushes the given value onto the operand stack.
-        void Push(Ref<Object> object);
-         */
-        Ref<Object> Nil();
+
+         Ref<Object> Nil();
         Ref<Object> CreateBool(bool value);
         Ref<Object> CreateNumber(double value);
         Ref<Object> CreateString(const String & value);
         
-        /*
-        void CallMethod(Ref<Object> self,
-                        Ref<Object> blockObj,
-                        const Array<Ref<Object> > & args);
-        */
         // Pushes the given block onto the call stack.
         void CallBlock(Ref<Object> receiver, Ref<Object> blockObj, ArgReader & args);
 
         // Displays a runtime error to the user.
         void Error(const String & message);
         
-        /*
         // Gets the current number of stack frames on the callstack. Used as a
         // diagnostic to ensure that tail call optimization is working.
         int GetCallstackDepth() const;
-        */
     private:
         // A single stack frame on the virtual callstack.
         struct CallFrame
@@ -114,25 +104,12 @@ namespace Finch
         void TraceStack();
 #endif
         
-        /*
-         Ref<Scope>  CurrentScope() { return mCallStack.Peek().scope; }
-        
-        void PushOperand(Ref<Object> object);
-        Ref<Object> PopOperand();
-        */
         bool mIsRunning;
         Interpreter & mInterpreter;
-        /*
-        Environment & mEnvironment;
-        */
         Array<Ref<Object> >  mStack;
         Stack<CallFrame>     mCallFrames;
         Array<Ref<Upvalue> > mOpenUpvalues;
-        
-        /*
-        // Object literals that are currently being evaluated.
-        Stack<Ref<Object> > mObjects;
-        */
+
         NO_COPY(Fiber);
     };
 }

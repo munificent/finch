@@ -26,10 +26,6 @@ namespace Finch
         // in this interpreter.
         void Interpret(ILineReader & reader, bool showResult);
         
-        // Reads from the given source and executes the results as a block
-        // within the given fiber.
-        void Interpret(ILineReader & reader, Fiber & fiber);
-        
         // Gets the Environment owned by this Interpreter.
         Environment & GetEnvironment() { return mEnvironment; }
         
@@ -39,7 +35,7 @@ namespace Finch
         //### bob: should not be part of public api.
         Ref<Object> GetCurrentFiber() { return mCurrentFiber; }
         void SwitchToFiber(Ref<Object> fiber);
-        /*
+
         // Binds an external function to a message handler for a named global
         // object.
         // - objectName The name of the global object to bind the method on.
@@ -48,7 +44,7 @@ namespace Finch
         //              message.
         void BindMethod(String objectName, String message,
                         PrimitiveMethod method);
-        */
+
     private:
         Ref<Object> Run();
         Ref<Expr>   Parse(ILineReader & reader);

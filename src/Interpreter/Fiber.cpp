@@ -215,6 +215,14 @@ namespace Finch
                 case OP_GET_GLOBAL:
                 {
                     Ref<Object> value = GetEnvironment().GetGlobal(a);
+                    
+                    if (value.IsNull())
+                    {
+                        Error(String::Format(
+                            "Trying to access undefined global."));
+                        value = GetEnvironment().Nil();
+                    }
+                    
                     // TODO(bob): Handle undefined globals.
                     Store(frame, b, value);
                     break;
@@ -732,12 +740,15 @@ namespace Finch
         mCallFrames.Push(CallFrame(args.GetStackStart(), receiver, blockObj));
     }
 
-
     void Fiber::Error(const String & message)
     {
         mInterpreter.GetHost().Error(message);
-    }
+    }    
     
+    int Fiber::GetCallstackDepth() const
+    {
+        return mCallFrames.Count();
+    }
     
     Ref<Upvalue> Fiber::CaptureUpvalue(int stackIndex)
     {
@@ -854,16 +865,14 @@ namespace Finch
             case OP_GET_GLOBAL:
             {
                 opName = "GET_GLOBAL";
-                String name = GetEnvironment().Strings().Find(a);
-                action = String::Format("'%s' -> %d", name.CString(), b);
+                action = String::Format("g%d -> %d", a, b);
                 break;
             }
                 
             case OP_SET_GLOBAL:
             {
                 opName = "SET_GLOBAL";
-                String name = GetEnvironment().Strings().Find(a);
-                action = String::Format("'%s' <- %d", name.CString(), b);
+                action = String::Format("g%d <- %d", a, b);
                 break;
             }
                 
@@ -919,12 +928,5 @@ namespace Finch
         cout << endl;
     }
 #endif
-    
-    /*
-    int Fiber::GetCallstackDepth() const
-    {
-        return mCallStack.Count();
-    }
-     */
 }
 
