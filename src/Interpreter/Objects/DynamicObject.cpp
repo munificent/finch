@@ -68,35 +68,7 @@ namespace Finch
     {
         mFields.Insert(name, value);
     }
-    
-    /*
-    void DynamicObject::Receive(Ref<Object> self, Fiber & fiber, 
-                                String message, const Array<Ref<Object> > & args)
-    {        
-        // see if it's a method call
-        Ref<Object> method;
-        if (mMethods.Find(message, &method))
-        {
-            ASSERT_NOT_NULL(method->AsBlock());
-            fiber.CallMethod(self, method, args);
-            return;
-        }
         
-        // see if it's a primitive call
-        PrimitiveMethod primitive;
-        if (mPrimitives.Find(message, &primitive))
-        {
-            ASSERT_NOT_NULL(primitive);
-            
-            primitive(self, fiber, message, args);
-            return;
-        }
-        
-        // if we got here, the message wasn't handled
-        Object::Receive(self, fiber, message, args);
-    }
-    */
-    
     void DynamicObject::AddMethod(int messageId, Ref<Object> method)
     {
         mMethods.Insert(messageId, method);

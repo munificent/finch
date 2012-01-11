@@ -36,7 +36,7 @@ namespace Finch
 
         void Pause() { mIsRunning = false; }
 
-         Ref<Object> Nil();
+        Ref<Object> Nil();
         Ref<Object> CreateBool(bool value);
         Ref<Object> CreateNumber(double value);
         Ref<Object> CreateString(const String & value);

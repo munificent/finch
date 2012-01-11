@@ -1,4 +1,4 @@
-Test suite: "Strings" is: {
+Test suite: "Cascades" is: {
   called <- ""
   // make an object that implements to-string
   obj <- [

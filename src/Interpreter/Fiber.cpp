@@ -737,6 +737,12 @@ namespace Finch
             mStack.Add(Ref<Object>());
         }
         
+        // If there aren't enough arguments, nil out the remaining parameters.
+        for (int i = args.GetNumArgs(); i < block.GetNumParams(); i++)
+        {
+            mStack[args.GetStackStart() + i] = Nil();
+        }
+        
         mCallFrames.Push(CallFrame(args.GetStackStart(), receiver, blockObj));
     }
 

@@ -352,7 +352,7 @@ namespace Finch
                 *outIndex = local;
             }
             
-            *outUpvalue = Upvalue(/* name */ true, local);
+            *outUpvalue = Upvalue(true, local);
             return;
         }
         
@@ -383,7 +383,7 @@ namespace Finch
             *outResolvedUpvalue = upvalue;
         }
         
-        *outUpvalue = Upvalue(/* name */ false, upvalue.Slot());
+        *outUpvalue = Upvalue(false, upvalue.Slot());
     }
     
     void Compiler::CompileSetGlobal(const String & name, const Expr & value, int dest)

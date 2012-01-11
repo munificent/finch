@@ -37,6 +37,7 @@ namespace Finch
         {}
         
         int GetStackStart() const { return mFirstArg; }
+        int GetNumArgs() const { return mNumArgs; }
         
         Ref<Object> & operator[] (int index)
         {
@@ -68,11 +69,6 @@ namespace Finch
         static Ref<Object> NewFiber(Interpreter & interpreter, Ref<Object> block);
         
         virtual ~Object() {}
-        
-        /*
-        virtual void Receive(Ref<Object> self, Fiber & fiber,
-                             String message, const Array<Ref<Object> > & args);
-        */
         
         // TODO(bob): It seems weird that these are on Object even though only
         // DynamicObject supports them.

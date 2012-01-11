@@ -37,6 +37,7 @@ namespace Finch
         Ref<Object> Self() const { return mSelf; }
 
         int GetNumRegisters() const { return mExemplar->GetNumRegisters(); }
+        int GetNumParams() const { return mExemplar->GetParams().Count(); }
         
         const Ref<Object> GetConstant(int index) const;
         const Ref<BlockExemplar> GetExemplar(int index) const;
