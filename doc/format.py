@@ -64,7 +64,6 @@ def formatfile(path):
             <head>
             <meta http-equiv="Content-type" content="text/html;charset=UTF-8" />
             <title>The Finch Programming Language: {title}</title>
-            <link rel="stylesheet" type="text/css" href="http://fonts.googleapis.com/css?family=Copse|Rosario">
             <link rel="stylesheet" type="text/css" href="styles.css" />
             </head>
             <body id="top">

@@ -36,7 +36,7 @@ Here's a little example to get you going. This little program doesn't draw, but 
       // right turns needed to draw a dragon curve.
       trace: depth {
         self trace-depth: depth turn: "R"
-        write-line: "" ' end the line
+        write-line: "" // end the line
       }
 
       // the main recursive method
