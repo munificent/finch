@@ -110,7 +110,7 @@ namespace Finch
             if (index < 0) index = mCount + index;
             ASSERT_RANGE(index, mCount);
             
-            // shift items up
+            // Shift items up.
             for (int i = index; i < mCount - 1; i++)
             {
                 mItems[i] = mItems[i + 1];
@@ -118,6 +118,28 @@ namespace Finch
             
             mItems[mCount - 1] = T(); // clear the copy of the last item
             mCount--;
+        }
+        
+        // Truncates the array to `count` or fewer items by removing trailing
+        // items.
+        void Truncate(int count)
+        {
+            ASSERT(count >= 0, "Cannot truncate to a negative count.");
+            
+            // Early out if there's nothing to remove.
+            if (count >= mCount) return;
+            
+            // Clear the items.
+            for (int i = count; i < mCount; i++)
+            {
+                mItems[i] = T();
+            }
+            
+            // TODO(bob): This never actually reallocates a smaller array.
+            // Should it?
+            
+            // Truncate.
+            mCount = count;
         }
         
         // Assigns the contents of the given array to this one. Clears this

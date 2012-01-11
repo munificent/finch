@@ -12,7 +12,8 @@ namespace Finch
     private:
         static void TestCtor();
         static void TestSubscript();
-        static void TestRemove();
+        static void TestRemoveAt();
+        static void TestTruncate();
     };
 }
 

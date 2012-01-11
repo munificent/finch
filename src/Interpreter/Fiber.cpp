@@ -64,7 +64,6 @@ namespace Finch
             switch (op)
             {
                 case OP_CONSTANT:
-                    //cout << "CONSTANT " << a << " -> " << b << endl;
                     Store(frame, b, frame.Block().GetConstant(a));
                     break;
                 
@@ -263,10 +262,13 @@ namespace Finch
                     //cout << "RETURN   " << a << endl;
                     Ref<Object> result = Load(frame, a);
                     
+                    int oldStackSize = frame.stackStart + frame.Block().GetNumRegisters();
                     mCallFrames.Pop();
                     
                     if (mCallFrames.Count() > 0)
                     {
+                        int before = mStack.Count();
+                        
                         // Discard the callee frame's registers.
                         CallFrame & caller = mCallFrames.Peek();
                         int newStackSize = caller.stackStart +
@@ -284,10 +286,36 @@ namespace Finch
                             }
                         }
                         
-                        // TODO(bob): Make this a single array op.
-                        while (mStack.Count() > newStackSize)
+                        // Clear any discarded registers on the stack.
+                        // Note that we don't actually truncate the stack here.
+                        // This is important because we may still need those
+                        // registers. Consider:
+                        //
+                        // 0               0
+                        // [ .  .  .  .  . ] We push a frame with a lot of temp
+                        //                   registers.
+                        // 0   1    1      0
+                        // [ . [.  .] .  . ] Then we push a frame with just a
+                        //                   few registers that overlaps the
+                        // 0   1  2 1   2  0 previous one a lot.
+                        // [ . [. [.] . ]. ] Then we push another.
+                        //
+                        // 0   1    1 
+                        // [ . [.  .] ?????? Then we return from that one and
+                        //                   truncate to the caller's (1's) num
+                        //                   registers.
+                        // Oops! We've trashed registers that 0 may actually
+                        // need later. Overlapping register windows are hard,
+                        // let's go shopping!
+                        //
+                        // Instead, we'll just *clear* the popped registers
+                        // (because we know they aren't in use after the call
+                        // even though they may get used again) but keep them
+                        // around in case later callers need them.
+                        
+                        for (int i = newStackSize; i < oldStackSize; i++)
                         {
-                            mStack.RemoveAt(mStack.Count() - 1);
+                            mStack[i] = Ref<Object>();
                         }
                         
                         // Store the result back in the caller's dest register.
