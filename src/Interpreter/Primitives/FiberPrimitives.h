@@ -7,11 +7,9 @@
 
 namespace Finch
 {
-    /*
     // Primitive methods for fibers.
     PRIMITIVE(FiberRunning);
     PRIMITIVE(FiberDone);
-     */
 }
 
 

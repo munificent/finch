@@ -49,11 +49,8 @@ namespace Finch
 
         // Fibers.
         mFiberPrototype = MakeGlobal("Fibers");
-        DynamicObject* fiberObj = mFiberPrototype->AsDynamic();
-        /*
-        fiberObj->AddPrimitive("running?", FiberRunning);
-        fiberObj->AddPrimitive("done?", FiberDone);
-*/
+        AddPrimitive(mFiberPrototype, "running?", FiberRunning);
+        AddPrimitive(mFiberPrototype, "done?", FiberDone);
         
         // Numbers.
         mNumberPrototype = MakeGlobal("Numbers");
