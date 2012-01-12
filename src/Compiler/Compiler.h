@@ -99,6 +99,12 @@ namespace Finch
         // Names of local variables declared in this block.
         Array<String> mLocals;
         Array<Upvalue> mUpvalues;
+        
+        // Registers containing the currently enclosing object literals. Within
+        // an object literal a reference to 'self' inside a field initializer
+        // will refer to the enclosing object and not the current dynamically
+        // bound self.
+        Stack<int> mObjectLiterals;
 
         NO_COPY(Compiler);
     };

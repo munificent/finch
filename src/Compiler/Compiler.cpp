@@ -203,7 +203,11 @@ namespace Finch
         // put the new object into.
         expr.Parent()->Accept(*this, dest);
         mExemplar->Write(OP_OBJECT, dest);
+        
+        // Keep track of the fact that we're inside an object literal.
+        mObjectLiterals.Push(dest);
         CompileDefinitions(expr, dest);
+        mObjectLiterals.Pop();
     }
     
     void Compiler::Visit(const ReturnExpr & expr, int dest)
@@ -213,7 +217,18 @@ namespace Finch
     
     void Compiler::Visit(const SelfExpr & expr, int dest)
     {
-        mExemplar->Write(OP_SELF, dest);
+        // If we're inside an object literal, `self` is statically bound to
+        // the enclosing object.
+        if (mObjectLiterals.Count() > 0)
+        {
+            int selfReg = mObjectLiterals.Peek();
+            mExemplar->Write(OP_MOVE, selfReg, dest);
+        }
+        else
+        {
+            // Do a normal dynamic lookup on `self`.
+            mExemplar->Write(OP_SELF, dest);
+        }
     }
     
     void Compiler::Visit(const SequenceExpr & expr, int dest)
