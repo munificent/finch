@@ -50,6 +50,7 @@ Test suite: "Self" is: {
   }
 
   Test test: "Recursive inherited method restores outer self" is: {
+    child <- nil
     parent <- [
       recurse: recurse {
         // see what self is bound to
@@ -65,7 +66,7 @@ Test suite: "Self" is: {
       to-string { "p" }
     ]
 
-    child <- [|parent| to-string { "c" } ]
+    child <-- [|parent| to-string { "c" } ]
 
     Test that: (parent recurse: false) equals: "p"
     Test that: (child  recurse: false) equals: "c"
