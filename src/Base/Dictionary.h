@@ -216,6 +216,23 @@ namespace Finch
             return true;
         }
         
+        // Does a reverse look-up to find a key with the given value. May be
+        // slow. If there are multiple keys with the same value, chooses one
+        // arbitrarily. Returns `-1` if not found.
+        int FindKeyForValue(const TValue & value)
+        {
+            for (int i = 0; i < mTableSize; i++)
+            {
+                if (mTable[i].value == value)
+                {
+                    return mTable[i].key;
+                }
+            }
+            
+            // Not found.
+            return -1;
+        }
+        
         // Inserts the given value at the given key.
         void Insert(int key, const TValue & value)
         {

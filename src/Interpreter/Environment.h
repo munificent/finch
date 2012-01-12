@@ -41,6 +41,8 @@ namespace Finch
         Ref<Object> GetGlobal(int index);
         void SetGlobal(int index, Ref<Object> value);
         
+        String FindGlobalName(int index);
+        
         Ref<Object> CreateBlock(Ref<Expr> expr);
     private:
         StringTable mStrings;

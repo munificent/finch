@@ -218,8 +218,10 @@ namespace Finch
                     
                     if (value.IsNull())
                     {
+                        String name = GetEnvironment().FindGlobalName(a);
                         Error(String::Format(
-                            "Trying to access undefined global."));
+                            "Trying to access undefined global '%s'.",
+                            name.CString()));
                         value = GetEnvironment().Nil();
                     }
                     

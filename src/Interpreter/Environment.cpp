@@ -139,6 +139,14 @@ namespace Finch
         mGlobals[index] = value;
     }
 
+    String Environment::FindGlobalName(int index)
+    {
+        int nameId = mGlobalNames.FindKeyForValue(index);
+        ASSERT(nameId != -1, "Not a known global.");
+
+        return mStrings.Find(nameId);
+    }
+
     // TODO(bob): Come up with better name for this.
     Ref<Object> Environment::CreateBlock(Ref<Expr> expr)
     {
