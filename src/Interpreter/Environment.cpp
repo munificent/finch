@@ -108,7 +108,22 @@ namespace Finch
         mTrue = MakeGlobal("true");
         mFalse = MakeGlobal("false");
     }
-
+    
+    int Environment::FindGlobal(const String & name)
+    {
+        int nameId = mStrings.Add(name);
+        
+        int index;
+        if (mGlobalNames.Find(nameId, &index))
+        {
+            // Found it.
+            return index;
+        }
+        
+        // Doesn't exist.
+        return -1;
+    }
+    
     int Environment::DefineGlobal(const String & name)
     {
         int nameId = mStrings.Add(name);

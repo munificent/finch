@@ -285,7 +285,31 @@ namespace Finch
             }
             else
             {
-                CompileSetGlobal(expr.Name(), *expr.Value(), dest);
+                // See if a global with this name exists.
+                int index = mEnvironment.FindGlobal(expr.Name());
+                
+                // TODO(bob): Report compile error for undefined global.
+                if (index == -1)
+                {
+                    // Just compile the value directly into the destination and
+                    // don't worry about the global.
+                    expr.Value()->Accept(*this, dest);
+                }
+                else
+                {
+                    // Evaluate the value.
+                    int valueReg = ReserveRegister();
+                    expr.Value()->Accept(*this, valueReg);
+                    
+                    // We're compiling a top-level expression, so define it as a global.
+                    mExemplar->Write(OP_SET_GLOBAL, index, valueReg);
+                    
+                    // Also copy to the destination register.
+                    // Handles cases like: foo: some-global <-- baz
+                    mExemplar->Write(OP_MOVE, valueReg, dest);
+                    
+                    ReleaseRegister();
+                }
             }
         }
     }
@@ -345,8 +369,6 @@ namespace Finch
         // Bail if we run out of scopes.
         if (compiler == NULL)
         {
-            // TODO(bob): Support globals. For now, just resolve it to an
-            // invalid Upvalue.
             *outIsLocal = false;
             *outResolvedUpvalue = Upvalue();
             

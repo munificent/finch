@@ -35,6 +35,10 @@ namespace Finch
         Ref<Object> True()              const { return mTrue; }
         Ref<Object> False()             const { return mFalse; }
         
+        // Returns the slot for the global with the given name. Returns -1 if
+        // the global doesn't exist.
+        int FindGlobal(const String & name);
+        
         // Creates an indexed slot for a global with the given name. If a global
         // with that name already exists, will return that slot.
         int DefineGlobal(const String & name);

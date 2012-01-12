@@ -33,7 +33,7 @@
 
 #define ASSERT(condition, message)     ;
 #define ASSERT_NOT_NULL(value)         ;
-#define ASSERT_INDEX(index, max)       ;
+#define ASSERT_RANGE(index, max)       ;
 #define ASSERT_STRING_NOT_EMPTY(value) ;
 
 #endif
