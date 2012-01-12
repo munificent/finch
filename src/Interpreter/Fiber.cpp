@@ -69,8 +69,9 @@ namespace Finch
                 
                 case OP_OBJECT:
                 {
-                    // TODO(bob): Support parents.
-                    Ref<Object> parent = GetEnvironment().ObjectPrototype();
+                    // The parent is already in the register that the child
+                    // will be placed into.
+                    Ref<Object> parent = Load(frame, a);
                     Ref<Object> object = Object::NewObject(parent);
                     Store(frame, a, object);
                     break;

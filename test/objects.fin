@@ -73,6 +73,13 @@ Test suite: "Objects" is: {
     Test is-true:  "hi" string?
   }
 
+  Test test: "methods are inherited from parent" is: {
+    parent <- [ method { "parent" } ]
+    child <- [|parent|]
+
+    Test that: child method equals: "parent"
+  }
+
   Test test: "self inside an object literal is the new object" is: {
     obj <- [
         a { "a" }

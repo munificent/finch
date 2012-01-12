@@ -199,10 +199,9 @@ namespace Finch
     
     void Compiler::Visit(const ObjectExpr & expr, int dest)
     {
-        // Compile the parent.
-        // TODO(bob): Enable this once closures are working so we can resolve
-        // 'Object'.
-        //expr.Parent()->Accept(*this, dest);
+        // Compile the parent. It will go into the same register that we'll
+        // put the new object into.
+        expr.Parent()->Accept(*this, dest);
         mExemplar->Write(OP_OBJECT, dest);
         CompileDefinitions(expr, dest);
     }
