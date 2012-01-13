@@ -109,8 +109,11 @@ namespace Finch
         Interpreter & mInterpreter;
         Array<Ref<Object> >  mStack;
         Stack<CallFrame>     mCallFrames;
-        Array<Ref<Upvalue> > mOpenUpvalues;
-
+        
+        // Reference to first upvalue in list of open upvalues. List is ordered
+        // from top of stack down.
+        Ref<Upvalue> mOpenUpvalues;
+        
         NO_COPY(Fiber);
     };
 }

@@ -100,11 +100,6 @@ namespace Finch
                         OpCode captureOp = static_cast<OpCode>((capture & 0xff000000) >> 24);
                         int captureIndex = (capture & 0x00ff0000) >> 16;
                         
-                        // TODO(bob): This is wrong. This is capturing the
-                        // *value* when it should capture the *variable. If
-                        // other code assigns to the captured variable's, this
-                        // new block won't see the change.
-                        // To fix this, we need Lua's Upvalue objects.
                         switch (captureOp)
                         {
                             case OP_CAPTURE_LOCAL:
@@ -370,14 +365,12 @@ namespace Finch
         
         // Close any open upvalues that are being popped off
         // the stack.
-        for (int i = mOpenUpvalues.Count() - 1; i >= 0; i--)
+        while (!mOpenUpvalues.IsNull())
         {
-            Ref<Upvalue> upvalue = mOpenUpvalues[i];
-            if (upvalue->Index() >= newStackSize)
-            {
-                upvalue->Close(mStack);
-                mOpenUpvalues.RemoveAt(i);
-            }
+            if (mOpenUpvalues->Index() < newStackSize) break;
+
+            mOpenUpvalues->Close(mStack);
+            mOpenUpvalues = mOpenUpvalues->Next();
         }
         
         // Clear any discarded registers on the stack. Note that we don't
@@ -845,21 +838,47 @@ namespace Finch
     
     Ref<Upvalue> Fiber::CaptureUpvalue(int stackIndex)
     {
-        // See if we already have an open upvalue for that variable.
-        // TODO(bob): Shouldn't use an Array for this. Too slow to remove.
-        // Instead, make Upvalue a linked list.
-        for (int i = 0; i < mOpenUpvalues.Count(); i++)
+        // If there are no open upvalues at all, we must need a new one.
+        if (mOpenUpvalues.IsNull())
         {
-            if (mOpenUpvalues[i]->Index() == stackIndex)
-            {
-                return mOpenUpvalues[i];
-            }
+            mOpenUpvalues = Ref<Upvalue>(new Upvalue(stackIndex));
+            return mOpenUpvalues;
         }
         
-        // Not closed over already, so create it.
-        Ref<Upvalue> upvalue = Ref<Upvalue>(new Upvalue(stackIndex));
-        mOpenUpvalues.Add(upvalue);
-        return upvalue;
+        Ref<Upvalue> prevUpvalue;
+        Ref<Upvalue> upvalue = mOpenUpvalues;
+        while (true)
+        {
+            if (upvalue.IsNull() || (upvalue->Index() < stackIndex))
+            {
+                // We've gone past this item on the stack, so there must not be
+                // an open upvalue for it. Make a new one and link it in in the
+                // right place to keep the list sorted.
+                Ref<Upvalue> newUpvalue = Ref<Upvalue>(new Upvalue(stackIndex));
+                
+                if (prevUpvalue.IsNull())
+                {
+                    // Our new one is the first one in the list.
+                    mOpenUpvalues = newUpvalue;
+                }
+                else
+                {
+                    prevUpvalue->SetNext(newUpvalue);
+                }
+                newUpvalue->SetNext(upvalue);
+                
+                return newUpvalue;
+            }
+            else if (upvalue->Index() == stackIndex)
+            {
+                // Already have an open upvalue, so use it.
+                return upvalue;
+            }
+
+            // Walk towards the bottom of the stack.
+            prevUpvalue = upvalue;
+            upvalue = upvalue->Next();
+        }
     }
     
 #ifdef TRACE_INSTRUCTIONS

@@ -310,4 +310,4 @@ from: 1 to: 10 do: {|i|
   lexer each: {|token| tokens <-- tokens + 1 }
 }
 
-write-line: tokens = 14070
+write-line: tokens = 13910

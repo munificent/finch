@@ -30,10 +30,15 @@ namespace Finch
         void Close(Array<Ref<Object> > & stack);        
         int Index() const;        
         bool IsOpen() const;
-        
+
+        Ref<Upvalue> Next() const { return mNext; }
+        void SetNext(Ref<Upvalue> upvalue) { mNext = upvalue; }
+
     private:
+        // TODO(bob): Can use a union for some of this.
         int mStackIndex;    // Will be -1 if Upvalue is closed.
         Ref<Object> mValue; // Only use when Upvalue is closed.
+        Ref<Upvalue> mNext;
     };
 }
 
