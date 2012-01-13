@@ -1,4 +1,6 @@
 Test suite: "Return" is: {
+  // TODO(bob): Getting rid of 'break' expressions for now since they don't
+  // seem to be intuitive or that useful.
   /*
   Test test: "break exits block" is: {
     a <- "before"

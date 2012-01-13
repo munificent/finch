@@ -88,6 +88,8 @@ Test suite: "Variables" is: {
     foo test
   }
 
+  // TODO(bob): Getting rid of this for now since it may not be that useful.
+  /*
   Test test: "Assign to parent" is: {
     parent <- [
       _a <- "parent"
@@ -101,4 +103,5 @@ Test suite: "Variables" is: {
     Test that: child get equals: "child"
     Test that: parent get equals: "child"
   }
+  */
 }
