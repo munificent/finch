@@ -58,7 +58,7 @@ namespace Finch
         
         Compiler(Environment & environment, Compiler * parent);
         
-        void Compile(const Array<String> & params, const Expr & expr);
+        void Compile(int methodId, const Array<String> & params, const Expr & expr);
 
         virtual ~Compiler() {}
 
@@ -82,12 +82,16 @@ namespace Finch
             Upvalue * outResolvedUpvalue);
         void CompileSetGlobal(const String & name, const Expr & value, int dest);
         void CompileSetField(const String & name, const Expr & value, int dest);
-        void CompileNestedBlock(const BlockExpr & block, int dest);
+        void CompileNestedBlock(int methodId, const BlockExpr & block, int dest);
         void CompileConstant(Ref<Object> constant, int dest);
         void CompileDefinitions(const DefineExpr & expr, int dest);
 
+        Compiler * GetEnclosingMethod();
+
         int ReserveRegister();
         void ReleaseRegister();
+        
+        static int sNextMethodId;
         
         Environment & mEnvironment;
         // The compiler for the block containing the block this one is compiling

@@ -1,5 +1,4 @@
 #include <iostream>
-#include <iomanip> // For debug tracing.
 
 #include "ArrayObject.h"
 #include "BlockObject.h"
@@ -12,6 +11,10 @@
 #include "Fiber.h"
 
 #ifdef TRACE_INSTRUCTIONS
+
+#include <iomanip>
+#include <sstream>
+
 #define TRACE_INSTRUCTION(instruction) TraceInstruction(instruction)
 #define TRACE_STACK() TraceStack()
 #else
@@ -53,7 +56,7 @@ namespace Finch
             CallFrame & frame = mCallFrames.Peek();
             
             // Read and decode the next instruction.
-            Instruction instruction = frame.Block().GetCode()[frame.ip++];
+            Instruction instruction = frame.Block().Code()[frame.ip++];
             OpCode op = static_cast<OpCode>((instruction & 0xff000000) >> 24);
             int a = (instruction & 0x00ff0000) >> 16;
             int b = (instruction & 0x0000ff00) >> 8;
@@ -91,9 +94,9 @@ namespace Finch
                     BlockObject * blockObj = block->AsBlock();
                     
                     // Capture upvalues.
-                    for (int i = 0; i < exemplar->GetNumUpvalues(); i++)
+                    for (int i = 0; i < exemplar->NumUpvalues(); i++)
                     {
-                        Instruction capture = frame.Block().GetCode()[frame.ip++];
+                        Instruction capture = frame.Block().Code()[frame.ip++];
                         OpCode captureOp = static_cast<OpCode>((capture & 0xff000000) >> 24);
                         int captureIndex = (capture & 0x00ff0000) >> 16;
                         
@@ -260,78 +263,66 @@ namespace Finch
                     break;
                 }
                     
-                case OP_RETURN:
+                case OP_END:
                 {
-                    //cout << "RETURN   " << a << endl;
                     Ref<Object> result = Load(frame, a);
-                    
-                    int oldStackSize = frame.stackStart + frame.Block().GetNumRegisters();
-                    mCallFrames.Pop();
+                    PopCallFrame();
                     
                     if (mCallFrames.Count() > 0)
                     {
-                        int before = mStack.Count();
-                        
-                        // Discard the callee frame's registers.
-                        CallFrame & caller = mCallFrames.Peek();
-                        int newStackSize = caller.stackStart +
-                            caller.Block().GetNumRegisters();
-                        
-                        // Close any open upvalues that are being popped off
-                        // the stack.
-                        for (int i = mOpenUpvalues.Count() - 1; i >= 0; i--)
-                        {
-                            Ref<Upvalue> upvalue = mOpenUpvalues[i];
-                            if (upvalue->Index() >= newStackSize)
-                            {
-                                upvalue->Close(mStack);
-                                mOpenUpvalues.RemoveAt(i);
-                            }
-                        }
-                        
-                        // Clear any discarded registers on the stack.
-                        // Note that we don't actually truncate the stack here.
-                        // This is important because we may still need those
-                        // registers. Consider:
-                        //
-                        // 0               0
-                        // [ .  .  .  .  . ] We push a frame with a lot of temp
-                        //                   registers.
-                        // 0   1    1      0
-                        // [ . [.  .] .  . ] Then we push a frame with just a
-                        //                   few registers that overlaps the
-                        // 0   1  2 1   2  0 previous one a lot.
-                        // [ . [. [.] . ]. ] Then we push another.
-                        //
-                        // 0   1    1 
-                        // [ . [.  .] ?????? Then we return from that one and
-                        //                   truncate to the caller's (1's) num
-                        //                   registers.
-                        // Oops! We've trashed registers that 0 may actually
-                        // need later. Overlapping register windows are hard,
-                        // let's go shopping!
-                        //
-                        // Instead, we'll just *clear* the popped registers
-                        // (because we know they aren't in use after the call
-                        // even though they may get used again) but keep them
-                        // around in case later callers need them.
-                        
-                        for (int i = newStackSize; i < oldStackSize; i++)
-                        {
-                            mStack[i] = Ref<Object>();
-                        }
-                        
-                        // Store the result back in the caller's dest register.
-                        Instruction messageInstruction = caller.Block().GetCode()[caller.ip - 1];
-                        int dest = messageInstruction & 0x000000ff; // c
-                        Store(caller, dest, result);
+                        StoreMessageResult(result);
                     }
                     else
                     {
+                        // The fiber has completely unwound, so return the
+                        // final result value.
                         TRACE_STACK();
                         return result;
                     }
+                    break;
+                }
+                
+                case OP_RETURN:
+                {
+                    int methodId = a;
+                    
+                    Ref<Object> result = Load(frame, b);
 
+                    // Find the enclosing method on the callstack.
+                    int methodFrame;
+                    for (methodFrame = 0; methodFrame < mCallFrames.Count(); methodFrame++)
+                    {
+                        if (mCallFrames[methodFrame].Block().MethodId() == methodId)
+                        {
+                            // Found it.
+                            break;
+                        }
+                    }
+                    
+                    if (methodFrame == mCallFrames.Count())
+                    {
+                        Error("Cannot return from a block whose enclosing method has already returned.");
+                        // Unwind the whole stack.
+                        methodFrame = mCallFrames.Count() - 1;
+                    }
+                    
+                    // Unwind until we reach the method.
+                    while (methodFrame >= 0)
+                    {
+                        PopCallFrame();
+                        methodFrame--;
+                    }
+                    
+                    if (mCallFrames.Count() > 0)
+                    {
+                        StoreMessageResult(result);
+                    }
+                    else
+                    {
+                        // If we unwound everything, end the fiber.
+                        TRACE_STACK();
+                        return result;
+                    }
                     break;
                 }
                     
@@ -360,6 +351,71 @@ namespace Finch
     Environment & Fiber::GetEnvironment()
     {
         return mInterpreter.GetEnvironment();
+    }
+    
+    void Fiber::PopCallFrame()
+    {
+        CallFrame & frame = mCallFrames.Peek();
+        int oldStackSize = frame.stackStart + frame.Block().NumRegisters();
+        mCallFrames.Pop();
+        
+        if (mCallFrames.Count() == 0) return;
+    
+        int before = mStack.Count();
+        
+        // Discard the callee frame's registers.
+        CallFrame & caller = mCallFrames.Peek();
+        int newStackSize = caller.stackStart +
+        caller.Block().NumRegisters();
+        
+        // Close any open upvalues that are being popped off
+        // the stack.
+        for (int i = mOpenUpvalues.Count() - 1; i >= 0; i--)
+        {
+            Ref<Upvalue> upvalue = mOpenUpvalues[i];
+            if (upvalue->Index() >= newStackSize)
+            {
+                upvalue->Close(mStack);
+                mOpenUpvalues.RemoveAt(i);
+            }
+        }
+        
+        // Clear any discarded registers on the stack. Note that we don't
+        // actually truncate the stack here. This is important because we may
+        // still need those registers. Consider:
+        //
+        // 0               0
+        // [ .  .  .  .  . ] We push a frame with a lot of temp registers.
+        // 0   1    1      0
+        // [ . [.  .] .  . ] Then we push a frame with just a few registers that
+        // 0   1  2 1   2  0 overlaps the previous one a lot.
+        // [ . [. [.] . ]. ] Then we push another.
+        // 0   1    1 
+        // [ . [.  .] ?????? Then we return from that one and truncate to the
+        //                   caller's (1's) num registers.
+        // Oops! We've trashed registers that 0 may actually need later.
+        // Overlapping register windows are hard, let's go shopping!
+        //
+        // Instead, we'll just *clear* the popped registers (because we know
+        // they aren't in use after the call even though they may get used
+        // again) but keep them around in case later callers need them.
+        for (int i = newStackSize; i < oldStackSize; i++)
+        {
+            mStack[i] = Ref<Object>();
+        }
+    }
+
+    void Fiber::StoreMessageResult(Ref<Object> result)
+    {
+        // Store the result back in the caller's dest register.
+        CallFrame & caller = mCallFrames.Peek();
+        Instruction instruction = caller.Block().Code()[caller.ip - 1];
+        OpCode op = static_cast<OpCode>((instruction & 0xff000000) >> 24);
+        ASSERT((op >= OP_MESSAGE_0) && (op <= OP_MESSAGE_10),
+               "Should be returning to a message instruction.");
+
+        int dest = instruction & 0x000000ff; // c
+        Store(caller, dest, result);
     }
     
     // TODO(bob): Move this into Object?
@@ -763,18 +819,18 @@ namespace Finch
         
         // Allocate this frame's registers.
         // TODO(bob): Make this a single operation on Array.
-        while (mStack.Count() < args.GetStackStart() + block.GetNumRegisters())
+        while (mStack.Count() < args.StackStart() + block.NumRegisters())
         {
             mStack.Add(Ref<Object>());
         }
         
         // If there aren't enough arguments, nil out the remaining parameters.
-        for (int i = args.GetNumArgs(); i < block.GetNumParams(); i++)
+        for (int i = args.NumArgs(); i < block.NumParams(); i++)
         {
-            mStack[args.GetStackStart() + i] = Nil();
+            mStack[args.StackStart() + i] = Nil();
         }
         
-        mCallFrames.Push(CallFrame(args.GetStackStart(), receiver, blockObj));
+        mCallFrames.Push(CallFrame(args.StackStart(), receiver, blockObj));
     }
 
     void Fiber::Error(const String & message)
@@ -902,14 +958,16 @@ namespace Finch
             case OP_GET_GLOBAL:
             {
                 opName = "GET_GLOBAL";
-                action = String::Format("g%d -> %d", a, b);
+                String name = GetEnvironment().FindGlobalName(a);
+                action = String::Format("%d '%s' -> %d", a, name.CString(), b);
                 break;
             }
                 
             case OP_SET_GLOBAL:
             {
                 opName = "SET_GLOBAL";
-                action = String::Format("g%d <- %d", a, b);
+                String name = GetEnvironment().FindGlobalName(a);
+                action = String::Format("%d '%s' <- %d", a, name.CString(), b);
                 break;
             }
                 
@@ -929,9 +987,14 @@ namespace Finch
                 break;
             }
                 
+            case OP_END:
+                opName = "END";
+                action = String::Format("^ %d", a);
+                break;
+                
             case OP_RETURN:
                 opName = "RETURN";
-                action = String::Format("%d", a);
+                action = String::Format("m%d ^ %d", a, b);
                 break;
                 
             default:
@@ -939,7 +1002,7 @@ namespace Finch
                 action = "";
         }
         
-        cout << String::Format("%-14s %-20s  ", opName.CString(), action.CString());
+        cout << String::Format("%-14s %-28s  ", opName.CString(), action.CString());
     }
     
     void Fiber::TraceStack()
@@ -958,9 +1021,17 @@ namespace Finch
             {
                 cout << " | ";
             }
-
-            cout << left << setw(10) << mStack[i];
             
+            // Truncate it to fit ten characters.
+            stringstream out;
+            out << mStack[i];
+            String value = String(out.str().c_str());
+            if (value.Length() > 10)
+            {
+                value = value.Substring(0, 9) + "…";
+            }
+            
+            cout << left << setw(10) << value;
         }
         cout << endl;
     }

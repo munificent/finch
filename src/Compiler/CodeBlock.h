@@ -48,7 +48,9 @@ namespace Finch
         OP_DEF_FIELD,     // A = index of field name in string table,
                           // B = register with field value,
                           // C = object field is being defined on
-        OP_RETURN,        // A = register with result to return
+        OP_END,           // A = register with result to return
+        OP_RETURN,        // A = method id to return from,
+                          // B = register with value to return
         
         // TODO(bob): There are pseudo-ops that only appear following an
         // OP_BLOCK instruction. If we want to minimize the number of ops, we
@@ -63,16 +65,21 @@ namespace Finch
     class BlockExemplar
     {
     public:
+        // Method ID for blocks that are not methods.
+        static const int BLOCK_METHOD_ID = -1;
+        
         // Creates a new BlockExemplar with the given parameters.
-        BlockExemplar(const Array<String> & params);
+        BlockExemplar(int methodId, const Array<String> & params);
+        
+        int MethodId() const { return mMethodId; }
         
         // Gets the names of the parameters that this block expects.
-        const Array<String> & GetParams() const { return mParams; }
+        const Array<String> & Params() const { return mParams; }
         
-        int  GetNumRegisters() const { return mNumRegisters; }
+        int  NumRegisters() const { return mNumRegisters; }
         void SetNumRegisters(int numRegisters) { mNumRegisters = numRegisters; }
         
-        int  GetNumUpvalues() const { return mNumUpvalues; }
+        int  NumUpvalues() const { return mNumUpvalues; }
         void SetNumUpvalues(int numUpvalues) { mNumUpvalues = numUpvalues; }
         
         // Adds the given object to the constant pool and returns its index.
@@ -88,7 +95,7 @@ namespace Finch
         const Ref<BlockExemplar> GetExemplar(int index) const { return mExemplars[index]; }
         
         // Gets the bytecode for this block.
-        const Array<Instruction> & GetCode() const { return mCode; }
+        const Array<Instruction> & Code() const { return mCode; }
         
         // Writes an instruction.
         void Write(OpCode op, int a = 0xff, int b = 0xff, int c = 0xff);
@@ -99,6 +106,7 @@ namespace Finch
 #endif
         
     private:
+        int                 mMethodId;
         Array<String>       mParams;
         Array<Instruction>  mCode;
         Array<Ref<Object> > mConstants;

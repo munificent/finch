@@ -3,6 +3,7 @@
 
 namespace Finch
 {
+    /*
     void Scope::Define(String name, Ref<Object> value)
     {
         mVariables.Insert(name, value);
@@ -37,5 +38,6 @@ namespace Finch
     {
         mVariables.Remove(name);
     }
+     */
 }
 

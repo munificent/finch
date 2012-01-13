@@ -27,7 +27,7 @@ namespace Finch
         :   Object(parent),
             mExemplar(exemplar),
             mSelf(self),
-            mUpvalues(exemplar->GetNumUpvalues())
+            mUpvalues(exemplar->NumUpvalues())
         {}
         
         bool IsMethod() const { return !mSelf.IsNull(); }
@@ -36,14 +36,15 @@ namespace Finch
         // block.
         Ref<Object> Self() const { return mSelf; }
 
-        int GetNumRegisters() const { return mExemplar->GetNumRegisters(); }
-        int GetNumParams() const { return mExemplar->GetParams().Count(); }
+        int NumRegisters() const { return mExemplar->NumRegisters(); }
+        int NumParams() const { return mExemplar->Params().Count(); }
+        int MethodId() const { return mExemplar->MethodId(); }
         
         const Ref<Object> GetConstant(int index) const;
         const Ref<BlockExemplar> GetExemplar(int index) const;
         
         // Gets the compiled bytecode for the block.
-        const Array<Instruction> & GetCode() const;
+        const Array<Instruction> & Code() const;
         
         void AddUpvalue(Ref<Upvalue> upvalue);
         Ref<Upvalue> GetUpvalue(int index) const;

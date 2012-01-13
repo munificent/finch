@@ -11,6 +11,7 @@ namespace Finch
 {
     class Object;
     
+    /*
     // A variable scope. Basically a dictionary of name -> value pairs.
     class Scope
     {
@@ -47,5 +48,6 @@ namespace Finch
         Ref<Scope>                       mParent;
         Dictionary<String, Ref<Object> > mVariables;
     };
+     */
 }
 

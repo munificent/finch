@@ -6,8 +6,9 @@
 
 namespace Finch
 {
-    BlockExemplar::BlockExemplar(const Array<String> & params)
-    :   mParams(params),
+    BlockExemplar::BlockExemplar(int methodId, const Array<String> & params)
+    :   mMethodId(methodId),
+        mParams(params),
         mCode(),
         mConstants(),
         mNumRegisters(0)
@@ -113,8 +114,11 @@ namespace Finch
             case OP_DEF_FIELD:
                 cout << "DEF_FIELD    '" << environment.Strings().Find(a) << "' " << b << " -> " << c;
                 break;
+            case OP_END:
+                cout << "END          " << a;
+                break;
             case OP_RETURN:
-                cout << "RETURN       " << a;
+                cout << "RETURN       m" << a << " ^ " << b;
                 break;
             case OP_CAPTURE_LOCAL:   // A = register of local
                 cout << "CAP_LOCAL    " << a;

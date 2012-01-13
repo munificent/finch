@@ -19,11 +19,13 @@
 
 namespace Finch
 {
+    int Compiler::sNextMethodId = 1;
+    
     Ref<BlockExemplar> Compiler::CompileTopLevel(Environment & environment, const Expr & expr)
     {
         Array<String> params;
         Compiler compiler(environment, NULL);
-        compiler.Compile(params, expr);
+        compiler.Compile(BlockExemplar::BLOCK_METHOD_ID, params, expr);
         
         /*
         // TODO(bob): Testing!
@@ -41,9 +43,10 @@ namespace Finch
         mLocals()
     {}
 
-    void Compiler::Compile(const Array<String> & params, const Expr & expr)
+    void Compiler::Compile(int methodId, const Array<String> & params,
+                           const Expr & expr)
     {
-        mExemplar = Ref<BlockExemplar>(new BlockExemplar(params));
+        mExemplar = Ref<BlockExemplar>(new BlockExemplar(methodId, params));
         
         // Reserve registers for the params. These have to go first because the
         // caller will place them here.
@@ -58,7 +61,7 @@ namespace Finch
         // register anyway many times, maybe pass a special DONT_CARE register
         // and have the visitors know to provide a register as needed and then
         // set some mReturnRegister member variable that we then use for the
-        // RETURN instruction.
+        // END instruction.
         // Result register goes after params.
         int resultRegister = ReserveRegister();
         // TODO(bob): Hackish. Add a fake local for it so that the indices in
@@ -66,7 +69,7 @@ namespace Finch
         mLocals.Add("(return)");
         
         expr.Accept(*this, resultRegister);
-        mExemplar->Write(OP_RETURN, resultRegister);
+        mExemplar->Write(OP_END, resultRegister);
         
         // Now that all upvalues for this block are known (and its contained
         // blocks have also been compiled, which due to closure flattening may
@@ -105,7 +108,7 @@ namespace Finch
     
     void Compiler::Visit(const BlockExpr & expr, int dest)
     {
-        CompileNestedBlock(expr, dest);
+        CompileNestedBlock(BlockExemplar::BLOCK_METHOD_ID, expr, dest);
     }
     
     void Compiler::Visit(const MessageExpr & expr, int dest)
@@ -212,7 +215,19 @@ namespace Finch
     
     void Compiler::Visit(const ReturnExpr & expr, int dest)
     {
-        ASSERT(false, "Compiling ReturnExpr not implemented yet.");
+        Compiler * method = GetEnclosingMethod();
+        if (method == NULL)
+        {
+            // TODO(bob): Come up with real compile error reporting system.
+            ASSERT(false, "Can't return out of a top-level block.");
+        }
+        
+        // Compile the return value.
+        expr.Result()->Accept(*this, dest);
+        
+        mExemplar->Write(OP_RETURN, method->mExemplar->MethodId(), dest);
+        // TODO(bob): Mark the enclosing method as one that can't eliminate
+        // tail calls since it has a return.
     }
     
     void Compiler::Visit(const SelfExpr & expr, int dest)
@@ -462,10 +477,10 @@ namespace Finch
         ReleaseRegister();
     }
 
-    void Compiler::CompileNestedBlock(const BlockExpr & block, int dest)
+    void Compiler::CompileNestedBlock(int methodId, const BlockExpr & block, int dest)
     {
         Compiler compiler(mEnvironment, this);
-        compiler.Compile(block.Params(), *block.Body());
+        compiler.Compile(methodId, block.Params(), *block.Body());
         
         int index = mExemplar->AddExemplar(compiler.mExemplar);
         
@@ -511,8 +526,7 @@ namespace Finch
                 BlockExpr & body = static_cast<BlockExpr &>(
                     *definition.GetBody());
                 
-                // TODO(bob): Create a unique id for the method.
-                CompileNestedBlock(body, value);
+                CompileNestedBlock(sNextMethodId++, body, value);
                 
                 // TODO(bob): Right now, we're only giving 8-bits to the name,
                 // which will run out quickly.
@@ -529,11 +543,23 @@ namespace Finch
         }
     }
     
+    Compiler * Compiler::GetEnclosingMethod()
+    {
+        Compiler * compiler = this;
+        while ((compiler != NULL) &&
+            (compiler->mExemplar->MethodId() == BlockExemplar::BLOCK_METHOD_ID))
+        {
+            compiler = compiler->mParent;
+        }
+        
+        return compiler;
+    }
+    
     int Compiler::ReserveRegister()
     {
         mInUseRegisters++;
         
-        if (mExemplar->GetNumRegisters() < mInUseRegisters)
+        if (mExemplar->NumRegisters() < mInUseRegisters)
         {
             mExemplar->SetNumRegisters(mInUseRegisters);
         }

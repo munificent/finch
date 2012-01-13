@@ -11,34 +11,24 @@ namespace Finch
 {
     using std::ostream;
     
-    // AST node for a "break" or "return" expression
+    // AST node for a "return" expression.
     class ReturnExpr : public Expr
     {
     public:
-        ReturnExpr(bool isReturn, Ref<Expr> result)
-        :   mIsReturn(isReturn),
-            mResult(result)
+        ReturnExpr(Ref<Expr> result)
+        :   mResult(result)
         {}
         
-        bool IsReturn() const { return mIsReturn; }
         Ref<Expr> Result() const { return mResult; }
         
         virtual void Trace(ostream & stream) const
         {
-            if (mIsReturn) {
-                stream << "return ";
-            } else {
-                stream << "break ";
-            }
-            
-            stream << mResult;
+            stream << "return " << mResult;
         }
         
         EXPRESSION_VISITOR
     
     private:
-        bool mIsReturn;
-        
         // The result that the unwound block will return.
         Ref<Expr> mResult;
     };

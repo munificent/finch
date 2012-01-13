@@ -14,9 +14,9 @@ namespace Finch
     }
     
     // Gets the compiled bytecode for the block.
-    const Array<Instruction> & BlockObject::GetCode() const
+    const Array<Instruction> & BlockObject::Code() const
     {
-        return mExemplar->GetCode();
+        return mExemplar->Code();
     }
     
     void BlockObject::AddUpvalue(Ref<Upvalue> upvalue)

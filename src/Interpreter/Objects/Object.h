@@ -36,8 +36,8 @@ namespace Finch
             mNumArgs(numArgs)
         {}
         
-        int GetStackStart() const { return mFirstArg; }
-        int GetNumArgs() const { return mNumArgs; }
+        int StackStart() const { return mFirstArg; }
+        int NumArgs() const { return mNumArgs; }
         
         Ref<Object> & operator[] (int index)
         {

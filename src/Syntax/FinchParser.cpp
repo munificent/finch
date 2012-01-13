@@ -340,33 +340,21 @@ namespace Finch
         {
             return Ref<Expr>(new SelfExpr());
         }
-        else if (Match(TOKEN_BREAK))
-        {
-            Ref<Expr> result;
-            if (LookAhead(TOKEN_LINE) ||
-                LookAhead(TOKEN_RIGHT_PAREN) ||
-                LookAhead(TOKEN_RIGHT_BRACE) ||
-                LookAhead(TOKEN_RIGHT_BRACKET)) {
-                // No return value so implicitly return Nil.
-                result = Ref<Expr>(new NameExpr("Nil"));
-            } else {
-                result = Assignment();
-            }
-            return Ref<Expr>(new ReturnExpr(false, result));
-        }
         else if (Match(TOKEN_RETURN))
         {
+            // TODO(bob): Move this below sequence in the grammar so that you
+            // can't do this in the middle of an expression.
             Ref<Expr> result;
             if (LookAhead(TOKEN_LINE) ||
                 LookAhead(TOKEN_RIGHT_PAREN) ||
                 LookAhead(TOKEN_RIGHT_BRACE) ||
                 LookAhead(TOKEN_RIGHT_BRACKET)) {
                 // No return value so implicitly return Nil.
-                result = Ref<Expr>(new NameExpr("Nil"));
+                result = Ref<Expr>(new NameExpr("nil"));
             } else {
                 result = Assignment();
             }
-            return Ref<Expr>(new ReturnExpr(true, result));
+            return Ref<Expr>(new ReturnExpr(result));
         }
         else if (Match(TOKEN_LEFT_PAREN))
         {

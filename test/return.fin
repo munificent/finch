@@ -1,4 +1,5 @@
 Test suite: "Return" is: {
+  /*
   Test test: "break exits block" is: {
     a <- "before"
     {
@@ -18,6 +19,7 @@ Test suite: "Return" is: {
 
     Test that: result equals: "b"
   }
+  */
 
   Test test: "return exits enclosing method" is: {
     a <- "0"

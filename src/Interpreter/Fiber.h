@@ -1,7 +1,5 @@
 #pragma once
 
-#include <iostream>
-
 #include "CodeBlock.h"
 #include "Macros.h"
 #include "Object.h"
@@ -91,6 +89,9 @@ namespace Finch
         // Stores a register for the given callframe.
         void Store(const CallFrame & frame, int reg, Ref<Object> value);
         
+        void PopCallFrame();
+        void StoreMessageResult(Ref<Object> result);
+
         Environment & GetEnvironment();
         
         Ref<Object> SendMessage(int messageId, int receiverReg, int numArgs);
