@@ -37,10 +37,10 @@ namespace Finch
     Ref<Object> DynamicObject::GetField(int name)
     {
         // Walk up the parent chain until it loops back on itself at Object.
-        Object & object = *this;
+        Object * object = this;
         while (true)
         {
-            DynamicObject * dynamic = object.AsDynamic();
+            DynamicObject * dynamic = object->AsDynamic();
             
             // Only dynamic objects have fields, so skip others in the
             // inheritance chain.
@@ -54,10 +54,8 @@ namespace Finch
             }
 
             // If we're at the root of the inheritance chain, then stop.
-            if (&(*object.Parent()) == &object) break;
-
-            // Walk up the parent chain.
-            object = *object.Parent();
+            if (&(*object->Parent()) == object) break;
+            object = &(*object->Parent());
         }
         
         // If we get here, it wasn't found.
