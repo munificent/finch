@@ -1,13 +1,11 @@
 To get these numbers:
 
   1. Build a Release version of Finch.
-  2. Run each benchmark three times:
-
-     $ time ./finch ../../benchmark/<script>.fin
-  3. Take the median of the user+sys time for the three results.
+  2. Run run.py.
 
 date          lexer     fib  (reason)
 -------------------------------------------------------------------------------
 2011/12/23  11.346s  2.598s
 2011/12/23  10.950s  2.491s  (compile out asserts in release)
 2012/01/13   5.164s  1.262s  (register-based vm)
+2012-01-13    5.25s   1.29s  (random cleanup and new run.py)

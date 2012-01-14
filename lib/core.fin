@@ -310,4 +310,4 @@ Switches <- [
 ]
 
 // ###bob: temp; run tests
-load: "../../test/test.fin"
+//load: "../../test/test.fin"

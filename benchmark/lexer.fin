@@ -302,11 +302,11 @@ Lexers <- [
   }
 ]
 
-file <- Io read-file: "../../benchmark/lexer.fin"
+file <- Io read-file: "lexer.fin"
 tokens <- 0
 
 from: 1 to: 10 do: {|i|
-  lexer <- Lexer new-path: "../../benchmark/lexer.fin" source: file
+  lexer <- Lexer new-path: "lexer.fin" source: file
   lexer each: {|token| tokens <-- tokens + 1 }
 }
 
