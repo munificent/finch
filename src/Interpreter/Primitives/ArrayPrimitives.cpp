@@ -1,7 +1,6 @@
 #include "ArrayObject.h"
 #include "ArrayPrimitives.h"
 #include "DynamicObject.h"
-#include "Environment.h"
 #include "Fiber.h"
 #include "Object.h"
 

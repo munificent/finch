@@ -91,8 +91,6 @@ namespace Finch
         void PopCallFrame();
         void StoreMessageResult(Ref<Object> result);
 
-        Environment & GetEnvironment();
-        
         Ref<Object> SendMessage(StringId messageId, int receiverReg, int numArgs);
 
         Ref<Object> Self();

@@ -1,8 +1,9 @@
 #pragma once
 
-#include "Environment.h"
+#include "Dictionary.h"
 #include "Macros.h"
 #include "Object.h"
+#include "StringTable.h"
 
 namespace Finch
 {
@@ -18,16 +19,11 @@ namespace Finch
     class Interpreter
     {
     public:
-        Interpreter(IInterpreterHost & host)
-        :   mHost(host)
-        {}
+        Interpreter(IInterpreterHost & host);
         
         // Reads from the given source and executes the results in a new fiber
         // in this interpreter.
         void Interpret(ILineReader & reader, bool showResult);
-        
-        // Gets the Environment owned by this Interpreter.
-        Environment & GetEnvironment() { return mEnvironment; }
         
         //### bob: exposing the entire host here is a bit dirty.
         IInterpreterHost & GetHost() { return mHost; }
@@ -41,11 +37,57 @@ namespace Finch
         void BindMethod(String objectName, String message,
                         PrimitiveMethod method);
 
+        StringId AddString(const String & string);
+        String FindString(StringId id);
+        
+        // Returns the slot for the global with the given name. Returns -1 if
+        // the global doesn't exist.
+        int FindGlobal(const String & name);
+        
+        // Creates an indexed slot for a global with the given name. If a global
+        // with that name already exists, will return that slot.
+        int DefineGlobal(const String & name);
+        Ref<Object> GetGlobal(int index);
+        void SetGlobal(int index, Ref<Object> value);
+        
+        String FindGlobalName(int index);
+        
+        // Get the core built-in objects.
+        Ref<Object> ObjectPrototype()   const { return mObject; }
+        Ref<Object> ArrayPrototype()    const { return mArrayPrototype; }
+        Ref<Object> BlockPrototype()    const { return mBlockPrototype; }
+        Ref<Object> FiberPrototype()    const { return mFiberPrototype; }
+        Ref<Object> NumberPrototype()   const { return mNumberPrototype; }
+        Ref<Object> StringPrototype()   const { return mStringPrototype; }
+        Ref<Object> Nil()               const { return mNil; }
+        Ref<Object> True()              const { return mTrue; }
+        Ref<Object> False()             const { return mFalse; }
+        
     private:
         Ref<Expr>   Parse(ILineReader & reader);
-
+        
+        Ref<Object> MakeGlobal(const char * name);
+        void AddPrimitive(Ref<Object> object, String message,
+                          PrimitiveMethod primitive);
+        
         IInterpreterHost & mHost;
-        Environment        mEnvironment;
+
+        StringTable mStrings;
+        
+        // Indexed collection of global variables.
+        Array<Ref<Object> > mGlobals;
+        // Maps global variable names to their indices. Used by the compiler.
+        IdTable<int> mGlobalNames;
+        
+        Ref<Object> mObject;
+        Ref<Object> mArrayPrototype;
+        Ref<Object> mBlockPrototype;
+        Ref<Object> mFiberPrototype;
+        Ref<Object> mNumberPrototype;
+        Ref<Object> mStringPrototype;
+        Ref<Object> mNil;
+        Ref<Object> mTrue;
+        Ref<Object> mFalse;
         
         NO_COPY(Interpreter);
     };

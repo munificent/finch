@@ -4,7 +4,7 @@
 #include "BindExpr.h"
 #include "BlockExpr.h"
 #include "Compiler.h"
-#include "Environment.h"
+#include "Interpreter.h"
 #include "MessageExpr.h"
 #include "NameExpr.h"
 #include "NumberExpr.h"
@@ -21,10 +21,10 @@ namespace Finch
 {
     int Compiler::sNextMethodId = 1;
     
-    Ref<Block> Compiler::CompileTopLevel(Environment & environment, const Expr & expr)
+    Ref<Block> Compiler::CompileTopLevel(Interpreter & interpreter, const Expr & expr)
     {
         Array<String> params;
-        Compiler compiler(environment, NULL);
+        Compiler compiler(interpreter, NULL);
         compiler.Compile(Block::BLOCK_METHOD_ID, params, expr);
         
         /*
@@ -35,8 +35,8 @@ namespace Finch
         return compiler.mBlock;
     }
         
-    Compiler::Compiler(Environment & environment, Compiler * parent)
-    :   mEnvironment(environment),
+    Compiler::Compiler(Interpreter & interpreter, Compiler * parent)
+    :   mInterpreter(interpreter),
         mParent(parent),
         mBlock(),
         mInUseRegisters(0),
@@ -142,7 +142,7 @@ namespace Finch
             // Compile the message send.
             // TODO(bob): Right now, we're only giving 8-bits to the name, which
             // will run out quickly.
-            StringId messageId = mEnvironment.Strings().Add(message.GetName());
+            StringId messageId = mInterpreter.AddString(message.GetName());
             OpCode op = static_cast<OpCode>(OP_MESSAGE_0 +
                 message.GetArguments().Count());
             
@@ -164,13 +164,13 @@ namespace Finch
         if (mParent == NULL)
         {
             // Accessing a top-level name, so it's a global.
-            int index = mEnvironment.DefineGlobal(expr.Name());
+            int index = mInterpreter.DefineGlobal(expr.Name());
             mBlock->Write(OP_GET_GLOBAL, index, dest);
         }
         else if (Expr::IsField(expr.Name()))
         {
             // Accessing a field.
-            StringId index = mEnvironment.Strings().Add(expr.Name());
+            StringId index = mInterpreter.AddString(expr.Name());
             mBlock->Write(OP_GET_FIELD, index, dest);
         }
         else
@@ -198,7 +198,7 @@ namespace Finch
                 // allows for mutually recursive references to top-level names:
                 // as long as the name is initialized before it's actually
                 // accessed at runtime, this will work.
-                int index = mEnvironment.DefineGlobal(expr.Name());
+                int index = mInterpreter.DefineGlobal(expr.Name());
                 mBlock->Write(OP_GET_GLOBAL, index, dest);
             }
         }
@@ -206,7 +206,7 @@ namespace Finch
         
     void Compiler::Visit(const NumberExpr & expr, int dest)
     {
-        Ref<Object> number = Object::NewNumber(mEnvironment, expr.GetValue());
+        Ref<Object> number = Object::NewNumber(mInterpreter, expr.GetValue());
         CompileConstant(number, dest);
     }
     
@@ -308,7 +308,7 @@ namespace Finch
                 expr.Value()->Accept(*this, dest);
                 
                 // See if a global with this name exists.
-                int index = mEnvironment.FindGlobal(expr.Name());
+                int index = mInterpreter.FindGlobal(expr.Name());
                 
                 // TODO(bob): Report compile error for undefined global.
                 if (index != -1)
@@ -322,7 +322,7 @@ namespace Finch
     
     void Compiler::Visit(const StringExpr & expr, int dest)
     {
-        Ref<Object> string = Object::NewString(mEnvironment, expr.GetValue());
+        Ref<Object> string = Object::NewString(mInterpreter, expr.GetValue());
         CompileConstant(string, dest);
     }
     
@@ -442,7 +442,7 @@ namespace Finch
         value.Accept(*this, dest);
         
         // We're compiling a top-level expression, so define it as a global.
-        int index = mEnvironment.DefineGlobal(name);
+        int index = mInterpreter.DefineGlobal(name);
         mBlock->Write(OP_SET_GLOBAL, index, dest);
     }
     
@@ -450,13 +450,13 @@ namespace Finch
     {
         value.Accept(*this, dest);
         
-        StringId nameId = mEnvironment.Strings().Add(name);
+        StringId nameId = mInterpreter.AddString(name);
         mBlock->Write(OP_SET_FIELD, nameId, dest);
     }
 
     void Compiler::CompileNestedBlock(int methodId, const BlockExpr & block, int dest)
     {
-        Compiler compiler(mEnvironment, this);
+        Compiler compiler(mInterpreter, this);
         compiler.Compile(methodId, block.Params(), *block.Body());
         
         int index = mBlock->AddBlock(compiler.mBlock);
@@ -495,7 +495,7 @@ namespace Finch
         for (int i = 0; i < count; i++)
         {
             const Definition & definition = expr.Definitions()[i];
-            StringId name = mEnvironment.Strings().Add(definition.GetName());
+            StringId name = mInterpreter.AddString(definition.GetName());
             
             int value = ReserveRegister();
 

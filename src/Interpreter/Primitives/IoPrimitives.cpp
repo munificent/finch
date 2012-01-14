@@ -2,7 +2,6 @@
 #include <iostream>
 
 #include "IoPrimitives.h"
-#include "Environment.h"
 #include "Fiber.h"
 #include "Interpreter.h"
 #include "Object.h"

@@ -62,8 +62,6 @@
       'src/IErrorReporter.h',
       'src/IInterpreterHost.h',
       'src/Interpreter/ArgReader.h',
-      'src/Interpreter/Environment.cpp',
-      'src/Interpreter/Environment.h',
       'src/Interpreter/Fiber.cpp',
       'src/Interpreter/Fiber.h',
       'src/Interpreter/FileLineReader.cpp',

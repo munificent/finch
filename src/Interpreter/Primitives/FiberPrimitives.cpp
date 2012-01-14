@@ -2,7 +2,6 @@
 
 #include "FiberPrimitives.h"
 #include "FiberObject.h"
-#include "Environment.h"
 #include "Interpreter.h"
 #include "Fiber.h"
 #include "Object.h"

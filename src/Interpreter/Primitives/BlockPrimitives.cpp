@@ -2,7 +2,6 @@
 
 #include "BlockPrimitives.h"
 #include "BlockObject.h"
-#include "Environment.h"
 #include "Fiber.h"
 
 namespace Finch

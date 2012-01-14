@@ -1,7 +1,6 @@
 #include "Object.h"
 #include "ArrayObject.h"
 #include "BlockObject.h"
-#include "Environment.h"
 #include "DynamicObject.h"
 #include "FiberObject.h"
 #include "Interpreter.h"
@@ -31,30 +30,30 @@ namespace Finch
         return NewObject(parent, "");
     }
     
-    Ref<Object> Object::NewNumber(Environment & env, double value)
+    Ref<Object> Object::NewNumber(Interpreter & interpreter, double value)
     {
-        return Ref<Object>(new NumberObject(env.NumberPrototype(), value));
+        return Ref<Object>(new NumberObject(interpreter.NumberPrototype(), value));
     }
     
-    Ref<Object> Object::NewString(Environment & env, String value)
+    Ref<Object> Object::NewString(Interpreter & interpreter, String value)
     {
-        return Ref<Object>(new StringObject(env.StringPrototype(), value));
+        return Ref<Object>(new StringObject(interpreter.StringPrototype(), value));
     }
     
-    Ref<Object> Object::NewArray(Environment & env, int capacity)
+    Ref<Object> Object::NewArray(Interpreter & interpreter, int capacity)
     {
-        return Ref<Object>(new ArrayObject(env.ArrayPrototype(), capacity));
+        return Ref<Object>(new ArrayObject(interpreter.ArrayPrototype(), capacity));
     }
 
-    Ref<Object> Object::NewBlock(Environment & env, Ref<Block> block,
+    Ref<Object> Object::NewBlock(Interpreter & interpreter, Ref<Block> block,
                                  Ref<Object> self)
     {
-        return Ref<Object>(new BlockObject(env.BlockPrototype(), block, self));
+        return Ref<Object>(new BlockObject(interpreter.BlockPrototype(), block, self));
     }
     
     Ref<Object> Object::NewFiber(Interpreter & interpreter, Ref<Object> block)
     {
-        return Ref<Object>(new FiberObject(interpreter.GetEnvironment().FiberPrototype(),
+        return Ref<Object>(new FiberObject(interpreter.FiberPrototype(),
                                            interpreter, block));
     }
 

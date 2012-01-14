@@ -2,7 +2,7 @@
 
 namespace Finch
 {
-    StringId StringTable::Add(String string)
+    StringId StringTable::Add(const String & string)
     {
         // See if the string is already in the table. We must ensure each string
         // only appears once in the table so that we can reliably compare

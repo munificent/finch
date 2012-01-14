@@ -1,6 +1,5 @@
 #include "DynamicObject.h"
 #include "BlockObject.h"
-#include "Environment.h"
 #include "Fiber.h"
 
 namespace Finch

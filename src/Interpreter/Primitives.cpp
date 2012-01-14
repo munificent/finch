@@ -4,7 +4,6 @@
 #include "ArrayPrimitives.h"
 #include "BlockObject.h"
 #include "DynamicObject.h"
-#include "Environment.h"
 #include "FiberObject.h"
 #include "Interpreter.h"
 #include "IInterpreterHost.h"

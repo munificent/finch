@@ -3,7 +3,6 @@
 #include "BlockObject.h"
 #include "ObjectPrimitives.h"
 #include "DynamicObject.h"
-#include "Environment.h"
 #include "Fiber.h"
 #include "Object.h"
 

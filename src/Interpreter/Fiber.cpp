@@ -4,7 +4,6 @@
 #include "BlockObject.h"
 #include "Block.h"
 #include "DynamicObject.h"
-#include "Environment.h"
 #include "FiberObject.h"
 #include "IInterpreterHost.h"
 #include "Interpreter.h"
@@ -36,7 +35,7 @@ namespace Finch
         ArgReader args(mStack, 0, 0);
 
         // Top-level blocks outside of any method bind self to nil.
-        CallBlock(interpreter.GetEnvironment().Nil(), block, args);
+        CallBlock(interpreter.Nil(), block, args);
     }
 
     bool Fiber::IsDone() const
@@ -84,7 +83,7 @@ namespace Finch
                     // Create a new block object from the block.
                     Ref<Block> block = frame.Block().GetBlock(a);
 
-                    Ref<Object> blockObj = Object::NewBlock(GetEnvironment(),
+                    Ref<Object> blockObj = Object::NewBlock(mInterpreter,
                         block, Self());
 
                     BlockObject * blockPtr = blockObj->AsBlock();
@@ -120,7 +119,7 @@ namespace Finch
                 {
                     // Create the empty array with enough capacity. Subsequent
                     // OP_ARRAY_ELEMENT instructions will fill it.
-                    Ref<Object> array = Object::NewArray(GetEnvironment(), a);
+                    Ref<Object> array = Object::NewArray(mInterpreter, a);
                     Store(frame, b, array);
                     break;
                 }
@@ -208,15 +207,15 @@ namespace Finch
 
                 case OP_GET_GLOBAL:
                 {
-                    Ref<Object> value = GetEnvironment().GetGlobal(a);
+                    Ref<Object> value = mInterpreter.GetGlobal(a);
 
                     if (value.IsNull())
                     {
-                        String name = GetEnvironment().FindGlobalName(a);
+                        String name = mInterpreter.FindGlobalName(a);
                         Error(String::Format(
                             "Trying to access undefined global '%s'.",
                             name.CString()));
-                        value = GetEnvironment().Nil();
+                        value = mInterpreter.Nil();
                     }
 
                     Store(frame, b, value);
@@ -225,7 +224,7 @@ namespace Finch
 
                 case OP_SET_GLOBAL:
                 {
-                    GetEnvironment().SetGlobal(a, Load(frame, b));
+                    mInterpreter.SetGlobal(a, Load(frame, b));
                     break;
                 }
 
@@ -324,8 +323,7 @@ namespace Finch
             TRACE_STACK();
         }
 
-        return Ref<Object>(Object::NewString(
-            mInterpreter.GetEnvironment(), "implement me"));
+        return Ref<Object>();
     }
 
     Ref<Object> Fiber::Load(const CallFrame & frame, int reg)
@@ -336,11 +334,6 @@ namespace Finch
     void Fiber::Store(const CallFrame & frame, int reg, Ref<Object> value)
     {
         mStack[frame.stackStart + reg] = value;
-    }
-
-    Environment & Fiber::GetEnvironment()
-    {
-        return mInterpreter.GetEnvironment();
     }
 
     void Fiber::PopCallFrame()
@@ -437,18 +430,18 @@ namespace Finch
 
             // Not found yet, so walk up the parent chain until we bottom out
             // at Object.
-            if (receiver == GetEnvironment().ObjectPrototype()) break;
+            if (receiver == mInterpreter.ObjectPrototype()) break;
             receiver = receiver->Parent();
         }
 
         // If we got here, the object didn't handle the message.
-        String messageName = GetEnvironment().Strings().Find(messageId);
+        String messageName = mInterpreter.FindString(messageId);
         String error = String::Format("Object '%s' did not handle message '%s'",
             receiver->AsString().CString(), messageName.CString());
         Error(error);
 
         // Unhandled messages just return nil.
-        return GetEnvironment().Nil();
+        return mInterpreter.Nil();
     }
 
     Ref<Object> Fiber::Self()
@@ -458,22 +451,22 @@ namespace Finch
 
     Ref<Object> Fiber::Nil()
     {
-        return GetEnvironment().Nil();
+        return mInterpreter.Nil();
     }
 
     Ref<Object> Fiber::CreateBool(bool value)
     {
-        return value ? GetEnvironment().True() : GetEnvironment().False();
+        return value ? mInterpreter.True() : mInterpreter.False();
     }
 
     Ref<Object> Fiber::CreateNumber(double value)
     {
-        return Object::NewNumber(GetEnvironment(), value);
+        return Object::NewNumber(mInterpreter, value);
     }
 
     Ref<Object> Fiber::CreateString(const String & value)
     {
-        return Object::NewString(GetEnvironment(), value);
+        return Object::NewString(mInterpreter, value);
     }
 
     void Fiber::CallBlock(Ref<Object> receiver, Ref<Object> blockObj, ArgReader & args)

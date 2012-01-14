@@ -2,7 +2,6 @@
 
 #include "NumberPrimitives.h"
 #include "NumberObject.h"
-#include "Environment.h"
 #include "Fiber.h"
 
 namespace Finch

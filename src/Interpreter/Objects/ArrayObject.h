@@ -2,7 +2,6 @@
 
 #include <iostream>
 
-#include "Environment.h"
 #include "Macros.h"
 #include "Object.h"
 #include "Ref.h"

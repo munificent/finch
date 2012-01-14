@@ -13,7 +13,7 @@ namespace Finch
     public:
         // Adds the given string to the table if not already present, and
         // returns its ID.
-        StringId Add(String string);
+        StringId Add(const String & string);
         
         // Looks up the string with the given ID in the table.
         String Find(StringId id);

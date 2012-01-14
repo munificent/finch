@@ -36,10 +36,10 @@ namespace Finch
         // virtual constructors
         static Ref<Object> NewObject(Ref<Object> parent, String name);
         static Ref<Object> NewObject(Ref<Object> parent);
-        static Ref<Object> NewNumber(Environment & env, double value);
-        static Ref<Object> NewString(Environment & env, String value);
-        static Ref<Object> NewArray(Environment & env, int capacity);
-        static Ref<Object> NewBlock(Environment & env, Ref<Block> block,
+        static Ref<Object> NewNumber(Interpreter & interpreter, double value);
+        static Ref<Object> NewString(Interpreter & interpreter, String value);
+        static Ref<Object> NewArray(Interpreter & interpreter, int capacity);
+        static Ref<Object> NewBlock(Interpreter & interpreter, Ref<Block> block,
                                     Ref<Object> self);
         static Ref<Object> NewFiber(Interpreter & interpreter, Ref<Object> block);
 

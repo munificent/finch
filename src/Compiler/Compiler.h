@@ -20,7 +20,7 @@ namespace Finch
     public:
         // Compiles the given expression to a new top-level block. Used for
         // compiling REPL expressions.
-        static Ref<Block> CompileTopLevel(Environment & environment, const Expr & expr);
+        static Ref<Block> CompileTopLevel(Interpreter & interpreter, const Expr & expr);
         
     private:
         class Upvalue
@@ -56,7 +56,7 @@ namespace Finch
         // instructions if we know the result will be trashed anyway.
         const static int DISCARD_REGISTER = -1;
         
-        Compiler(Environment & environment, Compiler * parent);
+        Compiler(Interpreter & interpreter, Compiler * parent);
         
         void Compile(int methodId, const Array<String> & params, const Expr & expr);
 
@@ -93,7 +93,7 @@ namespace Finch
         
         static int sNextMethodId;
         
-        Environment & mEnvironment;
+        Interpreter & mInterpreter;
         // The compiler for the block containing the block this one is compiling
         // or NULL if this is compiling a top-level block.
         Compiler * mParent;
