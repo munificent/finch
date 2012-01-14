@@ -10,6 +10,11 @@
 
 // TODO(bob): Rename file.
 
+#define DECODE_OP(inst) (static_cast<OpCode>((inst & 0xff000000) >> 24))
+#define DECODE_A(inst)  ((inst & 0x00ff0000) >> 16)
+#define DECODE_B(inst)  ((inst & 0x0000ff00) >> 8)
+#define DECODE_C(inst)  (inst & 0x000000ff)
+
 namespace Finch
 {
     // TODO(bob): We expect this to be 32 bits. Is there a better way to specify

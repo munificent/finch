@@ -57,10 +57,10 @@ namespace Finch
             
             // Read and decode the next instruction.
             Instruction instruction = frame.Block().Code()[frame.ip++];
-            OpCode op = static_cast<OpCode>((instruction & 0xff000000) >> 24);
-            int a = (instruction & 0x00ff0000) >> 16;
-            int b = (instruction & 0x0000ff00) >> 8;
-            int c = instruction & 0x000000ff;
+            OpCode op = DECODE_OP(instruction);
+            int a = DECODE_A(instruction);
+            int b = DECODE_B(instruction);
+            int c = DECODE_C(instruction);
             
             TRACE_INSTRUCTION(instruction);
             
@@ -97,8 +97,8 @@ namespace Finch
                     for (int i = 0; i < exemplar->NumUpvalues(); i++)
                     {
                         Instruction capture = frame.Block().Code()[frame.ip++];
-                        OpCode captureOp = static_cast<OpCode>((capture & 0xff000000) >> 24);
-                        int captureIndex = (capture & 0x00ff0000) >> 16;
+                        OpCode captureOp = DECODE_OP(capture);
+                        int captureIndex = DECODE_A(capture);
                         
                         switch (captureOp)
                         {
@@ -402,8 +402,9 @@ namespace Finch
         // Store the result back in the caller's dest register.
         CallFrame & caller = mCallFrames.Peek();
         Instruction instruction = caller.Block().Code()[caller.ip - 1];
-        OpCode op = static_cast<OpCode>((instruction & 0xff000000) >> 24);
-        ASSERT((op >= OP_MESSAGE_0) && (op <= OP_MESSAGE_10),
+
+        ASSERT((DECODE_OP(instruction) >= OP_MESSAGE_0) &&
+               (DECODE_OP(instruction) <= OP_MESSAGE_10),
                "Should be returning to a message instruction.");
 
         int dest = instruction & 0x000000ff; // c
@@ -457,331 +458,9 @@ namespace Finch
     
     Ref<Object> Fiber::Self()
     {
-        /*
-        // Within an object literal, self evaluates to the object.
-        if (mObjects.Count() > 0) return mObjects.Peek();
-        */
-        
         return mCallFrames.Peek().receiver;
     }
     
-    /*
-
-    Ref<Object> Fiber::Execute()
-    {
-        mIsRunning = true;
-
-        // continue processing bytecode until the entire callstack has completed
-        // or this fiber gets paused (to switch to another fiber)
-        while (mIsRunning && mCallStack.Count() > 0)
-        {
-            CallFrame & frame = mCallStack.Peek();
-            const Instruction & instruction = (*frame.Block().Code())[frame.address];
-
-            // advance past the instruction
-            frame.address++;
-
-            switch (instruction.op)
-            {
-                case OP_NOTHING:
-                    // do nothing
-                    break;
-
-                case OP_BLOCK:
-                    {
-                        // capture the current scope
-                        Ref<Scope> closure = frame.scope;
-
-                        Ref<CodeBlock> code = frame.Block().Code()->GetCodeBlock(instruction.arg.id);
-                        Ref<Object> block = Object::NewBlock(mEnvironment, code,
-                                closure, Self());
-
-                        PushOperand(block);
-                    }
-                    break;
-
-                case OP_CONSTANT:
-                    PushOperand(frame.Block().Code()->GetConstant(instruction.arg.id));
-                    break;
-                    
-                case OP_CREATE_ARRAY:
-                    {
-                        // create the array
-                        Ref<Object> object = Object::NewArray(mEnvironment, 0);
-                        ArrayObject * array = object->AsArray();
-
-                        // pop the elements
-                        Array<Ref<Object> > elements;
-                        for (int i = 0; i < instruction.arg.id; i++)
-                        {
-                            array->Elements().Add(PopOperand());
-                        }
-
-                        // reverse them since the stack has them in order (so
-                        // that elements are evaluated from left to right) and
-                        // popping reverses the order
-                        array->Elements().Reverse();
-
-                        // return the array
-                        PushOperand(object);
-                    }
-                    break;
-
-                case OP_POP:
-                    PopOperand();
-                    break;
-
-                case OP_DUP:
-                    PushOperand(mOperands.Peek());
-                    break;
-
-                case OP_DEF_LOCAL:
-                    {
-                        // def returns the defined value, so instead of popping
-                        // and then pushing the value back on the stack, we'll
-                        // just peek
-                        Ref<Object> value = mOperands.Peek();
-                        String name = mEnvironment.Strings().Find(instruction.arg.id);
-                        CurrentScope()->Define(name, value);
-                    }
-                    break;
-                    
-                case OP_DEF_FIELD:
-                    {
-                        // def returns the defined value, so instead of popping
-                        // and then pushing the value back on the stack, we'll
-                        // just peek
-                        Ref<Object> value = mOperands.Peek();
-                        String name = mEnvironment.Strings().Find(instruction.arg.id);
-                        if (!Self().IsNull())
-                        {
-                            Self()->ObjectScope()->Define(name, value);
-                        }
-                    }
-                    break;
-
-
-                case OP_UNDEF_LOCAL:
-                    {
-                        String name = mEnvironment.Strings().Find(instruction.arg.id);
-                        CurrentScope()->Undefine(name);
-                        PushNil();
-                    }
-                    break;
-                    
-                case OP_UNDEF_FIELD:
-                    {
-                        String name = mEnvironment.Strings().Find(instruction.arg.id);
-                        if (!Self().IsNull())
-                        {
-                            Self()->ObjectScope()->Undefine(name);
-                        }
-                        PushNil();
-                    }
-                    break;
-                    
-                case OP_SET_LOCAL:
-                    {
-                        // set returns the assigned value, so instead of popping
-                        // and then pushing the value back on the stack, we'll
-                        // just peek
-                        Ref<Object> value = mOperands.Peek();
-                        String name = mEnvironment.Strings().Find(instruction.arg.id);
-                        CurrentScope()->Set(name, value);
-                    }
-                    break;
-                    
-                case OP_SET_FIELD:
-                    {
-                        // set returns the assigned value, so instead of popping
-                        // and then pushing the value back on the stack, we'll
-                        // just peek
-                        Ref<Object> value = mOperands.Peek();
-                        String name = mEnvironment.Strings().Find(instruction.arg.id);
-                        Self()->ObjectScope()->Set(name, value);
-                    }
-                    break;
-                    
-                case OP_LOAD_LOCAL:
-                    {
-                        String name = mEnvironment.Strings().Find(instruction.arg.id);
-                        Ref<Object> value = CurrentScope()->LookUp(name);
-                        PushOperand(value.IsNull() ? mEnvironment.Nil() : value);
-                    }
-                    break;
-                    
-                case OP_LOAD_FIELD:
-                    {
-                        String name = mEnvironment.Strings().Find(instruction.arg.id);
-                        if (!Self().IsNull())
-                        {
-                            Ref<Object> value = Self()->ObjectScope()->LookUp(name);
-                            PushOperand(value.IsNull() ? mEnvironment.Nil() : value);
-                        }
-                        else
-                        {
-                            PushOperand(Ref<Object>());
-                        }
-                    }
-                    break;
-
-                case OP_LOAD_SELF:
-                    PushOperand(Self());
-                    break;
-
-                case OP_BIND_METHOD:
-                    {
-                        // The id is the string table index of the name and the
-                        // code table index of the compiled body.
-                        int nameId = (instruction.arg.id & 0xffff0000) >> 16;
-                        int bodyId = instruction.arg.id & 0xffff;
-
-                        String name = mEnvironment.Strings().Find(nameId);
-                        Ref<CodeBlock> code = frame.Block().Code()->GetCodeBlock(bodyId);
-
-                        // Capture the current scope.
-                        Ref<Scope> closure = frame.scope;
-                                                
-                        // Get the object we're attaching the method to. Don't
-                        // pop since the target is the result of a bind.
-                        Ref<Object> target = mOperands.Peek();
-                        DynamicObject * object = target->AsDynamic();
-                        ASSERT_NOT_NULL(object);
-
-                        object->AddMethod(target, *this, name, closure, code);
-                    }
-                    break;
-
-                case OP_BIND_OBJECT:
-                    {
-                        // The stack has the target of the object variable and
-                        // the value. The name is in the instruction.
-                        Ref<Object> value = PopOperand();
-                        
-                        // Don't pop since the target is the result of a bind.
-                        Ref<Object> object = mOperands.Peek();
-                        String name = mEnvironment.Strings().Find(instruction.arg.id);
-
-                        object->ObjectScope()->Define(name, value);
-                    }
-                    break;
-
-                case OP_START_OBJECT:
-                    {
-                        Ref<Object> parent = PopOperand();
-                        Ref<Object> object = Object::NewObject(parent);
-                        mObjects.Push(object);
-                        PushOperand(object);
-                    }
-                    break;
-
-                case OP_END_OBJECT:
-                    mObjects.Pop();
-                    break;
-                    
-                case OP_MESSAGE_0:
-                case OP_MESSAGE_1:
-                case OP_MESSAGE_2:
-                case OP_MESSAGE_3:
-                case OP_MESSAGE_4:
-                case OP_MESSAGE_5:
-                case OP_MESSAGE_6:
-                case OP_MESSAGE_7:
-                case OP_MESSAGE_8:
-                case OP_MESSAGE_9:
-                case OP_MESSAGE_10:
-                    SendMessage(instruction.arg.id, instruction.op - OP_MESSAGE_0);
-                    break;
-
-                case OP_TAIL_MESSAGE_0:
-                case OP_TAIL_MESSAGE_1:
-                case OP_TAIL_MESSAGE_2:
-                case OP_TAIL_MESSAGE_3:
-                case OP_TAIL_MESSAGE_4:
-                case OP_TAIL_MESSAGE_5:
-                case OP_TAIL_MESSAGE_6:
-                case OP_TAIL_MESSAGE_7:
-                case OP_TAIL_MESSAGE_8:
-                case OP_TAIL_MESSAGE_9:
-                case OP_TAIL_MESSAGE_10:
-                    // don't do tail call elimination on the very last call
-                    // frame. otherwise, the interpreter will think this fiber
-                    // has completed when it may have just done a 'yield' as a
-                    // tail call and be waiting to resume.
-                    if (mCallStack.Count() > 1)
-                    {
-                        // eliminate the current frame first
-                        mCallStack.Pop();
-                    }
-                    
-                    SendMessage(instruction.arg.id, instruction.op - OP_TAIL_MESSAGE_0);
-                    break;
-
-                case OP_RETURN:
-                    {
-                        int methodId = instruction.arg.id;
-
-                        // The return value is on top of the stack, but we may
-                        // need to discard some operands under it, so pull it
-                        // off.
-                        Ref<Object> result = PopOperand();
-                        
-                        // find the enclosing method on the callstack
-                        int frame;
-                        for (frame = 0; frame < mCallStack.Count(); frame++) {
-                            if (mCallStack[frame].Block().Code()->MethodId() == methodId) {
-                                // found it
-                                break;
-                            }
-                        }
-
-                        if (frame == mCallStack.Count()) {
-                            Error("Cannot return from a block whose enclosing method has already returned.");
-                            // unwind the whole stack now and bail
-                            frame = mCallStack.Count() - 1;
-                        }
-
-                        // unwind until we reach the method
-                        while (frame >= 0) {
-                            // Discard any leftover operands that this call
-                            // frame pushed.
-                            int numOperands = mCallStack.Peek().numOperands;
-                            while (mOperands.Count() > numOperands)
-                            {
-                                PopOperand();
-                            }
-                            
-                            mCallStack.Pop();
-                            frame--;
-                        }
-                        
-                        // Restore the return value so that the code that called
-                        // this method can get it.
-                        PushOperand(result);
-                    }
-                    break;
-
-                case OP_END_BLOCK:
-                    mCallStack.Pop();
-                    break;
-
-                default:
-                    ASSERT(false, "Unknown op code.");
-            }
-        }
-        
-        // the last operation the fiber performed leaves its result on
-        // the stack. that's the result of executing the fiber's block.
-        if (IsDone())
-        {
-            return PopOperand();
-        }
-
-        return Ref<Object>();
-    }
-
-     */
-
     Ref<Object> Fiber::Nil()
     {
         return GetEnvironment().Nil();
@@ -885,10 +564,10 @@ namespace Finch
     {
         using namespace std;
         
-        OpCode op = static_cast<OpCode>((instruction & 0xff000000) >> 24);
-        int a = (instruction & 0x00ff0000) >> 16;
-        int b = (instruction & 0x0000ff00) >> 8;
-        int c = instruction & 0x000000ff;
+        OpCode op = DECODE_OP(instruction);
+        int a = DECODE_A(instruction);
+        int b = DECODE_B(instruction);
+        int c = DECODE_C(instruction);
         
         String opName;
         String action;

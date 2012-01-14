@@ -49,7 +49,7 @@ namespace Finch
         if (mCode.Count() == 0) return;
         
         Instruction instruction = mCode[-1];
-        OpCode op = static_cast<OpCode>((instruction & 0xff000000) >> 24);
+        OpCode op = DECODE_OP(instruction);
         int args = (instruction & 0x00ffffff);
         
         if ((op >= OP_MESSAGE_0) && (op <= OP_MESSAGE_10))
@@ -67,10 +67,10 @@ namespace Finch
         
         cout << prefix;
         
-        OpCode op = static_cast<OpCode>((instruction & 0xff000000) >> 24);
-        int a = (instruction & 0x00ff0000) >> 16;
-        int b = (instruction & 0x0000ff00) >> 8;
-        int c = instruction & 0x000000ff;
+        OpCode op = DECODE_OP(instruction);
+        int a = DECODE_A(instruction);
+        int b = DECODE_B(instruction);
+        int c = DECODE_C(instruction);
         switch (op)
         {
             case OP_CONSTANT:
