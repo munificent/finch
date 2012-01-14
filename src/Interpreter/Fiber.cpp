@@ -354,14 +354,13 @@ namespace Finch
         int oldStackSize = frame.stackStart + frame.Block().NumRegisters();
         mCallFrames.Pop();
         
-        if (mCallFrames.Count() == 0) return;
-    
-        int before = mStack.Count();
-        
         // Discard the callee frame's registers.
-        CallFrame & caller = mCallFrames.Peek();
-        int newStackSize = caller.stackStart +
-        caller.Block().NumRegisters();
+        int newStackSize = 0;
+        if (mCallFrames.Count() > 0)
+        {
+            CallFrame & caller = mCallFrames.Peek();
+            newStackSize = caller.stackStart + caller.Block().NumRegisters();
+        }
         
         // Close any open upvalues that are being popped off
         // the stack.

@@ -40,10 +40,10 @@ namespace Finch
         
         // Create a starting fiber for the expression.
         Ref<Object> block = mEnvironment.CreateBlock(expr);
-        SwitchToFiber(Object::NewFiber(*this, block));
+        Ref<Object> fiber = Object::NewFiber(*this, block);
         
         // Run the interpreter.
-        Ref<Object> result = Run();
+        Ref<Object> result = fiber->AsFiber()->GetFiber().Execute();
         
         if (showResult)
         {
@@ -52,45 +52,7 @@ namespace Finch
             mHost.Output(String(text.str().c_str()));
         }
     }
-    
-    Ref<Object> Interpreter::Run()
-    {
-        Ref<Object> result;
-
-        while (!mCurrentFiber.IsNull())
-        {
-            FiberObject * fiber = mCurrentFiber->AsFiber();
-            result = fiber->GetFiber().Execute();
-            
-            // if we finished the fiber, then switch back to the previous one
-            if (fiber->GetFiber().IsDone())
-            {
-                // forget the old fiber completely
-                mCurrentFiber = Ref<Object>();
-                
-                // and switch back to the previous one
-                if (!mLastFiber.IsNull())
-                {
-                    // push the ending fiber's final value to the fiber we're
-                    // switching to. this lets the dying fiber pass its result
-                    // as the resuming fiber's return value from "run".
-                    // TODO(bob): Figure out how to get this working with
-                    // registers.
-                    /*
-                    mLastFiber->AsFiber()->GetFiber().Push(result);
-                    */
-                    
-                    SwitchToFiber(mLastFiber);
-                }
-            }
-        }
-
-        ASSERT(!result.IsNull(), "The last fiber should have completed and returned a value.");
         
-        // the last fiber's result is the result of the entire execution
-        return result;
-    }
-    
     Ref<Expr> Interpreter::Parse(ILineReader & reader)
     {
         InterpreterErrorReporter errorReporter(*this);
@@ -101,21 +63,6 @@ namespace Finch
         return parser.Parse();
     }
     
-    void Interpreter::SwitchToFiber(Ref<Object> fiber)
-    {
-        mLastFiber = mCurrentFiber;
-        
-        // pause the current fiber
-        if (!mCurrentFiber.IsNull())
-        {
-            FiberObject * oldFiber = mCurrentFiber->AsFiber();
-            oldFiber->GetFiber().Pause();
-        }
-        
-        // jump to the new one
-        mCurrentFiber = fiber;
-    }
-
     void Interpreter::BindMethod(String objectName, String message,
                                  PrimitiveMethod method)
     {

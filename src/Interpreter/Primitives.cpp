@@ -36,7 +36,7 @@ namespace Finch
     }
     
     // Primitives for manipulating fibers.
-    
+    /*
     PRIMITIVE(PrimitiveNewFiber)
     {
         // get block arg
@@ -68,9 +68,7 @@ namespace Finch
         
         // pass the value to the new fiber
         // TODO(bob): Figure out how to do this with registers.
-        /*
         fiberObj->GetFiber().Push(args[1]);
-        */
         
         // run the new fiber
         fiber.GetInterpreter().SwitchToFiber(args[0]);
@@ -82,7 +80,8 @@ namespace Finch
         // onto the stack of the calling fiber here. when we switch back to
         // this fiber, we'll push the passed value on to the stack then.
     }
-    
+    */
+
     PRIMITIVE(PrimitiveGetCallstackDepth)
     {
         return fiber.CreateNumber(fiber.GetCallstackDepth());

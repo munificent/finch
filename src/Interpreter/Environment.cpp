@@ -98,9 +98,11 @@ namespace Finch
         AddPrimitive(primitives, "string-concat:and:",       PrimitiveStringConcat);
         AddPrimitive(primitives, "string-compare:to:",       PrimitiveStringCompare);
         AddPrimitive(primitives, "write:",                   PrimitiveWrite);
+        /*
         AddPrimitive(primitives, "new-fiber:",               PrimitiveNewFiber);
         AddPrimitive(primitives, "current-fiber",            PrimitiveGetCurrentFiber);
         AddPrimitive(primitives, "switch-to-fiber:passing:", PrimitiveSwitchToFiber);
+         */
         AddPrimitive(primitives, "callstack-depth",          PrimitiveGetCallstackDepth);
         
         // The special singleton values.

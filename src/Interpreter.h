@@ -31,10 +31,6 @@ namespace Finch
         
         //### bob: exposing the entire host here is a bit dirty.
         IInterpreterHost & GetHost() { return mHost; }
-        
-        //### bob: should not be part of public api.
-        Ref<Object> GetCurrentFiber() { return mCurrentFiber; }
-        void SwitchToFiber(Ref<Object> fiber);
 
         // Binds an external function to a message handler for a named global
         // object.
@@ -46,14 +42,10 @@ namespace Finch
                         PrimitiveMethod method);
 
     private:
-        Ref<Object> Run();
         Ref<Expr>   Parse(ILineReader & reader);
 
         IInterpreterHost & mHost;
         Environment        mEnvironment;
-        
-        Ref<Object> mLastFiber;
-        Ref<Object> mCurrentFiber;
         
         NO_COPY(Interpreter);
     };

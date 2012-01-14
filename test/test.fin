@@ -82,7 +82,9 @@ load: "../../test/arrays.fin"
 load: "../../test/booleans.fin"
 load: "../../test/cascade.fin"
 load: "../../test/comments.fin"
-load: "../../test/fibers.fin"
+// TODO(bob): Commenting out fibers because I think I'm going to change how they
+// work.
+//load: "../../test/fibers.fin"
 load: "../../test/literals.fin"
 load: "../../test/messages.fin"
 load: "../../test/objects.fin"

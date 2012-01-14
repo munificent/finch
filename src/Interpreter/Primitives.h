@@ -12,9 +12,11 @@ namespace Finch
 
     PRIMITIVE(PrimitiveWrite);
     
+    /*
     PRIMITIVE(PrimitiveNewFiber);
     PRIMITIVE(PrimitiveGetCurrentFiber);
     PRIMITIVE(PrimitiveSwitchToFiber);
+     */
     PRIMITIVE(PrimitiveGetCallstackDepth);
 }
 
