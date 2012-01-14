@@ -43,6 +43,23 @@ namespace Finch
         mCode.Add(instruction);
     }
 
+    void BlockExemplar::MarkTailCall()
+    {
+        // Must have an instruction.
+        if (mCode.Count() == 0) return;
+        
+        Instruction instruction = mCode[-1];
+        OpCode op = static_cast<OpCode>((instruction & 0xff000000) >> 24);
+        int args = (instruction & 0x00ffffff);
+        
+        if ((op >= OP_MESSAGE_0) && (op <= OP_MESSAGE_10))
+        {
+            int numArgs = op - OP_MESSAGE_0;
+            OpCode tailOp = static_cast<OpCode>(OP_TAIL_MESSAGE_0 + numArgs);
+            mCode[-1] = (tailOp << 24) | args;
+        }
+    }
+
 #ifdef DEBUG
     void BlockExemplar::DumpInstruction(Environment & environment, const String & prefix, Instruction instruction)
     {
@@ -146,22 +163,5 @@ namespace Finch
         }
     }
 #endif
-    
-    /*    
-    void CodeBlock::MarkTailCalls()
-    {
-        for (int i = 1; i < mInstructions.Count(); i++)
-        {
-            if ((mInstructions[i].op == OP_END_BLOCK) &&
-                (mInstructions[i - 1].op >= OP_MESSAGE_0) &&
-                (mInstructions[i - 1].op <= OP_MESSAGE_10))
-            {
-                int numArgs = mInstructions[i - 1].op - OP_MESSAGE_0;
-                mInstructions[i - 1].op =
-                    static_cast<OpCode>(OP_TAIL_MESSAGE_0 + numArgs);
-            }
-        }
-    }
-     */
 }
 
