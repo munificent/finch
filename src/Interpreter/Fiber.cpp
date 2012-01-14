@@ -18,8 +18,8 @@
 #define TRACE_INSTRUCTION(instruction) TraceInstruction(instruction)
 #define TRACE_STACK() TraceStack()
 #else
-#define TRACE_INSTRUCTION(instruction) 0
-#define TRACE_STACK() 0
+#define TRACE_INSTRUCTION(instruction) ;
+#define TRACE_STACK() ;
 #endif
 
 namespace Finch

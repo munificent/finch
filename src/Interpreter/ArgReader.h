@@ -27,9 +27,9 @@ namespace Finch
         }
 
     private:
+        Array<Ref<Object> > & mStack;
         int mFirstArg;
         int mNumArgs;
-        Array<Ref<Object> > & mStack;
     };
 }
 
