@@ -17,6 +17,8 @@ namespace Finch
         :   mTokens(tokens)
         {}
         
+        virtual ~Parser() {}
+        
         // Gets whether or not the token source for this parser is infinite.
         bool IsInfinite() const;
         

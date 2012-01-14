@@ -49,6 +49,7 @@ PRIMITIVE(LoadFile)
     Ref<ILineReader> reader = OpenFile(filePath);
     
     fiber.GetInterpreter().Interpret(*reader, false);
+    return fiber.Nil();
 }
 
 int main (int argc, char * const argv[])

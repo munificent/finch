@@ -131,7 +131,7 @@ namespace Finch
         // Keep the start index in bounds.
         if (startIndex >= Length()) startIndex = Length() - 1;
         
-        char* found = strstr(mData->chars + startIndex, other.CString());
+        const char* found = strstr(mData->chars + startIndex, other.CString());
         if (found == NULL) return -1;
         
         return static_cast<int>(found - mData->chars);

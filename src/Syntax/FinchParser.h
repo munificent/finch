@@ -22,6 +22,8 @@ namespace Finch
             mErrorReporter(errorReporter)
         {}
         
+        virtual ~FinchParser() {}
+        
         // Reads from the token source and returns the parsed expression. If
         // this is an infinite source, it will return as soon as a complete
         // expression is parsed. Otherwise, it will parse the entire source.
