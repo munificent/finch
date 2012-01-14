@@ -81,11 +81,8 @@ namespace Finch
 
                 case OP_BLOCK:
                 {
-                    //cout << "BLOCK    " << a << " -> " << b << endl;
                     // Create a new block from the exemplar.
                     Ref<BlockExemplar> exemplar = frame.Block().GetExemplar(a);
-
-                    // TODO(bob): Capture closure.
 
                     Ref<Object> block = Object::NewBlock(GetEnvironment(),
                         exemplar, Self());
@@ -222,7 +219,6 @@ namespace Finch
                         value = GetEnvironment().Nil();
                     }
 
-                    // TODO(bob): Handle undefined globals.
                     Store(frame, b, value);
                     break;
                 }
@@ -483,9 +479,6 @@ namespace Finch
     void Fiber::CallBlock(Ref<Object> receiver, Ref<Object> blockObj, ArgReader & args)
     {
         BlockObject & block = *(blockObj->AsBlock());
-
-        // TODO(bob): Need to handle binding self.
-        // TODO(bob): Need to handle param/arg count mismatch.
 
         // Allocate this frame's registers.
         // TODO(bob): Make this a single operation on Array.

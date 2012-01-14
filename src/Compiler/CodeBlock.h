@@ -68,7 +68,7 @@ namespace Finch
         OP_RETURN,        // A = method id to return from,
                           // B = register with value to return
         
-        // TODO(bob): There are pseudo-ops that only appear following an
+        // TODO(bob): These are pseudo-ops that only appear following an
         // OP_BLOCK instruction. If we want to minimize the number of ops, we
         // could reuse existing opcodes for these.
         OP_CAPTURE_LOCAL,   // A = register of local
