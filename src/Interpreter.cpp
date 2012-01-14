@@ -1,5 +1,6 @@
 #include <sstream>
 
+#include "ArrayObject.h"
 #include "ArrayPrimitives.h"
 #include "BlockObject.h"
 #include "BlockPrimitives.h"
@@ -17,9 +18,11 @@
 #include "IoPrimitives.h"
 #include "Lexer.h"
 #include "LineNormalizer.h"
+#include "NumberObject.h"
 #include "NumberPrimitives.h"
 #include "ObjectPrimitives.h"
 #include "Primitives.h"
+#include "StringObject.h"
 #include "StringPrimitives.h"
 
 namespace Finch
@@ -148,8 +151,8 @@ namespace Finch
         
         // Create a starting fiber for the expression.
         Ref<Block> block = Compiler::CompileTopLevel(*this, *expr);
-        Ref<Object> blockObj = Object::NewBlock(*this, block, mNil);
-        Ref<Object> fiber = Object::NewFiber(*this, blockObj);
+        Ref<Object> blockObj = NewBlock(block, mNil);
+        Ref<Object> fiber = NewFiber(blockObj);
         
         // Run the interpreter.
         Ref<Object> result = fiber->AsFiber()->GetFiber().Execute();
@@ -243,6 +246,50 @@ namespace Finch
         return mStrings.Find(nameId);
     }
     
+    
+    Ref<Object> Interpreter::NewObject(Ref<Object> parent, String name)
+    {
+        Ref<Object> object = Ref<Object>(new DynamicObject(parent, name));
+        
+        // if the object has no parent, use itself as it
+        if (parent.IsNull())
+        {
+            object->SetParent(object);
+        }
+        
+        return object;
+    }
+    
+    Ref<Object> Interpreter::NewObject(Ref<Object> parent)
+    {
+        return NewObject(parent, "");
+    }
+    
+    Ref<Object> Interpreter::NewNumber(double value)
+    {
+        return Ref<Object>(new NumberObject(mNumberPrototype, value));
+    }
+    
+    Ref<Object> Interpreter::NewString(String value)
+    {
+        return Ref<Object>(new StringObject(mStringPrototype, value));
+    }
+    
+    Ref<Object> Interpreter::NewArray(int capacity)
+    {
+        return Ref<Object>(new ArrayObject(mArrayPrototype, capacity));
+    }
+    
+    Ref<Object> Interpreter::NewBlock(Ref<Block> block, Ref<Object> self)
+    {
+        return Ref<Object>(new BlockObject(mBlockPrototype, block, self));
+    }
+    
+    Ref<Object> Interpreter::NewFiber(Ref<Object> block)
+    {
+        return Ref<Object>(new FiberObject(mFiberPrototype, *this, block));
+    }
+    
     Ref<Expr> Interpreter::Parse(ILineReader & reader)
     {
         InterpreterErrorReporter errorReporter(*this);
@@ -256,7 +303,7 @@ namespace Finch
     Ref<Object> Interpreter::MakeGlobal(const char * name)
     {
         int index = DefineGlobal(String(name));
-        Ref<Object> global = Object::NewObject(mObject, name);
+        Ref<Object> global = NewObject(mObject, name);
         SetGlobal(index, global);
         return global;
     }

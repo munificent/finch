@@ -206,7 +206,7 @@ namespace Finch
         
     void Compiler::Visit(const NumberExpr & expr, int dest)
     {
-        Ref<Object> number = Object::NewNumber(mInterpreter, expr.GetValue());
+        Ref<Object> number = mInterpreter.NewNumber(expr.GetValue());
         CompileConstant(number, dest);
     }
     
@@ -322,7 +322,7 @@ namespace Finch
     
     void Compiler::Visit(const StringExpr & expr, int dest)
     {
-        Ref<Object> string = Object::NewString(mInterpreter, expr.GetValue());
+        Ref<Object> string = mInterpreter.NewString(expr.GetValue());
         CompileConstant(string, dest);
     }
     

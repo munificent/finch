@@ -52,13 +52,16 @@ namespace Finch
         
         String FindGlobalName(int index);
         
-        // Get the core built-in objects.
-        Ref<Object> ObjectPrototype()   const { return mObject; }
-        Ref<Object> ArrayPrototype()    const { return mArrayPrototype; }
-        Ref<Object> BlockPrototype()    const { return mBlockPrototype; }
-        Ref<Object> FiberPrototype()    const { return mFiberPrototype; }
-        Ref<Object> NumberPrototype()   const { return mNumberPrototype; }
-        Ref<Object> StringPrototype()   const { return mStringPrototype; }
+        // Object constructors.
+        Ref<Object> NewObject(Ref<Object> parent, String name);
+        Ref<Object> NewObject(Ref<Object> parent);
+        Ref<Object> NewNumber(double value);
+        Ref<Object> NewString(String value);
+        Ref<Object> NewArray(int capacity);
+        Ref<Object> NewBlock(Ref<Block> block, Ref<Object> self);
+        Ref<Object> NewFiber(Ref<Object> block);
+        
+        // Get built-in objects.
         Ref<Object> Nil()               const { return mNil; }
         Ref<Object> True()              const { return mTrue; }
         Ref<Object> False()             const { return mFalse; }

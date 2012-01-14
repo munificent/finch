@@ -33,16 +33,6 @@ namespace Finch
     class Object
     {
     public:
-        // virtual constructors
-        static Ref<Object> NewObject(Ref<Object> parent, String name);
-        static Ref<Object> NewObject(Ref<Object> parent);
-        static Ref<Object> NewNumber(Interpreter & interpreter, double value);
-        static Ref<Object> NewString(Interpreter & interpreter, String value);
-        static Ref<Object> NewArray(Interpreter & interpreter, int capacity);
-        static Ref<Object> NewBlock(Interpreter & interpreter, Ref<Block> block,
-                                    Ref<Object> self);
-        static Ref<Object> NewFiber(Interpreter & interpreter, Ref<Object> block);
-
         virtual ~Object() {}
 
         // TODO(bob): It seems weird that these are on Object even though only

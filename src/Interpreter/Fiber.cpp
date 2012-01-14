@@ -73,7 +73,7 @@ namespace Finch
                     // The parent is already in the register that the child
                     // will be placed into.
                     Ref<Object> parent = Load(frame, a);
-                    Ref<Object> object = Object::NewObject(parent);
+                    Ref<Object> object = mInterpreter.NewObject(parent);
                     Store(frame, a, object);
                     break;
                 }
@@ -82,10 +82,7 @@ namespace Finch
                 {
                     // Create a new block object from the block.
                     Ref<Block> block = frame.Block().GetBlock(a);
-
-                    Ref<Object> blockObj = Object::NewBlock(mInterpreter,
-                        block, Self());
-
+                    Ref<Object> blockObj = mInterpreter.NewBlock(block, Self());
                     BlockObject * blockPtr = blockObj->AsBlock();
 
                     // Capture upvalues.
@@ -119,7 +116,7 @@ namespace Finch
                 {
                     // Create the empty array with enough capacity. Subsequent
                     // OP_ARRAY_ELEMENT instructions will fill it.
-                    Ref<Object> array = Object::NewArray(mInterpreter, a);
+                    Ref<Object> array = mInterpreter.NewArray(a);
                     Store(frame, b, array);
                     break;
                 }
@@ -428,9 +425,8 @@ namespace Finch
                 return primitive(*this, self, args);
             }
 
-            // Not found yet, so walk up the parent chain until we bottom out
-            // at Object.
-            if (receiver == mInterpreter.ObjectPrototype()) break;
+            // If we're at the root of the inheritance chain, then stop.
+            if (receiver->Parent() == receiver) break;
             receiver = receiver->Parent();
         }
 
@@ -461,12 +457,12 @@ namespace Finch
 
     Ref<Object> Fiber::CreateNumber(double value)
     {
-        return Object::NewNumber(mInterpreter, value);
+        return mInterpreter.NewNumber(value);
     }
 
     Ref<Object> Fiber::CreateString(const String & value)
     {
-        return Object::NewString(mInterpreter, value);
+        return mInterpreter.NewString(value);
     }
 
     void Fiber::CallBlock(Ref<Object> receiver, Ref<Object> blockObj, ArgReader & args)
