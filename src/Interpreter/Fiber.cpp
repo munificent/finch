@@ -2,7 +2,7 @@
 
 #include "ArrayObject.h"
 #include "BlockObject.h"
-#include "CodeBlock.h"
+#include "Block.h"
 #include "DynamicObject.h"
 #include "Environment.h"
 #include "FiberObject.h"
@@ -81,16 +81,16 @@ namespace Finch
 
                 case OP_BLOCK:
                 {
-                    // Create a new block from the exemplar.
-                    Ref<BlockExemplar> exemplar = frame.Block().GetExemplar(a);
+                    // Create a new block object from the block.
+                    Ref<Block> block = frame.Block().GetBlock(a);
 
-                    Ref<Object> block = Object::NewBlock(GetEnvironment(),
-                        exemplar, Self());
+                    Ref<Object> blockObj = Object::NewBlock(GetEnvironment(),
+                        block, Self());
 
-                    BlockObject * blockObj = block->AsBlock();
+                    BlockObject * blockPtr = blockObj->AsBlock();
 
                     // Capture upvalues.
-                    for (int i = 0; i < exemplar->NumUpvalues(); i++)
+                    for (int i = 0; i < block->NumUpvalues(); i++)
                     {
                         Instruction capture = frame.Block().Code()[frame.ip++];
                         OpCode captureOp = DECODE_OP(capture);
@@ -99,12 +99,12 @@ namespace Finch
                         switch (captureOp)
                         {
                             case OP_CAPTURE_LOCAL:
-                                blockObj->AddUpvalue(CaptureUpvalue(
+                                blockPtr->AddUpvalue(CaptureUpvalue(
                                     frame.stackStart + captureIndex));
                                 break;
 
                             case OP_CAPTURE_UPVALUE:
-                                blockObj->AddUpvalue(frame.Block().GetUpvalue(captureIndex));
+                                blockPtr->AddUpvalue(frame.Block().GetUpvalue(captureIndex));
                                 break;
 
                             default:
@@ -112,7 +112,7 @@ namespace Finch
                         }
                     }
 
-                    Store(frame, b, block);
+                    Store(frame, b, blockObj);
                     break;
                 }
 

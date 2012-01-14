@@ -21,24 +21,24 @@ namespace Finch
 {
     int Compiler::sNextMethodId = 1;
     
-    Ref<BlockExemplar> Compiler::CompileTopLevel(Environment & environment, const Expr & expr)
+    Ref<Block> Compiler::CompileTopLevel(Environment & environment, const Expr & expr)
     {
         Array<String> params;
         Compiler compiler(environment, NULL);
-        compiler.Compile(BlockExemplar::BLOCK_METHOD_ID, params, expr);
+        compiler.Compile(Block::BLOCK_METHOD_ID, params, expr);
         
         /*
         // TODO(bob): Testing!
-        compiler.mExemplar->DebugDump(environment, "");
+        compiler.mBlock->DebugDump(environment, "");
         */
         
-        return compiler.mExemplar;
+        return compiler.mBlock;
     }
         
     Compiler::Compiler(Environment & environment, Compiler * parent)
     :   mEnvironment(environment),
         mParent(parent),
-        mExemplar(),
+        mBlock(),
         mInUseRegisters(0),
         mLocals(),
         mObjectLiterals(),
@@ -48,7 +48,7 @@ namespace Finch
     void Compiler::Compile(int methodId, const Array<String> & params,
                            const Expr & expr)
     {
-        mExemplar = Ref<BlockExemplar>(new BlockExemplar(methodId, params));
+        mBlock = Ref<Block>(new Block(methodId, params));
         
         // Reserve registers for the params. These have to go first because the
         // caller will place them here.
@@ -76,15 +76,15 @@ namespace Finch
         // Need to figure out how it's going to work with the register window
         // stuff for passing arguments.
         /*
-        if (!mHasReturn) mExemplar->MarkTailCall();
+        if (!mHasReturn) mBlock->MarkTailCall();
         */
         
-        mExemplar->Write(OP_END, resultRegister);
+        mBlock->Write(OP_END, resultRegister);
         
         // Now that all upvalues for this block are known (and its contained
         // blocks have also been compiled, which due to closure flattening may
         // upvalues to this block), we can store the number of upvalues.
-        mExemplar->SetNumUpvalues(mUpvalues.Count());
+        mBlock->SetNumUpvalues(mUpvalues.Count());
     }
     
     void Compiler::Visit(const ArrayExpr & expr, int dest)
@@ -92,7 +92,7 @@ namespace Finch
         // Create the empty array.
         // TODO(bob): Only allows arrays up to 255 elements. Should use two
         // registers for size.
-        mExemplar->Write(OP_ARRAY, expr.Elements().Count(), dest);
+        mBlock->Write(OP_ARRAY, expr.Elements().Count(), dest);
         
         // Write the instructions to add each item.
         int elementReg = ReserveRegister();
@@ -102,7 +102,7 @@ namespace Finch
             expr.Elements()[i]->Accept(*this, elementReg);
             
             // Now add it to the array.
-            mExemplar->Write(OP_ARRAY_ELEMENT, elementReg, dest);
+            mBlock->Write(OP_ARRAY_ELEMENT, elementReg, dest);
         }
         ReleaseRegister();
     }
@@ -118,7 +118,7 @@ namespace Finch
     
     void Compiler::Visit(const BlockExpr & expr, int dest)
     {
-        CompileNestedBlock(BlockExemplar::BLOCK_METHOD_ID, expr, dest);
+        CompileNestedBlock(Block::BLOCK_METHOD_ID, expr, dest);
     }
     
     void Compiler::Visit(const MessageExpr & expr, int dest)
@@ -146,7 +146,7 @@ namespace Finch
             OpCode op = static_cast<OpCode>(OP_MESSAGE_0 +
                 message.GetArguments().Count());
             
-            mExemplar->Write(op, messageId, receiverReg, dest);
+            mBlock->Write(op, messageId, receiverReg, dest);
             
             // Free the argument registers.
             for (int arg = 0; arg < message.GetArguments().Count(); arg++)
@@ -165,13 +165,13 @@ namespace Finch
         {
             // Accessing a top-level name, so it's a global.
             int index = mEnvironment.DefineGlobal(expr.Name());
-            mExemplar->Write(OP_GET_GLOBAL, index, dest);
+            mBlock->Write(OP_GET_GLOBAL, index, dest);
         }
         else if (Expr::IsField(expr.Name()))
         {
             // Accessing a field.
             int index = mEnvironment.Strings().Add(expr.Name());
-            mExemplar->Write(OP_GET_FIELD, index, dest);
+            mBlock->Write(OP_GET_FIELD, index, dest);
         }
         else
         {
@@ -185,12 +185,12 @@ namespace Finch
             if (isLocal)
             {
                 // Copy the local to the destination register.
-                mExemplar->Write(OP_MOVE, index, dest);
+                mBlock->Write(OP_MOVE, index, dest);
             }
             else if (resolvedUpvalue.IsValid())
             {
                 // Load the upvalue into the destination register.
-                mExemplar->Write(OP_GET_UPVALUE, resolvedUpvalue.Slot(), dest);
+                mBlock->Write(OP_GET_UPVALUE, resolvedUpvalue.Slot(), dest);
             }
             else
             {
@@ -199,7 +199,7 @@ namespace Finch
                 // as long as the name is initialized before it's actually
                 // accessed at runtime, this will work.
                 int index = mEnvironment.DefineGlobal(expr.Name());
-                mExemplar->Write(OP_GET_GLOBAL, index, dest);
+                mBlock->Write(OP_GET_GLOBAL, index, dest);
             }
         }
     }
@@ -215,7 +215,7 @@ namespace Finch
         // Compile the parent. It will go into the same register that we'll
         // put the new object into.
         expr.Parent()->Accept(*this, dest);
-        mExemplar->Write(OP_OBJECT, dest);
+        mBlock->Write(OP_OBJECT, dest);
         
         // Keep track of the fact that we're inside an object literal.
         mObjectLiterals.Push(dest);
@@ -235,7 +235,7 @@ namespace Finch
         // Compile the return value.
         expr.Result()->Accept(*this, dest);
         
-        mExemplar->Write(OP_RETURN, method->mExemplar->MethodId(), dest);
+        mBlock->Write(OP_RETURN, method->mBlock->MethodId(), dest);
         
         // Disable tail calls for the method.
         method->mHasReturn = true;
@@ -248,12 +248,12 @@ namespace Finch
         if (mObjectLiterals.Count() > 0)
         {
             int selfReg = mObjectLiterals.Peek();
-            mExemplar->Write(OP_MOVE, selfReg, dest);
+            mBlock->Write(OP_MOVE, selfReg, dest);
         }
         else
         {
             // Do a normal dynamic lookup on `self`.
-            mExemplar->Write(OP_SELF, dest);
+            mBlock->Write(OP_SELF, dest);
         }
     }
     
@@ -300,7 +300,7 @@ namespace Finch
                 expr.Value()->Accept(*this, dest);
                 
                 // Store the upvalue.
-                mExemplar->Write(OP_SET_UPVALUE, resolvedUpvalue.Slot(), dest);
+                mBlock->Write(OP_SET_UPVALUE, resolvedUpvalue.Slot(), dest);
             }
             else
             {
@@ -314,7 +314,7 @@ namespace Finch
                 if (index != -1)
                 {
                     // We're compiling a top-level expression, so define it as a global.
-                    mExemplar->Write(OP_SET_GLOBAL, index, dest);
+                    mBlock->Write(OP_SET_GLOBAL, index, dest);
                 }
             }
         }
@@ -370,7 +370,7 @@ namespace Finch
             
             // Also copy to the destination register.
             // Handles cases like: foo: bar <- baz
-            mExemplar->Write(OP_MOVE, local, dest);
+            mBlock->Write(OP_MOVE, local, dest);
         }
     }
     
@@ -443,7 +443,7 @@ namespace Finch
         
         // We're compiling a top-level expression, so define it as a global.
         int index = mEnvironment.DefineGlobal(name);
-        mExemplar->Write(OP_SET_GLOBAL, index, dest);
+        mBlock->Write(OP_SET_GLOBAL, index, dest);
     }
     
     void Compiler::CompileSetField(const String & name, const Expr & value, int dest)
@@ -451,7 +451,7 @@ namespace Finch
         value.Accept(*this, dest);
         
         int nameId = mEnvironment.Strings().Add(name);
-        mExemplar->Write(OP_SET_FIELD, nameId, dest);
+        mBlock->Write(OP_SET_FIELD, nameId, dest);
     }
 
     void Compiler::CompileNestedBlock(int methodId, const BlockExpr & block, int dest)
@@ -459,9 +459,9 @@ namespace Finch
         Compiler compiler(mEnvironment, this);
         compiler.Compile(methodId, block.Params(), *block.Body());
         
-        int index = mExemplar->AddExemplar(compiler.mExemplar);
+        int index = mBlock->AddBlock(compiler.mBlock);
         
-        mExemplar->Write(OP_BLOCK, index, dest);
+        mBlock->Write(OP_BLOCK, index, dest);
 
         // Capture the upvalues.
         for (int i = 0; i < compiler.mUpvalues.Count(); i++)
@@ -470,12 +470,12 @@ namespace Finch
             if (upvalue.IsLocal())
             {
                 // Closing over a local.
-                mExemplar->Write(OP_CAPTURE_LOCAL, upvalue.Index());
+                mBlock->Write(OP_CAPTURE_LOCAL, upvalue.Index());
             }
             else
             {
                 // Closing over an upvalue.
-                mExemplar->Write(OP_CAPTURE_UPVALUE, upvalue.Index());
+                mBlock->Write(OP_CAPTURE_UPVALUE, upvalue.Index());
             }
         }
     }
@@ -484,8 +484,8 @@ namespace Finch
     {
         // TODO(bob): Should check for duplicates. Only need one copy of any
         // given constant.
-        int index = mExemplar->AddConstant(constant);
-        mExemplar->Write(OP_CONSTANT, index, dest);
+        int index = mBlock->AddConstant(constant);
+        mBlock->Write(OP_CONSTANT, index, dest);
     }
     
     void Compiler::CompileDefinitions(const DefineExpr & expr, int dest)
@@ -507,13 +507,13 @@ namespace Finch
                 
                 // TODO(bob): Right now, we're only giving 8-bits to the name,
                 // which will run out quickly.
-                mExemplar->Write(OP_DEF_METHOD, name, value, dest);
+                mBlock->Write(OP_DEF_METHOD, name, value, dest);
             }
             else
             {
                 // Compile the initializer.
                 definition.GetBody()->Accept(*this, value);
-                mExemplar->Write(OP_DEF_FIELD, name, value, dest);
+                mBlock->Write(OP_DEF_FIELD, name, value, dest);
             }
             
             ReleaseRegister();
@@ -524,7 +524,7 @@ namespace Finch
     {
         Compiler * compiler = this;
         while ((compiler != NULL) &&
-            (compiler->mExemplar->MethodId() == BlockExemplar::BLOCK_METHOD_ID))
+            (compiler->mBlock->MethodId() == Block::BLOCK_METHOD_ID))
         {
             compiler = compiler->mParent;
         }
@@ -536,9 +536,9 @@ namespace Finch
     {
         mInUseRegisters++;
         
-        if (mExemplar->NumRegisters() < mInUseRegisters)
+        if (mBlock->NumRegisters() < mInUseRegisters)
         {
-            mExemplar->SetNumRegisters(mInUseRegisters);
+            mBlock->SetNumRegisters(mInUseRegisters);
         }
         
         return mInUseRegisters - 1;

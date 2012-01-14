@@ -3,10 +3,11 @@
 #include <iostream>
 
 #include "Array.h"
-#include "CodeBlock.h"
+#include "Block.h"
 #include "Expr.h"
 #include "Macros.h"
-#include "IExprCompiler.h"#include "Object.h"
+#include "IExprCompiler.h"
+#include "Object.h"
 #include "Ref.h"
 #include "Stack.h"
 
@@ -19,7 +20,7 @@ namespace Finch
     public:
         // Compiles the given expression to a new top-level block. Used for
         // compiling REPL expressions.
-        static Ref<BlockExemplar> CompileTopLevel(Environment & environment, const Expr & expr);
+        static Ref<Block> CompileTopLevel(Environment & environment, const Expr & expr);
         
     private:
         class Upvalue
@@ -96,7 +97,7 @@ namespace Finch
         // The compiler for the block containing the block this one is compiling
         // or NULL if this is compiling a top-level block.
         Compiler * mParent;
-        Ref<BlockExemplar> mExemplar;
+        Ref<Block> mBlock;
         int mInUseRegisters;
         
         // Names of local variables declared in this block.

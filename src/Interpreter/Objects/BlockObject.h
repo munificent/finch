@@ -2,7 +2,7 @@
 
 #include <iostream>
 
-#include "CodeBlock.h"
+#include "Block.h"
 #include "Expr.h"
 #include "Macros.h"
 #include "Object.h"
@@ -14,19 +14,19 @@ namespace Finch
 {
     using std::ostream;
     
-    class BlockExemplar;
+    class Block;
     
     // Object class for a block: an invokable expression and the scope that
     // encloses it.
     class BlockObject : public Object
     {
     public:
-        BlockObject(Ref<Object> parent, Ref<BlockExemplar> exemplar,
+        BlockObject(Ref<Object> parent, Ref<Block> block,
                     Ref<Object> self)
         :   Object(parent),
-            mExemplar(exemplar),
+            mBlock(block),
             mSelf(self),
-            mUpvalues(exemplar->NumUpvalues())
+            mUpvalues(block->NumUpvalues())
         {}
         
         bool IsMethod() const { return !mSelf.IsNull(); }
@@ -35,12 +35,12 @@ namespace Finch
         // block.
         Ref<Object> Self() const { return mSelf; }
 
-        int NumRegisters() const { return mExemplar->NumRegisters(); }
-        int NumParams() const { return mExemplar->Params().Count(); }
-        int MethodId() const { return mExemplar->MethodId(); }
+        int NumRegisters() const { return mBlock->NumRegisters(); }
+        int NumParams() const { return mBlock->Params().Count(); }
+        int MethodId() const { return mBlock->MethodId(); }
         
         const Ref<Object> GetConstant(int index) const;
-        const Ref<BlockExemplar> GetExemplar(int index) const;
+        const Ref<Block> GetBlock(int index) const;
         
         // Gets the compiled bytecode for the block.
         const Array<Instruction> & Code() const;
@@ -56,7 +56,7 @@ namespace Finch
         }
         
     private:
-        Ref<BlockExemplar>      mExemplar;
+        Ref<Block>              mBlock;
         Ref<Object>             mSelf;
         Array<Ref<Upvalue> >    mUpvalues;
     };

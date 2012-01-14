@@ -8,8 +8,6 @@
 #include "Object.h"
 #include "Ref.h"
 
-// TODO(bob): Rename file.
-
 #define DECODE_OP(inst) (static_cast<OpCode>((inst & 0xff000000) >> 24))
 #define DECODE_A(inst)  ((inst & 0x00ff0000) >> 16)
 #define DECODE_B(inst)  ((inst & 0x0000ff00) >> 8)
@@ -59,7 +57,7 @@ namespace Finch
         OP_GET_GLOBAL,    // A = index of global, B = dest reg
         OP_SET_GLOBAL,    // A = index of global, B = value reg
         OP_DEF_METHOD,    // A = index of method name in string table,
-                          // B = index of method body exemplar,
+                          // B = index of method body block,
                           // C = object method is being defined on
         OP_DEF_FIELD,     // A = index of field name in string table,
                           // B = register with field value,
@@ -78,14 +76,14 @@ namespace Finch
     // A compiled block. This contains the state that all blocks created from
     // evaluating the same chunk of code share: the compiled bytecode, constant
     // table etc. It does not contain the closure: that's owned by BlockObject.
-    class BlockExemplar
+    class Block
     {
     public:
         // Method ID for blocks that are not methods.
         static const int BLOCK_METHOD_ID = -1;
         
-        // Creates a new BlockExemplar with the given parameters.
-        BlockExemplar(int methodId, const Array<String> & params);
+        // Creates a new Block with the given parameters.
+        Block(int methodId, const Array<String> & params);
         
         int MethodId() const { return mMethodId; }
         
@@ -104,11 +102,11 @@ namespace Finch
         // Gets the constant at the given index in the constant pool.
         const Ref<Object> GetConstant(int index) const { return mConstants[index]; }
         
-        // Adds the given exemplar to the pool and returns its index.
-        int AddExemplar(Ref<BlockExemplar> exemplar);
+        // Adds the given block to the pool and returns its index.
+        int AddBlock(Ref<Block> block);
         
-        // Gets the exemplar at the given index in the pool.
-        const Ref<BlockExemplar> GetExemplar(int index) const { return mExemplars[index]; }
+        // Gets the child block at the given index in the pool.
+        const Ref<Block> GetBlock(int index) const { return mBlocks[index]; }
         
         // Gets the bytecode for this block.
         const Array<Instruction> & Code() const { return mCode; }
@@ -129,8 +127,8 @@ namespace Finch
         Array<String>       mParams;
         Array<Instruction>  mCode;
         Array<Ref<Object> > mConstants;
-        // Exemplars for blocks defined within this one.
-        Array<Ref<BlockExemplar> > mExemplars;
+        // Blocks contained within this one.
+        Array<Ref<Block> >  mBlocks;
         int                 mNumRegisters;
         int                 mNumUpvalues;
     };

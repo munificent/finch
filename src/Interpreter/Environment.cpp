@@ -167,8 +167,8 @@ namespace Finch
     // TODO(bob): Come up with better name for this.
     Ref<Object> Environment::CreateBlock(Ref<Expr> expr)
     {
-        Ref<BlockExemplar> exemplar = Compiler::CompileTopLevel(*this, *expr);
-        return Object::NewBlock(*this, exemplar, mNil);
+        Ref<Block> block = Compiler::CompileTopLevel(*this, *expr);
+        return Object::NewBlock(*this, block, mNil);
     }
     
     Ref<Object> Environment::MakeGlobal(const char * name)

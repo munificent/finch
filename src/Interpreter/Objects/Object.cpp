@@ -46,7 +46,7 @@ namespace Finch
         return Ref<Object>(new ArrayObject(env.ArrayPrototype(), capacity));
     }
 
-    Ref<Object> Object::NewBlock(Environment & env, Ref<BlockExemplar> block,
+    Ref<Object> Object::NewBlock(Environment & env, Ref<Block> block,
                                  Ref<Object> self)
     {
         return Ref<Object>(new BlockObject(env.BlockPrototype(), block, self));

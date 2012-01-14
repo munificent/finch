@@ -1,4 +1,4 @@
-#include "CodeBlock.h"
+#include "Block.h"
 
 #ifdef DEBUG
 #include "Environment.h"
@@ -6,7 +6,7 @@
 
 namespace Finch
 {
-    BlockExemplar::BlockExemplar(int methodId, const Array<String> & params)
+    Block::Block(int methodId, const Array<String> & params)
     :   mMethodId(methodId),
         mParams(params),
         mCode(),
@@ -15,21 +15,21 @@ namespace Finch
     {
     }
 
-    int BlockExemplar::AddConstant(Ref<Object> object)
+    int Block::AddConstant(Ref<Object> object)
     {
         // TODO(bob): Unify duplicates.
         mConstants.Add(object);
         return mConstants.Count() - 1;
     }
     
-    int BlockExemplar::AddExemplar(Ref<BlockExemplar> exemplar)
+    int Block::AddBlock(Ref<Block> block)
     {
-        mExemplars.Add(exemplar);
-        return mExemplars.Count() - 1;
+        mBlocks.Add(block);
+        return mBlocks.Count() - 1;
     }
     
     // Writes an instruction.
-    void BlockExemplar::Write(OpCode op, int a, int b, int c)
+    void Block::Write(OpCode op, int a, int b, int c)
     {
         ASSERT_RANGE(a, 256);
         ASSERT_RANGE(b, 256);
@@ -43,7 +43,7 @@ namespace Finch
         mCode.Add(instruction);
     }
 
-    void BlockExemplar::MarkTailCall()
+    void Block::MarkTailCall()
     {
         // Must have an instruction.
         if (mCode.Count() == 0) return;
@@ -61,7 +61,7 @@ namespace Finch
     }
 
 #ifdef DEBUG
-    void BlockExemplar::DumpInstruction(Environment & environment, const String & prefix, Instruction instruction)
+    void Block::DumpInstruction(Environment & environment, const String & prefix, Instruction instruction)
     {
         using namespace std;
         
@@ -151,11 +151,11 @@ namespace Finch
         // Dump the child block too.
         if (op == OP_BLOCK)
         {
-            mExemplars[a]->DebugDump(environment, prefix + "  ");
+            mBlocks[a]->DebugDump(environment, prefix + "  ");
         }
     }
     
-    void BlockExemplar::DebugDump(Environment & environment, const String & prefix)
+    void Block::DebugDump(Environment & environment, const String & prefix)
     {
         for (int i = 0; i < mCode.Count(); i++)
         {

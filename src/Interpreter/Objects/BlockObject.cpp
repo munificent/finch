@@ -5,18 +5,18 @@ namespace Finch
     
     const Ref<Object> BlockObject::GetConstant(int index) const
     {
-        return mExemplar->GetConstant(index);
+        return mBlock->GetConstant(index);
     }
     
-    const Ref<BlockExemplar> BlockObject::GetExemplar(int index) const
+    const Ref<Block> BlockObject::GetBlock(int index) const
     {
-        return mExemplar->GetExemplar(index);
+        return mBlock->GetBlock(index);
     }
     
     // Gets the compiled bytecode for the block.
     const Array<Instruction> & BlockObject::Code() const
     {
-        return mExemplar->Code();
+        return mBlock->Code();
     }
     
     void BlockObject::AddUpvalue(Ref<Upvalue> upvalue)

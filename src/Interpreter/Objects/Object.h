@@ -17,7 +17,7 @@ namespace Finch
 
     class Expr;
     class ArrayObject;
-    class BlockExemplar;
+    class Block;
     class BlockObject;
     class DynamicObject;
     class Environment;
@@ -39,7 +39,7 @@ namespace Finch
         static Ref<Object> NewNumber(Environment & env, double value);
         static Ref<Object> NewString(Environment & env, String value);
         static Ref<Object> NewArray(Environment & env, int capacity);
-        static Ref<Object> NewBlock(Environment & env, Ref<BlockExemplar> block,
+        static Ref<Object> NewBlock(Environment & env, Ref<Block> block,
                                     Ref<Object> self);
         static Ref<Object> NewFiber(Interpreter & interpreter, Ref<Object> block);
 
