@@ -6,7 +6,6 @@
 #include "Macros.h"
 #include "Ref.h"
 #include "FinchString.h"
-#include "Scope.h"
 
 #define PRIMITIVE(name)                                                     \
         Ref<Object> name(Fiber & fiber, Ref<Object> self, ArgReader & args)

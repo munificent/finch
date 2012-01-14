@@ -7,7 +7,6 @@
 #include "Interpreter.h"
 #include "NumberObject.h"
 #include "Fiber.h"
-#include "Scope.h"
 #include "StringObject.h"
 
 namespace Finch

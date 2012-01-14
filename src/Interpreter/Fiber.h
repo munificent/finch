@@ -4,7 +4,6 @@
 #include "Macros.h"
 #include "Object.h"
 #include "Ref.h"
-#include "Scope.h"
 #include "Stack.h"
 #include "Upvalue.h"
 

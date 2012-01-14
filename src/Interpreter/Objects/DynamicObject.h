@@ -7,7 +7,6 @@
 #include "Macros.h"
 #include "Object.h"
 #include "Ref.h"
-#include "Scope.h"
 #include "FinchString.h"
 
 namespace Finch
