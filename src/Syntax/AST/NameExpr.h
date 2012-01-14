@@ -5,8 +5,7 @@
 #include "Macros.h"
 #include "Expr.h"
 #include "FinchString.h"
-#include "IExprVisitor.h"
-
+#include "IExprCompiler.h"
 namespace Finch
 {
     using std::ostream;

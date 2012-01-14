@@ -6,8 +6,7 @@
 #include "CodeBlock.h"
 #include "Expr.h"
 #include "Macros.h"
-#include "IExprVisitor.h"
-#include "Object.h"
+#include "IExprCompiler.h"#include "Object.h"
 #include "Ref.h"
 #include "Stack.h"
 

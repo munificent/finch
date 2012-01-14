@@ -26,7 +26,7 @@ namespace Finch
 {
     using std::cout;
     using std::endl;
-    
+
     Fiber::Fiber(Interpreter & interpreter, Ref<Object> block)
     :   mIsRunning(false),
         mInterpreter(interpreter),
@@ -34,42 +34,41 @@ namespace Finch
         mCallFrames()
     {
         ArgReader args(mStack, 0, 0);
-        
+
         // Top-level blocks outside of any method bind self to nil.
         CallBlock(interpreter.GetEnvironment().Nil(), block, args);
     }
-    
+
     bool Fiber::IsDone() const
     {
         return mCallFrames.Count() == 0;
     }
-    
+
     Ref<Object> Fiber::Execute()
     {
-        // TODO(bob): Implement!
         mIsRunning = true;
-        
+
         // Continue processing bytecode until the entire callstack has returned
         // or we pause and switch to another fiber.
         while (mIsRunning)
         {
             CallFrame & frame = mCallFrames.Peek();
-            
+
             // Read and decode the next instruction.
             Instruction instruction = frame.Block().Code()[frame.ip++];
             OpCode op = DECODE_OP(instruction);
             int a = DECODE_A(instruction);
             int b = DECODE_B(instruction);
             int c = DECODE_C(instruction);
-            
+
             TRACE_INSTRUCTION(instruction);
-            
+
             switch (op)
             {
                 case OP_CONSTANT:
                     Store(frame, b, frame.Block().GetConstant(a));
                     break;
-                
+
                 case OP_OBJECT:
                 {
                     // The parent is already in the register that the child
@@ -79,47 +78,47 @@ namespace Finch
                     Store(frame, a, object);
                     break;
                 }
-                    
+
                 case OP_BLOCK:
                 {
                     //cout << "BLOCK    " << a << " -> " << b << endl;
                     // Create a new block from the exemplar.
                     Ref<BlockExemplar> exemplar = frame.Block().GetExemplar(a);
-                    
+
                     // TODO(bob): Capture closure.
-                    
+
                     Ref<Object> block = Object::NewBlock(GetEnvironment(),
                         exemplar, Self());
-                    
+
                     BlockObject * blockObj = block->AsBlock();
-                    
+
                     // Capture upvalues.
                     for (int i = 0; i < exemplar->NumUpvalues(); i++)
                     {
                         Instruction capture = frame.Block().Code()[frame.ip++];
                         OpCode captureOp = DECODE_OP(capture);
                         int captureIndex = DECODE_A(capture);
-                        
+
                         switch (captureOp)
                         {
                             case OP_CAPTURE_LOCAL:
                                 blockObj->AddUpvalue(CaptureUpvalue(
                                     frame.stackStart + captureIndex));
                                 break;
-                                
+
                             case OP_CAPTURE_UPVALUE:
                                 blockObj->AddUpvalue(frame.Block().GetUpvalue(captureIndex));
                                 break;
-                                
+
                             default:
                                 ASSERT(false, "Unexpected capture pseudo-op.");
                         }
                     }
-                    
+
                     Store(frame, b, block);
                     break;
                 }
-                
+
                 case OP_ARRAY:
                 {
                     // Create the empty array with enough capacity. Subsequent
@@ -128,7 +127,7 @@ namespace Finch
                     Store(frame, b, array);
                     break;
                 }
-                    
+
                 case OP_ARRAY_ELEMENT:
                 {
                     // Add the item to the array.
@@ -137,16 +136,16 @@ namespace Finch
                     array->AsArray()->Elements().Add(element);
                     break;
                 }
-                    
+
                 case OP_MOVE:
                     //cout << "MOVE     " << a << " -> " << b << endl;
                     Store(frame, b, Load(frame, a));
                     break;
-                    
+
                 case OP_SELF:
                     Store(frame, a, Self());
                     break;
-                    
+
                 case OP_MESSAGE_0:
                 case OP_MESSAGE_1:
                 case OP_MESSAGE_2:
@@ -162,9 +161,9 @@ namespace Finch
                     //String name = GetEnvironment().Strings().Find(a);
                     //cout << "MESSAGE  " << name << " " << b << " -> " << c << endl;
                     int numArgs = op - OP_MESSAGE_0;
-                    
+
                     Ref<Object> result = SendMessage(a, b, numArgs);
-                    
+
                     // A non-null result means the message was handled by a
                     // primitive that immediately calculated the result.
                     // Otherwise it's a normal method which will push a new
@@ -176,21 +175,21 @@ namespace Finch
                     }
                     break;
                 }
-                    
+
                 case OP_GET_UPVALUE:
                 {
                     Ref<Upvalue> upvalue = frame.Block().GetUpvalue(a);
                     Store(frame, b, upvalue->Get(mStack));
                     break;
                 }
-                    
+
                 case OP_SET_UPVALUE:
                 {
                     Ref<Upvalue> upvalue = frame.Block().GetUpvalue(a);
                     upvalue->Set(mStack, Load(frame, b));
                     break;
                 }
-                    
+
                 case OP_GET_FIELD:
                 {
                     Ref<Object> field = Self()->GetField(a);
@@ -199,21 +198,21 @@ namespace Finch
                         // TODO(bob): Should this be an error instead?
                         field = Nil();
                     }
-                    
+
                     Store(frame, b, field);
                     break;
                 }
-                    
+
                 case OP_SET_FIELD:
                 {
                     Self()->SetField(a, Load(frame, b));
                     break;
                 }
-                    
+
                 case OP_GET_GLOBAL:
                 {
                     Ref<Object> value = GetEnvironment().GetGlobal(a);
-                    
+
                     if (value.IsNull())
                     {
                         String name = GetEnvironment().FindGlobalName(a);
@@ -222,18 +221,18 @@ namespace Finch
                             name.CString()));
                         value = GetEnvironment().Nil();
                     }
-                    
+
                     // TODO(bob): Handle undefined globals.
                     Store(frame, b, value);
                     break;
                 }
-                    
+
                 case OP_SET_GLOBAL:
                 {
                     GetEnvironment().SetGlobal(a, Load(frame, b));
                     break;
                 }
-                
+
                 case OP_DEF_METHOD:
                 {
                     // Get the object we're attaching the method to.
@@ -241,11 +240,11 @@ namespace Finch
                     // TODO(bob): What should this do if you try to bind a
                     // method to something non-dynamic?
                     ASSERT_NOT_NULL(object);
-                    
+
                     object->AddMethod(a, Load(frame, b));
                     break;
                 }
-                    
+
                 case OP_DEF_FIELD:
                 {
                     // Get the object we're attaching the field to.
@@ -253,16 +252,16 @@ namespace Finch
                     // TODO(bob): What should this do if you try to bind a
                     // field to something non-dynamic?
                     ASSERT_NOT_NULL(object);
-                    
+
                     object->SetField(a, Load(frame, b));
                     break;
                 }
-                    
+
                 case OP_END:
                 {
                     Ref<Object> result = Load(frame, a);
                     PopCallFrame();
-                    
+
                     if (mCallFrames.Count() > 0)
                     {
                         StoreMessageResult(result);
@@ -276,11 +275,11 @@ namespace Finch
                     }
                     break;
                 }
-                
+
                 case OP_RETURN:
                 {
                     int methodId = a;
-                    
+
                     Ref<Object> result = Load(frame, b);
 
                     // Find the enclosing method on the callstack.
@@ -293,21 +292,21 @@ namespace Finch
                             break;
                         }
                     }
-                    
+
                     if (methodFrame == mCallFrames.Count())
                     {
                         Error("Cannot return from a block whose enclosing method has already returned.");
                         // Unwind the whole stack.
                         methodFrame = mCallFrames.Count() - 1;
                     }
-                    
+
                     // Unwind until we reach the method.
                     while (methodFrame >= 0)
                     {
                         PopCallFrame();
                         methodFrame--;
                     }
-                    
+
                     if (mCallFrames.Count() > 0)
                     {
                         StoreMessageResult(result);
@@ -320,7 +319,7 @@ namespace Finch
                     }
                     break;
                 }
-                    
+
                 default:
                     std::cout << op << std::endl;
                     ASSERT(false, "Unknown opcode.");
@@ -328,16 +327,16 @@ namespace Finch
 
             TRACE_STACK();
         }
-        
+
         return Ref<Object>(Object::NewString(
             mInterpreter.GetEnvironment(), "implement me"));
     }
-    
+
     Ref<Object> Fiber::Load(const CallFrame & frame, int reg)
     {
         return mStack[frame.stackStart + reg];
     }
-    
+
     void Fiber::Store(const CallFrame & frame, int reg, Ref<Object> value)
     {
         mStack[frame.stackStart + reg] = value;
@@ -347,13 +346,13 @@ namespace Finch
     {
         return mInterpreter.GetEnvironment();
     }
-    
+
     void Fiber::PopCallFrame()
     {
         CallFrame & frame = mCallFrames.Peek();
         int oldStackSize = frame.stackStart + frame.Block().NumRegisters();
         mCallFrames.Pop();
-        
+
         // Discard the callee frame's registers.
         int newStackSize = 0;
         if (mCallFrames.Count() > 0)
@@ -361,7 +360,7 @@ namespace Finch
             CallFrame & caller = mCallFrames.Peek();
             newStackSize = caller.stackStart + caller.Block().NumRegisters();
         }
-        
+
         // Close any open upvalues that are being popped off
         // the stack.
         while (!mOpenUpvalues.IsNull())
@@ -371,7 +370,7 @@ namespace Finch
             mOpenUpvalues->Close(mStack);
             mOpenUpvalues = mOpenUpvalues->Next();
         }
-        
+
         // Clear any discarded registers on the stack. Note that we don't
         // actually truncate the stack here. This is important because we may
         // still need those registers. Consider:
@@ -382,7 +381,7 @@ namespace Finch
         // [ . [.  .] .  . ] Then we push a frame with just a few registers that
         // 0   1  2 1   2  0 overlaps the previous one a lot.
         // [ . [. [.] . ]. ] Then we push another.
-        // 0   1    1 
+        // 0   1    1
         // [ . [.  .] ?????? Then we return from that one and truncate to the
         //                   caller's (1's) num registers.
         // Oops! We've trashed registers that 0 may actually need later.
@@ -410,7 +409,7 @@ namespace Finch
         int dest = instruction & 0x000000ff; // c
         Store(caller, dest, result);
     }
-    
+
     // TODO(bob): Move this into Object?
     Ref<Object> Fiber::SendMessage(int messageId, int receiverReg, int numArgs)
     {
@@ -418,7 +417,7 @@ namespace Finch
         Ref<Object> receiver = self;
 
         ASSERT(!receiver.IsNull(), "Should have receiver.");
-        
+
         ArgReader args(mStack, mCallFrames.Peek().stackStart + receiverReg + 1,
                        numArgs);
 
@@ -432,20 +431,20 @@ namespace Finch
                 CallBlock(self, method, args);
                 return Ref<Object>();
             }
-            
+
             // See if the object has a primitive bound to that name.
             PrimitiveMethod primitive = receiver->FindPrimitive(messageId);
             if (primitive != NULL)
             {
                 return primitive(*this, self, args);
             }
-            
+
             // Not found yet, so walk up the parent chain until we bottom out
             // at Object.
             if (receiver == GetEnvironment().ObjectPrototype()) break;
             receiver = receiver->Parent();
         }
-        
+
         // If we got here, the object didn't handle the message.
         String messageName = GetEnvironment().Strings().Find(messageId);
         String error = String::Format("Object '%s' did not handle message '%s'",
@@ -455,12 +454,12 @@ namespace Finch
         // Unhandled messages just return nil.
         return GetEnvironment().Nil();
     }
-    
+
     Ref<Object> Fiber::Self()
     {
         return mCallFrames.Peek().receiver;
     }
-    
+
     Ref<Object> Fiber::Nil()
     {
         return GetEnvironment().Nil();
@@ -470,7 +469,7 @@ namespace Finch
     {
         return value ? GetEnvironment().True() : GetEnvironment().False();
     }
-    
+
     Ref<Object> Fiber::CreateNumber(double value)
     {
         return Object::NewNumber(GetEnvironment(), value);
@@ -484,36 +483,36 @@ namespace Finch
     void Fiber::CallBlock(Ref<Object> receiver, Ref<Object> blockObj, ArgReader & args)
     {
         BlockObject & block = *(blockObj->AsBlock());
-        
+
         // TODO(bob): Need to handle binding self.
         // TODO(bob): Need to handle param/arg count mismatch.
-        
+
         // Allocate this frame's registers.
         // TODO(bob): Make this a single operation on Array.
         while (mStack.Count() < args.StackStart() + block.NumRegisters())
         {
             mStack.Add(Ref<Object>());
         }
-        
+
         // If there aren't enough arguments, nil out the remaining parameters.
         for (int i = args.NumArgs(); i < block.NumParams(); i++)
         {
             mStack[args.StackStart() + i] = Nil();
         }
-        
+
         mCallFrames.Push(CallFrame(args.StackStart(), receiver, blockObj));
     }
 
     void Fiber::Error(const String & message)
     {
         mInterpreter.GetHost().Error(message);
-    }    
-    
+    }
+
     int Fiber::GetCallstackDepth() const
     {
         return mCallFrames.Count();
     }
-    
+
     Ref<Upvalue> Fiber::CaptureUpvalue(int stackIndex)
     {
         // If there are no open upvalues at all, we must need a new one.
@@ -522,7 +521,7 @@ namespace Finch
             mOpenUpvalues = Ref<Upvalue>(new Upvalue(stackIndex));
             return mOpenUpvalues;
         }
-        
+
         Ref<Upvalue> prevUpvalue;
         Ref<Upvalue> upvalue = mOpenUpvalues;
         while (true)
@@ -533,7 +532,7 @@ namespace Finch
                 // an open upvalue for it. Make a new one and link it in in the
                 // right place to keep the list sorted.
                 Ref<Upvalue> newUpvalue = Ref<Upvalue>(new Upvalue(stackIndex));
-                
+
                 if (prevUpvalue.IsNull())
                 {
                     // Our new one is the first one in the list.
@@ -544,7 +543,7 @@ namespace Finch
                     prevUpvalue->SetNext(newUpvalue);
                 }
                 newUpvalue->SetNext(upvalue);
-                
+
                 return newUpvalue;
             }
             else if (upvalue->Index() == stackIndex)
@@ -558,17 +557,17 @@ namespace Finch
             upvalue = upvalue->Next();
         }
     }
-    
+
 #ifdef TRACE_INSTRUCTIONS
     void Fiber::TraceInstruction(Instruction instruction)
     {
         using namespace std;
-        
+
         OpCode op = DECODE_OP(instruction);
         int a = DECODE_A(instruction);
         int b = DECODE_B(instruction);
         int c = DECODE_C(instruction);
-        
+
         String opName;
         String action;
         switch (op)
@@ -577,37 +576,37 @@ namespace Finch
                 opName = "CONSTANT";
                 action = String::Format("%d -> %d", a, b);
                 break;
-                
+
             case OP_OBJECT:
                 opName = "OBJECT";
                 action = String::Format("-> %d", a);
                 break;
-                
+
             case OP_BLOCK:
                 opName = "BLOCK";
                 action = String::Format("b%d -> %d", a, b);
                 break;
-                
+
             case OP_ARRAY:
                 opName = "ARRAY";
                 action = String::Format("[%d] -> %d", a, b);
                 break;
-                
+
             case OP_ARRAY_ELEMENT:
                 opName = "ARRAY_ELEMENT";
                 action = String::Format("%d -> %d", a, b);
                 break;
-                
+
             case OP_MOVE:
                 opName = "MOVE";
                 action = String::Format("%d -> %d", a, b);
                 break;
-                
+
             case OP_SELF:
                 opName = "SELF";
                 action = String::Format("self -> %d", a);
                 break;
-                
+
             case OP_MESSAGE_0:
             case OP_MESSAGE_1:
             case OP_MESSAGE_2:
@@ -625,17 +624,17 @@ namespace Finch
                 action = String::Format("'%s' %d -> %d", name.CString(), b, c);
                 break;
             }
-                
+
             case OP_GET_UPVALUE:
                 opName = "GET_UPVALUE";
                 action = String::Format("u%d -> %d", a, b);
                 break;
-                
+
             case OP_SET_UPVALUE:
                 opName = "SET_UPVALUE";
                 action = String::Format("u%d <- %d", a, b);
                 break;
-                
+
             case OP_GET_FIELD:
             {
                 opName = "GET_FIELD";
@@ -643,7 +642,7 @@ namespace Finch
                 action = String::Format("'%s' -> %d", name.CString(), b);
                 break;
             }
-                
+
             case OP_SET_FIELD:
             {
                 opName = "SET_FIELD";
@@ -651,7 +650,7 @@ namespace Finch
                 action = String::Format("'%s' <- %d", name.CString(), b);
                 break;
             }
-                
+
             case OP_GET_GLOBAL:
             {
                 opName = "GET_GLOBAL";
@@ -659,7 +658,7 @@ namespace Finch
                 action = String::Format("%d '%s' -> %d", a, name.CString(), b);
                 break;
             }
-                
+
             case OP_SET_GLOBAL:
             {
                 opName = "SET_GLOBAL";
@@ -667,7 +666,7 @@ namespace Finch
                 action = String::Format("%d '%s' <- %d", a, name.CString(), b);
                 break;
             }
-                
+
             case OP_DEF_METHOD:
             {
                 opName = "DEF_METHOD";
@@ -675,7 +674,7 @@ namespace Finch
                 action = String::Format("'%s' %d -> %d", name.CString(), b, c);
                 break;
             }
-                
+
             case OP_DEF_FIELD: // a name, b value, c obj
             {
                 opName = "DEF_FIELD";
@@ -683,29 +682,29 @@ namespace Finch
                 action = String::Format("'%s' %d -> %d", name.CString(), b, c);
                 break;
             }
-                
+
             case OP_END:
                 opName = "END";
                 action = String::Format("^ %d", a);
                 break;
-                
+
             case OP_RETURN:
                 opName = "RETURN";
                 action = String::Format("m%d ^ %d", a, b);
                 break;
-                
+
             default:
                 opName = String::Format("UNKNOWN OP(%d)", op);
                 action = "";
         }
-        
+
         cout << String::Format("%-14s %-28s  ", opName.CString(), action.CString());
     }
-    
+
     void Fiber::TraceStack()
     {
         using namespace std;
-        
+
         int j = mCallFrames.Count() - 1;
         for (int i = 0; i < mStack.Count(); i++)
         {
@@ -718,7 +717,7 @@ namespace Finch
             {
                 cout << " | ";
             }
-            
+
             // Truncate it to fit ten characters.
             stringstream out;
             out << mStack[i];
@@ -728,7 +727,7 @@ namespace Finch
             {
                 value = value.Substring(0, 9) + "…";
             }
-            
+
             cout << left << setw(10) << value;
         }
         cout << endl;
