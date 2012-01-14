@@ -297,44 +297,24 @@ namespace Finch
             else if (resolvedUpvalue.IsValid())
             {
                 // Evaluate the value.
-                int valueReg = ReserveRegister();
-                expr.Value()->Accept(*this, valueReg);
+                expr.Value()->Accept(*this, dest);
                 
                 // Store the upvalue.
-                mExemplar->Write(OP_SET_UPVALUE, resolvedUpvalue.Slot(), valueReg);
-                
-                // Also copy to the destination register.
-                // Handles cases like: foo: some-upval <- baz
-                mExemplar->Write(OP_MOVE, valueReg, dest);
-                
-                ReleaseRegister();
+                mExemplar->Write(OP_SET_UPVALUE, resolvedUpvalue.Slot(), dest);
             }
             else
             {
+                // Evaluate the value.
+                expr.Value()->Accept(*this, dest);
+                
                 // See if a global with this name exists.
                 int index = mEnvironment.FindGlobal(expr.Name());
                 
                 // TODO(bob): Report compile error for undefined global.
-                if (index == -1)
+                if (index != -1)
                 {
-                    // Just compile the value directly into the destination and
-                    // don't worry about the global.
-                    expr.Value()->Accept(*this, dest);
-                }
-                else
-                {
-                    // Evaluate the value.
-                    int valueReg = ReserveRegister();
-                    expr.Value()->Accept(*this, valueReg);
-                    
                     // We're compiling a top-level expression, so define it as a global.
-                    mExemplar->Write(OP_SET_GLOBAL, index, valueReg);
-                    
-                    // Also copy to the destination register.
-                    // Handles cases like: foo: some-global <-- baz
-                    mExemplar->Write(OP_MOVE, valueReg, dest);
-                    
-                    ReleaseRegister();
+                    mExemplar->Write(OP_SET_GLOBAL, index, dest);
                 }
             }
         }
@@ -459,33 +439,19 @@ namespace Finch
     void Compiler::CompileSetGlobal(const String & name, const Expr & value, int dest)
     {
         // Evaluate the value.
-        int valueReg = ReserveRegister();
-        value.Accept(*this, valueReg);
+        value.Accept(*this, dest);
         
         // We're compiling a top-level expression, so define it as a global.
         int index = mEnvironment.DefineGlobal(name);
-        mExemplar->Write(OP_SET_GLOBAL, index, valueReg);
-        
-        // Also copy to the destination register.
-        // Handles cases like: foo: some-global <- baz
-        mExemplar->Write(OP_MOVE, valueReg, dest);
-        
-        ReleaseRegister();
+        mExemplar->Write(OP_SET_GLOBAL, index, dest);
     }
     
     void Compiler::CompileSetField(const String & name, const Expr & value, int dest)
     {
-        int valueReg = ReserveRegister();
-        value.Accept(*this, valueReg);
+        value.Accept(*this, dest);
         
         int nameId = mEnvironment.Strings().Add(name);
-        mExemplar->Write(OP_SET_FIELD, nameId, valueReg);
-        
-        // Also copy to the destination register.
-        // Handles cases like: foo: _bar <- baz
-        mExemplar->Write(OP_MOVE, valueReg, dest);
-        
-        ReleaseRegister();
+        mExemplar->Write(OP_SET_FIELD, nameId, dest);
     }
 
     void Compiler::CompileNestedBlock(int methodId, const BlockExpr & block, int dest)

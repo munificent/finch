@@ -19,6 +19,7 @@ def timeScript(name):
 
     if not 'true' in output:
         print "Benchmark {0} failed.".format(name)
+        print output
         return None
 
     m = TIME.search(err)
