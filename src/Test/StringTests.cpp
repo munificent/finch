@@ -14,6 +14,7 @@ namespace Finch
         TestCompoundAssignment();
         TestComparison();
         TestSubstring();
+        TestReplace();
     }
     
     void StringTests::TestEmpty()
@@ -136,19 +137,19 @@ namespace Finch
         
         // start from end
         EXPECT_EQUAL("ef", a.Substring(-2));
-
+        
         // start and count
         EXPECT_EQUAL("abcdef", a.Substring(0, 6));
         EXPECT_EQUAL("cdef", a.Substring(2, 4));
         EXPECT_EQUAL("cde", a.Substring(2, 3));
         EXPECT_EQUAL("f", a.Substring(5, 1));
         EXPECT_EQUAL("", a.Substring(0, 0));
-
+        
         // start from end and count
         EXPECT_EQUAL("ab", a.Substring(-6, 2));
         EXPECT_EQUAL("cdef", a.Substring(-4, 4));
         EXPECT_EQUAL("f", a.Substring(-1, 1));
-
+        
         // start and distance from end
         EXPECT_EQUAL("abcde", a.Substring(0, -1));
         EXPECT_EQUAL("ab", a.Substring(0, -4));
@@ -157,6 +158,16 @@ namespace Finch
         // start frome end and distance from end
         EXPECT_EQUAL("abcde", a.Substring(-6, -1));
         EXPECT_EQUAL("bcd", a.Substring(-5, -2));
+    }
+    
+    void StringTests::TestReplace()
+    {
+        EXPECT_EQUAL("not found", String("not found").Replace("blah", "foo"));
+        
+        EXPECT_EQUAL("fleginning", String("beginning").Replace("be", "fle"));
+        EXPECT_EQUAL("at ending", String("at end").Replace("end", "ending"));
+
+        EXPECT_EQUAL("xbaybazba", String("xcyczc").Replace("c", "ba"));
     }
 }
 

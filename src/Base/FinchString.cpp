@@ -124,14 +124,41 @@ namespace Finch
         return mData->length;
     }
     
-    int String::IndexOf(const String & other) const
+    int String::IndexOf(const String & other, int startIndex) const
     {
         if (mData.IsNull()) return -1;
         
-        char* found = strstr(mData->chars, other.CString());
+        // Keep the start index in bounds.
+        if (startIndex >= Length()) startIndex = Length() - 1;
+        
+        char* found = strstr(mData->chars + startIndex, other.CString());
         if (found == NULL) return -1;
         
         return static_cast<int>(found - mData->chars);
+    }
+
+    String String::Replace(const String & from, const String & to) const
+    {
+        // TODO(bob): Could certainly be optimized.
+        String result;
+        
+        int start = 0;
+        while (start < Length())
+        {
+            int index = IndexOf(from, start);
+            if (index != -1)
+            {
+                result += Substring(start, index - start) + to;
+                start = index + from.Length();
+            }
+            else
+            {
+                result += Substring(start, Length() - start);
+                break;
+            }
+        }
+        
+        return result;
     }
 
     unsigned int String::HashCode() const

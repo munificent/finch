@@ -52,7 +52,10 @@ namespace Finch
         
         // Gets the position in this string of the given substring or -1 if not
         // found.
-        int IndexOf(const String & other) const;
+        int IndexOf(const String & other, int startIndex = 0) const;
+        
+        // Replaces every instance of `from` in the string with `to`.
+        String Replace(const String & from, const String & to) const;
         
         // Gets the hash code for the string.
         unsigned int HashCode() const;

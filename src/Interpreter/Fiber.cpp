@@ -1045,6 +1045,7 @@ namespace Finch
             stringstream out;
             out << mStack[i];
             String value = String(out.str().c_str());
+            value = value.Replace("\n", "\\n");
             if (value.Length() > 10)
             {
                 value = value.Substring(0, 9) + "…";

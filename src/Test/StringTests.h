@@ -19,6 +19,7 @@ namespace Finch
         static void TestCompoundAssignment();
         static void TestComparison();
         static void TestSubstring();
+        static void TestReplace();
     };
 }
 
