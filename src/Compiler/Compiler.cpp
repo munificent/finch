@@ -142,7 +142,7 @@ namespace Finch
             // Compile the message send.
             // TODO(bob): Right now, we're only giving 8-bits to the name, which
             // will run out quickly.
-            int messageId = mEnvironment.Strings().Add(message.GetName());
+            StringId messageId = mEnvironment.Strings().Add(message.GetName());
             OpCode op = static_cast<OpCode>(OP_MESSAGE_0 +
                 message.GetArguments().Count());
             
@@ -170,7 +170,7 @@ namespace Finch
         else if (Expr::IsField(expr.Name()))
         {
             // Accessing a field.
-            int index = mEnvironment.Strings().Add(expr.Name());
+            StringId index = mEnvironment.Strings().Add(expr.Name());
             mBlock->Write(OP_GET_FIELD, index, dest);
         }
         else
@@ -450,7 +450,7 @@ namespace Finch
     {
         value.Accept(*this, dest);
         
-        int nameId = mEnvironment.Strings().Add(name);
+        StringId nameId = mEnvironment.Strings().Add(name);
         mBlock->Write(OP_SET_FIELD, nameId, dest);
     }
 
@@ -495,7 +495,7 @@ namespace Finch
         for (int i = 0; i < count; i++)
         {
             const Definition & definition = expr.Definitions()[i];
-            int name = mEnvironment.Strings().Add(definition.GetName());
+            StringId name = mEnvironment.Strings().Add(definition.GetName());
             
             int value = ReserveRegister();
 

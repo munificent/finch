@@ -407,7 +407,7 @@ namespace Finch
     }
 
     // TODO(bob): Move this into Object?
-    Ref<Object> Fiber::SendMessage(int messageId, int receiverReg, int numArgs)
+    Ref<Object> Fiber::SendMessage(StringId messageId, int receiverReg, int numArgs)
     {
         Ref<Object> self = Load(mCallFrames.Peek(), receiverReg);
         Ref<Object> receiver = self;

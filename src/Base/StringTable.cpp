@@ -2,7 +2,7 @@
 
 namespace Finch
 {
-    int StringTable::Add(String string)
+    StringId StringTable::Add(String string)
     {
         // See if the string is already in the table. We must ensure each string
         // only appears once in the table so that we can reliably compare
@@ -18,7 +18,7 @@ namespace Finch
         return mStrings.Count() - 1;
     }
     
-    String StringTable::Find(int id)
+    String StringTable::Find(StringId id)
     {
         return mStrings[id];
     }

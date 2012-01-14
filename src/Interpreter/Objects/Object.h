@@ -47,9 +47,8 @@ namespace Finch
 
         // TODO(bob): It seems weird that these are on Object even though only
         // DynamicObject supports them.
-        // TODO(bob): Should make a typedef for string table IDs.
-        virtual Ref<Object>     FindMethod(int name) { return Ref<Object>(); }
-        virtual PrimitiveMethod FindPrimitive(int name) { return NULL; }
+        virtual Ref<Object>     FindMethod(StringId name) { return Ref<Object>(); }
+        virtual PrimitiveMethod FindPrimitive(StringId name) { return NULL; }
 
         virtual Ref<Object>     GetField(int name) { return Ref<Object>(); }
         virtual void            SetField(int name, Ref<Object> value) {}

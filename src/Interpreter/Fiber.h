@@ -93,7 +93,7 @@ namespace Finch
 
         Environment & GetEnvironment();
         
-        Ref<Object> SendMessage(int messageId, int receiverReg, int numArgs);
+        Ref<Object> SendMessage(StringId messageId, int receiverReg, int numArgs);
 
         Ref<Object> Self();
         

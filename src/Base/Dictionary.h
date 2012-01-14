@@ -206,7 +206,7 @@ namespace Finch
         
         // Looks up the value associated with the given key. Returns a null
         // reference if the key was not found.
-        bool Find(int key, TValue * value)
+        bool Find(StringId key, TValue * value)
         {
             int index = FindIndex(key);            
             
@@ -219,7 +219,7 @@ namespace Finch
         // Does a reverse look-up to find a key with the given value. May be
         // slow. If there are multiple keys with the same value, chooses one
         // arbitrarily. Returns `-1` if not found.
-        int FindKeyForValue(const TValue & value)
+        StringId FindKeyForValue(const TValue & value)
         {
             for (int i = 0; i < mTableSize; i++)
             {
@@ -230,11 +230,11 @@ namespace Finch
             }
             
             // Not found.
-            return -1;
+            return NO_STRING;
         }
         
         // Inserts the given value at the given key.
-        void Insert(int key, const TValue & value)
+        void Insert(StringId key, const TValue & value)
         {
             mCount++;
             EnsureCapacity();
@@ -245,7 +245,7 @@ namespace Finch
             
             // note that we shouldn't have to worry about an infinite loop here
             // the previous call will ensure there are open spaces in the table
-            while ((mTable[index].key != EMPTY) &&
+            while ((mTable[index].key != NO_STRING) &&
                    (mTable[index].key != key))
             {
                 index = (index + 1) % mTableSize;
@@ -259,7 +259,7 @@ namespace Finch
         // Replaces the value at the given key. If the key is not already
         // present, does nothing and returns false. Otherwise, it
         // replaces the value at that key and returns true.
-        bool Replace(int key, const TValue & value)
+        bool Replace(StringId key, const TValue & value)
         {
             int index = FindIndex(key);
             
@@ -274,7 +274,7 @@ namespace Finch
         
         // Removes the value with the given key. Returns true if the key was
         // found and removed.
-        bool Remove(int key)
+        bool Remove(StringId key)
         {
             int index = FindIndex(key);
             
@@ -282,7 +282,7 @@ namespace Finch
             if (index == -1) return false;
             
             // remove the item
-            mTable[index].key   = EMPTY;
+            mTable[index].key   = NO_STRING;
             mTable[index].value = TValue();
             
             mCount--;
@@ -298,12 +298,9 @@ namespace Finch
         }
         
     private:
-        // Key value that indicates an empty cell in the table.
-        static const int EMPTY = -1;
-        
         // Gets the index of the item with the given key in the table, or -1
         // if not found.
-        int FindIndex(int key)
+        int FindIndex(StringId key)
         {
             // can't find it in an empty table
             if (mTableSize == 0) return -1;
@@ -316,7 +313,7 @@ namespace Finch
                 if (mTable[index].key == key) return index;
                 
                 // if we found an empty slot, the item must not be in the table
-                if (mTable[index].key == EMPTY) return -1;
+                if (mTable[index].key == NO_STRING) return -1;
                 
                 // try the next slot
                 index = (index + 1) % mTableSize;
@@ -345,7 +342,7 @@ namespace Finch
             {
                 for (int i = 0; i < oldSize; i++)
                 {
-                    if (oldTable[i].key >= 0)
+                    if (oldTable[i].key != NO_STRING)
                     {
                         Insert(oldTable[i].key, oldTable[i].value);
                     }
@@ -364,10 +361,10 @@ namespace Finch
         
         struct Pair
         {
-            int    key;
-            TValue value;
+            StringId    key;
+            TValue      value;
             
-            Pair() : key(EMPTY) {}
+            Pair() : key(NO_STRING) {}
         };
         
         Pair * mTable;

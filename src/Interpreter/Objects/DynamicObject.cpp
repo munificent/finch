@@ -12,7 +12,7 @@ namespace Finch
         stream << mName;
     }
     
-    Ref<Object> DynamicObject::FindMethod(int messageId)
+    Ref<Object> DynamicObject::FindMethod(StringId messageId)
     {
         Ref<Object> method;
         if (mMethods.Find(messageId, &method))
@@ -23,7 +23,7 @@ namespace Finch
         return Ref<Object>();
     }
     
-    PrimitiveMethod DynamicObject::FindPrimitive(int messageId)
+    PrimitiveMethod DynamicObject::FindPrimitive(StringId messageId)
     {
         PrimitiveMethod primitive;
         if (mPrimitives.Find(messageId, &primitive))
@@ -34,7 +34,7 @@ namespace Finch
         return NULL;
     }
     
-    Ref<Object> DynamicObject::GetField(int name)
+    Ref<Object> DynamicObject::GetField(StringId name)
     {
         // Walk up the parent chain until it loops back on itself at Object.
         Object * object = this;
@@ -62,17 +62,17 @@ namespace Finch
         return Ref<Object>();
     }
     
-    void DynamicObject::SetField(int name, Ref<Object> value)
+    void DynamicObject::SetField(StringId name, Ref<Object> value)
     {
         mFields.Insert(name, value);
     }
         
-    void DynamicObject::AddMethod(int messageId, Ref<Object> method)
+    void DynamicObject::AddMethod(StringId messageId, Ref<Object> method)
     {
         mMethods.Insert(messageId, method);
     }
 
-    void DynamicObject::AddPrimitive(int messageId, PrimitiveMethod method)
+    void DynamicObject::AddPrimitive(StringId messageId, PrimitiveMethod method)
     {
         mPrimitives.Insert(messageId, method);
     }

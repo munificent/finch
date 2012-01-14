@@ -37,14 +37,14 @@ namespace Finch
         virtual String AsString() const     { return mName; }
         virtual DynamicObject * AsDynamic() { return this; }
         
-        virtual Ref<Object>     FindMethod(int messageId);
-        virtual PrimitiveMethod FindPrimitive(int messageId);
+        virtual Ref<Object>     FindMethod(StringId messageId);
+        virtual PrimitiveMethod FindPrimitive(StringId messageId);
 
-        virtual Ref<Object>     GetField(int name);
-        virtual void            SetField(int name, Ref<Object> value);
+        virtual Ref<Object>     GetField(StringId name);
+        virtual void            SetField(StringId name, Ref<Object> value);
 
-        void AddMethod(int messageId, Ref<Object> method);
-        void AddPrimitive(int messageId, PrimitiveMethod method);
+        void AddMethod(StringId messageId, Ref<Object> method);
+        void AddPrimitive(StringId messageId, PrimitiveMethod method);
         
     private:
         void InitializeScope();

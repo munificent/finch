@@ -77,7 +77,7 @@ namespace Finch
         DynamicObject* dynamicObj = object->AsDynamic();
         ASSERT_NOT_NULL(dynamicObj);
         
-        int messageId = mEnvironment.Strings().Add(message);
+        StringId messageId = mEnvironment.Strings().Add(message);
         dynamicObj->AddPrimitive(messageId, method);
     }
 }

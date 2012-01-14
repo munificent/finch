@@ -113,7 +113,7 @@ namespace Finch
     
     int Environment::FindGlobal(const String & name)
     {
-        int nameId = mStrings.Add(name);
+        StringId nameId = mStrings.Add(name);
         
         int index;
         if (mGlobalNames.Find(nameId, &index))
@@ -128,7 +128,7 @@ namespace Finch
     
     int Environment::DefineGlobal(const String & name)
     {
-        int nameId = mStrings.Add(name);
+        StringId nameId = mStrings.Add(name);
         
         int index;
         if (mGlobalNames.Find(nameId, &index))
@@ -158,7 +158,7 @@ namespace Finch
 
     String Environment::FindGlobalName(int index)
     {
-        int nameId = mGlobalNames.FindKeyForValue(index);
+        StringId nameId = mGlobalNames.FindKeyForValue(index);
         ASSERT(nameId != -1, "Not a known global.");
 
         return mStrings.Find(nameId);
@@ -182,7 +182,7 @@ namespace Finch
     void Environment::AddPrimitive(Ref<Object> object, String message,
                                    PrimitiveMethod primitive)
     {
-        int id = mStrings.Add(message);
+        StringId id = mStrings.Add(message);
         object->AsDynamic()->AddPrimitive(id, primitive);
     }
 }
