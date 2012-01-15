@@ -126,7 +126,7 @@ namespace Finch
                     // Add the item to the array.
                     Ref<Object> element = Load(frame, a);
                     Ref<Object> array = Load(frame, b);
-                    array->AsArray()->Elements().Add(element);
+                    array->AsArray()->Elements().Add(Value::HackWrapRef(element));
                     break;
                 }
 

@@ -21,7 +21,7 @@ namespace Finch
         {
         }
         
-        Array<Ref<Object> > & Elements() { return mElements; }
+        Array<Value> & Elements() { return mElements; }
         
         virtual void Trace(ostream & stream) const
         {
@@ -34,10 +34,10 @@ namespace Finch
         {
             String text = "#[";
             
-            if (mElements.Count() > 0) text += mElements[0]->AsString();
+            if (mElements.Count() > 0) text += mElements[0].AsString();
             for (int i = 1; i < mElements.Count(); i++)
             {
-                text += String(", ") + mElements[i]->AsString();
+                text += String(", ") + mElements[i].AsString();
             }
             text += "]";
             
@@ -45,7 +45,7 @@ namespace Finch
         }
         
     private:
-        Array<Ref<Object> > mElements;
+        Array<Value> mElements;
     };
 }
 

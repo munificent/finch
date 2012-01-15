@@ -19,7 +19,7 @@ namespace Finch
         ArrayObject * array = self->AsArray();
         ASSERT_NOT_NULL(array);
         
-        array->Elements().Add(args[0]);
+        array->Elements().Add(Value::HackWrapRef(args[0]));
         return self;
     }
     
@@ -33,7 +33,7 @@ namespace Finch
         // allow negative indexes to index backwards from end
         if ((index >= -array->Elements().Count()) && (index < array->Elements().Count()))
         {
-            return array->Elements()[index];
+            return array->Elements()[index].Obj();
         }
         else
         {
@@ -52,7 +52,7 @@ namespace Finch
         // allow negative indexes to index backwards from end
         if ((index >= -array->Elements().Count()) && (index < array->Elements().Count()))
         {
-            array->Elements()[index] = args[1];
+            array->Elements()[index] = Value::HackWrapRef(args[1]);
         }
 
         return self;
@@ -66,7 +66,7 @@ namespace Finch
         int index = static_cast<int>(args[0]->AsNumber());
         
         // TODO(bob): Bounds check.
-        Ref<Object> removed = array->Elements()[index];
+        Ref<Object> removed = array->Elements()[index].Obj();
         array->Elements().RemoveAt(index);
         return removed;
     }
