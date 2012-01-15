@@ -106,9 +106,6 @@ namespace Finch
         virtual Value FindMethod(StringId name) { return Value(); }
         virtual PrimitiveMethod FindPrimitive(StringId name) { return NULL; }
 
-        virtual Value GetField(int name) { return Value(); }
-        virtual void  SetField(int name, const Value & value) {}
-
         virtual double          AsNumber() const { return 0; }
         virtual String          AsString() const { return ""; }
         virtual ArrayObject *   AsArray()        { return NULL; }

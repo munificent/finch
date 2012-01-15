@@ -40,8 +40,8 @@ namespace Finch
         virtual Value FindMethod(StringId messageId);
         virtual PrimitiveMethod FindPrimitive(StringId messageId);
 
-        virtual Value GetField(StringId name);
-        virtual void  SetField(StringId name, const Value & value);
+        Value GetField(StringId name);
+        void SetField(StringId name, const Value & value);
 
         void AddMethod(StringId messageId, const Value & method);
         void AddPrimitive(StringId messageId, PrimitiveMethod method);

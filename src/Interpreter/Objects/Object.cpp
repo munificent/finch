@@ -46,14 +46,20 @@ namespace Finch
     
     Value Value::GetField(int name) const
     {
-        if (IsNull()) return Value();
-        return mObj->GetField(name);
+        // Only dynamic objects have fields.
+        DynamicObject * dynamic = AsDynamic();
+        if (dynamic == NULL) return Value();
+        
+        return dynamic->GetField(name);
     }
     
     void Value::SetField(int name, const Value & value) const
     {
-        if (IsNull()) return;
-        return mObj->SetField(name, value);
+        // Only dynamic objects have fields.
+        DynamicObject * dynamic = AsDynamic();
+        if (dynamic == NULL) return;
+        
+        dynamic->SetField(name, value);
     }
 
     Value Value::SendMessage(Fiber & fiber, StringId messageId, const ArgReader & args) const
