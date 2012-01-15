@@ -185,7 +185,7 @@ namespace Finch
 
                 case OP_GET_FIELD:
                 {
-                    Value field = Self().Obj()->GetField(a);
+                    Value field = Self()->GetField(a);
                     // TODO(bob): Just make a null Value equivalent to nil.
                     if (!field.IsNull())
                     {
@@ -201,7 +201,7 @@ namespace Finch
 
                 case OP_SET_FIELD:
                 {
-                    Self().Obj()->SetField(a, Load(frame, b));
+                    Self()->SetField(a, Load(frame, b));
                     break;
                 }
 
@@ -416,7 +416,7 @@ namespace Finch
         while (true)
         {
             // See if the object has a method bound to that name.
-            Value method = receiver.Obj()->FindMethod(messageId);
+            Value method = receiver->FindMethod(messageId);
             if (!method.IsNull())
             {
                 CallBlock(self, method, args);
@@ -424,15 +424,15 @@ namespace Finch
             }
 
             // See if the object has a primitive bound to that name.
-            PrimitiveMethod primitive = receiver.Obj()->FindPrimitive(messageId);
+            PrimitiveMethod primitive = receiver->FindPrimitive(messageId);
             if (primitive != NULL)
             {
                 return primitive(*this, self, args);
             }
 
             // If we're at the root of the inheritance chain, then stop.
-            if (receiver.Obj()->Parent().Obj() == receiver.Obj()) break;
-            receiver = receiver.Obj()->Parent();
+            if (receiver.Parent() == receiver) break;
+            receiver = receiver.Parent();
         }
 
         // If we got here, the object didn't handle the message.

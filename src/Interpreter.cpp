@@ -160,7 +160,7 @@ namespace Finch
         if (showResult)
         {
             std::stringstream text;
-            text << result.Obj() << std::endl;
+            text << *result << std::endl;
             mHost.Output(String(text.str().c_str()));
         }
     }
@@ -254,7 +254,7 @@ namespace Finch
         // if the object has no parent, use itself as it
         if (parent.IsNull())
         {
-            object.Obj()->SetParent(object);
+            object->SetParent(object);
         }
         
         return object;
@@ -312,6 +312,6 @@ namespace Finch
                                    PrimitiveMethod primitive)
     {
         StringId id = mStrings.Add(message);
-        object.Obj()->AsDynamic()->AddPrimitive(id, primitive);
+        object.AsDynamic()->AddPrimitive(id, primitive);
     }
 }

@@ -53,8 +53,8 @@ namespace Finch
             }
 
             // If we're at the root of the inheritance chain, then stop.
-            if (&(*object->Parent().Obj()) == object) break;
-            object = &(*object->Parent().Obj());
+            if (&(*object->Parent()) == object) break;
+            object = &(*object->Parent());
         }
         
         // If we get here, it wasn't found.

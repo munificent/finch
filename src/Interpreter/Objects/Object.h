@@ -32,31 +32,68 @@ namespace Finch
     class Value
     {
     public:
-        Value(const Value & other)
-        :   mObj(other.mObj)
+        // Constructs a new null value.
+        Value()
+        :   mObj(NULL),
+            mPrev(this),
+            mNext(this)
         {}
         
         explicit Value(Object * obj)
-        :   mObj(obj)
+        :   mObj(obj),
+            mPrev(this),
+            mNext(this)
         {}
         
-        Value()
-        :   mObj()
-        {}
-        
-        // Discards the currently referred to object and assigns the given
-        // reference to this one.
-        inline Value & operator =(const Value & other)
+        // Copies a value. If the copied value is a reference type, both values
+        // will point to the same object.
+        Value(const Value & other)
+        :   mObj(NULL),
+            mPrev(this),
+            mNext(this)
         {
             if (&other != this)
             {
-                mObj = other.mObj;
+                Link(other);
+            }
+        }
+        
+        ~Value() { Clear(); }
+        
+        Object & operator *() const { return *mObj; }
+        Object * operator ->() const { return mObj; }
+        
+        // Compares two values.
+        bool operator ==(const Value & other) const
+        {
+            return mObj == other.mObj;
+        }
+        
+        // Compares two values.
+        bool operator !=(const Value & other) const
+        {
+            return mObj != other.mObj;
+        }
+        
+        Value & operator =(const Value & other)
+        {
+            if (&other != this)
+            {
+                Clear();
+                Link(other);
             }
             
             return *this;
         }
         
-        inline bool IsNull() const { return mObj.IsNull(); }
+        // Gets whether or not this value is nil.
+        bool IsNull() const { return mObj == NULL; }
+        
+        // Clears the reference. If this was the last reference to the referred
+        // object, it will be deallocated.
+        void Clear();
+        
+        const Value & Parent() const;
         
         double          AsNumber() const;
         String          AsString() const;
@@ -65,15 +102,20 @@ namespace Finch
         DynamicObject * AsDynamic() const;
         FiberObject *   AsFiber() const;
         
-        inline Ref<Object> Obj() const { return mObj; }
-        
     private:
-        Ref<Object> mObj;
+        void Link(const Value & other);
+        
+        Object * mObj;
+
+        mutable const Value * mPrev;
+        mutable const Value * mNext;
     };
     
     // Base class for an object in Finch. All values in Finch inherit from this.
     class Object
     {
+        friend class Value;
+        
     public:
         virtual ~Object() {}
 
@@ -92,7 +134,7 @@ namespace Finch
         virtual DynamicObject * AsDynamic()      { return NULL; }
         virtual FiberObject *   AsFiber()        { return NULL; }
 
-        const Value & Parent() { return mParent; }
+        const Value & Parent() const { return mParent; }
         // TODO(bob): Only used to set Object's parent to itself. Can we get
         // rid of this?
         void        SetParent(const Value & parent) { mParent = parent; }
@@ -100,10 +142,11 @@ namespace Finch
         virtual void Trace(ostream & stream) const = 0;
 
     protected:
-        Object(const Value & parent) : mParent(parent) {}
+        Object(const Value & parent) : mParent(parent), mRefCount(1) {}
 
     private:
         Value mParent;
+        int   mRefCount;
     };
 
     ostream & operator<<(ostream & cout, const Object & object);

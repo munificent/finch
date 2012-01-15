@@ -16,12 +16,12 @@ namespace Finch
     PRIMITIVE(ObjectSame)
     {
         // Reference equality.
-        return fiber.CreateBool(self.Obj() == args[0].Obj());
+        return fiber.CreateBool(self == args[0]);
     }
     
     PRIMITIVE(ObjectGetParent)
     {
-        return self.Obj()->Parent();
+        return self.Parent();
     }
 }
 
