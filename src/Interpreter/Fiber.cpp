@@ -179,7 +179,7 @@ namespace Finch
                 case OP_SET_UPVALUE:
                 {
                     Ref<Upvalue> upvalue = frame.Block().GetUpvalue(a);
-                    upvalue->Set(mStack, Load(frame, b));
+                    upvalue->Set(mStack, Value::HackWrapRef(Load(frame, b)));
                     break;
                 }
 

@@ -25,8 +25,8 @@ namespace Finch
         :   mStackIndex(stackIndex)
         {}
         
-        Ref<Object> Get(Array<Ref<Object> > & stack) const;        
-        void Set(Array<Ref<Object> > & stack, Ref<Object> value);        
+        Value Get(Array<Ref<Object> > & stack) const;        
+        void Set(Array<Ref<Object> > & stack, const Value & value);        
         void Close(Array<Ref<Object> > & stack);        
         int Index() const;        
         bool IsOpen() const;
@@ -37,7 +37,7 @@ namespace Finch
     private:
         // TODO(bob): Can use a union for some of this.
         int mStackIndex;    // Will be -1 if Upvalue is closed.
-        Ref<Object> mValue; // Only use when Upvalue is closed.
+        Value mValue; // Only use when Upvalue is closed.
         Ref<Upvalue> mNext;
     };
 }
