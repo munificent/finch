@@ -50,8 +50,16 @@ namespace Finch
         
         ~Value() { Clear(); }
         
+        Value GetField(int name) const;
+        void SetField(int name, const Value & value) const;
+
+        Value FindMethod(StringId name) const;
+        PrimitiveMethod FindPrimitive(StringId name) const;
+
+        /*
         Object & operator *() const { return *mObj; }
         Object * operator ->() const { return mObj; }
+        */
         
         // Compares two values.
         bool operator ==(const Value & other) const
@@ -76,6 +84,8 @@ namespace Finch
         
         const Value & Parent() const;
         
+        void Trace(ostream & cout) const;
+        
         double          AsNumber() const;
         String          AsString() const;
         ArrayObject *   AsArray() const;
@@ -87,6 +97,8 @@ namespace Finch
         Object * mObj;
     };
     
+    ostream & operator<<(ostream & cout, const Value & value);
+
     // Base class for an object in Finch. All values in Finch inherit from this.
     class Object
     {
@@ -121,7 +133,5 @@ namespace Finch
         Value mParent;
         int   mRefCount;
     };
-
-    ostream & operator<<(ostream & cout, const Object & object);
 }
 

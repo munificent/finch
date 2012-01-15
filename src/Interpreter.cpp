@@ -160,7 +160,7 @@ namespace Finch
         if (showResult)
         {
             std::stringstream text;
-            text << *result << std::endl;
+            text << result << std::endl;
             mHost.Output(String(text.str().c_str()));
         }
     }
