@@ -3,7 +3,7 @@
 namespace Finch
 {
     
-    const Ref<Object> BlockObject::GetConstant(int index) const
+    const Value & BlockObject::GetConstant(int index) const
     {
         return mBlock->GetConstant(index);
     }

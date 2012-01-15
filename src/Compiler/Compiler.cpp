@@ -484,7 +484,7 @@ namespace Finch
     {
         // TODO(bob): Should check for duplicates. Only need one copy of any
         // given constant.
-        int index = mBlock->AddConstant(constant);
+        int index = mBlock->AddConstant(Value::HackWrapRef(constant));
         mBlock->Write(OP_CONSTANT, index, dest);
     }
     

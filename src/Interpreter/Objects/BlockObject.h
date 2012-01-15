@@ -38,7 +38,7 @@ namespace Finch
         int NumParams() const { return mBlock->Params().Count(); }
         int MethodId() const { return mBlock->MethodId(); }
         
-        const Ref<Object> GetConstant(int index) const;
+        const Value & GetConstant(int index) const;
         const Ref<Block> GetBlock(int index) const;
         
         // Gets the compiled bytecode for the block.

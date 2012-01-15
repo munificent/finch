@@ -15,7 +15,7 @@ namespace Finch
     {
     }
 
-    int Block::AddConstant(Ref<Object> object)
+    int Block::AddConstant(const Value & object)
     {
         // TODO(bob): Unify duplicates.
         mConstants.Add(object);

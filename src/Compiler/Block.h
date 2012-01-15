@@ -97,10 +97,10 @@ namespace Finch
         void SetNumUpvalues(int numUpvalues) { mNumUpvalues = numUpvalues; }
         
         // Adds the given object to the constant pool and returns its index.
-        int AddConstant(Ref<Object> object);
+        int AddConstant(const Value & object);
         
         // Gets the constant at the given index in the constant pool.
-        const Ref<Object> GetConstant(int index) const { return mConstants[index]; }
+        const Value & GetConstant(int index) const { return mConstants[index]; }
         
         // Adds the given block to the pool and returns its index.
         int AddBlock(Ref<Block> block);
@@ -126,7 +126,7 @@ namespace Finch
         int                 mMethodId;
         Array<String>       mParams;
         Array<Instruction>  mCode;
-        Array<Ref<Object> > mConstants;
+        Array<Value>        mConstants;
         // Blocks contained within this one.
         Array<Ref<Block> >  mBlocks;
         int                 mNumRegisters;
