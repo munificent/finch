@@ -34,29 +34,19 @@ namespace Finch
     public:
         // Constructs a new null value.
         Value()
-        :   mObj(NULL),
-            mPrev(this),
-            mNext(this)
+        :   mObj(NULL)
         {}
         
         explicit Value(Object * obj)
-        :   mObj(obj),
-            mPrev(this),
-            mNext(this)
-        {}
+        :   mObj(obj)
+        {
+            // Don't increment refcount because Object's constructor initializes
+            // it to 1.
+        }
         
         // Copies a value. If the copied value is a reference type, both values
         // will point to the same object.
-        Value(const Value & other)
-        :   mObj(NULL),
-            mPrev(this),
-            mNext(this)
-        {
-            if (&other != this)
-            {
-                Link(other);
-            }
-        }
+        Value(const Value & other);
         
         ~Value() { Clear(); }
         
@@ -75,16 +65,7 @@ namespace Finch
             return mObj != other.mObj;
         }
         
-        Value & operator =(const Value & other)
-        {
-            if (&other != this)
-            {
-                Clear();
-                Link(other);
-            }
-            
-            return *this;
-        }
+        Value & operator =(const Value & other);
         
         // Gets whether or not this value is nil.
         bool IsNull() const { return mObj == NULL; }
@@ -103,12 +84,7 @@ namespace Finch
         FiberObject *   AsFiber() const;
         
     private:
-        void Link(const Value & other);
-        
         Object * mObj;
-
-        mutable const Value * mPrev;
-        mutable const Value * mNext;
     };
     
     // Base class for an object in Finch. All values in Finch inherit from this.
