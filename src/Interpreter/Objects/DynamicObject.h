@@ -37,13 +37,13 @@ namespace Finch
         virtual String AsString() const     { return mName; }
         virtual DynamicObject * AsDynamic() { return this; }
         
-        virtual Ref<Object>     FindMethod(StringId messageId);
+        virtual Value FindMethod(StringId messageId);
         virtual PrimitiveMethod FindPrimitive(StringId messageId);
 
         virtual Value GetField(StringId name);
         virtual void  SetField(StringId name, const Value & value);
 
-        void AddMethod(StringId messageId, Ref<Object> method);
+        void AddMethod(StringId messageId, const Value & method);
         void AddPrimitive(StringId messageId, PrimitiveMethod method);
         
     private:
@@ -51,7 +51,7 @@ namespace Finch
         
         String                      mName; //### bob: hack temp
         IdTable<Value>              mFields;
-        IdTable<Ref<Object> >       mMethods;
+        IdTable<Value>              mMethods;
         IdTable<PrimitiveMethod>    mPrimitives;
     };    
 }

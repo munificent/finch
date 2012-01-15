@@ -239,7 +239,7 @@ namespace Finch
                     // method to something non-dynamic?
                     ASSERT_NOT_NULL(object);
 
-                    object->AddMethod(a, Load(frame, b));
+                    object->AddMethod(a, Value::HackWrapRef(Load(frame, b)));
                     break;
                 }
 
@@ -426,10 +426,10 @@ namespace Finch
         while (true)
         {
             // See if the object has a method bound to that name.
-            Ref<Object> method = receiver->FindMethod(messageId);
+            Value method = receiver->FindMethod(messageId);
             if (!method.IsNull())
             {
-                CallBlock(self, method, args);
+                CallBlock(self, method.Obj(), args);
                 return Ref<Object>();
             }
 

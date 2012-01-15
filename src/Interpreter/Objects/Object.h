@@ -92,7 +92,7 @@ namespace Finch
 
         // TODO(bob): It seems weird that these are on Object even though only
         // DynamicObject supports them.
-        virtual Ref<Object>     FindMethod(StringId name) { return Ref<Object>(); }
+        virtual Value FindMethod(StringId name) { return Value(); }
         virtual PrimitiveMethod FindPrimitive(StringId name) { return NULL; }
 
         virtual Value GetField(int name) { return Value(); }
