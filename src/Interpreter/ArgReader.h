@@ -21,7 +21,7 @@ namespace Finch
         int StackStart() const { return mFirstArg; }
         int NumArgs() const { return mNumArgs; }
 
-        const Value & operator[] (int index)
+        const Value & operator[] (int index) const
         {
             ASSERT_RANGE(index, mNumArgs);
             return mStack[mFirstArg + index];

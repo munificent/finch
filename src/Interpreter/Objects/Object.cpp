@@ -56,16 +56,41 @@ namespace Finch
         return mObj->SetField(name, value);
     }
 
-    Value Value::FindMethod(StringId name) const
+    Value Value::SendMessage(Fiber & fiber, StringId messageId, const ArgReader & args) const
     {
-        if (IsNull()) return Value();
-        return mObj->FindMethod(name);
-    }
-
-    PrimitiveMethod Value::FindPrimitive(StringId name) const
-    {
-        if (IsNull()) return NULL;
-        return mObj->FindPrimitive(name);
+        const Value * receiver = this;
+        
+        // Walk the parent chain looking for a method that matches the message.
+        while (true)
+        {
+            // See if the object has a method bound to that name.
+            Value method = receiver->mObj->FindMethod(messageId);
+            if (!method.IsNull())
+            {
+                fiber.CallBlock(*this, method, args);
+                return Value();
+            }
+            
+            // See if the object has a primitive bound to that name.
+            PrimitiveMethod primitive = receiver->mObj->FindPrimitive(messageId);
+            if (primitive != NULL)
+            {
+                return primitive(fiber, *this, args);
+            }
+            
+            // If we're at the root of the inheritance chain, then stop.
+            if (receiver->Parent().IsNull()) break;
+            receiver = &receiver->Parent();
+        }
+        
+        // If we got here, the object didn't handle the message.
+        String messageName = fiber.GetInterpreter().FindString(messageId);
+        String error = String::Format("Object '%s' did not handle message '%s'",
+                                      AsString().CString(), messageName.CString());
+        fiber.Error(error);
+        
+        // Unhandled messages just return nil.
+        return fiber.Nil();
     }
 
     void Value::Clear()

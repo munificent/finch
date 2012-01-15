@@ -401,48 +401,12 @@ namespace Finch
         Store(caller, dest, result);
     }
 
-    // TODO(bob): Move this into Object?
     Value Fiber::SendMessage(StringId messageId, int receiverReg, int numArgs)
     {
         const Value & self = Load(mCallFrames.Peek(), receiverReg);
-        Value receiver = self;
-
-        ASSERT(!receiver.IsNull(), "Should have receiver.");
-
         ArgReader args(mStack, mCallFrames.Peek().stackStart + receiverReg + 1,
                        numArgs);
-
-        // Walk the parent chain looking for a method that matches the message.
-        while (true)
-        {
-            // See if the object has a method bound to that name.
-            Value method = receiver.FindMethod(messageId);
-            if (!method.IsNull())
-            {
-                CallBlock(self, method, args);
-                return Value();
-            }
-
-            // See if the object has a primitive bound to that name.
-            PrimitiveMethod primitive = receiver.FindPrimitive(messageId);
-            if (primitive != NULL)
-            {
-                return primitive(*this, self, args);
-            }
-
-            // If we're at the root of the inheritance chain, then stop.
-            if (receiver.Parent().IsNull()) break;
-            receiver = receiver.Parent();
-        }
-
-        // If we got here, the object didn't handle the message.
-        String messageName = mInterpreter.FindString(messageId);
-        String error = String::Format("Object '%s' did not handle message '%s'",
-            receiver.AsString().CString(), messageName.CString());
-        Error(error);
-
-        // Unhandled messages just return nil.
-        return mInterpreter.Nil();
+        return self.SendMessage(*this, messageId, args);
     }
 
     const Value & Fiber::Self()
@@ -470,7 +434,7 @@ namespace Finch
         return mInterpreter.NewString(value);
     }
 
-    void Fiber::CallBlock(const Value & receiver, const Value & blockObj, ArgReader & args)
+    void Fiber::CallBlock(const Value & receiver, const Value & blockObj, const ArgReader & args)
     {
         BlockObject & block = *(blockObj.AsBlock());
 

@@ -9,7 +9,7 @@
 #include "FinchString.h"
 
 #define PRIMITIVE(name)                                                     \
-        Value name(Fiber & fiber, const Value & self, ArgReader & args)
+        Value name(Fiber & fiber, const Value & self, const ArgReader & args)
 
 namespace Finch
 {
@@ -27,7 +27,7 @@ namespace Finch
     class Object;
 
     typedef Value (*PrimitiveMethod)(Fiber & fiber, const Value & self,
-                                           ArgReader & args);
+                                     const ArgReader & args);
 
     class Value
     {
@@ -52,15 +52,9 @@ namespace Finch
         
         Value GetField(int name) const;
         void SetField(int name, const Value & value) const;
-
-        Value FindMethod(StringId name) const;
-        PrimitiveMethod FindPrimitive(StringId name) const;
-
-        /*
-        Object & operator *() const { return *mObj; }
-        Object * operator ->() const { return mObj; }
-        */
         
+        Value SendMessage(Fiber & fiber, StringId messageId, const ArgReader & args) const;
+
         // Compares two values.
         bool operator ==(const Value & other) const
         {

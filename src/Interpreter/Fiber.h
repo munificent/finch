@@ -39,7 +39,7 @@ namespace Finch
         Value CreateString(const String & value);
         
         // Pushes the given block onto the call stack.
-        void CallBlock(const Value & receiver, const Value & blockObj, ArgReader & args);
+        void CallBlock(const Value & receiver, const Value & blockObj, const ArgReader & args);
 
         // Displays a runtime error to the user.
         void Error(const String & message);
@@ -92,7 +92,7 @@ namespace Finch
         void StoreMessageResult(const Value & result);
 
         Value SendMessage(StringId messageId, int receiverReg, int numArgs);
-
+        
         const Value & Self();
         
         Ref<Upvalue> CaptureUpvalue(int stackIndex);
