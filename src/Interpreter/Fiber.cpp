@@ -431,7 +431,7 @@ namespace Finch
             }
 
             // If we're at the root of the inheritance chain, then stop.
-            if (receiver.Parent() == receiver) break;
+            if (receiver.Parent().IsNull()) break;
             receiver = receiver.Parent();
         }
 

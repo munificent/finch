@@ -21,7 +21,13 @@ namespace Finch
     
     PRIMITIVE(ObjectGetParent)
     {
-        return self.Parent();
+        Value parent = self.Parent();
+        
+        // If we don't have a parent, we're at Object, so just return Object
+        // as its own parent.
+        if (parent.IsNull()) return self;
+        
+        return parent;
     }
 }
 

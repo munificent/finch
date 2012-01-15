@@ -36,25 +36,22 @@ namespace Finch
     Value DynamicObject::GetField(StringId name)
     {
         // Walk up the parent chain until it loops back on itself at Object.
-        Object * object = this;
+        DynamicObject * object = this;
         while (true)
         {
-            DynamicObject * dynamic = object->AsDynamic();
-            
-            // Only dynamic objects have fields, so skip others in the
-            // inheritance chain.
-            if (dynamic == NULL) continue;
-            
             Value field;
-            if (dynamic->mFields.Find(name, &field))
+            if (object->mFields.Find(name, &field))
             {
                 // Found it.
                 return field;
             }
-
+            
             // If we're at the root of the inheritance chain, then stop.
-            if (&(*object->Parent()) == object) break;
-            object = &(*object->Parent());
+            if (object->Parent().IsNull()) break;
+            
+            // Only dynamic objects have fields, so stop if we aren't at one.
+            object = object->Parent().AsDynamic();
+            if (object == NULL) break;
         }
         
         // If we get here, it wasn't found.

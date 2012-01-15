@@ -111,9 +111,6 @@ namespace Finch
         virtual FiberObject *   AsFiber()        { return NULL; }
 
         const Value & Parent() const { return mParent; }
-        // TODO(bob): Only used to set Object's parent to itself. Can we get
-        // rid of this?
-        void        SetParent(const Value & parent) { mParent = parent; }
 
         virtual void Trace(ostream & stream) const = 0;
 

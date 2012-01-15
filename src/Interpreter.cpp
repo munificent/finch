@@ -249,15 +249,7 @@ namespace Finch
     
     Value Interpreter::NewObject(const Value & parent, String name)
     {
-        Value object = Value(new DynamicObject(parent, name));
-        
-        // if the object has no parent, use itself as it
-        if (parent.IsNull())
-        {
-            object->SetParent(object);
-        }
-        
-        return object;
+        return Value(new DynamicObject(parent, name));
     }
     
     Value Interpreter::NewObject(const Value & parent)
