@@ -15,7 +15,7 @@ namespace Finch
     class StringObject : public Object
     {
     public:
-        StringObject(Ref<Object> parent, String value)
+        StringObject(const Value & parent, String value)
         :   Object(parent),
             mValue(value)
         {}

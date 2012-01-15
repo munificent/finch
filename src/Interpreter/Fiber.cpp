@@ -204,24 +204,27 @@ namespace Finch
 
                 case OP_GET_GLOBAL:
                 {
-                    Ref<Object> value = mInterpreter.GetGlobal(a);
+                    const Value & value = mInterpreter.GetGlobal(a);
 
-                    if (value.IsNull())
+                    if (!value.IsNull())
+                    {
+                        Store(frame, b, value);
+                    }
+                    else
                     {
                         String name = mInterpreter.FindGlobalName(a);
                         Error(String::Format(
-                            "Trying to access undefined global '%s'.",
-                            name.CString()));
-                        value = mInterpreter.Nil();
+                                             "Trying to access undefined global '%s'.",
+                                             name.CString()));
+                        Store(frame, b, mInterpreter.Nil());
                     }
-
-                    Store(frame, b, value);
                     break;
                 }
 
                 case OP_SET_GLOBAL:
                 {
-                    mInterpreter.SetGlobal(a, Load(frame, b));
+                    Value value = Value::HackWrapRef(Load(frame, b));
+                    mInterpreter.SetGlobal(a, value);
                     break;
                 }
 
@@ -332,6 +335,15 @@ namespace Finch
     {
         mStack[frame.stackStart + reg] = value;
     }
+    
+    void Fiber::Store(const CallFrame & frame, int reg, const Value & value)
+    {
+        // TODO(bob): Hackish. Need to copy value to have non-const one that
+        // we can call Obj() on.
+        Value copy = value;
+        Store(frame, reg, copy.Obj());
+    }
+
 
     void Fiber::PopCallFrame()
     {
@@ -426,8 +438,8 @@ namespace Finch
             }
 
             // If we're at the root of the inheritance chain, then stop.
-            if (receiver->Parent() == receiver) break;
-            receiver = receiver->Parent();
+            if (receiver->Parent().Obj() == receiver) break;
+            receiver = receiver->Parent().Obj();
         }
 
         // If we got here, the object didn't handle the message.

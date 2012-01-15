@@ -29,6 +29,61 @@ namespace Finch
     typedef Ref<Object> (*PrimitiveMethod)(Fiber & fiber, Ref<Object> self,
                                            ArgReader & args);
 
+    class Value
+    {
+    public:
+        // TODO(bob): Temp until everything is using Value.
+        static Value HackWrapRef(Ref<Object> obj)
+        {
+            return Value(obj);
+        }
+        
+        static const Value NIL;
+        
+        Value(const Value & other)
+        :   mObj(other.mObj)
+        {}
+        
+        explicit Value(Object * obj)
+        :   mObj(obj)
+        {}
+        
+        Value()
+        :   mObj()
+        {}
+        
+        // Discards the currently referred to object and assigns the given
+        // reference to this one.
+        inline Value & operator =(const Value & other)
+        {
+            if (&other != this)
+            {
+                mObj = other.mObj;
+            }
+            
+            return *this;
+        }
+        
+        inline bool IsNull() const { return mObj.IsNull(); }
+        
+        double          AsNumber() const;
+        String          AsString() const;
+        ArrayObject *   AsArray();
+        BlockObject *   AsBlock() const;
+        DynamicObject * AsDynamic();
+        FiberObject *   AsFiber();
+        
+        inline Ref<Object> Obj() const { return mObj; }
+        
+    private:
+        // TODO(bob): Temp until everything is using Value.
+        Value(Ref<Object> obj)
+        :   mObj(obj)
+        {}
+        
+        Ref<Object> mObj;
+    };
+    
     // Base class for an object in Finch. All values in Finch inherit from this.
     class Object
     {
@@ -50,20 +105,18 @@ namespace Finch
         virtual DynamicObject * AsDynamic()      { return NULL; }
         virtual FiberObject *   AsFiber()        { return NULL; }
 
-        Ref<Object> Parent() { return mParent; }
+        const Value & Parent() { return mParent; }
         // TODO(bob): Only used to set Object's parent to itself. Can we get
         // rid of this?
-        void        SetParent(Ref<Object> parent) { mParent = parent; }
+        void        SetParent(const Value & parent) { mParent = parent; }
 
         virtual void Trace(ostream & stream) const = 0;
 
     protected:
-        Object(Ref<Object> parent) : mParent(parent) {}
-
-        Ref<Object> Parent() const { return mParent; }
+        Object(const Value & parent) : mParent(parent) {}
 
     private:
-        Ref<Object> mParent;
+        Value mParent;
     };
 
     ostream & operator<<(ostream & cout, const Object & object);

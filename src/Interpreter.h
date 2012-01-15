@@ -47,8 +47,8 @@ namespace Finch
         // Creates an indexed slot for a global with the given name. If a global
         // with that name already exists, will return that slot.
         int DefineGlobal(const String & name);
-        Ref<Object> GetGlobal(int index);
-        void SetGlobal(int index, Ref<Object> value);
+        const Value & GetGlobal(int index);
+        void SetGlobal(int index, const Value & value);
         
         String FindGlobalName(int index);
         
@@ -69,8 +69,8 @@ namespace Finch
     private:
         Ref<Expr>   Parse(ILineReader & reader);
         
-        Ref<Object> MakeGlobal(const char * name);
-        void AddPrimitive(Ref<Object> object, String message,
+        Value MakeGlobal(const char * name);
+        void AddPrimitive(const Value & object, String message,
                           PrimitiveMethod primitive);
         
         IInterpreterHost & mHost;
@@ -78,16 +78,16 @@ namespace Finch
         StringTable mStrings;
         
         // Indexed collection of global variables.
-        Array<Ref<Object> > mGlobals;
+        Array<Value> mGlobals;
         // Maps global variable names to their indices. Used by the compiler.
         IdTable<int> mGlobalNames;
         
-        Ref<Object> mObject;
-        Ref<Object> mArrayPrototype;
-        Ref<Object> mBlockPrototype;
-        Ref<Object> mFiberPrototype;
-        Ref<Object> mNumberPrototype;
-        Ref<Object> mStringPrototype;
+        Value mObject;
+        Value mArrayPrototype;
+        Value mBlockPrototype;
+        Value mFiberPrototype;
+        Value mNumberPrototype;
+        Value mStringPrototype;
         Ref<Object> mNil;
         Ref<Object> mTrue;
         Ref<Object> mFalse;

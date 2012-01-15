@@ -15,7 +15,7 @@ namespace Finch
     class ArrayObject : public Object
     {
     public:
-        ArrayObject(Ref<Object> parent, int length)
+        ArrayObject(const Value & parent, int length)
         :   Object(parent),
             mElements(length)
         {

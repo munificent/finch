@@ -21,7 +21,7 @@ namespace Finch
     class BlockObject : public Object
     {
     public:
-        BlockObject(Ref<Object> parent, Ref<Block> block,
+        BlockObject(const Value & parent, Ref<Block> block,
                     Ref<Object> self)
         :   Object(parent),
             mBlock(block),

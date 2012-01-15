@@ -12,6 +12,13 @@ namespace Finch
 {
     using std::ostream;
     
+    double Value::AsNumber() const { return mObj->AsNumber(); }
+    String Value::AsString() const { return mObj->AsString(); }
+    ArrayObject * Value::AsArray() { return mObj->AsArray(); }
+    BlockObject * Value::AsBlock() const { return mObj->AsBlock(); }
+    DynamicObject * Value::AsDynamic() { return mObj->AsDynamic(); }
+    FiberObject * Value::AsFiber() { return mObj->AsFiber(); }
+    
     ostream & operator<<(ostream & cout, const Object & object)
     {
         object.Trace(cout);

@@ -21,7 +21,7 @@ namespace Finch
     
     PRIMITIVE(ObjectGetParent)
     {
-        return self->Parent();
+        return self->Parent().Obj();
     }
 }
 

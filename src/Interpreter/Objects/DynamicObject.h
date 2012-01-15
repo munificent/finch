@@ -20,13 +20,13 @@ namespace Finch
     class DynamicObject : public Object
     {
     public:
-        DynamicObject(Ref<Object> parent, String name)
+        DynamicObject(const Value & parent, String name)
         :   Object(parent),
             mName(name)
         {
         }
         
-        DynamicObject(Ref<Object> parent)
+        DynamicObject(const Value & parent)
         :   Object(parent),
             mName("object")
         {

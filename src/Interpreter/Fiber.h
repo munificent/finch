@@ -87,7 +87,8 @@ namespace Finch
         
         // Stores a register for the given callframe.
         void Store(const CallFrame & frame, int reg, Ref<Object> value);
-        
+        void Store(const CallFrame & frame, int reg, const Value & value);
+
         void PopCallFrame();
         void StoreMessageResult(Ref<Object> result);
 

@@ -121,11 +121,11 @@ namespace Finch
         MakeGlobal("Ether");
         
         // Io.
-        Ref<Object> io = MakeGlobal("Io");
+        Value io = MakeGlobal("Io");
         AddPrimitive(io, "read-file:", IoReadFile);
         
         // Bare primitive object.
-        Ref<Object> primitives = MakeGlobal("*primitive*");
+        Value primitives = MakeGlobal("*primitive*");
         AddPrimitive(primitives, "string-concat:and:",       PrimitiveStringConcat);
         AddPrimitive(primitives, "string-compare:to:",       PrimitiveStringCompare);
         AddPrimitive(primitives, "write:",                   PrimitiveWrite);
@@ -137,9 +137,9 @@ namespace Finch
         AddPrimitive(primitives, "callstack-depth",          PrimitiveGetCallstackDepth);
         
         // The special singleton values.
-        mNil = MakeGlobal("nil");
-        mTrue = MakeGlobal("true");
-        mFalse = MakeGlobal("false");
+        mNil = MakeGlobal("nil").Obj();
+        mTrue = MakeGlobal("true").Obj();
+        mFalse = MakeGlobal("false").Obj();
     }
     
     void Interpreter::Interpret(ILineReader & reader, bool showResult)
@@ -173,10 +173,10 @@ namespace Finch
         ASSERT_NOT_NULL(method);
         
         int globalIndex = DefineGlobal(objectName);
-        Ref<Object> object = GetGlobal(globalIndex);
+        Value object = GetGlobal(globalIndex);
         ASSERT(!object.IsNull(), "Must be an existing global variable.");
 
-        DynamicObject* dynamicObj = object->AsDynamic();
+        DynamicObject* dynamicObj = object.AsDynamic();
         ASSERT_NOT_NULL(dynamicObj);
         
         StringId messageId = mStrings.Add(message);
@@ -224,16 +224,16 @@ namespace Finch
         
         // Add an empty slot. Here, "empty" means that the global has been
         // declared but hasn't been initialized yet.
-        mGlobals.Add(Ref<Object>());
+        mGlobals.Add(Value());
         return mGlobals.Count() - 1;
     }
     
-    Ref<Object> Interpreter::GetGlobal(int index)
+    const Value & Interpreter::GetGlobal(int index)
     {
         return mGlobals[index];
     }
     
-    void Interpreter::SetGlobal(int index, Ref<Object> value)
+    void Interpreter::SetGlobal(int index, const Value & value)
     {
         mGlobals[index] = value;
     }
@@ -249,15 +249,15 @@ namespace Finch
     
     Ref<Object> Interpreter::NewObject(Ref<Object> parent, String name)
     {
-        Ref<Object> object = Ref<Object>(new DynamicObject(parent, name));
+        Value object = Value(new DynamicObject(Value::HackWrapRef(parent), name));
         
         // if the object has no parent, use itself as it
         if (parent.IsNull())
         {
-            object->SetParent(object);
+            object.Obj()->SetParent(object);
         }
         
-        return object;
+        return object.Obj();
     }
     
     Ref<Object> Interpreter::NewObject(Ref<Object> parent)
@@ -300,18 +300,18 @@ namespace Finch
         return parser.Parse();
     }
     
-    Ref<Object> Interpreter::MakeGlobal(const char * name)
+    Value Interpreter::MakeGlobal(const char * name)
     {
         int index = DefineGlobal(String(name));
-        Ref<Object> global = NewObject(mObject, name);
+        Value global = Value::HackWrapRef(NewObject(mObject.Obj(), name));
         SetGlobal(index, global);
         return global;
     }
     
-    void Interpreter::AddPrimitive(Ref<Object> object, String message,
+    void Interpreter::AddPrimitive(const Value & object, String message,
                                    PrimitiveMethod primitive)
     {
         StringId id = mStrings.Add(message);
-        object->AsDynamic()->AddPrimitive(id, primitive);
+        object.Obj()->AsDynamic()->AddPrimitive(id, primitive);
     }
 }

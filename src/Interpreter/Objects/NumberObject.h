@@ -17,7 +17,7 @@ namespace Finch
     class NumberObject : public Object
     {
     public:
-        NumberObject(Ref<Object> parent, double value)
+        NumberObject(const Value & parent, double value)
         :   Object(parent),
             mValue(value)
         {}
