@@ -95,8 +95,8 @@ namespace Finch
         virtual Ref<Object>     FindMethod(StringId name) { return Ref<Object>(); }
         virtual PrimitiveMethod FindPrimitive(StringId name) { return NULL; }
 
-        virtual Ref<Object>     GetField(int name) { return Ref<Object>(); }
-        virtual void            SetField(int name, Ref<Object> value) {}
+        virtual Value GetField(int name) { return Value(); }
+        virtual void  SetField(int name, const Value & value) {}
 
         virtual double          AsNumber() const { return 0; }
         virtual String          AsString() const { return ""; }

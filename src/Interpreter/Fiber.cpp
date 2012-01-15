@@ -185,20 +185,23 @@ namespace Finch
 
                 case OP_GET_FIELD:
                 {
-                    Ref<Object> field = Self()->GetField(a);
-                    if (field.IsNull())
+                    Value field = Self()->GetField(a);
+                    // TODO(bob): Just make a null Value equivalent to nil.
+                    if (!field.IsNull())
+                    {
+                        Store(frame, b, field);
+                    }
+                    else
                     {
                         // TODO(bob): Should this be an error instead?
-                        field = Nil();
+                        Store(frame, b, Nil());
                     }
-
-                    Store(frame, b, field);
                     break;
                 }
 
                 case OP_SET_FIELD:
                 {
-                    Self()->SetField(a, Load(frame, b));
+                    Self()->SetField(a, Value::HackWrapRef(Load(frame, b)));
                     break;
                 }
 
@@ -248,7 +251,7 @@ namespace Finch
                     // field to something non-dynamic?
                     ASSERT_NOT_NULL(object);
 
-                    object->SetField(a, Load(frame, b));
+                    object->SetField(a, Value::HackWrapRef(Load(frame, b)));
                     break;
                 }
 

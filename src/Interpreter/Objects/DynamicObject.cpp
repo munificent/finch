@@ -33,7 +33,7 @@ namespace Finch
         return NULL;
     }
     
-    Ref<Object> DynamicObject::GetField(StringId name)
+    Value DynamicObject::GetField(StringId name)
     {
         // Walk up the parent chain until it loops back on itself at Object.
         Object * object = this;
@@ -45,7 +45,7 @@ namespace Finch
             // inheritance chain.
             if (dynamic == NULL) continue;
             
-            Ref<Object> field;
+            Value field;
             if (dynamic->mFields.Find(name, &field))
             {
                 // Found it.
@@ -58,10 +58,10 @@ namespace Finch
         }
         
         // If we get here, it wasn't found.
-        return Ref<Object>();
+        return Value();
     }
     
-    void DynamicObject::SetField(StringId name, Ref<Object> value)
+    void DynamicObject::SetField(StringId name, const Value & value)
     {
         mFields.Insert(name, value);
     }

@@ -40,8 +40,8 @@ namespace Finch
         virtual Ref<Object>     FindMethod(StringId messageId);
         virtual PrimitiveMethod FindPrimitive(StringId messageId);
 
-        virtual Ref<Object>     GetField(StringId name);
-        virtual void            SetField(StringId name, Ref<Object> value);
+        virtual Value GetField(StringId name);
+        virtual void  SetField(StringId name, const Value & value);
 
         void AddMethod(StringId messageId, Ref<Object> method);
         void AddPrimitive(StringId messageId, PrimitiveMethod method);
@@ -50,7 +50,7 @@ namespace Finch
         void InitializeScope();
         
         String                      mName; //### bob: hack temp
-        IdTable<Ref<Object> >       mFields;
+        IdTable<Value>              mFields;
         IdTable<Ref<Object> >       mMethods;
         IdTable<PrimitiveMethod>    mPrimitives;
     };    
