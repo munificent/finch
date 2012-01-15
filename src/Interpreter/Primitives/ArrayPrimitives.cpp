@@ -8,7 +8,7 @@ namespace Finch
 {
     PRIMITIVE(ArrayCount)
     {
-        ArrayObject * array = self->AsArray();
+        ArrayObject * array = self.AsArray();
         ASSERT_NOT_NULL(array);
         
         return fiber.CreateNumber(array->Elements().Count());
@@ -16,24 +16,24 @@ namespace Finch
     
     PRIMITIVE(ArrayAdd)
     {
-        ArrayObject * array = self->AsArray();
+        ArrayObject * array = self.AsArray();
         ASSERT_NOT_NULL(array);
         
-        array->Elements().Add(Value::HackWrapRef(args[0]));
+        array->Elements().Add(args[0]);
         return self;
     }
     
     PRIMITIVE(ArrayAt)
     {
-        ArrayObject * array = self->AsArray();
+        ArrayObject * array = self.AsArray();
         ASSERT_NOT_NULL(array);
         
-        int index = static_cast<int>(args[0]->AsNumber());
+        int index = static_cast<int>(args[0].AsNumber());
         
         // allow negative indexes to index backwards from end
         if ((index >= -array->Elements().Count()) && (index < array->Elements().Count()))
         {
-            return array->Elements()[index].Obj();
+            return array->Elements()[index];
         }
         else
         {
@@ -44,15 +44,15 @@ namespace Finch
     
     PRIMITIVE(ArrayAtPut)
     {
-        ArrayObject * array = self->AsArray();
+        ArrayObject * array = self.AsArray();
         ASSERT_NOT_NULL(array);
         
-        int index = static_cast<int>(args[0]->AsNumber());
+        int index = static_cast<int>(args[0].AsNumber());
         
         // allow negative indexes to index backwards from end
         if ((index >= -array->Elements().Count()) && (index < array->Elements().Count()))
         {
-            array->Elements()[index] = Value::HackWrapRef(args[1]);
+            array->Elements()[index] = args[1];
         }
 
         return self;
@@ -60,13 +60,13 @@ namespace Finch
     
     PRIMITIVE(ArrayRemoveAt)
     {
-        ArrayObject * array = self->AsArray();
+        ArrayObject * array = self.AsArray();
         ASSERT_NOT_NULL(array);
         
-        int index = static_cast<int>(args[0]->AsNumber());
+        int index = static_cast<int>(args[0].AsNumber());
         
         // TODO(bob): Bounds check.
-        Ref<Object> removed = array->Elements()[index].Obj();
+        Value removed = array->Elements()[index];
         array->Elements().RemoveAt(index);
         return removed;
     }

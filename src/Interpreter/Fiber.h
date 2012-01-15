@@ -21,25 +21,25 @@ namespace Finch
     class Fiber
     {
     public:
-        Fiber(Interpreter & interpreter, Ref<Object> block);
+        Fiber(Interpreter & interpreter, const Value & block);
 
         bool IsRunning() const { return mIsRunning && !IsDone(); }
         
         bool IsDone() const;
 
-        Ref<Object> Execute();
+        Value Execute();
         
         Interpreter & GetInterpreter() { return mInterpreter; }
 
         void Pause() { mIsRunning = false; }
 
-        Ref<Object> Nil();
-        Ref<Object> CreateBool(bool value);
-        Ref<Object> CreateNumber(double value);
-        Ref<Object> CreateString(const String & value);
+        const Value & Nil();
+        const Value & CreateBool(bool value);
+        Value CreateNumber(double value);
+        Value CreateString(const String & value);
         
         // Pushes the given block onto the call stack.
-        void CallBlock(Ref<Object> receiver, Ref<Object> blockObj, ArgReader & args);
+        void CallBlock(const Value & receiver, const Value & blockObj, ArgReader & args);
 
         // Displays a runtime error to the user.
         void Error(const String & message);
@@ -59,10 +59,10 @@ namespace Finch
             int stackStart;
 
             // The current receiver.
-            Ref<Object> receiver;
+            Value receiver;
             
             // The block of code being executed by this frame.
-            Ref<Object> block;
+            Value block;
             
             CallFrame()
             :   ip(0),
@@ -71,7 +71,7 @@ namespace Finch
                 block()
             {}
             
-            CallFrame(int stackStart, Ref<Object> receiver, Ref<Object> block)
+            CallFrame(int stackStart, const Value & receiver, const Value & block)
             :   ip(0),
                 stackStart(stackStart),
                 receiver(receiver),
@@ -79,22 +79,21 @@ namespace Finch
             {}
 
             // Gets the code object for this frame.
-            const BlockObject & Block() const { return *(block->AsBlock()); }
+            const BlockObject & Block() const { return *(block.AsBlock()); }
         };
         
         // Loads a register for the given callframe.
-        Ref<Object> Load(const CallFrame & frame, int reg);
+        Value Load(const CallFrame & frame, int reg);
         
         // Stores a register for the given callframe.
-        void Store(const CallFrame & frame, int reg, Ref<Object> value);
         void Store(const CallFrame & frame, int reg, const Value & value);
 
         void PopCallFrame();
-        void StoreMessageResult(Ref<Object> result);
+        void StoreMessageResult(const Value & result);
 
-        Ref<Object> SendMessage(StringId messageId, int receiverReg, int numArgs);
+        Value SendMessage(StringId messageId, int receiverReg, int numArgs);
 
-        Ref<Object> Self();
+        const Value & Self();
         
         Ref<Upvalue> CaptureUpvalue(int stackIndex);
         
@@ -105,7 +104,7 @@ namespace Finch
         
         bool mIsRunning;
         Interpreter & mInterpreter;
-        Array<Ref<Object> >  mStack;
+        Array<Value>  mStack;
         Stack<CallFrame>     mCallFrames;
         
         // Reference to first upvalue in list of open upvalues. List is ordered

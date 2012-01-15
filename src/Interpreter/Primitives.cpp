@@ -19,17 +19,17 @@ namespace Finch
     // form.
     PRIMITIVE(PrimitiveStringConcat)
     {
-        return fiber.CreateString(args[0]->AsString() + args[1]->AsString());
+        return fiber.CreateString(args[0].AsString() + args[1].AsString());
     }
     
     PRIMITIVE(PrimitiveStringCompare)
     {
-        return fiber.CreateNumber(args[0]->AsString().CompareTo(args[1]->AsString()));
+        return fiber.CreateNumber(args[0].AsString().CompareTo(args[1].AsString()));
     }
     
     PRIMITIVE(PrimitiveWrite)
     {
-        String text = args[0]->AsString();
+        String text = args[0].AsString();
         fiber.GetInterpreter().GetHost().Output(text);
         return fiber.Nil();
     }
@@ -39,7 +39,7 @@ namespace Finch
     PRIMITIVE(PrimitiveNewFiber)
     {
         // get block arg
-        BlockObject * block = args[0]->AsBlock();
+        BlockObject * block = args[0].AsBlock();
         if (block == NULL)
         {
             fiber.Error("Must pass in a block object to create a new fiber.");
@@ -57,7 +57,7 @@ namespace Finch
     PRIMITIVE(PrimitiveSwitchToFiber)
     {
         // get the fiber we're about switch to
-        FiberObject * fiberObj = args[0]->AsFiber();
+        FiberObject * fiberObj = args[0].AsFiber();
         
         // if you try to run a completed fiber, it does nothing
         if (fiberObj->GetFiber().IsDone())

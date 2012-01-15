@@ -13,22 +13,22 @@ namespace Finch
     // self is the RHS and the arg is the LHS.
     PRIMITIVE(NumberAdd)
     {
-        return fiber.CreateNumber(args[0]->AsNumber() + self->AsNumber());
+        return fiber.CreateNumber(args[0].AsNumber() + self.AsNumber());
     }
 
     PRIMITIVE(NumberSubtract)
     {
-        return fiber.CreateNumber(args[0]->AsNumber() - self->AsNumber());
+        return fiber.CreateNumber(args[0].AsNumber() - self.AsNumber());
     }
     
     PRIMITIVE(NumberMultiply)
     {
-        return fiber.CreateNumber(args[0]->AsNumber() * self->AsNumber());
+        return fiber.CreateNumber(args[0].AsNumber() * self.AsNumber());
     }
     
     PRIMITIVE(NumberDivide)
     {
-        double dividend = self->AsNumber();
+        double dividend = self.AsNumber();
         
         // check for divide by zero
         if (dividend == 0)
@@ -37,98 +37,98 @@ namespace Finch
         }
         else
         {
-            return fiber.CreateNumber(args[0]->AsNumber() / dividend);
+            return fiber.CreateNumber(args[0].AsNumber() / dividend);
         }
     }
 
     PRIMITIVE(NumberAbs)
     {
-        double number = self->AsNumber();
+        double number = self.AsNumber();
         return fiber.CreateNumber((number < 0) ? -number : number);
     }
 
     PRIMITIVE(NumberNeg)
     {
-        return fiber.CreateNumber(-self->AsNumber());
+        return fiber.CreateNumber(-self.AsNumber());
     }
     
     PRIMITIVE(NumberSqrt)
     {
-        return fiber.CreateNumber(sqrt(self->AsNumber()));
+        return fiber.CreateNumber(sqrt(self.AsNumber()));
     }
     
     PRIMITIVE(NumberSin)
     {
-        return fiber.CreateNumber(sin(self->AsNumber()));
+        return fiber.CreateNumber(sin(self.AsNumber()));
     }
     PRIMITIVE(NumberCos)
     {
-        return fiber.CreateNumber(cos(self->AsNumber()));
+        return fiber.CreateNumber(cos(self.AsNumber()));
     }
     PRIMITIVE(NumberTan)
     {
-        return fiber.CreateNumber(tan(self->AsNumber()));
+        return fiber.CreateNumber(tan(self.AsNumber()));
     }
     PRIMITIVE(NumberAsin)
     {
-        return fiber.CreateNumber(asin(self->AsNumber()));
+        return fiber.CreateNumber(asin(self.AsNumber()));
     }
     PRIMITIVE(NumberAcos)
     {
-        return fiber.CreateNumber(acos(self->AsNumber()));
+        return fiber.CreateNumber(acos(self.AsNumber()));
     }
     PRIMITIVE(NumberAtan)
     {
-        return fiber.CreateNumber(atan(self->AsNumber()));
+        return fiber.CreateNumber(atan(self.AsNumber()));
     }
     PRIMITIVE(NumberAtan2)
     {
-        return fiber.CreateNumber(atan2(self->AsNumber(), args[0]->AsNumber()));
+        return fiber.CreateNumber(atan2(self.AsNumber(), args[0].AsNumber()));
     }
     
     PRIMITIVE(NumberMod)
     {
-        return fiber.CreateNumber(fmod(self->AsNumber(), args[0]->AsNumber()));
+        return fiber.CreateNumber(fmod(self.AsNumber(), args[0].AsNumber()));
     }
     
     PRIMITIVE(NumberFloor)
     {
-        return fiber.CreateNumber(floor(self->AsNumber()));
+        return fiber.CreateNumber(floor(self.AsNumber()));
     }
     
     PRIMITIVE(NumberCeiling)
     {
-        return fiber.CreateNumber(ceil(self->AsNumber()));
+        return fiber.CreateNumber(ceil(self.AsNumber()));
     }
     
     PRIMITIVE(NumberEquals)
     {
-        return fiber.CreateBool(self->AsNumber() == args[0]->AsNumber());
+        return fiber.CreateBool(self.AsNumber() == args[0].AsNumber());
     }
 
     PRIMITIVE(NumberNotEquals)
     {
-        return fiber.CreateBool(self->AsNumber() != args[0]->AsNumber());
+        return fiber.CreateBool(self.AsNumber() != args[0].AsNumber());
     }
     
     PRIMITIVE(NumberLessThan)
     {
-        return fiber.CreateBool(self->AsNumber() < args[0]->AsNumber());
+        return fiber.CreateBool(self.AsNumber() < args[0].AsNumber());
     }
     
     PRIMITIVE(NumberGreaterThan)
     {
-        return fiber.CreateBool(self->AsNumber() > args[0]->AsNumber());
+        return fiber.CreateBool(self.AsNumber() > args[0].AsNumber());
     }
     
     PRIMITIVE(NumberLessThanOrEqual)
     {
-        return fiber.CreateBool(self->AsNumber() <= args[0]->AsNumber());
+        return fiber.CreateBool(self.AsNumber() <= args[0].AsNumber());
     }
     
     PRIMITIVE(NumberGreaterThanOrEqual)
     {
-        return fiber.CreateBool(self->AsNumber() >= args[0]->AsNumber());
+        return fiber.CreateBool(self.AsNumber() >= args[0].AsNumber());
     }
 }
 

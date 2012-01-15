@@ -7,11 +7,12 @@
 namespace Finch
 {
     class Object;
+    class Value;
 
     class ArgReader
     {
     public:
-        ArgReader(Array<Ref<Object> > & stack, int firstArg, int numArgs)
+        ArgReader(Array<Value> & stack, int firstArg, int numArgs)
         :   mStack(stack),
             mFirstArg(firstArg),
             mNumArgs(numArgs)
@@ -20,14 +21,14 @@ namespace Finch
         int StackStart() const { return mFirstArg; }
         int NumArgs() const { return mNumArgs; }
 
-        Ref<Object> & operator[] (int index)
+        const Value & operator[] (int index)
         {
             ASSERT_RANGE(index, mNumArgs);
             return mStack[mFirstArg + index];
         }
 
     private:
-        Array<Ref<Object> > & mStack;
+        Array<Value> & mStack;
         int mFirstArg;
         int mNumArgs;
     };

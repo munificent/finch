@@ -9,7 +9,7 @@
 #include "FinchString.h"
 
 #define PRIMITIVE(name)                                                     \
-        Ref<Object> name(Fiber & fiber, Ref<Object> self, ArgReader & args)
+        Value name(Fiber & fiber, const Value & self, ArgReader & args)
 
 namespace Finch
 {
@@ -26,20 +26,12 @@ namespace Finch
     class Interpreter;
     class Object;
 
-    typedef Ref<Object> (*PrimitiveMethod)(Fiber & fiber, Ref<Object> self,
+    typedef Value (*PrimitiveMethod)(Fiber & fiber, const Value & self,
                                            ArgReader & args);
 
     class Value
     {
     public:
-        // TODO(bob): Temp until everything is using Value.
-        static Value HackWrapRef(Ref<Object> obj)
-        {
-            return Value(obj);
-        }
-        
-        static const Value NIL;
-        
         Value(const Value & other)
         :   mObj(other.mObj)
         {}
@@ -68,19 +60,14 @@ namespace Finch
         
         double          AsNumber() const;
         String          AsString() const;
-        ArrayObject *   AsArray();
+        ArrayObject *   AsArray() const;
         BlockObject *   AsBlock() const;
-        DynamicObject * AsDynamic();
-        FiberObject *   AsFiber();
+        DynamicObject * AsDynamic() const;
+        FiberObject *   AsFiber() const;
         
         inline Ref<Object> Obj() const { return mObj; }
         
     private:
-        // TODO(bob): Temp until everything is using Value.
-        Value(Ref<Object> obj)
-        :   mObj(obj)
-        {}
-        
         Ref<Object> mObj;
     };
     

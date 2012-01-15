@@ -2,11 +2,11 @@
 
 namespace Finch
 {
-    Value Upvalue::Get(Array<Ref<Object> > & stack) const
+    Value Upvalue::Get(Array<Value> & stack) const
     {
         if (IsOpen())
         {
-            return Value::HackWrapRef(stack[mStackIndex]);
+            return stack[mStackIndex];
         }
         else
         {
@@ -14,11 +14,11 @@ namespace Finch
         }
     }
     
-    void Upvalue::Set(Array<Ref<Object> > & stack, const Value & value)
+    void Upvalue::Set(Array<Value> & stack, const Value & value)
     {
         if (IsOpen())
         {
-            stack[mStackIndex] = value.Obj();
+            stack[mStackIndex] = value;
         }
         else
         {
@@ -26,10 +26,10 @@ namespace Finch
         }
     }
     
-    void Upvalue::Close(Array<Ref<Object> > & stack)
+    void Upvalue::Close(Array<Value> & stack)
     {
         // Capture the value.
-        mValue = Value::HackWrapRef(stack[mStackIndex]);
+        mValue = stack[mStackIndex];
         
         // Detach from the stack.
         mStackIndex = -1;

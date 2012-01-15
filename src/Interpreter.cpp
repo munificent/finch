@@ -155,12 +155,12 @@ namespace Finch
         Value fiber = NewFiber(blockObj);
         
         // Run the interpreter.
-        Ref<Object> result = fiber.AsFiber()->GetFiber().Execute();
+        Value result = fiber.AsFiber()->GetFiber().Execute();
         
         if (showResult)
         {
             std::stringstream text;
-            text << *result << std::endl;
+            text << result.Obj() << std::endl;
             mHost.Output(String(text.str().c_str()));
         }
     }

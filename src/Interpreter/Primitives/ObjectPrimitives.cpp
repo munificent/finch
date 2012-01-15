@@ -10,18 +10,18 @@ namespace Finch
 {
     PRIMITIVE(ObjectToString)
     {
-        return fiber.CreateString(self->AsString());
+        return fiber.CreateString(self.AsString());
     }
     
     PRIMITIVE(ObjectSame)
     {
         // Reference equality.
-        return fiber.CreateBool(self == args[0]);
+        return fiber.CreateBool(self.Obj() == args[0].Obj());
     }
     
     PRIMITIVE(ObjectGetParent)
     {
-        return self->Parent().Obj();
+        return self.Obj()->Parent();
     }
 }
 

@@ -8,14 +8,14 @@ namespace Finch
 {
     PRIMITIVE(BlockCall)
     {
-        BlockObject * block = self->AsBlock();
+        BlockObject * block = self.AsBlock();
         ASSERT_NOT_NULL(block);
         
-        fiber.CallBlock(block->Self().Obj(), self, args);
+        fiber.CallBlock(block->Self(), self, args);
         
         // This won't be used. Instead, when the called block unwinds, it will
         // set the result value into the appropriate register.
-        return Ref<Object>();
+        return Value();
     }
 }
 

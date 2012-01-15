@@ -26,7 +26,7 @@ namespace Finch
     using std::cout;
     using std::endl;
 
-    Fiber::Fiber(Interpreter & interpreter, Ref<Object> block)
+    Fiber::Fiber(Interpreter & interpreter, const Value & block)
     :   mIsRunning(false),
         mInterpreter(interpreter),
         mStack(),
@@ -35,7 +35,7 @@ namespace Finch
         ArgReader args(mStack, 0, 0);
 
         // Top-level blocks outside of any method bind self to nil.
-        CallBlock(interpreter.Nil().Obj(), block, args);
+        CallBlock(interpreter.Nil(), block, args);
     }
 
     bool Fiber::IsDone() const
@@ -43,7 +43,7 @@ namespace Finch
         return mCallFrames.Count() == 0;
     }
 
-    Ref<Object> Fiber::Execute()
+    Value Fiber::Execute()
     {
         mIsRunning = true;
 
@@ -72,9 +72,9 @@ namespace Finch
                 {
                     // The parent is already in the register that the child
                     // will be placed into.
-                    Ref<Object> parent = Load(frame, a);
-                    Value object = mInterpreter.NewObject(Value::HackWrapRef(parent));
-                    Store(frame, a, object.Obj());
+                    const Value & parent = Load(frame, a);
+                    Value object = mInterpreter.NewObject(parent);
+                    Store(frame, a, object);
                     break;
                 }
 
@@ -82,7 +82,7 @@ namespace Finch
                 {
                     // Create a new block object from the block.
                     Ref<Block> block = frame.Block().GetBlock(a);
-                    Value blockObj = mInterpreter.NewBlock(block, Value::HackWrapRef(Self()));
+                    Value blockObj = mInterpreter.NewBlock(block, Self());
                     BlockObject * blockPtr = blockObj.AsBlock();
 
                     // Capture upvalues.
@@ -117,16 +117,16 @@ namespace Finch
                     // Create the empty array with enough capacity. Subsequent
                     // OP_ARRAY_ELEMENT instructions will fill it.
                     Value array = mInterpreter.NewArray(a);
-                    Store(frame, b, array.Obj());
+                    Store(frame, b, array);
                     break;
                 }
 
                 case OP_ARRAY_ELEMENT:
                 {
                     // Add the item to the array.
-                    Ref<Object> element = Load(frame, a);
-                    Ref<Object> array = Load(frame, b);
-                    array->AsArray()->Elements().Add(Value::HackWrapRef(element));
+                    const Value & element = Load(frame, a);
+                    Value array = Load(frame, b);
+                    array.AsArray()->Elements().Add(element);
                     break;
                 }
 
@@ -155,7 +155,7 @@ namespace Finch
                     //cout << "MESSAGE  " << name << " " << b << " -> " << c << endl;
                     int numArgs = op - OP_MESSAGE_0;
 
-                    Ref<Object> result = SendMessage(a, b, numArgs);
+                    Value result = SendMessage(a, b, numArgs);
 
                     // A non-null result means the message was handled by a
                     // primitive that immediately calculated the result.
@@ -179,13 +179,13 @@ namespace Finch
                 case OP_SET_UPVALUE:
                 {
                     Ref<Upvalue> upvalue = frame.Block().GetUpvalue(a);
-                    upvalue->Set(mStack, Value::HackWrapRef(Load(frame, b)));
+                    upvalue->Set(mStack, Load(frame, b));
                     break;
                 }
 
                 case OP_GET_FIELD:
                 {
-                    Value field = Self()->GetField(a);
+                    Value field = Self().Obj()->GetField(a);
                     // TODO(bob): Just make a null Value equivalent to nil.
                     if (!field.IsNull())
                     {
@@ -201,7 +201,7 @@ namespace Finch
 
                 case OP_SET_FIELD:
                 {
-                    Self()->SetField(a, Value::HackWrapRef(Load(frame, b)));
+                    Self().Obj()->SetField(a, Load(frame, b));
                     break;
                 }
 
@@ -226,38 +226,37 @@ namespace Finch
 
                 case OP_SET_GLOBAL:
                 {
-                    Value value = Value::HackWrapRef(Load(frame, b));
-                    mInterpreter.SetGlobal(a, value);
+                    mInterpreter.SetGlobal(a, Load(frame, b));
                     break;
                 }
 
                 case OP_DEF_METHOD:
                 {
                     // Get the object we're attaching the method to.
-                    DynamicObject * object = Load(frame, c)->AsDynamic();
+                    DynamicObject * object = Load(frame, c).AsDynamic();
                     // TODO(bob): What should this do if you try to bind a
                     // method to something non-dynamic?
                     ASSERT_NOT_NULL(object);
 
-                    object->AddMethod(a, Value::HackWrapRef(Load(frame, b)));
+                    object->AddMethod(a, Load(frame, b));
                     break;
                 }
 
                 case OP_DEF_FIELD:
                 {
                     // Get the object we're attaching the field to.
-                    DynamicObject * object = Load(frame, c)->AsDynamic();
+                    DynamicObject * object = Load(frame, c).AsDynamic();
                     // TODO(bob): What should this do if you try to bind a
                     // field to something non-dynamic?
                     ASSERT_NOT_NULL(object);
 
-                    object->SetField(a, Value::HackWrapRef(Load(frame, b)));
+                    object->SetField(a, Load(frame, b));
                     break;
                 }
 
                 case OP_END:
                 {
-                    Ref<Object> result = Load(frame, a);
+                    const Value & result = Load(frame, a);
                     PopCallFrame();
 
                     if (mCallFrames.Count() > 0)
@@ -278,7 +277,7 @@ namespace Finch
                 {
                     int methodId = a;
 
-                    Ref<Object> result = Load(frame, b);
+                    const Value & result = Load(frame, b);
 
                     // Find the enclosing method on the callstack.
                     int methodFrame;
@@ -326,27 +325,18 @@ namespace Finch
             TRACE_STACK();
         }
 
-        return Ref<Object>();
+        return Value();
     }
 
-    Ref<Object> Fiber::Load(const CallFrame & frame, int reg)
+    Value Fiber::Load(const CallFrame & frame, int reg)
     {
         return mStack[frame.stackStart + reg];
     }
 
-    void Fiber::Store(const CallFrame & frame, int reg, Ref<Object> value)
+    void Fiber::Store(const CallFrame & frame, int reg, const Value & value)
     {
         mStack[frame.stackStart + reg] = value;
     }
-    
-    void Fiber::Store(const CallFrame & frame, int reg, const Value & value)
-    {
-        // TODO(bob): Hackish. Need to copy value to have non-const one that
-        // we can call Obj() on.
-        Value copy = value;
-        Store(frame, reg, copy.Obj());
-    }
-
 
     void Fiber::PopCallFrame()
     {
@@ -393,11 +383,11 @@ namespace Finch
         // again) but keep them around in case later callers need them.
         for (int i = newStackSize; i < oldStackSize; i++)
         {
-            mStack[i] = Ref<Object>();
+            mStack[i] = Value();
         }
     }
 
-    void Fiber::StoreMessageResult(Ref<Object> result)
+    void Fiber::StoreMessageResult(const Value & result)
     {
         // Store the result back in the caller's dest register.
         CallFrame & caller = mCallFrames.Peek();
@@ -412,10 +402,10 @@ namespace Finch
     }
 
     // TODO(bob): Move this into Object?
-    Ref<Object> Fiber::SendMessage(StringId messageId, int receiverReg, int numArgs)
+    Value Fiber::SendMessage(StringId messageId, int receiverReg, int numArgs)
     {
-        Ref<Object> self = Load(mCallFrames.Peek(), receiverReg);
-        Ref<Object> receiver = self;
+        const Value & self = Load(mCallFrames.Peek(), receiverReg);
+        Value receiver = self;
 
         ASSERT(!receiver.IsNull(), "Should have receiver.");
 
@@ -426,69 +416,69 @@ namespace Finch
         while (true)
         {
             // See if the object has a method bound to that name.
-            Value method = receiver->FindMethod(messageId);
+            Value method = receiver.Obj()->FindMethod(messageId);
             if (!method.IsNull())
             {
-                CallBlock(self, method.Obj(), args);
-                return Ref<Object>();
+                CallBlock(self, method, args);
+                return Value();
             }
 
             // See if the object has a primitive bound to that name.
-            PrimitiveMethod primitive = receiver->FindPrimitive(messageId);
+            PrimitiveMethod primitive = receiver.Obj()->FindPrimitive(messageId);
             if (primitive != NULL)
             {
                 return primitive(*this, self, args);
             }
 
             // If we're at the root of the inheritance chain, then stop.
-            if (receiver->Parent().Obj() == receiver) break;
-            receiver = receiver->Parent().Obj();
+            if (receiver.Obj()->Parent().Obj() == receiver.Obj()) break;
+            receiver = receiver.Obj()->Parent();
         }
 
         // If we got here, the object didn't handle the message.
         String messageName = mInterpreter.FindString(messageId);
         String error = String::Format("Object '%s' did not handle message '%s'",
-            receiver->AsString().CString(), messageName.CString());
+            receiver.AsString().CString(), messageName.CString());
         Error(error);
 
         // Unhandled messages just return nil.
-        return mInterpreter.Nil().Obj();
+        return mInterpreter.Nil();
     }
 
-    Ref<Object> Fiber::Self()
+    const Value & Fiber::Self()
     {
         return mCallFrames.Peek().receiver;
     }
 
-    Ref<Object> Fiber::Nil()
+    const Value & Fiber::Nil()
     {
-        return mInterpreter.Nil().Obj();
+        return mInterpreter.Nil();
     }
 
-    Ref<Object> Fiber::CreateBool(bool value)
+    const Value & Fiber::CreateBool(bool value)
     {
-        return value ? mInterpreter.True().Obj() : mInterpreter.False().Obj();
+        return value ? mInterpreter.True() : mInterpreter.False();
     }
 
-    Ref<Object> Fiber::CreateNumber(double value)
+    Value Fiber::CreateNumber(double value)
     {
-        return mInterpreter.NewNumber(value).Obj();
+        return mInterpreter.NewNumber(value);
     }
 
-    Ref<Object> Fiber::CreateString(const String & value)
+    Value Fiber::CreateString(const String & value)
     {
-        return mInterpreter.NewString(value).Obj();
+        return mInterpreter.NewString(value);
     }
 
-    void Fiber::CallBlock(Ref<Object> receiver, Ref<Object> blockObj, ArgReader & args)
+    void Fiber::CallBlock(const Value & receiver, const Value & blockObj, ArgReader & args)
     {
-        BlockObject & block = *(blockObj->AsBlock());
+        BlockObject & block = *(blockObj.AsBlock());
 
         // Allocate this frame's registers.
         // TODO(bob): Make this a single operation on Array.
         while (mStack.Count() < args.StackStart() + block.NumRegisters())
         {
-            mStack.Add(Ref<Object>());
+            mStack.Add(Value());
         }
 
         // If there aren't enough arguments, nil out the remaining parameters.

@@ -25,9 +25,9 @@ namespace Finch
         :   mStackIndex(stackIndex)
         {}
         
-        Value Get(Array<Ref<Object> > & stack) const;        
-        void Set(Array<Ref<Object> > & stack, const Value & value);        
-        void Close(Array<Ref<Object> > & stack);        
+        Value Get(Array<Value> & stack) const;        
+        void Set(Array<Value> & stack, const Value & value);        
+        void Close(Array<Value> & stack);        
         int Index() const;        
         bool IsOpen() const;
 

@@ -46,7 +46,7 @@ bool InterpretFile(Interpreter & interpreter, String filePath)
 
 PRIMITIVE(LoadFile)
 {
-    String filePath = args[0]->AsString();
+    String filePath = args[0].AsString();
     Ref<ILineReader> reader = OpenFile(filePath);
     
     fiber.GetInterpreter().Interpret(*reader, false);

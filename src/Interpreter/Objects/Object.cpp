@@ -14,10 +14,10 @@ namespace Finch
     
     double Value::AsNumber() const { return mObj->AsNumber(); }
     String Value::AsString() const { return mObj->AsString(); }
-    ArrayObject * Value::AsArray() { return mObj->AsArray(); }
+    ArrayObject * Value::AsArray() const { return mObj->AsArray(); }
     BlockObject * Value::AsBlock() const { return mObj->AsBlock(); }
-    DynamicObject * Value::AsDynamic() { return mObj->AsDynamic(); }
-    FiberObject * Value::AsFiber() { return mObj->AsFiber(); }
+    DynamicObject * Value::AsDynamic() const { return mObj->AsDynamic(); }
+    FiberObject * Value::AsFiber() const { return mObj->AsFiber(); }
     
     ostream & operator<<(ostream & cout, const Object & object)
     {

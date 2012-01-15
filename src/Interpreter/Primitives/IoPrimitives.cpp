@@ -15,7 +15,7 @@ namespace Finch
     
     PRIMITIVE(IoReadFile)
     {
-        String path = args[0]->AsString();
+        String path = args[0].AsString();
         
         ifstream stream(path.CString());
 

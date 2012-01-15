@@ -10,13 +10,13 @@ namespace Finch
 {
     PRIMITIVE(FiberRunning)
     {
-        FiberObject * fiberObj = self->AsFiber();
+        FiberObject * fiberObj = self.AsFiber();
         return fiber.CreateBool(fiberObj->GetFiber().IsRunning());
     }
     
     PRIMITIVE(FiberDone)
     {
-        FiberObject * fiberObj = self->AsFiber();
+        FiberObject * fiberObj = self.AsFiber();
         return fiber.CreateBool(fiberObj->GetFiber().IsDone());
     }
 }
