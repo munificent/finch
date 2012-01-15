@@ -53,13 +53,13 @@ namespace Finch
         String FindGlobalName(int index);
         
         // Object constructors.
-        Ref<Object> NewObject(Ref<Object> parent, String name);
-        Ref<Object> NewObject(Ref<Object> parent);
-        Ref<Object> NewNumber(double value);
-        Ref<Object> NewString(String value);
-        Ref<Object> NewArray(int capacity);
-        Ref<Object> NewBlock(Ref<Block> block, Ref<Object> self);
-        Ref<Object> NewFiber(Ref<Object> block);
+        Value NewObject(const Value & parent, String name);
+        Value NewObject(const Value & parent);
+        Value NewNumber(double value);
+        Value NewString(String value);
+        Value NewArray(int capacity);
+        Value NewBlock(Ref<Block> block, const Value & self);
+        Value NewFiber(const Value & block);
         
         // Get built-in objects.
         const Value & Nil()   const { return mNil; }

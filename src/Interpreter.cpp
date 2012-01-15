@@ -151,11 +151,11 @@ namespace Finch
         
         // Create a starting fiber for the expression.
         Ref<Block> block = Compiler::CompileTopLevel(*this, *expr);
-        Ref<Object> blockObj = NewBlock(block, mNil.Obj());
-        Ref<Object> fiber = NewFiber(blockObj);
+        Value blockObj = NewBlock(block, mNil);
+        Value fiber = NewFiber(blockObj);
         
         // Run the interpreter.
-        Ref<Object> result = fiber->AsFiber()->GetFiber().Execute();
+        Ref<Object> result = fiber.AsFiber()->GetFiber().Execute();
         
         if (showResult)
         {
@@ -247,9 +247,9 @@ namespace Finch
     }
     
     
-    Ref<Object> Interpreter::NewObject(Ref<Object> parent, String name)
+    Value Interpreter::NewObject(const Value & parent, String name)
     {
-        Value object = Value(new DynamicObject(Value::HackWrapRef(parent), name));
+        Value object = Value(new DynamicObject(parent, name));
         
         // if the object has no parent, use itself as it
         if (parent.IsNull())
@@ -257,37 +257,37 @@ namespace Finch
             object.Obj()->SetParent(object);
         }
         
-        return object.Obj();
+        return object;
     }
     
-    Ref<Object> Interpreter::NewObject(Ref<Object> parent)
+    Value Interpreter::NewObject(const Value & parent)
     {
         return NewObject(parent, "");
     }
     
-    Ref<Object> Interpreter::NewNumber(double value)
+    Value Interpreter::NewNumber(double value)
     {
-        return Ref<Object>(new NumberObject(mNumberPrototype, value));
+        return Value(new NumberObject(mNumberPrototype, value));
     }
     
-    Ref<Object> Interpreter::NewString(String value)
+    Value Interpreter::NewString(String value)
     {
-        return Ref<Object>(new StringObject(mStringPrototype, value));
+        return Value(new StringObject(mStringPrototype, value));
     }
     
-    Ref<Object> Interpreter::NewArray(int capacity)
+    Value Interpreter::NewArray(int capacity)
     {
-        return Ref<Object>(new ArrayObject(mArrayPrototype, capacity));
+        return Value(new ArrayObject(mArrayPrototype, capacity));
     }
     
-    Ref<Object> Interpreter::NewBlock(Ref<Block> block, Ref<Object> self)
+    Value Interpreter::NewBlock(Ref<Block> block, const Value & self)
     {
-        return Ref<Object>(new BlockObject(mBlockPrototype, block, Value::HackWrapRef(self)));
+        return Value(new BlockObject(mBlockPrototype, block, self));
     }
     
-    Ref<Object> Interpreter::NewFiber(Ref<Object> block)
+    Value Interpreter::NewFiber(const Value & block)
     {
-        return Ref<Object>(new FiberObject(mFiberPrototype, *this, block));
+        return Value(new FiberObject(mFiberPrototype, *this, block));
     }
     
     Ref<Expr> Interpreter::Parse(ILineReader & reader)
@@ -303,7 +303,7 @@ namespace Finch
     Value Interpreter::MakeGlobal(const char * name)
     {
         int index = DefineGlobal(String(name));
-        Value global = Value::HackWrapRef(NewObject(mObject.Obj(), name));
+        Value global = NewObject(mObject, name);
         SetGlobal(index, global);
         return global;
     }

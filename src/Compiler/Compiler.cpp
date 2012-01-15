@@ -206,7 +206,7 @@ namespace Finch
         
     void Compiler::Visit(const NumberExpr & expr, int dest)
     {
-        Ref<Object> number = mInterpreter.NewNumber(expr.GetValue());
+        Value number = mInterpreter.NewNumber(expr.GetValue());
         CompileConstant(number, dest);
     }
     
@@ -322,7 +322,7 @@ namespace Finch
     
     void Compiler::Visit(const StringExpr & expr, int dest)
     {
-        Ref<Object> string = mInterpreter.NewString(expr.GetValue());
+        Value string = mInterpreter.NewString(expr.GetValue());
         CompileConstant(string, dest);
     }
     
@@ -480,11 +480,11 @@ namespace Finch
         }
     }
     
-    void Compiler::CompileConstant(Ref<Object> constant, int dest)
+    void Compiler::CompileConstant(const Value & constant, int dest)
     {
         // TODO(bob): Should check for duplicates. Only need one copy of any
         // given constant.
-        int index = mBlock->AddConstant(Value::HackWrapRef(constant));
+        int index = mBlock->AddConstant(constant);
         mBlock->Write(OP_CONSTANT, index, dest);
     }
     

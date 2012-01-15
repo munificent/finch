@@ -15,9 +15,9 @@ namespace Finch
     class FiberObject : public Object
     {
     public:
-        FiberObject(const Value & parent, Interpreter & interpreter, Ref<Object> block)
+        FiberObject(const Value & parent, Interpreter & interpreter, const Value & block)
         :   Object(parent),
-            mFiber(interpreter, block)
+            mFiber(interpreter, block.Obj())
         {}
         
         virtual FiberObject * AsFiber() { return this; }

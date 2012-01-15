@@ -83,7 +83,7 @@ namespace Finch
         void CompileSetGlobal(const String & name, const Expr & value, int dest);
         void CompileSetField(const String & name, const Expr & value, int dest);
         void CompileNestedBlock(int methodId, const BlockExpr & block, int dest);
-        void CompileConstant(Ref<Object> constant, int dest);
+        void CompileConstant(const Value & constant, int dest);
         void CompileDefinitions(const DefineExpr & expr, int dest);
 
         Compiler * GetEnclosingMethod();

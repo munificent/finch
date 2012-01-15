@@ -73,8 +73,8 @@ namespace Finch
                     // The parent is already in the register that the child
                     // will be placed into.
                     Ref<Object> parent = Load(frame, a);
-                    Ref<Object> object = mInterpreter.NewObject(parent);
-                    Store(frame, a, object);
+                    Value object = mInterpreter.NewObject(Value::HackWrapRef(parent));
+                    Store(frame, a, object.Obj());
                     break;
                 }
 
@@ -82,8 +82,8 @@ namespace Finch
                 {
                     // Create a new block object from the block.
                     Ref<Block> block = frame.Block().GetBlock(a);
-                    Ref<Object> blockObj = mInterpreter.NewBlock(block, Self());
-                    BlockObject * blockPtr = blockObj->AsBlock();
+                    Value blockObj = mInterpreter.NewBlock(block, Value::HackWrapRef(Self()));
+                    BlockObject * blockPtr = blockObj.AsBlock();
 
                     // Capture upvalues.
                     for (int i = 0; i < block->NumUpvalues(); i++)
@@ -116,8 +116,8 @@ namespace Finch
                 {
                     // Create the empty array with enough capacity. Subsequent
                     // OP_ARRAY_ELEMENT instructions will fill it.
-                    Ref<Object> array = mInterpreter.NewArray(a);
-                    Store(frame, b, array);
+                    Value array = mInterpreter.NewArray(a);
+                    Store(frame, b, array.Obj());
                     break;
                 }
 
@@ -472,12 +472,12 @@ namespace Finch
 
     Ref<Object> Fiber::CreateNumber(double value)
     {
-        return mInterpreter.NewNumber(value);
+        return mInterpreter.NewNumber(value).Obj();
     }
 
     Ref<Object> Fiber::CreateString(const String & value)
     {
-        return mInterpreter.NewString(value);
+        return mInterpreter.NewString(value).Obj();
     }
 
     void Fiber::CallBlock(Ref<Object> receiver, Ref<Object> blockObj, ArgReader & args)
