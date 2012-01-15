@@ -1,3 +1,4 @@
+#include <cstring>
 #include <iostream>
 #include <stdlib.h> // realpath
 #include <sys/param.h> // PATH_MAX

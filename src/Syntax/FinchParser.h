@@ -1,11 +1,11 @@
 #pragma once
 
 #include "Array.h"
+#include "Expr.h"
+#include "FinchString.h"
 #include "Macros.h"
 #include "Parser.h"
-#include "Expr.h"
 #include "Ref.h"
-#include "String.h"
 
 namespace Finch
 {

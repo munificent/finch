@@ -1,5 +1,6 @@
 #include <iostream> // for debugging
 #include <cstdlib>
+#include <cstring>
 
 #include "Lexer.h"
 #include "IErrorReporter.h"
