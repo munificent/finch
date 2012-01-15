@@ -62,9 +62,9 @@ namespace Finch
         Ref<Object> NewFiber(Ref<Object> block);
         
         // Get built-in objects.
-        Ref<Object> Nil()               const { return mNil; }
-        Ref<Object> True()              const { return mTrue; }
-        Ref<Object> False()             const { return mFalse; }
+        const Value & Nil()   const { return mNil; }
+        const Value & True()  const { return mTrue; }
+        const Value & False() const { return mFalse; }
         
     private:
         Ref<Expr>   Parse(ILineReader & reader);
@@ -88,9 +88,9 @@ namespace Finch
         Value mFiberPrototype;
         Value mNumberPrototype;
         Value mStringPrototype;
-        Ref<Object> mNil;
-        Ref<Object> mTrue;
-        Ref<Object> mFalse;
+        Value mNil;
+        Value mTrue;
+        Value mFalse;
         
         NO_COPY(Interpreter);
     };

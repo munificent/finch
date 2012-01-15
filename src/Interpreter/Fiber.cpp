@@ -35,7 +35,7 @@ namespace Finch
         ArgReader args(mStack, 0, 0);
 
         // Top-level blocks outside of any method bind self to nil.
-        CallBlock(interpreter.Nil(), block, args);
+        CallBlock(interpreter.Nil().Obj(), block, args);
     }
 
     bool Fiber::IsDone() const
@@ -452,7 +452,7 @@ namespace Finch
         Error(error);
 
         // Unhandled messages just return nil.
-        return mInterpreter.Nil();
+        return mInterpreter.Nil().Obj();
     }
 
     Ref<Object> Fiber::Self()
@@ -462,12 +462,12 @@ namespace Finch
 
     Ref<Object> Fiber::Nil()
     {
-        return mInterpreter.Nil();
+        return mInterpreter.Nil().Obj();
     }
 
     Ref<Object> Fiber::CreateBool(bool value)
     {
-        return value ? mInterpreter.True() : mInterpreter.False();
+        return value ? mInterpreter.True().Obj() : mInterpreter.False().Obj();
     }
 
     Ref<Object> Fiber::CreateNumber(double value)

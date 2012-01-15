@@ -137,9 +137,9 @@ namespace Finch
         AddPrimitive(primitives, "callstack-depth",          PrimitiveGetCallstackDepth);
         
         // The special singleton values.
-        mNil = MakeGlobal("nil").Obj();
-        mTrue = MakeGlobal("true").Obj();
-        mFalse = MakeGlobal("false").Obj();
+        mNil = MakeGlobal("nil");
+        mTrue = MakeGlobal("true");
+        mFalse = MakeGlobal("false");
     }
     
     void Interpreter::Interpret(ILineReader & reader, bool showResult)
@@ -151,7 +151,7 @@ namespace Finch
         
         // Create a starting fiber for the expression.
         Ref<Block> block = Compiler::CompileTopLevel(*this, *expr);
-        Ref<Object> blockObj = NewBlock(block, mNil);
+        Ref<Object> blockObj = NewBlock(block, mNil.Obj());
         Ref<Object> fiber = NewFiber(blockObj);
         
         // Run the interpreter.
