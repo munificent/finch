@@ -69,19 +69,24 @@ namespace Finch
         // Walk the parent chain looking for a method that matches the message.
         while (true)
         {
-            // See if the object has a method bound to that name.
-            Value method = receiver->mObj->FindMethod(messageId);
-            if (!method.IsNull())
+            // Only dynamic objects have methods.
+            DynamicObject * dynamic = receiver->AsDynamic();
+            if (dynamic != NULL)
             {
-                fiber.CallBlock(*this, method, args);
-                return Value();
-            }
-            
-            // See if the object has a primitive bound to that name.
-            PrimitiveMethod primitive = receiver->mObj->FindPrimitive(messageId);
-            if (primitive != NULL)
-            {
-                return primitive(fiber, *this, args);
+                // See if the object has a method bound to that name.
+                Value method = dynamic->FindMethod(messageId);
+                if (!method.IsNull())
+                {
+                    fiber.CallBlock(*this, method, args);
+                    return Value();
+                }
+                
+                // See if the object has a primitive bound to that name.
+                PrimitiveMethod primitive = dynamic->FindPrimitive(messageId);
+                if (primitive != NULL)
+                {
+                    return primitive(fiber, *this, args);
+                }
             }
             
             // If we're at the root of the inheritance chain, then stop.

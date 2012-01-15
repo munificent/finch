@@ -37,8 +37,8 @@ namespace Finch
         virtual String AsString() const     { return mName; }
         virtual DynamicObject * AsDynamic() { return this; }
         
-        virtual Value FindMethod(StringId messageId);
-        virtual PrimitiveMethod FindPrimitive(StringId messageId);
+        Value FindMethod(StringId messageId);
+        PrimitiveMethod FindPrimitive(StringId messageId);
 
         Value GetField(StringId name);
         void SetField(StringId name, const Value & value);
