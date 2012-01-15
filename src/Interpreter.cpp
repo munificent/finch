@@ -282,7 +282,7 @@ namespace Finch
     
     Ref<Object> Interpreter::NewBlock(Ref<Block> block, Ref<Object> self)
     {
-        return Ref<Object>(new BlockObject(mBlockPrototype, block, self));
+        return Ref<Object>(new BlockObject(mBlockPrototype, block, Value::HackWrapRef(self)));
     }
     
     Ref<Object> Interpreter::NewFiber(Ref<Object> block)

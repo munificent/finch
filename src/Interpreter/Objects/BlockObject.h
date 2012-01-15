@@ -21,8 +21,7 @@ namespace Finch
     class BlockObject : public Object
     {
     public:
-        BlockObject(const Value & parent, Ref<Block> block,
-                    Ref<Object> self)
+        BlockObject(const Value & parent, Ref<Block> block, const Value & self)
         :   Object(parent),
             mBlock(block),
             mSelf(self),
@@ -33,7 +32,7 @@ namespace Finch
         
         // Gets the object owning the method enclosing the definition of this
         // block.
-        Ref<Object> Self() const { return mSelf; }
+        const Value & Self() const { return mSelf; }
 
         int NumRegisters() const { return mBlock->NumRegisters(); }
         int NumParams() const { return mBlock->Params().Count(); }
@@ -57,7 +56,7 @@ namespace Finch
         
     private:
         Ref<Block>              mBlock;
-        Ref<Object>             mSelf;
+        Value                   mSelf;
         Array<Ref<Upvalue> >    mUpvalues;
     };
 }
