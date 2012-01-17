@@ -9,7 +9,6 @@
 
 namespace Finch
 {
-    class IErrorReporter;
     class ILineReader;
     class MessageExpr;
         
@@ -18,8 +17,7 @@ namespace Finch
     {
     public:
         FinchParser(ITokenSource & tokens, IErrorReporter & errorReporter)
-        :   Parser(tokens),
-            mErrorReporter(errorReporter)
+        :   Parser(tokens, errorReporter)
         {}
         
         virtual ~FinchParser() {}
@@ -42,15 +40,12 @@ namespace Finch
         Ref<Expr> Unary(bool & isMessage);
         Ref<Expr> Primary();
         
-        Ref<Expr> ParseKeyword(Ref<Expr> object);        
-        Ref<Expr> ParseError(const char * message);
+        Ref<Expr> ParseKeyword(Ref<Expr> object);
         
-        Ref<Expr> ParseDefines(Ref<Expr> expr, TokenType endToken);
-        Ref<Expr> ParseDefine(Ref<Expr> expr);
-        Ref<Expr> ParseDefineBody(Ref<Expr> expr, String name,
-                           const Array<String> & args);
-
-        IErrorReporter & mErrorReporter;
+        void ParseDefines(DefineExpr & expr, TokenType endToken);
+        void ParseDefine(DefineExpr & expr);
+        void ParseDefineBody(DefineExpr & expr, String name,
+            const Array<String> & params);
         
         NO_COPY(FinchParser);
     };

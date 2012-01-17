@@ -6,7 +6,6 @@
 
 namespace Finch
 {
-    class IErrorReporter;
     class ILineReader;
     
     class Lexer : public ITokenSource

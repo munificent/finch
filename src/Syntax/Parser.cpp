@@ -1,4 +1,7 @@
+#include <sstream>
+
 #include "Parser.h"
+#include "IErrorReporter.h"
 #include "ILineReader.h"
 #include "ITokenSource.h"
 
@@ -46,11 +49,40 @@ namespace Finch
         }
     }
     
+    void Parser::Expect(TokenType expected, const char * errorMessage)
+    {
+        if (!LookAhead(expected))
+        {
+            Error(errorMessage);
+        }
+    }
+    
     Ref<Token> Parser::Consume()
     {
         FillLookAhead(1);
         
         return mRead.Dequeue();
+    }
+    
+    Ref<Token> Parser::Consume(TokenType expected, const char * errorMessage)
+    {
+        if (LookAhead(expected))
+        {
+            return Consume();
+        }
+        else
+        {
+            Error(errorMessage);
+            return Ref<Token>();
+        }
+    }
+    
+    void Parser::Error(const char * message)
+    {
+        mHadError = true;
+        std::stringstream error;
+        error << "Parse error on '" << Current() << "': " << message;
+        mErrorReporter.Error(String(error.str().c_str()));
     }
     
     void Parser::FillLookAhead(int count)

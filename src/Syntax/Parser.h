@@ -6,6 +6,7 @@
 
 namespace Finch
 {
+    class IErrorReporter;
     class ILineReader;
     class ITokenSource;
     
@@ -13,8 +14,10 @@ namespace Finch
     class Parser
     {
     protected:
-        Parser(ITokenSource & tokens)
-        :   mTokens(tokens)
+        Parser(ITokenSource & tokens, IErrorReporter & errorReporter)
+        :   mTokens(tokens),
+            mErrorReporter(errorReporter),
+            mHadError(false)
         {}
         
         virtual ~Parser() {}
@@ -39,9 +42,24 @@ namespace Finch
         // otherwise returns false.
         bool Match(TokenType type);
         
+        // Verifies the current Token if it matches the expected type, and
+        // reports an error if it doesn't. Does not consume the token either
+        // way.
+        void Expect(TokenType expected, const char * errorMessage);
+        
         // Consumes the current Token and advances the Parser.
         Ref<Token> Consume();
+        
+        // Consumes the current Token if it matches the expected type.
+        // Otherwise reports the given error message and returns a null Ref.
+        Ref<Token> Consume(TokenType expected, const char * errorMessage);
 
+        // Reports the given error message relevant to the current token.
+        void Error(const char * message);
+
+        // Gets whether or not any errors have been reported.
+        bool HadError() const { return mHadError; }
+        
     private:
         void FillLookAhead(int count);
         
@@ -49,6 +67,9 @@ namespace Finch
         
         // The 2 here is the maximum number of lookahead tokens.
         Queue<Ref<Token>, 2> mRead;
+        
+        IErrorReporter & mErrorReporter;
+        bool mHadError;
         
         NO_COPY(Parser);
     };

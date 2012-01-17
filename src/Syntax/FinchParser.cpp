@@ -1,5 +1,3 @@
-#include <sstream>
-
 #include "ArrayExpr.h"
 #include "BindExpr.h"
 #include "BlockExpr.h"
@@ -18,83 +16,35 @@
 #include "UndefineExpr.h"
 #include "VarExpr.h"
 
-// Recursive descent parsers are generally pretty straightforward to read. Each
-// grammar production is a function call and they call each other directly so
-// the code ends up looking pretty much like the grammar.
-//
-// The only trouble is when a parse error occurs. Since a recursive descent
-// parser uses the native callstack to maintain the parse state, we've got to
-// unwind the stack to get back to ground zero. This means either using
-// exceptions (which I'm not a fan of in C++) or having every call to a grammar
-// expression function check the return code for failure and return again. So,
-// instead of the nice:
-//
-//  Ref<Expr> Operator()
-//  {
-//      Ref<Expr> left = Unary();
-//      String op = Match(TOKEN_OPERATOR).Text();
-//      Ref<Expr> right = Unary();
-//      
-//      return Ref<Expr>(new OperatorExpr(left, op, right));
-//  }
-//
-// We end up having to do:
-//
-//  Ref<Expr> Operator()
-//  {
-//      Ref<Expr> left = Unary();
-//      if (left.IsNull()) return Ref<Expr>(); // unwind
-//      if (!Lookahead(TOKEN_OPERATOR)) return ParseError("Need operator.");
-//      String op = Match(TOKEN_OPERATOR).Text();
-//      Ref<Expr> right = Unary();
-//      if (right.IsNull()) return Ref<Expr>(); // unwind
-//      
-//      return Ref<Expr>(new OperatorExpr(left, op, right));
-//  }
-//
-// To get around that, we'll define some macros that do this checking and
-// unwinding for us. They're a little magical (hence this long explanation),
-// but should make the code easier to read.
-
-#define PARSE_RULE(_result, _func) \
-    Ref<Expr> _result = _func; \
-    if (_result.IsNull()) return _result;
-
-// Check that the next token is the expected type, but don't consume it. Bail
-// with an error if the type doesn't match.
-#define EXPECT(_token, _message) \
-    if (!LookAhead(_token)) return ParseError(_message);
-
-// Consume the next token of a required type. Bail and return an error if the
-// token doesn't match the expected type.
-#define CONSUME(_token, _message) \
-    if (!Match(_token)) return ParseError(_message);
-
-// Consume and discard the next token if it's the given type. Lets us eat
-// optional tokens.
-#define IGNORE(_token) Match(_token);
-
 namespace Finch
 {    
     Ref<Expr> FinchParser::Parse()
     {
         if (IsInfinite())
         {
-            // skip past Sequence() otherwise we'll keep reading lines forever
-            // TODOO(bob): This is wrong, actually. It means if you enter:
+            // Skip past Sequence() otherwise we'll keep reading lines forever
+            // TODO(bob): This is wrong, actually. It means if you enter:
             //   1, 2, 3
             // on the REPL, it will stop after 1. :(
-            PARSE_RULE(expr, Variable());
-            IGNORE(TOKEN_LINE);
+            Ref<Expr> expr = Variable();
+            
+            // Discard a trailing newline.
+            Match(TOKEN_LINE);
+            
+            // Don't return anything if we had a parse error.
+            if (HadError()) return Ref<Expr>();
             
             return expr;
         }
         else
         {
-            // since expression includes sequence expressions, this will parse
-            // as many lines as we have
-            PARSE_RULE(expr, Expression());
-            EXPECT(TOKEN_EOF, "Parser ended unexpectedly before reaching end of file.");
+            // Since expression includes sequence expressions, this will parse
+            // as many lines as we have.
+            Ref<Expr> expr = Expression();
+            Expect(TOKEN_EOF, "Parser ended unexpectedly before reaching end of file.");
+            
+            // Don't return anything if we had a parse error.
+            if (HadError()) return Ref<Expr>();
             
             return expr;
         }
@@ -102,25 +52,27 @@ namespace Finch
     
     Ref<Expr> FinchParser::Expression()
     {
-        PARSE_RULE(expr, Sequence());
-        IGNORE(TOKEN_LINE);
+        Ref<Expr> expr = Sequence();
+
+        // Discard a trailing newline.
+        Match(TOKEN_LINE);
         
         return expr;
     }
     
     Ref<Expr> FinchParser::Sequence()
     {
-        Array<Ref<Expr> > expressions;
+        Array<Ref<Expr> > exprs;
         
         while (true)
         {
-            PARSE_RULE(expression, Variable());
-            expressions.Add(expression);
+            Ref<Expr> expr = Variable();
+            exprs.Add(expr);
             
             if (!Match(TOKEN_LINE)) break;
             
-            // there may be a trailing line after the last expression in a
-            // block. if we eat the line and then see a closing brace or eof,
+            // There may be a trailing line after the last expression in a
+            // block. If we eat the line and then see a closing brace or eof,
             // just stop here.
             if (LookAhead(TOKEN_RIGHT_PAREN)) break;
             if (LookAhead(TOKEN_RIGHT_BRACKET)) break;
@@ -128,10 +80,10 @@ namespace Finch
             if (LookAhead(TOKEN_EOF)) break;
         }
         
-        // if there's just one, don't wrap it in a sequence
-        if (expressions.Count() == 1) return expressions[0];
+        // If there's just one, don't wrap it in a sequence.
+        if (exprs.Count() == 1) return exprs[0];
         
-        return Ref<Expr>(new SequenceExpr(expressions));
+        return Ref<Expr>(new SequenceExpr(exprs));
     }
     
     Ref<Expr> FinchParser::Variable()
@@ -146,7 +98,6 @@ namespace Finch
         // So the grammar must be careful to disallow this:
         //
         //   foo bar: "baz" bang: (a <- "blah")
-        //
 
         if (LookAhead(TOKEN_NAME, TOKEN_ARROW))
         {
@@ -161,7 +112,7 @@ namespace Finch
             }
             else
             {
-                PARSE_RULE(value, Variable());
+                Ref<Expr> value = Variable();
                 return Ref<Expr>(new VarExpr(name, value));
             }
         }
@@ -170,21 +121,22 @@ namespace Finch
     
     Ref<Expr> FinchParser::Bind()
     {
-        PARSE_RULE(expr, Assignment());
+        Ref<Expr> expr = Assignment();
         
         while (Match(TOKEN_BIND))
         {
-            expr = Ref<Expr>(new BindExpr(expr));
+            BindExpr * bind = new BindExpr(expr);
+            expr = Ref<Expr>(bind);
 
             if (Match(TOKEN_LEFT_PAREN))
             {
-                // multiple bind
-                PARSE_RULE(dummy, ParseDefines(expr, TOKEN_RIGHT_PAREN));
+                // Multiple bind.
+                ParseDefines(*bind, TOKEN_RIGHT_PAREN);
             }
             else
             {
-                // single bind
-                PARSE_RULE(dummy, ParseDefine(expr));
+                // Single bind.
+                ParseDefine(*bind);
             }
         }
         
@@ -200,7 +152,7 @@ namespace Finch
             Consume(); // the arrow
             
             // get the initial value
-            PARSE_RULE(value, Assignment());
+            Ref<Expr> value = Assignment();
             
             return Ref<Expr>(new SetExpr(name, value));
         }
@@ -263,7 +215,7 @@ namespace Finch
     
     Ref<Expr> FinchParser::Keyword(bool & isMessage)
     {
-        PARSE_RULE(object, Operator(isMessage));
+        Ref<Expr> object = Operator(isMessage);
         
         Ref<Expr> keyword = ParseKeyword(object);
         if (!keyword.IsNull())
@@ -277,12 +229,12 @@ namespace Finch
     
     Ref<Expr> FinchParser::Operator(bool & isMessage)
     {
-        PARSE_RULE(object, Unary(isMessage));
+        Ref<Expr> object = Unary(isMessage);
         
         while (LookAhead(TOKEN_OPERATOR))
         {
             String op = Consume()->Text();
-            PARSE_RULE(arg, Unary(isMessage));
+            Ref<Expr> arg = Unary(isMessage);
 
             Array<Ref<Expr> > args;
             args.Add(arg);
@@ -296,7 +248,7 @@ namespace Finch
     
     Ref<Expr> FinchParser::Unary(bool & isMessage)
     {
-        PARSE_RULE(object, Primary());
+        Ref<Expr> object = Primary();
         
         while (LookAhead(TOKEN_NAME))
         {
@@ -326,7 +278,7 @@ namespace Finch
         }
         else if (LookAhead(TOKEN_KEYWORD))
         {
-            // implicit receiver keyword message
+            // Implicit receiver keyword message.
             return ParseKeyword(Ref<Expr>(new NameExpr("Ether")));
         }
         //### getting rid of this for now to possibly free it up for some other
@@ -358,93 +310,97 @@ namespace Finch
         }
         else if (Match(TOKEN_LEFT_PAREN))
         {
-            // parenthesized expression
-            PARSE_RULE(expression, Bind());
-            CONSUME(TOKEN_RIGHT_PAREN, "Expect closing ')'.");
-            return expression;
+            // Parenthesized expression.
+            Ref<Expr> expr = Bind();
+            Consume(TOKEN_RIGHT_PAREN, "Expect closing ')'.");
+            return expr;
         }
         else if (Match(TOKEN_LEFT_BRACKET))
         {
-            // object literal
+            // Object literal.
             
-            // parse the parent, if given
+            // Parse the parent, if given.
             Ref<Expr> parent;
             if (Match(TOKEN_PIPE))
             {
-                // TODO(bob): Macro isn't helping here. :(
-                PARSE_RULE(tempParent, Assignment());
-                parent = tempParent;
-                CONSUME(TOKEN_PIPE, "Expect closing '|' after parent.");
+                parent = Assignment();
+                Consume(TOKEN_PIPE, "Expect closing '|' after parent.");
             }
             else
             {
-                // no parent, so implicit "Object"
+                // No parent, so implicit "Object".
                 // TODO(bob): Just leave null in AST and have compiler handle
                 // this?
                 parent = Ref<Expr>(new NameExpr("Object"));
             }
             
-            Ref<Expr> object = Ref<Expr>(new ObjectExpr(parent));
+            ObjectExpr * object = new ObjectExpr(parent);
+            Ref<Expr> expr = Ref<Expr>(object);
             
             if (!Match(TOKEN_RIGHT_BRACKET))
             {
-                PARSE_RULE(dummy, ParseDefines(object, TOKEN_RIGHT_BRACKET));
+                ParseDefines(*object, TOKEN_RIGHT_BRACKET);
             }
             
-            return object;
+            return expr;
         }
         else if (Match(TOKEN_HASH))
         {
-            CONSUME(TOKEN_LEFT_BRACKET, "Expect '[' to begin array literal.");
-            Array<Ref<Expr> > expressions;
+            Consume(TOKEN_LEFT_BRACKET, "Expect '[' to begin array literal.");
+            Array<Ref<Expr> > exprs;
             
-            // allow zero-element arrays
+            // Allow zero-element arrays.
             if (!LookAhead(TOKEN_RIGHT_BRACKET))
             {
-                PARSE_RULE(expression, Assignment());
-                expressions.Add(expression);
+                exprs.Add(Assignment());
                 
                 while (Match(TOKEN_LINE))
                 {
-                    // there may be a trailing line after the last expression in a
-                    // a block. if we eat the line and then see a closing brace
+                    // There may be a trailing line after the last expression in
+                    // a block. If we eat the line and then see a closing brace
                     // or eof, just stop here.
                     if (LookAhead(TOKEN_RIGHT_BRACKET)) break;
                     
-                    PARSE_RULE(next, Assignment());
-                    expressions.Add(next);
+                    exprs.Add(Assignment());
                 }
             }
             
-            CONSUME(TOKEN_RIGHT_BRACKET, "Expect closing ']'.");
+            Consume(TOKEN_RIGHT_BRACKET, "Expect closing ']'.");
             
-            return Ref<Expr>(new ArrayExpr(expressions));
+            return Ref<Expr>(new ArrayExpr(exprs));
         }
         else if (Match(TOKEN_LEFT_BRACE))
         {
-            Array<String> args;
+            Array<String> params;
             
-            // see if there are args
+            // See if there are parameters.
             if (Match(TOKEN_PIPE))
             {
                 while (LookAhead(TOKEN_NAME))
                 {
-                    args.Add(Consume()->Text());
+                    params.Add(Consume()->Text());
                 }
                 
-                CONSUME(TOKEN_PIPE, "Expect closing '|' after block arguments.");
+                Consume(TOKEN_PIPE, "Expect closing '|' after block arguments.");
                 
-                // if there were no named args, but there were pipes (||),
-                // use an automatic "it" arg
-                if (args.Count() == 0) args.Add("it");
+                // If there were no named args, but there were pipes (||),
+                // use an automatic "it" arg.
+                if (params.Count() == 0) params.Add("it");
             }
             
-            PARSE_RULE(body, Expression());
-            CONSUME(TOKEN_RIGHT_BRACE, "Expect closing '}' after block.");
+            Ref<Expr> body = Expression();
+            Consume(TOKEN_RIGHT_BRACE, "Expect closing '}' after block.");
             
-            return Ref<Expr>(new BlockExpr(args, body));
+            return Ref<Expr>(new BlockExpr(params, body));
         }
-        else return ParseError("Unexpected token.");
+        else
+        {
+            Error("Unexpected token.");
+            
+            // Return some arbitrary expression so that the parser can try to
+            // continue and report other errors.
+            return Ref<Expr>(new StringExpr("ERROR"));
+        }
     }
 
     // Parses just the message send part of a keyword message: "foo: a bar: b"
@@ -458,8 +414,7 @@ namespace Finch
             message += Consume()->Text();
             
             bool dummy;
-            PARSE_RULE(arg, Operator(dummy));
-            args.Add(arg);
+            args.Add(Operator(dummy));
         }
         
         if (message.Length() > 0)
@@ -470,22 +425,20 @@ namespace Finch
         return Ref<Expr>();
     }
     
-    Ref<Expr> FinchParser::ParseDefines(Ref<Expr> expr, TokenType endToken)
+    void FinchParser::ParseDefines(DefineExpr & expr, TokenType endToken)
     {
         while (true)
         {
-            PARSE_RULE(dummy, ParseDefine(expr));
+            ParseDefine(expr);
             if (Match(endToken)) break;
-            CONSUME(TOKEN_LINE, "Definitions must be separated by lines.");
+            Consume(TOKEN_LINE, "Definitions should be separated by commas (or newlines).");
             if (Match(endToken)) break;
         }
-        
-        return expr;
     }
     
-    Ref<Expr> FinchParser::ParseDefine(Ref<Expr> expr)
+    void FinchParser::ParseDefine(DefineExpr & expr)
     {
-        Array<String> args;
+        Array<String> params;
         
         // figure out what kind of thing we're defining
         if (LookAhead(TOKEN_NAME, TOKEN_ARROW))
@@ -494,7 +447,7 @@ namespace Finch
             String name = Consume()->Text();
             Consume(); // <-
 
-            PARSE_RULE(body, Assignment());
+            Ref<Expr> body = Assignment();
             
             // if the name is an object variable like "_foo" then the definition
             // just creates that. if it's a local name like "foo" then we will
@@ -505,82 +458,68 @@ namespace Finch
                 
                 // define the accessor method
                 Ref<Expr> accessor = Ref<Expr>(new NameExpr(varName));
-                Ref<Expr> block = Ref<Expr>(new BlockExpr(args, accessor));
+                Ref<Expr> block = Ref<Expr>(new BlockExpr(params, accessor));
                 
-                DefineExpr * define = static_cast<DefineExpr*>(&*expr);
-                define->Define(true, name, block);
+                expr.Define(true, name, block);
                 
                 name = varName;
             }
             
-            DefineExpr * define = static_cast<DefineExpr*>(&*expr);
-            define->Define(false, name, body);
+            expr.Define(false, name, body);
         }
         else if (LookAhead(TOKEN_NAME))
         {
-            // unary
+            // Unary.
             String name = Consume()->Text();
             
-            PARSE_RULE(dummy, ParseDefineBody(expr, name, args));
+            ParseDefineBody(expr, name, params);
         }
         else if (LookAhead(TOKEN_OPERATOR))
         {
-            // binary
+            // Binary.
             String name = Consume()->Text();
             
-            // one arg
-            EXPECT(TOKEN_NAME, "Expect name after operator in a bind expression.");
-            args.Add(Consume()->Text());
+            // One arg.
+            Ref<Token> param = Consume(TOKEN_NAME,
+                "Expect parameter name after operator in a bind expression.");
+            params.Add(param->Text());
             
-            PARSE_RULE(dummy, ParseDefineBody(expr, name, args));
+            ParseDefineBody(expr, name, params);
         }
         else if (LookAhead(TOKEN_KEYWORD))
         {
-            // keyword
+            // Keyword.
             String name;
             while (LookAhead(TOKEN_KEYWORD))
             {
-                // build the full method name
+                // Build the full method name.
                 name += Consume()->Text();
                 
-                // parse each keyword's arg
-                EXPECT(TOKEN_NAME, "Expect name after keyword in a bind expression.");
-                args.Add(Consume()->Text());
+                // Parse each keyword's parameter.
+                Ref<Token> param = Consume(TOKEN_NAME,
+                    "Expect parameter name after keyword in a bind expression.");
+                params.Add(param->Text());
             }
             
-            PARSE_RULE(dummy, ParseDefineBody(expr, name, args));
+            ParseDefineBody(expr, name, params);
         }
-        else return ParseError("Expect message after '::'.");
-        
-        return expr;
+        else
+        {
+            Error("Expect message after '::'.");
+        }
     }
     
-    Ref<Expr> FinchParser::ParseDefineBody(Ref<Expr> expr, String name,
-                                         const Array<String> & args)
+    void FinchParser::ParseDefineBody(DefineExpr & expr, String name,
+                                         const Array<String> & params)
     {
-        // parse the block
-        CONSUME(TOKEN_LEFT_BRACE, "Expect '{' to begin bound block.");
-        PARSE_RULE(body, Expression());
-        CONSUME(TOKEN_RIGHT_BRACE, "Expect '}' to close block.");
+        // Parse the block.
+        Consume(TOKEN_LEFT_BRACE, "Expect '{' to begin bound block.");
+        Ref<Expr> body = Expression();
+        Consume(TOKEN_RIGHT_BRACE, "Expect '}' to close block.");
         
-        // attach the block's arguments
-        Ref<Expr> block = Ref<Expr>(new BlockExpr(args, body));
-        
-        DefineExpr * define = static_cast<DefineExpr*>(&*expr);
-        define->Define(true, name, block);
-        
-        return expr;
+        // Attach the block's arguments.
+        Ref<Expr> block = Ref<Expr>(new BlockExpr(params, body));
+        expr.Define(true, name, block);
     }
-    
-    Ref<Expr> FinchParser::ParseError(const char * message)
-    {
-        //### bob: using stringstream here is gross
-        std::stringstream error;
-        error << "Parse error on '" << Current() << "': " << message;
-        mErrorReporter.Error(String(error.str().c_str()));
-
-        return Ref<Expr>();
-    }
-
 }
 
