@@ -66,12 +66,13 @@ Within the body of a method, you can access and set state on the object itself. 
       count { _count }
     ]
 
-Here, the `increment` and `count` methods both use a `_count` field. You can think of fields as being a variable scope that encloses all methods and that they share. Within a method, you can create a field simply by assigning it.
+Here, the `increment` and `count` methods both use a `_count` field. Fields are
+like variables that are in scope within all methods of an object. Within a method, you can create a field simply by assigning it.
 
 Fields are *not* visible outside of the object's methods. Unlike JavaScript and Self, they aren't just slots. So with the above example, you couldn't do this:
 
     :::finch
-    counter _count // Nope.
+    counter _count // nope
 
 That's why `greeter` defines a `count` method to explicitly expose that. The idea here is that objects should encapsulate their internal state and only expose an interface to that that they control.
 
@@ -115,7 +116,70 @@ Within the body of a method, you often want to get the object that the method is
 
 Here, we're using `self` in order to call one method from another. Unlike Java and C++, but like JavaScript, you have to explicitly use `self` (or `this` in those languages) to send a message to yourself.
 
-**TODO: Document bind operator here.**
+## Modifying objects
+
+The above features are fine when you want a new object, but what if you want to mess with one you already have? For that, Finch has the *bind operator*: `::`. This lets you add new methods and fields to an existing object.
+
+If we have some object `fred`, we can add a method to it like this:
+
+    :::finch
+    fred :: dance { writeLine: "Sorry, I'm too sexy." }
+    fred dance // "Sorry, I'm too sexy."
+
+This also works for operators and keyword messages:
+
+    :::finch
+    fred :: ? right {
+      writeLine: "What do I do with a " + right + "?"
+    }
+
+    fred :: give: gift to: who {
+      writeLine: "Here, " + who + ", have a " + gift + "."
+    }
+
+    fred ? "plunger"
+    fred give: "plunger" to: "Bill"
+
+### Multibinds
+
+It's common to want to define a number of methods on an object all at once. To make that easier, you can also use parentheses after `::` and define a group of methods, like so:
+
+    :::finch
+    fred :: (
+      dance { writeLine: "Sorry, I'm too sexy." }
+
+      ? right { writeLine: "What do I do with a " + right + "?" }
+
+      give: gift to: who {
+        writeLine: "Here, " + who + ", have a " + gift + "."
+      }
+    )
+
+In addition to methods, you can use bind expressions to define object variables:
+
+### Variable Binding
+
+    :::finch
+    fred :: (
+      _name <- "Fred"
+      sayName { writeLine: _name }
+    )
+    fred sayName // "Fred"
+
+If the name is an object variable name like `_name` here, it just defines that variable on the object (or assigns to it if it already exists). If you use a name without a leading underscore, then it will define an object variable with that name and automatically add an accessor method. In other words, this:
+
+    :::finch
+    fred :: (
+      band <- "Right Said Fred"
+    )
+
+Is exactly the same as doing:
+
+    :::finch
+    fred :: (
+      _band <- "Right Said Fred"
+      band { _band }
+    )
 
 ## Inheritance
 
@@ -160,7 +224,7 @@ When you *set* a field, it will always set it in the receiving object, even if i
 
 ## Prototypes and Type Objects
 
-Finch doesn't have classes, but it's still often to define "kinds of things" when you write programs. Classes are a common pattern for doing that. In Finch, they are just that: a convention that you can follow when it makes sense.
+Finch doesn't have classes, but it's still common to define "kinds of things" when you write programs. Classes are a common pattern for doing that. In Finch, they are just that: a convention that you can follow when it makes sense.
 
 A class in other languages generally defines two things: a set of behavior that all instances of the class share, and some behavior that is specific to the class itself. In class-based languages, the former is basically your instance methods and fields. The latter is the "static" methods of the class and the constructors.
 

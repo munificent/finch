@@ -1,6 +1,6 @@
 ^title Expressions
 
-Expressions are the heart of any programming language&mdash; they're the building blocks for programs. Finch, like many functional languages but unlike most C-derived languages, does not have statements, only expressions. We'll go over the different kinds of expressions Finch supports, starting from the bottom up.
+Expressions are the heart of any programming language&mdash;they're the building blocks for programs. Finch, like many functional languages but unlike most C-derived languages, does not have statements, only expressions. We'll go over the different kinds of expressions Finch supports, starting from the bottom up.
 
 ## Comments
 
@@ -68,7 +68,7 @@ A series of one or more punctuation characters is an *operator*. You can define 
     // can also be combined
     -- ?! ---@ <=/=> @*#%&#$@&!
 
-All operators are *infix*&mdash; they have operands on both sides. Using an operator sends a message to the left-hand operand with the right-hand one as an argument.
+All operators are *infix*&mdash;they have operands on both sides. Using an operator sends a message to the left-hand operand with the right-hand one as an argument.
 
     :::finch
     a + b
@@ -81,7 +81,7 @@ Because of this, all operators have the same precedence and associativity (left 
     1 + 2 * 3   // evaluates to 9 in Finch
     1 + (2 * 3) // evaluates to 7
 
-Because there are no built-in operators, there are no unary operators in Finch. Instead, it uses unary message for what would be an unary operator in another language:
+Because there are no built-in operators, there are no unary operators in Finch. Instead, it uses a unary message for what would be an unary operator in another language:
 
     :::finch
     // Finch            C/JS/etc.
@@ -132,6 +132,7 @@ This doesn't mean *all* newlines will be treated as commas. If the end of a line
     :::finch
     write: 1 +
       2
+    // prints 3
 
 Since a `+` can't end an expression, the newline after is ignored and it continues onto the next line.
 
@@ -148,7 +149,7 @@ Sometimes you want to send a series of messages to the same object. To avoid mak
 You can instead do:
 
     :::finch
-    file write: "A line" ; << "Another line" ; "A third" ; close
+    file write: "A line" ; << "Another line" ; write: "A third" ; close
 
 This style is emulated in other languages using [fluent interfaces](http://www.martinfowler.com/bliki/FluentInterface.html). In Finch, any object can be cascaded.
 
@@ -197,7 +198,7 @@ The above code creates a block that takes two arguments. When called, it returns
     {|a b| write: a + b } call: "one" : "two" // two args
     {|a b c| write: a + b + c } call: "one" : "two" : "three" // three
 
-If you pass too many arguments to a block, the extra ones will be ignored. If you don't pass enough, it will assign the special value `Nil` to the missing ones.
+If you pass too many arguments to a block, the extra ones will be ignored. If you don't pass enough, it will assign the special value `nil` to the missing ones.
 
 ## Assignment
 
@@ -206,7 +207,7 @@ Variables are declared and given values using assignment expressions. An assignm
     :::finch
     a <- "some value"
 
-Variables do not have to be explicitly declared&mdash; assigning it a value will create it if it doesn't already exist. The value returned by an assignment expression is the assigned value. For example:
+Variables do not have to be explicitly declared&mdash;assigning it a value will create it if it doesn't already exist. The value returned by an assignment expression is the assigned value. For example:
 
     :::finch
     write: (a <- "hi")
@@ -255,72 +256,6 @@ Finch has built-in support for resizable arrays. Most of the things you can do w
       "third"]
 
 Arrays are objects like everything else, so they can be stored in variables, passed to methods, etc.
-
-## Method Binding
-
-One thing you commonly do in Finch is bind methods to objects. Finch doesn't have "class declarations" or anything formal like that. To make an object that does stuff, you basically make an object and then slap a bunch of methods on it.
-
-You do that using the bind operator: `::`. If we have some object `fred`, we can add a method to it like this:
-
-    :::finch
-    fred :: dance { writeLine: "Sorry, I'm too sexy." }
-    fred dance // Sorry, I'm too sexy.
-
-This also works for operators and keyword messages:
-
-    :::finch
-    fred :: ? right {
-      writeLine: "What do I do with a " + right + "?"
-    }
-
-    fred :: give: gift to: who {
-      writeLine: "Here, " + who + ", have a " + gift + "."
-    }
-
-    fred ? "plunger"
-    fred give: "plunger" to: "Bill"
-
-### Multibinds
-
-It's common to want to define a number of methods on an object all at once. To make that easier, you can also use parentheses after `::` and define a group of methods, like so:
-
-    :::finch
-    fred :: (
-      dance { writeLine: "Sorry, I'm too sexy." }
-
-      ? right { writeLine: "What do I do with a " + right + "?" }
-
-      give: gift to: who {
-        writeLine: "Here, " + who + ", have a " + gift + "."
-      }
-    )
-
-In addition to methods, you can use bind expressions to define object variables:
-
-### Variable Binding
-
-    :::finch
-    fred :: (
-      _name <- "Fred"
-      sayName { writeLine: _name }
-    )
-    fred sayName // Fred
-
-If the name is an object variable name like `_name` here, it just defines that
-variable on the object. If you use a name without a leading underscore, then it will define an object variable with that name and automatically add an accessor message. In other words, this:
-
-    :::finch
-    fred :: (
-      band <- "Right Said Fred"
-    )
-
-Is exactly the same as doing:
-
-    :::finch
-    fred :: (
-      _band <- "Right Said Fred"
-      band { _band }
-    )
 
 ## Precedence and Associativity
 
