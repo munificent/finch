@@ -24,6 +24,8 @@ Test suite: "Variables" is: {
     Test that: a equals: "after"
   }
 
+  // TODO(bob): These are compile errors now.
+/*
   Test test: "Assign Undefined" is: {
     a <-- "something"
     // since a wasn't defined, should do nothing
@@ -38,6 +40,7 @@ Test suite: "Variables" is: {
 
     Test that: a equals: nil
   }
+*/
 
   Test test: "Nested Local Scope" is: {
     a <- "local"

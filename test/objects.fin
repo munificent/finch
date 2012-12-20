@@ -50,6 +50,8 @@ Test suite: "Objects" is: {
     Test is-false: false number?
     Test is-false: false string?
 
+    // TODO(bob): Fibers are disabled right now.
+    /*
     fiber <- Fiber new: { 0 }
     Test is-false: fiber array?
     Test is-false: fiber block?
@@ -57,6 +59,7 @@ Test suite: "Objects" is: {
     Test is-true:  fiber fiber?
     Test is-false: fiber number?
     Test is-false: fiber string?
+    */
 
     Test is-false: 123 array?
     Test is-false: 123 block?
@@ -82,9 +85,9 @@ Test suite: "Objects" is: {
 
   Test test: "self inside an object literal is the new object" is: {
     obj <- [
-        a { "a" }
-        _b <- self a
-        b { _b }
+      a { "a" }
+      _b <- self a
+      b { _b }
     ]
 
     Test that: obj b equals: "a"
