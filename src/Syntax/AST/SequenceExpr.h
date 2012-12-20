@@ -4,7 +4,8 @@
 
 #include "Array.h"
 #include "Expr.h"
-#include "IExprCompiler.h"#include "Macros.h"
+#include "IExprCompiler.h"
+#include "Macros.h"
 #include "Ref.h"
 #include "FinchString.h"
 

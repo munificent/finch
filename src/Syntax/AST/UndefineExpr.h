@@ -4,7 +4,8 @@
 
 #include "Macros.h"
 #include "Expr.h"
-#include "IExprCompiler.h"#include "Ref.h"
+#include "IExprCompiler.h"
+#include "Ref.h"
 #include "FinchString.h"
 
 namespace Finch
