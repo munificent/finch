@@ -1,105 +1,105 @@
-Expr <- [
+var Expr = [
   array: elements {
-    [|self array-proto| _elements <- elements ]
+    [|self array-proto| _elements = elements ]
   }
 
   bind-receiver: receiver defines: defines {
-    [|self bind-proto| _receiver <- receiver, _defines <- defines ]
+    [|self bind-proto| _receiver = receiver, _defines = defines ]
   }
 
   block-params: params body: body {
-    [|self block-proto| _params <- params, _body <- body ]
+    [|self block-proto| _params = params, _body = body ]
   }
 
   message-receiver: receiver name: name args: args {
-    [|self message-proto| _receiver <- receiver, _name <- name, _args <- args ]
+    [|self message-proto| _receiver = receiver, _name = name, _args = args ]
   }
 
-  name: name { [|self name-proto| _name <- name ] }
-  number: value { [|self number-proto| _value <- value ] }
+  name: name { [|self name-proto| _name = name ] }
+  number: value { [|self number-proto| _value = value ] }
 
   object-parent: parent defines: defines {
-    [|self object-proto| _parent <- parent, _defines <- defines ]
+    [|self object-proto| _parent = parent, _defines = defines ]
   }
 
   self_ { [|self self-proto|] }
 
-  sequence: exprs { [|self sequence-proto| _exprs <- exprs ] }
+  sequence: exprs { [|self sequence-proto| _exprs = exprs ] }
 
   set-name: name value: value {
-    [|self set-proto| _name <- name, _value <- value ]
+    [|self set-proto| _name = name, _value = value ]
   }
 
-  string: value { [|self string-proto| _value <- value ] }
+  string: value { [|self string-proto| _value = value ] }
 
   var-name: name value: value {
-    [|self var-proto| _name <- name, _value <- value ]
+    [|self var-proto| _name = name, _value = value ]
   }
 
-  proto <- []
+  proto = []
 
-  array-proto <- [|self proto|
+  array-proto = [|self proto|
     elements { _elements }
   ]
 
-  define-proto <- [|self proto|
+  define-proto = [|self proto|
     defines { _defines }
   ]
 
-  bind-proto <- [|self define-proto|
+  bind-proto = [|self define-proto|
     receiver { _receiver }
   ]
 
-  block-proto <- [|self proto|
+  block-proto = [|self proto|
     params { _params }
     body { _body }
   ]
 
-  message-proto <- [|self proto|
+  message-proto = [|self proto|
     receiver { _receiver }
     name { _name }
     args { _args }
   ]
 
-  name-proto <- [|self proto|
+  name-proto = [|self proto|
     name { _name }
   ]
 
-  number-proto <- [|self proto|
+  number-proto = [|self proto|
     value { _value }
   ]
 
-  object-proto <- [|self define-proto|
+  object-proto = [|self define-proto|
     parent { _parent }
   ]
 
-  self-proto <- [|self proto|]
+  self-proto = [|self proto|]
 
-  sequence-proto <- [|self proto|
+  sequence-proto = [|self proto|
     exprs { _exprs }
   ]
 
-  set-proto <- [|self proto|
+  set-proto = [|self proto|
     name { _name }
     value { _value }
   ]
 
-  string-proto <- [|self proto|
+  string-proto = [|self proto|
     value { _value }
   ]
 
-  var-proto <- [|self proto|
+  var-proto = [|self proto|
     name { _name }
     value { _value }
   ]
 ]
 
-Define <- [
+var Define = [
   name: name body: body method?: method? {
-    [|self proto| _name <- name, _body <- body, _method? <- method? ]
+    [|self proto| _name = name, _body = body, _method? = method? ]
   }
 
-  proto <- [
+  proto = [
     name { _name }
     body { _body }
     method? { _method? }

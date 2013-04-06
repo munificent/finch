@@ -1,15 +1,15 @@
 // create the main factory object
-Complex <- [
+var Complex = [
   // constructor
   new: real i: imaginary {
-    [|Complexes| _real <- real, _imaginary <- imaginary ]
+    [|Complexes| _real = real, _imaginary = imaginary ]
   }
 ]
 
 // the prototypical complex number
-Complexes <- [
-  _real <- 0
-  _imaginary <- 0
+var Complexes = [
+  _real = 0
+  _imaginary = 0
 
   // accessors
   real { _real }
@@ -43,8 +43,8 @@ Complexes <- [
 Numbers :: i { Complex new: 0 i: self }
 
 // test it out a bit
-a <- 4 i
-b <- Complex new: 2 i: 3
+var a = 4 i
+var b = Complex new: 2 i: 3
 
 write-line: "a = " + a
 write-line: "b = " + b

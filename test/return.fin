@@ -3,7 +3,7 @@ Test suite: "Return" is: {
   // seem to be intuitive or that useful.
   /*
   Test test: "break exits block" is: {
-    a <- "before"
+    var a = "before"
     {
       a = "inside"
       break
@@ -14,7 +14,7 @@ Test suite: "Return" is: {
   }
 
   Test test: "the block returns the value passed to break" is: {
-    result <- {
+    var result = {
       break "b"
       "a"
     } call
@@ -24,8 +24,8 @@ Test suite: "Return" is: {
   */
 
   Test test: "return exits enclosing method" is: {
-    a <- "0"
-    obj <- [
+    var a = "0"
+    var obj = [
       foo {
         a = a + "1"
         {
@@ -42,8 +42,8 @@ Test suite: "Return" is: {
   }
 
   Test test: "the method returns the value passed to return" is: {
-    a <- "before"
-    obj <- [
+    var a = "before"
+    var obj = [
       foo {
         return "result"
         "bad"
@@ -54,8 +54,8 @@ Test suite: "Return" is: {
   }
 
   Test test: "returns work even when passed to tail calls" is: {
-    a <- "before"
-    obj <- [
+    var a = "before"
+    var obj = [
       foo {
         if: true then: { return "result" }
       }
@@ -68,7 +68,7 @@ Test suite: "Return" is: {
     // This is a regression test for a bug. If you did a return in the middle
     // of an expression, the other operands in the expression would be left on
     // the stack, causing all sorts of trouble.
-    obj <- [
+    var obj = [
       foo { "left" + return "right" }
       bar { self foo }
     ]

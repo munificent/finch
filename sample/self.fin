@@ -2,8 +2,8 @@
 
 nil :: name { "nil" }
 
-Parent <- [
-  _name <- "parent"
+var Parent = [
+  _name = "parent"
   name { _name }
 
   get-name { "parent" }
@@ -18,8 +18,8 @@ Parent <- [
   }
 ]
 
-Child <- [|Parent|
-  _name <- "child"
+var Child = [|Parent|
+  _name = "child"
   get-name { "child" }
 ]
 
@@ -35,7 +35,7 @@ write-line: Child called-name + " (expect: child)"
 write-line: (Child recursive-name: 1) +
     " (expect: child parent child child child)"
 
-Other <- [
+var Other = [
   name { "Other" }
   call-me: block { block call }
 ]
@@ -45,7 +45,7 @@ Other <- [
 // should be nil
 write-line: (Other call-me: { self name }) + " (expect nil)"
 
-Foo <- [
+var Foo = [
   name { "Foo" }
 
   route-through-other {
@@ -62,6 +62,6 @@ Child :: get-block { { self name } }
 
 // returning a block from a method should keep the block bound to the
 // method's self
-b <- Child get-block
+var b = Child get-block
 write-line: b call + " (expect child)"
 write-line: (Other call-me: b) + " (expect child)"

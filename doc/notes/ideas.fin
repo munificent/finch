@@ -95,17 +95,17 @@ existing :: ( ... )
 
 // 3. class-like object that inherits another and also inherits protos:
 
-Point3D <- (|Point2D|
+var Point3D = (|Point2D|
   zero {
-    (|Point3Ds| _x <- 0, _y <- 0, _z <- 0)
+    (|Point3Ds| _x = 0, _y = 0, _z = 0)
   }
 
   new-x: x y: y z: z {
-    (|Point3Ds| _x <- x, _y <- y, _z <- z)
+    (|Point3Ds| _x = x, _y = y, _z = z)
   }
 )
 
-Point3Ds <- (|Point2Ds|
+var Point3Ds = (|Point2Ds|
   z { _z }
 )
 

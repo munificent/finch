@@ -1,13 +1,13 @@
 Test suite: "Objects" is: {
   // make an object that implements to-string
-  apple <- [
+  var apple = [
     to-string { "apple" }
   ]
 
   Test test: "Equality" is: {
     // reference equality
-    a <- apple
-    b <- apple
+    var a = apple
+    var b = apple
     Test is-true: a == b
     Test is-false: a == nil
 
@@ -52,7 +52,7 @@ Test suite: "Objects" is: {
 
     // TODO(bob): Fibers are disabled right now.
     /*
-    fiber <- Fiber new: { 0 }
+    var fiber = Fiber new: { 0 }
     Test is-false: fiber array?
     Test is-false: fiber block?
     Test is-false: fiber boolean?
@@ -77,16 +77,16 @@ Test suite: "Objects" is: {
   }
 
   Test test: "methods are inherited from parent" is: {
-    parent <- [ method { "parent" } ]
-    child <- [|parent|]
+    var parent = [ method { "parent" } ]
+    var child = [|parent|]
 
     Test that: child method equals: "parent"
   }
 
   Test test: "self inside an object literal is the new object" is: {
-    obj <- [
+    var obj = [
       a { "a" }
-      _b <- self a
+      _b = self a
       b { _b }
     ]
 

@@ -1,11 +1,11 @@
-PrettyPrinter <- [
+var PrettyPrinter = [
   new {
-    [|PrettyPrinter proto| _buffer <- #[], _indent <- "" ]
+    [|PrettyPrinter proto| _buffer = #[], _indent = "" ]
   }
 
-  proto <- [
+  proto = [
     to-string {
-      result <- ""
+      var result = ""
       _buffer each: { s -> result = result + s }
       result
     }
@@ -16,8 +16,8 @@ PrettyPrinter <- [
     }
 
     // TODO(bob): Use these:
-    indent { _indent <- _indent + "  " }
-    dedent { _indent <- _indent from: 2 }
+    indent { _indent = _indent + "  " }
+    dedent { _indent = _indent from: 2 }
   ]
 ]
 
@@ -26,7 +26,7 @@ Expr proto :: (
   to-string { self pretty-print }
 
   pretty-print {
-    printer <- PrettyPrinter new
+    var printer = PrettyPrinter new
     self print-to: printer
     printer to-string
   }
@@ -93,7 +93,7 @@ Define proto :: print-to: printer {
     // TODO(bob): Pull out params.
     _body print-to: printer
   } else: {
-    printer write: " <- "
+    printer write: " = "
     _body print-to: printer
   }
 }
@@ -159,7 +159,8 @@ Expr string-proto :: print-to: printer {
 }
 
 Expr var-proto :: print-to: printer {
+  printer write: "var "
   printer write: _name
-  printer write: " <- "
+  printer write: " = "
   _value print-to: printer
 }

@@ -1,6 +1,6 @@
 Test suite: "Switch" is: {
   Test test: "Match value" is: {
-    found <- false
+    var found = false
 
     2 switch \
     case: 1 do: { Test fail } ;
@@ -17,7 +17,7 @@ Test suite: "Switch" is: {
   }
 
   Test test: "Default match" is: {
-    found <- false
+    var found = false
     5 switch \
     case: 1 do: { Test fail } ;
     case: 3 do: { Test fail } ;
@@ -27,7 +27,7 @@ Test suite: "Switch" is: {
   }
 
   Test test: "Match predicate" is: {
-    found <- false
+    var found = false
     2 switch \
     case: { i -> i < 2 } do: { Test fail } ;
     case: { i -> i == 2 } do: { found = true } ;
@@ -37,7 +37,7 @@ Test suite: "Switch" is: {
   }
 
   Test test: "Returns value" is: {
-    result <- 2 switch \
+    var result = 2 switch \
       case: 1 do: { "one" } ;
       case: 2 do: { "two" } ;
       case: 3 do: { "three" }

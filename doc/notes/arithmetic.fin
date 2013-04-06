@@ -12,11 +12,11 @@ Numbers :: (
 
 // This way, a user could come along and define their own type:
 
-Vector <- [
-  new-x: x y: y { [|Vectors| _x <- x, _y <- y ] }
+var Vector = [
+  new-x: x y: y { [|Vectors| _x = x, _y = y ] }
 ]
 
-Vectors <- [
+var Vectors = [
   + other { other add-vector: self }
   add-vector: vec { Vector new-x: vec x + self x y: vec y + self y }
 ]

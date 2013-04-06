@@ -1,5 +1,5 @@
 // create an array of 100 closed doors
-doors <- Array count: 100 fill-with: false
+var doors = Array count: 100 fill-with: false
 
 // open and close them
 from: 1 to: 100 do: { step ->

@@ -1,8 +1,8 @@
 Test suite: "Tail Call Optimization" is: {
   Test test: "Self call" is: {
-    recurse <- 1000
-    maxstack <- *primitive* callstack-depth + 10 // add in a little flexibility
-    c <- {
+    var recurse = 1000
+    var maxstack = *primitive* callstack-depth + 10 // add in a little flexibility
+    var c = {
       // make sure the callstack didn't grow
       if: recurse == 1 then: {
         Test is-true: *primitive* callstack-depth < maxstack
@@ -18,9 +18,9 @@ Test suite: "Tail Call Optimization" is: {
   }
 
   Test test: "Other call" is: {
-    recurse <- 1000
-    maxstack <- *primitive* callstack-depth + 10 // add in a little flexibility
-    c <- {
+    var recurse = 1000
+    var maxstack = *primitive* callstack-depth + 10 // add in a little flexibility
+    var c = {
       // make sure the callstack didn't grow
       if: recurse == 1 then: {
         Test is-true: *primitive* callstack-depth < maxstack
@@ -31,7 +31,7 @@ Test suite: "Tail Call Optimization" is: {
       if: recurse > 0 then: { d call }
     }
 
-    d <- {
+    var d = {
       // just do another tail call back to the first
       c call
     }

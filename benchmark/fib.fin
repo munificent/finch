@@ -1,4 +1,4 @@
-Fib <- [
+var Fib = [
   calc: n {
     if: n < 2 then: {
       n

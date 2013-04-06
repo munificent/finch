@@ -5,7 +5,7 @@ Test suite: "Arrays" is: {
   }
 
   Test test: "Array count:fill-with:" is: {
-    a <- Array count: 3 fill-with: "hi"
+    var a = Array count: 3 fill-with: "hi"
     Test that: (a at: 0) equals: "hi"
     Test that: (a at: 1) equals: "hi"
     Test that: (a at: 2) equals: "hi"
@@ -14,7 +14,7 @@ Test suite: "Arrays" is: {
   Test test: "literal" is: {
     Test that: #[] count equals: 0
 
-    a <- #[3, 4]
+    var a = #[3, 4]
     Test that: a count equals: 2
     Test that: (a at: 0) equals: 3
     Test that: (a at: 1) equals: 4
@@ -42,23 +42,23 @@ Test suite: "Arrays" is: {
   }
 
   Test test: "at:put:" is: {
-    a <- #[1, 2, 3]
+    var a = #[1, 2, 3]
     Test that: (a at: 1) equals: 2
     a at: 1 put: 5
     Test that: (a at: 1) equals: 5
   }
 
   Test test: "each:" is: {
-    a <- #[1, 2, 3]
-    c <- 0
-    b <- a each: { e -> c = c + e }
+    var a = #[1, 2, 3]
+    var c = 0
+    var b = a each: { e -> c = c + e }
 
     Test that: c equals: 6
   }
 
   Test test: "map:" is: {
-    a <- #[1, 2, 3]
-    b <- a map: { e -> e + 1 }
+    var a = #[1, 2, 3]
+    var b = a map: { e -> e + 1 }
 
     Test that: b count equals: 3
     Test that: (b at: 0) equals: 2
@@ -67,7 +67,7 @@ Test suite: "Arrays" is: {
   }
 
   Test test: "++" is: {
-    a <- #[1, 2] ++ #[3, 4]
+    var a = #[1, 2] ++ #[3, 4]
 
     Test that: a count equals: 4
     Test that: (a at: 0) equals: 1
@@ -77,8 +77,8 @@ Test suite: "Arrays" is: {
   }
 
   Test test: "remove-at:" is: {
-    a <- #[1, 2, 3, 4]
-    b <- a remove-at: 2
+    var a = #[1, 2, 3, 4]
+    var b = a remove-at: 2
 
     Test that: a count equals: 3
     Test that: (a at: 0) equals: 1
@@ -89,8 +89,8 @@ Test suite: "Arrays" is: {
   }
 
   Test test: "remove-at: negative index" is: {
-    a <- #[1, 2, 3, 4]
-    b <- a remove-at: -3
+    var a = #[1, 2, 3, 4]
+    var b = a remove-at: -3
 
     Test that: a count equals: 3
     Test that: (a at: 0) equals: 1

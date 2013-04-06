@@ -1,7 +1,7 @@
 Test suite: "Strings" is: {
   // make a couple of objects that implement to-string
-  apple <- [ to-string { "apple" } ]
-  banana <- [ to-string { "banana" } ]
+  var apple = [ to-string { "apple" } ]
+  var banana = [ to-string { "banana" } ]
 
   Test test: "count" is: {
     Test that: ""        count equals: 0

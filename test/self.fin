@@ -1,15 +1,15 @@
 Test suite: "Self" is: {
   Test test: "Self in non-method block is nil" is: {
-    block <- { self }
+    var block = { self }
 
     Test that: block call equals: nil
   }
 
   Test test: "Self in block is outer self" is: {
-    foo <- [
+    var foo = [
       to-string { "foo" }
       bar {
-        block <- { self to-string }
+        var block = { self to-string }
         block call
       }
     ]
@@ -18,12 +18,12 @@ Test suite: "Self" is: {
   }
 
   Test test: "Self in parent method is child" is: {
-    parent <- [
+    var parent = [
       call-to-string { self to-string }
       to-string { "parent" }
     ]
 
-    child <- [|parent| to-string { "child" } ]
+    var child = [|parent| to-string { "child" } ]
 
     Test that: parent call-to-string equals: "parent"
     Test that: child call-to-string equals: "child"
@@ -31,13 +31,13 @@ Test suite: "Self" is: {
 
   Test test: "Self in block is lexical not dynamic scope" is: {
     // create a block in one object scope
-    foo <- [
+    var foo = [
       to-string { "foo" }
       block { { self to-string } }
     ]
 
     // and call it from within a different object
-    bar <- [
+    var bar = [
       to-string { "bar" }
       call-block: block { block call }
     ]
@@ -45,16 +45,16 @@ Test suite: "Self" is: {
     Test that: (bar call-block: foo block) equals: "foo"
 
     // needs to play nice with inheritance too
-    foo2 <- [|foo| to-string { "foo2" } ]
+    var foo2 = [|foo| to-string { "foo2" } ]
     Test that: (bar call-block: foo2 block) equals: "foo2"
   }
 
   Test test: "Recursive inherited method restores outer self" is: {
-    child <- nil
-    parent <- [
+    var child = nil
+    var parent = [
       recurse: recurse {
         // see what self is bound to
-        a <- self to-string
+        var a = self to-string
         if: recurse then: {
           // call this exact same method but with a different self
           a = a + (child recurse: false)
@@ -74,15 +74,15 @@ Test suite: "Self" is: {
   }
 
   Test test: "Storing a block in a method caches self at that time" is: {
-    parent <- [
+    var parent = [
       to-string { "parent" }
       make-block {
-        _block <- { self to-string }
+        _block = { self to-string }
       }
       call-block { _block call }
     ]
 
-    child <- [|parent|
+    var child = [|parent|
       to-string { "child" }
     ]
 

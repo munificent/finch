@@ -1,27 +1,27 @@
 write-line: "Running Finch test suite."
 
 // define a Test object the tests can use
-Test <- [
-  _suite       <- ""
-  _test        <- ""
-  _test-shown? <- false
-  _tests       <- 0
-  _failed      <- 0
+var Test = [
+  _suite       = ""
+  _test        = ""
+  _test-shown? = false
+  _tests       = 0
+  _failed      = 0
 
-  _total-tests <- 0
-  _total-fails <- 0
+  _total-tests = 0
+  _total-fails = 0
 
   suite: name is: body {
-    _suite <- name
+    _suite = name
     body call
-    _suite <- ""
+    _suite = ""
   }
 
   test: name is: body {
-    _test       <- name
-    _tests      <- 0
-    _failed     <- 0
-    _test-shown?  <- false
+    _test        = name
+    _tests       = 0
+    _failed      = 0
+    _test-shown? = false
 
     body call
 
@@ -32,13 +32,13 @@ Test <- [
       write-line: "PASS " + _suite + " / " + _test + " passed " +
         (_tests - _failed) + " / " + _tests + " tests"
     }
-    _test <- ""
+    _test = ""
   }
 
   show-header {
     if: _test-shown? not then: {
       write-line: _suite + " / " + _test
-      _test-shown? <- true
+      _test-shown? = true
     }
   }
 
@@ -50,12 +50,12 @@ Test <- [
   is-false: actual { self that: actual equals: false }
 
   that: actual equals: expected {
-    _tests <- _tests + 1
-    _total-tests <- _total-tests + 1
+    _tests = _tests + 1
+    _total-tests = _total-tests + 1
 
     if: actual != expected then: {
-      _failed <- _failed + 1
-      _total-fails <- _total-fails + 1
+      _failed = _failed + 1
+      _total-fails = _total-fails + 1
 
       self show-header
       write-line: "  Test " + _tests to-string + " failed. Expected " +

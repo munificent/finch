@@ -1,18 +1,18 @@
 // Define a singleton object for the Car "type". This object will be
 // the factory for all other cars.
-Car <- [
+var Car = [
   // Define a constructor method on the factory.
   make: make model: model {
     // The constructor simply derives a new car from the car
     // prototype and then stores the make and model in it.
-    [|Cars| _make <- make, _model <- model ]
+    [|Cars| _make = make, _model = model ]
     // Like ruby, the last expression in the method is implicitly
     // the returned value.
   }
 ]
 
 // Define the car prototype. All cars will derive from this.
-Cars <- [
+var Cars = [
   // Accessors for their make and model.
   make { _make }
   model { _model }
@@ -23,7 +23,7 @@ Cars <- [
 ]
 
 // now lets make a car
-jetta <- Car make: "volkswagen" model: "jetta"
+var jetta = Car make: "volkswagen" model: "jetta"
 
 // and call a method on its prototype, which in turn references the
 // specific car's state

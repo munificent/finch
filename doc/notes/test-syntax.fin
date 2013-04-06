@@ -10,14 +10,11 @@
 self true false nil undefined
 
 // assignment
-a <- b
+var a = b
 a = b
 
 // but not in the middle of other operators
 >=?
-
- <-
-(<-)<-[<-]<-{<-}
 
 // blocks
 { no arguments }
@@ -83,7 +80,7 @@ false :: (
 Ether :: (
   // define a for-style loop
   from: start to: end step: step do: block {
-    i <- start
+    var i = start
 
     while: { i <= end } do: {
       block call: i
@@ -92,7 +89,7 @@ Ether :: (
   }
 
   from: start to: end do: block {
-    step <- (if: start <= end then: 1 else: -1)
+    var step = (if: start <= end then: 1 else: -1)
     from: start to: end step: step do: block
   }
 
@@ -147,11 +144,11 @@ Ether :: (
 
 Blocks :: block? { true }
 
-Fiber <- (||
+var Fiber = (||
   new: block { #PRIM# new-fiber: block }
 
   spawn: block {
-    fiber <- Fiber new: block
+    var fiber = Fiber new: block
     // immediately run it, discarding the first yielded result
     fiber run
     fiber
@@ -170,7 +167,7 @@ Fibers :: (
   fiber? { true }
 
   run: value {
-    _run-by <- Fiber current
+    _run-by = Fiber current
     #PRIM# switch-to-fiber: self passing: value
   }
 
@@ -227,13 +224,13 @@ Strings :: (
   }
 )
 
-Array <- (||
+var Array = (||
   count: count {
     self count: count fill-with: nil
   }
 
   count: count fill-with: element {
-    result <- []
+    var result = []
 
     from: 1 to: count do: { i -> result add: element }
     result
@@ -244,7 +241,7 @@ Arrays :: (
   array? { true }
 
   ++ right {
-    result <- []
+    var result = []
 
     self each: { e -> result add: e }
     right each: { e -> result add: e }
@@ -259,7 +256,7 @@ Arrays :: (
   }
 
   map: block {
-    result <- []
+    var result = []
     self each: { element -> result add: (block call: element) }
     result
   }
@@ -298,22 +295,22 @@ Object :: (
 //     default: { "argh" }
 Object :: switch {
   // ### bob: having to do this is lame. :(
-  outer-self <- self
+  var outer-self = self
   (|Switches|
-    _value  <- outer-self
-    _done   <- false
-    _result <- nil
+    _value  = outer-self
+    _done   = false
+    _result = nil
   )
 }
 
-Switches <- (||
+var Switches = (||
   case: case do: block {
     // if this switch has already matched a case, just do nothing
     if: _done? not then: {
       // if the case is a block, then it's a predicate so evaluate
       // it, otherwise it's a value, so compare it to the value being
       // switched
-      matched <- if: case block? then: {
+      var matched = if: case block? then: {
         case call: _value
       } else: {
         _value == case
@@ -321,8 +318,8 @@ Switches <- (||
 
       if: matched then: {
         // execute the block
-        _result <- block call: _value
-        _done? <- true
+        _result = block call: _value
+        _done? = true
       }
     }
 
@@ -335,8 +332,8 @@ Switches <- (||
     // if this switch has already matched a case, just do nothing
     if: _done? not then: {
       // execute the block
-      _result <- block call: _value
-      _done? <- true
+      _result = block call: _value
+      _done? = true
     }
 
     _result

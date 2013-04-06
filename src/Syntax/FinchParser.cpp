@@ -92,31 +92,33 @@ namespace Finch
         // declared at the "top level" of a block and not inside nested
         // expressions. This is important in order to have a simple single-pass
         // compiler. Doing so requires that we don't have any temporary (i.e.
-        // non local variable) registers in use at the point that we are
+        // not local variable) registers in use at the point that we are
         // defining a new local. All that means is that variable declarations
-        // (a <- "foo") shouldn't be allowed in the middle of message sends.
+        // (var a = "foo") shouldn't be allowed in the middle of message sends.
         // So the grammar must be careful to disallow this:
         //
-        //   foo bar: "baz" bang: (a <- "blah")
+        //   foo bar: "baz" bang: (var a = "blah")
 
-        if (LookAhead(TOKEN_NAME, TOKEN_ARROW))
+        if (Match(TOKEN_VAR))
         {
-            String name = Consume()->Text();
+            Ref<Token> name = Consume(TOKEN_NAME, "Expect name after 'var'.");
+            // TODO(bob): Handle missing name.
             
-            Consume(); // the arrow
+            Consume(TOKEN_EQ, "Expect '=' after variable name.");
             
             // handle assigning the special "undefined" value
             if (Match(TOKEN_UNDEFINED))
             {
-                return Ref<Expr>(new UndefineExpr(name));
+                return Ref<Expr>(new UndefineExpr(name->Text()));
             }
             else
             {
                 Ref<Expr> value = Variable();
-                return Ref<Expr>(new VarExpr(name, value));
+                return Ref<Expr>(new VarExpr(name->Text(), value));
             }
         }
-        else return Bind();
+
+        return Bind();
     }
     
     Ref<Expr> FinchParser::Bind()
@@ -381,14 +383,14 @@ namespace Finch
                 numArgs++;
             }
 
-            if (numArgs > 0 && LookAhead(numArgs, TOKEN_RIGHT_ARROW))
+            if (numArgs > 0 && LookAhead(numArgs, TOKEN_ARROW))
             {
                 for (int i = 0; i < numArgs; i++)
                 {
                     params.Add(Consume()->Text());
                 }
 
-                Consume(); // ->
+                Consume(); // "->".
             }
 
             Ref<Expr> body = Expression();
@@ -444,7 +446,7 @@ namespace Finch
         Array<String> params;
         
         // figure out what kind of thing we're defining
-        if (LookAhead(TOKEN_NAME, TOKEN_ARROW))
+        if (LookAhead(TOKEN_NAME, TOKEN_EQ))
         {
             // object variable
             String name = Consume()->Text();

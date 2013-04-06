@@ -1,7 +1,7 @@
 Test suite: "Fibers" is: {
   Test test: "new: doesn't immediately start" is: {
-    executed <- false
-    fiber <- Fiber new: {
+    var executed = false
+    var fiber = Fiber new: {
       executed = true
     }
 
@@ -16,8 +16,8 @@ Test suite: "Fibers" is: {
   }
 
   Test test: "spawn: immediately starts" is: {
-    executed <- false
-    fiber <- Fiber spawn: {
+    var executed = false
+    var fiber = Fiber spawn: {
       executed = true
     }
 
@@ -27,11 +27,11 @@ Test suite: "Fibers" is: {
   }
 
   Test test: "yield: returns value" is: {
-    fiber <- Fiber new: {
+    var fiber = Fiber new: {
       Fiber yield: 123
     }
 
-    result <- fiber run
+    var result = fiber run
 
     Test that: result equals: 123
     Test is-false: fiber running?
@@ -43,13 +43,13 @@ Test suite: "Fibers" is: {
   }
 
   Test test: "last run returns block value" is: {
-    fiber <- Fiber new: {
+    var fiber = Fiber new: {
       Fiber yield: 123
       345
     }
 
-    result1 <- fiber run
-    result2 <- fiber run
+    var result1 = fiber run
+    var result2 = fiber run
 
     Test that: result1 equals: 123
     Test that: result2 equals: 345
@@ -57,12 +57,12 @@ Test suite: "Fibers" is: {
   }
 
   Test test: "run returns nil after last yield" is: {
-    fiber <- Fiber new: {
+    var fiber = Fiber new: {
       Fiber yield: 123
     }
 
-    result1 <- fiber run
-    result2 <- fiber run
+    var result1 = fiber run
+    var result2 = fiber run
 
     Test that: result1 equals: 123
     Test that: result2 equals: nil
@@ -70,8 +70,8 @@ Test suite: "Fibers" is: {
   }
 
   Test test: "run: passes in value" is: {
-    passed-in <- nil
-    fiber <- Fiber new: {
+    var passed-in = nil
+    var fiber = Fiber new: {
       passed-in = Fiber yield
     }
 

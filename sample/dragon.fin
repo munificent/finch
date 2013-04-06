@@ -3,7 +3,7 @@
 // of left and right turns required to draw a dragon curve with the
 // given recursion depth.
 
-Dragon <- [
+var Dragon = [
   generate: depth {
     write: "dragon curve " + depth + " depth: "
     self iterate: depth turn: "R"

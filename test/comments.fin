@@ -6,7 +6,7 @@ Test suite: "Comments" is: {
   }
 
   Test test: "line comment in name" is: {
-    foo <- 1
+    var foo = 1
     Test that: 1 equals: foo//comment
   }
 
@@ -16,7 +16,7 @@ Test suite: "Comments" is: {
   }
 
   Test test: "block comment in name" is: {
-    foo <- 1
+    var foo = 1
     Test that: foo/*comment*/ equals: 1
   }
 

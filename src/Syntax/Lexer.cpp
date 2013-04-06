@@ -267,7 +267,8 @@ namespace Finch
         if (name == "return") return Ref<Token>(new Token(TOKEN_RETURN));
         if (name == "self") return Ref<Token>(new Token(TOKEN_SELF));
         if (name == "undefined") return Ref<Token>(new Token(TOKEN_UNDEFINED));
-        
+        if (name == "var") return Ref<Token>(new Token(TOKEN_VAR));
+
         return Ref<Token>(new Token(type, name));
     }
     
@@ -287,8 +288,7 @@ namespace Finch
         
         String name = mLine.Substring(mStart, mPos - mStart);
         
-        if (name == "<-") return Ref<Token>(new Token(TOKEN_ARROW));
-        if (name == "->") return Ref<Token>(new Token(TOKEN_RIGHT_ARROW));
+        if (name == "->") return Ref<Token>(new Token(TOKEN_ARROW));
         if (name == "=") return Ref<Token>(new Token(TOKEN_EQ));
         
         return Ref<Token>(new Token(TOKEN_OPERATOR, name));

@@ -4,7 +4,7 @@
 //
 // It will be a generator, yielding the numbers from 1 to 10, one at a
 // time, each time it's run.
-a <- Fiber new: {
+var a = Fiber new: {
   from: 1 to: 10 do: { n ->
     write-line: "fiber a yielding " + n to-string
     Fiber yield: n
@@ -15,6 +15,6 @@ a <- Fiber new: {
 // other fiber and get the generated results back. It then prints them,
 // one at a time. It stops when the generator fiber ends.
 while: { a done? not } do: {
-  result <- a run
+  var result = a run
   write-line: "main fiber received " + result to-string
 }
