@@ -8,15 +8,15 @@ Test suite: "Objects" is: {
     // reference equality
     a <- apple
     b <- apple
-    Test is-true: a = b
-    Test is-false: a = nil
+    Test is-true: a == b
+    Test is-false: a == nil
 
     Test is-false: a != b
     Test is-true: a != nil
 
     // equality is *strict* and doesn't implicitly convert
-    Test is-false: "apple" = apple
-    Test is-false: apple = "apple"
+    Test is-false: "apple" == apple
+    Test is-false: apple == "apple"
     Test is-true: "apple" != apple
     Test is-true: apple != "apple"
   }

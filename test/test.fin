@@ -65,7 +65,7 @@ Test <- [
 
   complete {
     write-line: ""
-    if: _total-fails = 0 then: {
+    if: _total-fails == 0 then: {
       write-line: "All " + _total-tests + " tests passed."
     } else: {
       write-line: _total-fails to-string + " out of " + _total-tests +

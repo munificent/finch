@@ -24,8 +24,8 @@ Test suite: "Strings" is: {
   }
 
   Test test: "Comparison" is: {
-    Test is-true: "a" = "a"
-    Test is-false: "a" = "b"
+    Test is-true: "a" == "a"
+    Test is-false: "a" == "b"
 
     Test is-false: "a" != "a"
     Test is-true: "a" != "b"
@@ -47,7 +47,7 @@ Test suite: "Strings" is: {
     Test is-true: "a" >= "a"
 
     // equality is *strict* and doesn't implicitly convert
-    Test is-false: "apple" = apple
+    Test is-false: "apple" == apple
   }
 
   Test test: "from:count:" is: {

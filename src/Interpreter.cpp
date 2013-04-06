@@ -102,7 +102,7 @@ namespace Finch
         AddPrimitive(mNumberPrototype, "-number:", NumberSubtract);
         AddPrimitive(mNumberPrototype, "*number:", NumberMultiply);
         AddPrimitive(mNumberPrototype, "/number:", NumberDivide);
-        AddPrimitive(mNumberPrototype, "=number:", NumberEquals);
+        AddPrimitive(mNumberPrototype, "==number:", NumberEquals);
         AddPrimitive(mNumberPrototype, "!=",  NumberNotEquals);
         AddPrimitive(mNumberPrototype, "<",   NumberLessThan);
         AddPrimitive(mNumberPrototype, ">",   NumberGreaterThan);

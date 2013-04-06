@@ -1,8 +1,8 @@
 Object :: (
   // By default, just check reference equality.
-  = right { self === right }
+  == right { self === right }
 
-  != right { (self = right) not }
+  != right { (self == right) not }
 
   && right { self if-true: { right } else: { self } }
 
@@ -148,7 +148,7 @@ Numbers :: (
   - right { right -number: self }
   * right { right *number: self }
   / right { right /number: self }
-  = right { right =number: self }
+  == right { right ==number: self }
 )
 
 Object :: (
@@ -156,8 +156,8 @@ Object :: (
   +string: left { *primitive* string-concat: left and: self to-string }
 
   // Comparisons between unrelated types always return false.
-  =number: left { false }
-  =string: left { false }
+  ==number: left { false }
+  ==string: left { false }
 )
 
 Strings :: (
@@ -168,15 +168,15 @@ Strings :: (
 
   // Double-dispatch.
   + right { right +string: self }
-  = right { right =string: self }
+  == right { right ==string: self }
 
-  =string: left { (*primitive* string-compare: left to: self) = 0 }
+  ==string: left { (*primitive* string-compare: left to: self) == 0 }
   <  right { (*primitive* string-compare: self to: right) < 0 }
   >  right { (*primitive* string-compare: self to: right) > 0 }
   <= right { (*primitive* string-compare: self to: right) <= 0 }
   >= right { (*primitive* string-compare: self to: right) >= 0 }
 
-  starts-with: needle { (self index-of: needle) = 0 }
+  starts-with: needle { (self index-of: needle) == 0 }
 
   contains: needle { (self index-of: needle) != -1 }
 
@@ -282,7 +282,7 @@ Switches <- [
       matched <- if: case block? then: {
         case call: _value
       } else: {
-        _value = case
+        _value == case
       }
 
       if: matched then: {
@@ -310,4 +310,4 @@ Switches <- [
 ]
 
 // ###bob: temp; run tests
-load: "test/test.fin"
+//load: "test/test.fin"

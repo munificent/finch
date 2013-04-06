@@ -4,7 +4,7 @@ Test suite: "Tail Call Optimization" is: {
     maxstack <- *primitive* callstack-depth + 10 // add in a little flexibility
     c <- {
       // make sure the callstack didn't grow
-      if: recurse = 1 then: {
+      if: recurse == 1 then: {
         Test is-true: *primitive* callstack-depth < maxstack
       }
 
@@ -22,7 +22,7 @@ Test suite: "Tail Call Optimization" is: {
     maxstack <- *primitive* callstack-depth + 10 // add in a little flexibility
     c <- {
       // make sure the callstack didn't grow
-      if: recurse = 1 then: {
+      if: recurse == 1 then: {
         Test is-true: *primitive* callstack-depth < maxstack
       }
 

@@ -34,7 +34,7 @@ a <-- b
 Object :: (
 	/* nested /* block */ comment */
   // By default, just check reference equality.
-  = right { self === right }
+  == right { self === right }
 
   != right { (self = right) not }
 
@@ -186,7 +186,7 @@ Numbers :: (
   - right { right -number: self }
   * right { right *number: self }
   / right { right /number: self }
-  = right { right =number: self }
+  == right { right ==number: self }
 )
 
 Object :: (
@@ -194,8 +194,8 @@ Object :: (
   +string: left { #PRIM# string-concat: left and: self to-string }
 
   // Comparisons between unrelated types always return false.
-  =number: left { false }
-  =string: left { false }
+  ==number: left { false }
+  ==string: left { false }
 )
 
 Strings :: (
@@ -206,16 +206,16 @@ Strings :: (
 
   // Double-dispatch.
   + right { right +string: self }
-  = right { right =string: self }
+  == right { right ==string: self }
 
-  =string: left { (#PRIM# string-compare: left to: self) = 0 }
+  ==string: left { (#PRIM# string-compare: left to: self) = 0 }
   <  right { (#PRIM# string-compare: self to: right) < 0 }
   >  right { (#PRIM# string-compare: self to: right) > 0 }
   <= right { (#PRIM# string-compare: self to: right) <= 0 }
   >= right { (#PRIM# string-compare: self to: right) >= 0 }
 
   starts-with: needle {
-    (self index-of: needle) = 0
+    (self index-of: needle) == 0
   }
 
   contains: needle {
@@ -316,7 +316,7 @@ Switches <- (||
       matched <- if: case block? then: {
         case call: _value
       } else: {
-        _value = case
+        _value == case
       }
 
       if: matched then: {

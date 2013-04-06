@@ -52,7 +52,7 @@ Expr bind-proto :: print-to: printer {
   _receiver print-to: printer
   printer write: " :: "
 
-  if: _defines count = 1 then: {
+  if: _defines count == 1 then: {
     (_defines at: 0) print-to: printer
   } else: {
     printer write: "(\n"
@@ -123,7 +123,7 @@ Expr number-proto :: print-to: printer {
 }
 
 Expr object-proto :: print-to: printer {
-  if: _parent = nil then: {
+  if: _parent == nil then: {
     printer write-line: "["
   } else: {
     printer write: "[|"

@@ -8,4 +8,4 @@ Fib <- [
   }
 ]
 
-write-line: (Fib calc: 25) = 75025
+write-line: (Fib calc: 25) == 75025

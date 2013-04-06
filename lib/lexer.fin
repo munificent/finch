@@ -71,7 +71,7 @@ SourceFiles <- [
     line <- 1
     column <- 1
     from: 0 to: index - 1 do: { i ->
-      if: (_source at: i) = "\n" then: {
+      if: (_source at: i) == "\n" then: {
         line <-- line + 1
         column <-- 1
       } else: {
@@ -197,41 +197,41 @@ Lexers <- [
       _start <- _pos
       c <- self current
       true switch \
-      case: c = "("  do: { return self single-token: Token/LeftParen } ;
-      case: c = ")"  do: { return self single-token: Token/RightParen } ;
-      case: c = "["  do: { return self single-token: Token/LeftBracket } ;
-      case: c = "]"  do: { return self single-token: Token/RightBracket } ;
-      case: c = "{"  do: { return self single-token: Token/LeftBrace } ;
-      case: c = "}"  do: { return self single-token: Token/RightBrace } ;
-      case: c = ","  do: { return self single-token: Token/Comma } ;
-      case: c = "\n" do: { return self single-token: Token/Comma } ;
-      case: c = "\\" do: { return self single-token: Token/IgnoreLine } ;
-      case: c = ";"  do: { return self single-token: Token/Semicolon } ;
-      case: c = "."  do: { return self single-token: Token/Dot } ;
-      case: c = "|"  do: { return self single-token: Token/Pipe } ;
-      case: c = "/"  do: {
+      case: c == "("  do: { return self single-token: Token/LeftParen } ;
+      case: c == ")"  do: { return self single-token: Token/RightParen } ;
+      case: c == "["  do: { return self single-token: Token/LeftBracket } ;
+      case: c == "]"  do: { return self single-token: Token/RightBracket } ;
+      case: c == "{"  do: { return self single-token: Token/LeftBrace } ;
+      case: c == "}"  do: { return self single-token: Token/RightBrace } ;
+      case: c == ","  do: { return self single-token: Token/Comma } ;
+      case: c == "\n" do: { return self single-token: Token/Comma } ;
+      case: c == "\\" do: { return self single-token: Token/IgnoreLine } ;
+      case: c == ";"  do: { return self single-token: Token/Semicolon } ;
+      case: c == "."  do: { return self single-token: Token/Dot } ;
+      case: c == "|"  do: { return self single-token: Token/Pipe } ;
+      case: c == "/"  do: {
         self advance
-        if: self current = "/" then: {
+        if: self current == "/" then: {
           // Line comment, so ignore the rest of the line and emit the line
           // token.
           self advance-while: { c -> c != "\n" }
           return self single-token: Token/Comma
-        } else-if: self current = "*" then: {
+        } else-if: self current == "*" then: {
           self skip-block-comment
         } else: {
           return self read-operator
         }
       } ;
-      case: c = ":"  do: {
+      case: c == ":"  do: {
         self advance
-        if: self current = ":" then: {
+        if: self current == ":" then: {
           self advance
           return self make-token: Token/Bind
         } else: {
           return self make-token: Token/Keyword
         }
       } ;
-      case: c = "-" do: {
+      case: c == "-" do: {
         self advance
         if: self current digit? then: {
           return self read-number
@@ -242,7 +242,7 @@ Lexers <- [
       case: c whitespace? do: { self advance-while: { c -> c whitespace? } } ;
       case: c alpha?      do: { return self read-name } ;
       case: c operator?   do: { return self read-operator } ;
-      case: c = "\""      do: { return self read-string } ;
+      case: c == "\""      do: { return self read-string } ;
       case: c digit?      do: { return self read-number } ;
       default: {
         // If we got here, we failed to handle the current character.
@@ -263,12 +263,12 @@ Lexers <- [
         // TODO(bob): Unterminated comment, should return error.
         return
       } ;
-      case: (self current = "/") && (self next = "*") do: {
+      case: (self current == "/") && (self next == "*") do: {
         self advance
         self advance
         nesting <-- nesting + 1
       } ;
-      case: (self current = "*") && (self next = "/") do: {
+      case: (self current == "*") && (self next == "/") do: {
         self advance
         self advance
         nesting <-- nesting - 1
@@ -282,7 +282,7 @@ Lexers <- [
 
     // See if it ends with a ":"
     type <- Token/Name
-    if: self current = ":" then: {
+    if: self current == ":" then: {
       self advance
       type <-- Token/Keyword
     }
@@ -301,7 +301,7 @@ Lexers <- [
     }
 
     // See if it ends with a ":"
-    if: self current = ":" then: {
+    if: self current == ":" then: {
       self advance
       type <-- Token/Keyword
     }
@@ -318,13 +318,13 @@ Lexers <- [
         return self make-token: Token/Error text: "Unterminated string"
       }
 
-      if: self current = "\"" then: {
+      if: self current == "\"" then: {
         self advance
         return self make-token: Token/String text: text
       }
 
       // Handle string escapes.
-      if: self current = "\\" then: {
+      if: self current == "\\" then: {
         self advance
 
         if: self eof? then: {
@@ -362,12 +362,12 @@ Lexers <- [
   make-token: type {
     text <- _source from: _start to: _pos
 
-    if: text = "<-"        then: { type <-- Token/Arrow }
-    if: text = "<--"       then: { type <-- Token/LongArrow }
-    if: text = "self"      then: { type <-- Token/Self }
-    if: text = "undefined" then: { type <-- Token/Undefined }
-    if: text = "break"     then: { type <-- Token/Break }
-    if: text = "return"    then: { type <-- Token/Return }
+    if: text == "<-"        then: { type <-- Token/Arrow }
+    if: text == "<--"       then: { type <-- Token/LongArrow }
+    if: text == "self"      then: { type <-- Token/Self }
+    if: text == "undefined" then: { type <-- Token/Undefined }
+    if: text == "break"     then: { type <-- Token/Break }
+    if: text == "return"    then: { type <-- Token/Return }
 
     self make-token: type text: (_source from: _start to: _pos)
   }
@@ -408,12 +408,12 @@ files each: { file ->
   lexer <- Lexer new-path: file source: source
   lexer each: { token ->
     tokens <-- tokens + 1
-    if: (token type = Token/Error) then: {
+    if: (token type == Token/Error) then: {
       write-line: token
       errors <-- errors + 1
     }
 
-    if: (token type = Token/Comma) then: { lines <-- lines + 1 }
+    if: (token type == Token/Comma) then: { lines <-- lines + 1 }
   }
 }
 
