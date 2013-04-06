@@ -14,10 +14,9 @@ namespace Finch
     
     void QueueTests::TestEnqueueDequeue()
     {
-        Queue<int, 3> queue;
-        
+        Queue<int> queue;
+
         EXPECT_EQUAL(0, queue.Count());
-        EXPECT_EQUAL(3, queue.Capacity());
         
         queue.Enqueue(2);
         
@@ -32,7 +31,7 @@ namespace Finch
     
     void QueueTests::TestSerialEnqueue()
     {
-        Queue<int, 3> queue;
+        Queue<int> queue;
         
         for (int i = 0; i < 6; i++)
         {
@@ -47,7 +46,7 @@ namespace Finch
     
     void QueueTests::TestMultipleEnqueue()
     {
-        Queue<int, 3> queue;
+        Queue<int> queue;
         
         queue.Enqueue(5);
         queue.Enqueue(6);
@@ -70,7 +69,7 @@ namespace Finch
     
     void QueueTests::TestCount()
     {
-        Queue<int, 3> queue;
+        Queue<int> queue;
         
         EXPECT_EQUAL(0, queue.Count());
         queue.Enqueue(1);
@@ -93,7 +92,7 @@ namespace Finch
     
     void QueueTests::TestSubscript()
     {
-        Queue<int, 3> queue;
+        Queue<int> queue;
         
         queue.Enqueue(5);
         queue.Enqueue(6);

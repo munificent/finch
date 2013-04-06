@@ -73,6 +73,8 @@ Test <- [
     }
     write-line: ""
   }
+
+  to-string { "Test" }
 ]
 
 // run the test scripts
@@ -92,7 +94,7 @@ load: "test/return.fin"
 load: "test/self.fin"
 load: "test/strings.fin"
 load: "test/switch.fin"
-// TODO(bob): TCO is working right now because of the register window stuff.
+// TODO(bob): TCO isn't working right now because of the register window stuff.
 //load: "test/tco.fin"
 load: "test/variables.fin"
 

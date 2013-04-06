@@ -97,7 +97,11 @@ namespace Finch
         // Removes all items from the array.
         void Clear()
         {
-            if (mItems != NULL) delete [] mItems;
+            if (mItems != NULL)
+            {
+                delete [] mItems;
+                mItems = NULL;
+            }
             mCount = 0;
             mCapacity = 0;
         }

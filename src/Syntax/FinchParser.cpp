@@ -372,22 +372,25 @@ namespace Finch
         else if (Match(TOKEN_LEFT_BRACE))
         {
             Array<String> params;
-            
-            // See if there are parameters.
-            if (Match(TOKEN_PIPE))
+
+            // Try to parse an argument list. Look for a series of names
+            // followed by a "->".
+            int numArgs = 0;
+            while (LookAhead(numArgs, TOKEN_NAME))
             {
-                while (LookAhead(TOKEN_NAME))
+                numArgs++;
+            }
+
+            if (numArgs > 0 && LookAhead(numArgs, TOKEN_RIGHT_ARROW))
+            {
+                for (int i = 0; i < numArgs; i++)
                 {
                     params.Add(Consume()->Text());
                 }
-                
-                Consume(TOKEN_PIPE, "Expect closing '|' after block arguments.");
-                
-                // If there were no named args, but there were pipes (||),
-                // use an automatic "it" arg.
-                if (params.Count() == 0) params.Add("it");
+
+                Consume(); // ->
             }
-            
+
             Ref<Expr> body = Expression();
             Consume(TOKEN_RIGHT_BRACE, "Expect closing '}' after block.");
             

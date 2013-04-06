@@ -8,6 +8,6 @@ Numbers :: fib {
 }
 
 // test
-from: 0 to: 20 do: {|i|
+from: 0 to: 20 do: { i ->
   write-line: "" + i + " fib = " + i fib
 }

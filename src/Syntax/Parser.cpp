@@ -36,6 +36,13 @@ namespace Finch
                (mRead[2]->Type() == third);
     }
 
+    bool Parser::LookAhead(int ahead, TokenType type)
+    {
+        FillLookAhead(ahead + 1);
+
+        return mRead[ahead]->Type() == type;
+    }
+
     bool Parser::Match(TokenType type)
     {
         if (LookAhead(type))
@@ -76,7 +83,7 @@ namespace Finch
             return Ref<Token>();
         }
     }
-    
+
     void Parser::Error(const char * message)
     {
         mHadError = true;

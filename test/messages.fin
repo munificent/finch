@@ -1,27 +1,27 @@
 Test suite: "Messages" is: {
   Test test: "missing args are nil" is: {
-    {|a b c d|
+    { a b c d ->
       Test is-nil: a
       Test is-nil: b
       Test is-nil: c
       Test is-nil: d
     } call
 
-    {|a b c d|
+    { a b c d ->
       Test that: a equals: 1
       Test is-nil: b
       Test is-nil: c
       Test is-nil: d
     } call: 1
 
-    {|a b c d|
+    { a b c d ->
       Test that: a equals: 1
       Test that: b equals: 2
       Test is-nil: c
       Test is-nil: d
     } call: 1 : 2
 
-    {|a b c d|
+    { a b c d ->
       Test that: a equals: 1
       Test that: b equals: 2
       Test that: c equals: 3
@@ -30,7 +30,7 @@ Test suite: "Messages" is: {
   }
 
   Test test: "extra args are ignored" is: {
-    {|a b c d|
+    { a b c d ->
       Test that: a equals: 1
       Test that: b equals: 2
       Test that: c equals: 3

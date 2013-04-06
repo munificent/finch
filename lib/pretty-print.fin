@@ -6,7 +6,7 @@ PrettyPrinter <- [
   proto <- [
     to-string {
       result <- ""
-      _buffer each: {|s| result <-- result + s }
+      _buffer each: { s -> result <-- result + s }
       result
     }
 
@@ -39,7 +39,7 @@ Expr proto :: (
 Expr array-proto :: print-to: printer {
   printer write: "#["
 
-  _elements each: {|element|
+  _elements each: { element ->
     element print-to: printer
   } between: {
     printer write: ", "
@@ -62,18 +62,15 @@ Expr bind-proto :: print-to: printer {
 }
 
 Expr block-proto :: print-to: printer {
-  if: _params count = 0 then: {
-    printer write: "{ "
-  } else: {
-    printer write: "{|"
-
-    _params each: {|param|
+  printer write: "{ "
+  if: _params count > 0 then: {
+    _params each: { param ->
       printer write: param
     } between: {
       printer write: " "
     }
 
-    printer write: "| "
+    printer write: " -> "
   }
 
   _body print-to: printer
@@ -82,7 +79,7 @@ Expr block-proto :: print-to: printer {
 }
 
 Expr define-proto :: print-defines-to: printer {
-  _defines each: {|define|
+  _defines each: { define ->
     define print-to: printer
   } between: {
     printer write: "\n"
@@ -143,7 +140,7 @@ Expr self-proto :: print-to: printer {
 }
 
 Expr sequence-proto :: print-to: printer {
-  _exprs each: {|expr|
+  _exprs each: { expr ->
     expr print-to: printer
   } between: {
     printer write: "\n"

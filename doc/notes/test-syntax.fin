@@ -25,7 +25,8 @@ a <-- b
     multi
     line
 }
-{|arg arg arg| body }
+
+{ arg arg arg -> body }
 
 
 
@@ -234,7 +235,7 @@ Array <- (||
   count: count fill-with: element {
     result <- []
 
-    from: 1 to: count do: {|i| result add: element }
+    from: 1 to: count do: { i -> result add: element }
     result
   }
 )
@@ -245,21 +246,21 @@ Arrays :: (
   ++ right {
     result <- []
 
-    self each: {|e| result add: e }
-    right each: {|e| result add: e }
+    self each: { e -> result add: e }
+    right each: { e -> result add: e }
 
     result
   }
 
   each: block {
-    from: 0 to: self length - 1 do: {|i|
+    from: 0 to: self length - 1 do: { i ->
       block call: (self at: i)
     }
   }
 
   map: block {
     result <- []
-    self each: {|element| result add: (block call: element) }
+    self each: { element -> result add: (block call: element) }
     result
   }
 )

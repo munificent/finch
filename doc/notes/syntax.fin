@@ -15,17 +15,17 @@ if: 1 < 2 then: { obj message }
 
 // blocks
 { obj someMessage }
-{|arg| someMessage }
-{|| it someMessage } ' implicit arg named "it"
-{|first second| first gets: second }
+{ arg -> someMessage }
+{-> it someMessage } // implicit arg named "it"
+{ first second -> first gets: second }
 
 // early return
 return resultObject
 
 // define method
 someObj addMethod: `messageName body: { self do-something }
-someObj addMethod: `+some-op body: {|rhs| self do-something }
-someObj addMethod: `key:word:method: body: {|a b c| self do-something }
+someObj addMethod: `+some-op body: { rhs -> self do-something }
+someObj addMethod: `key:word:method: body: { a b c -> self do-something }
 
 // variables
 def temp 123 ' defines a new local at this scope

@@ -1,0 +1,64 @@
+// comment
+
+// unary message
+obj.message
+
+// operator
+obj + arg
+
+// keyword message
+obj.do (arg) with (other)
+obj.do 123 with { a.block } // can omit () if args are literals
+
+// implicit Ether receiver
+if (1 < 2) then { obj message }
++ foo
+
+// blocks
+{ obj someMessage }
+{ arg -> someMessage }
+{ it someMessage } // implicit arg named "it"
+{ first, second -> first.gets(second) }
+
+// early return
+return resultObject
+
+// variables
+var temp = 123 // defines a new local at this scope
+
+foo = 234 // set
+
+// object variables
+_someObjVar // leading underscore means obj
+
+// self
+// within the body of a method, you can access the object that owns
+// the method using "self" or its abbreviation "."
+self name
+
+// compound expressions
+// two or more expressions separated by newlines (or ",") will form a
+// single sequence expression. newlines are thus significant, but a
+// normalization step removed unneeded newlines.
+// normalization rules:
+// - any newlines after a kept newline are eaten
+// - any newlines after a keyword (then:, else:) are eaten
+// - any newlines after an operator (+) are eaten
+// - any newlines after { are eaten
+// - exactly one newline after } is eaten
+
+// this:
+if: 1 < 2 then:
+{
+    write: "a"
+    write: "b" +
+      "c"
+} else: {
+    write: "d"
+}
+
+// normalizes to:
+if: 1 < 2 then: { write: "a" , write: "b" + "c" , } else: { write: "d" , }
+
+// cascade
+foo bar; bang; baz ' same as foo bar, foo bang, foo baz

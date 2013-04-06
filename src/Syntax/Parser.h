@@ -1,5 +1,6 @@
 #pragma once
 
+#include "Array.h"
 #include "Macros.h"
 #include "Lexer.h"
 #include "Queue.h"
@@ -17,6 +18,7 @@ namespace Finch
         Parser(ITokenSource & tokens, IErrorReporter & errorReporter)
         :   mTokens(tokens),
             mErrorReporter(errorReporter),
+            mCanBacktrack(false),
             mHadError(false)
         {}
         
@@ -30,14 +32,18 @@ namespace Finch
         
         // Returns true if the current Token is the given type.
         bool LookAhead(TokenType type);
-        
+
         // Returns true if the current and next Tokens is the given types (in
         // order).
         bool LookAhead(TokenType current, TokenType next);
         
         // Returns true if the tokens are the given types, in order.
         bool LookAhead(TokenType first, TokenType second, TokenType third);
-        
+
+        // Returns true if the Token [ahead] tokens ahead of the current one is
+        // the given type.
+        bool LookAhead(int ahead, TokenType type);
+
         // Consumes the current Token and returns true if it is the given type,
         // otherwise returns false.
         bool Match(TokenType type);
@@ -64,11 +70,11 @@ namespace Finch
         void FillLookAhead(int count);
         
         ITokenSource & mTokens;
-        
-        // The 2 here is the maximum number of lookahead tokens.
-        Queue<Ref<Token>, 2> mRead;
+
+        Queue<Ref<Token> > mRead;
         
         IErrorReporter & mErrorReporter;
+        bool mCanBacktrack;
         bool mHadError;
         
         NO_COPY(Parser);

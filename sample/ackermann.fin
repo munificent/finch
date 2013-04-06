@@ -1,5 +1,5 @@
 // define a global block for the function
-Ackermann <- {|m n|
+Ackermann <- { m n ->
   if: m = 0 then: {
     n + 1
   } else-if: n = 0 then: {
@@ -12,8 +12,8 @@ Ackermann <- {|m n|
 // test it with a variety of arguments
 // note that this will bomb unless the interpreter's operand stack
 // size is around 2,048 and the call stack size is around 4,096 (!)
-from: 0 to: 3 do: {|m|
-  from: 0 to: 6 do: {|n|
+from: 0 to: 3 do: { m ->
+  from: 0 to: 6 do: { n ->
     write: (Ackermann call: m : n) to-string + " "
   }
   write-line: ""

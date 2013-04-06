@@ -69,7 +69,13 @@ namespace Finch
                 
                 case '-':
                     Advance();
-                    if (IsDigit(Peek())) return ReadNumber();
+                    if (Peek() == '>')
+                    {
+                        // "->".
+                        Advance();
+                        return Ref<Token>(new Token(TOKEN_RIGHT_ARROW, "->"));
+                    }
+                    else if (IsDigit(Peek())) return ReadNumber();
                     return ReadOperator();
                 
                 case '/':

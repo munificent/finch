@@ -5,7 +5,7 @@
 // It will be a generator, yielding the numbers from 1 to 10, one at a
 // time, each time it's run.
 a <- Fiber new: {
-  from: 1 to: 10 do: {|n|
+  from: 1 to: 10 do: { n ->
     write-line: "fiber a yielding " + n to-string
     Fiber yield: n
   }

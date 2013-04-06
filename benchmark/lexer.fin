@@ -202,17 +202,17 @@ Lexers <- [
   }
 
   skip-whitespace {
-    self advance-while: {|c| c = " " }
+    self advance-while: { c -> c = " " }
   }
 
   skip-comment {
     if: self current = "'" then: {
-      self advance-while: {|c| c != "\n" }
+      self advance-while: { c -> c != "\n" }
     }
   }
 
   read-name {
-    self advance-while: {|c| c alpha-or-operator? }
+    self advance-while: { c -> c alpha-or-operator? }
 
     // See if it ends with a ":"
     type <- Token/Name
@@ -283,7 +283,7 @@ Lexers <- [
   }
 
   read-number {
-    self advance-while: {|c| c digit? }
+    self advance-while: { c -> c digit? }
     self make-token: Token/Number
   }
 
@@ -305,9 +305,9 @@ Lexers <- [
 file <- Io read-file: "lexer.fin"
 tokens <- 0
 
-from: 1 to: 10 do: {|i|
+from: 1 to: 10 do: { i ->
   lexer <- Lexer new-path: "lexer.fin" source: file
-  lexer each: {|token| tokens <-- tokens + 1 }
+  lexer each: { token -> tokens <-- tokens + 1 }
 }
 
 write-line: tokens = 13910

@@ -51,14 +51,14 @@ Test suite: "Arrays" is: {
   Test test: "each:" is: {
     a <- #[1, 2, 3]
     c <- 0
-    b <- a each: {|e| c <-- c + e }
+    b <- a each: { e -> c <-- c + e }
 
     Test that: c equals: 6
   }
 
   Test test: "map:" is: {
     a <- #[1, 2, 3]
-    b <- a map: {|e| e + 1 }
+    b <- a map: { e -> e + 1 }
 
     Test that: b count equals: 3
     Test that: (b at: 0) equals: 2

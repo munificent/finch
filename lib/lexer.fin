@@ -70,7 +70,7 @@ SourceFiles <- [
   index-to-position: index {
     line <- 1
     column <- 1
-    from: 0 to: index - 1 do: {|i|
+    from: 0 to: index - 1 do: { i ->
       if: (_source at: i) = "\n" then: {
         line <-- line + 1
         column <-- 1
@@ -214,7 +214,7 @@ Lexers <- [
         if: self current = "/" then: {
           // Line comment, so ignore the rest of the line and emit the line
           // token.
-          self advance-while: {|c| c != "\n" }
+          self advance-while: { c -> c != "\n" }
           return self single-token: Token/Comma
         } else-if: self current = "*" then: {
           self skip-block-comment
@@ -239,7 +239,7 @@ Lexers <- [
           return self read-operator
         }
       } ;
-      case: c whitespace? do: { self advance-while: {|c| c whitespace? } } ;
+      case: c whitespace? do: { self advance-while: { c -> c whitespace? } } ;
       case: c alpha?      do: { return self read-name } ;
       case: c operator?   do: { return self read-operator } ;
       case: c = "\""      do: { return self read-string } ;
@@ -278,7 +278,7 @@ Lexers <- [
   }
 
   read-name {
-    self advance-while: {|c| c identifier? }
+    self advance-while: { c -> c identifier? }
 
     // See if it ends with a ":"
     type <- Token/Name
@@ -350,7 +350,7 @@ Lexers <- [
   }
 
   read-number {
-    self advance-while: {|c| c digit? }
+    self advance-while: { c -> c digit? }
     self make-token: Token/Number
   }
 
@@ -399,15 +399,14 @@ files <- #[
   "../../test/variables.fin"
 ]
 
-/*
 tokens <- 0
 errors <- 0
 lines <- 0
-files each: {|file|
+files each: { file ->
   write-line: file
   source <- Io read-file: file
   lexer <- Lexer new-path: file source: source
-  lexer each: {|token|
+  lexer each: { token ->
     tokens <-- tokens + 1
     if: (token type = Token/Error) then: {
       write-line: token
@@ -419,4 +418,3 @@ files each: {|file|
 }
 
 write-line: tokens + " tokens with " + errors + " errors in " + lines + " lines"
-*/

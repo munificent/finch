@@ -29,9 +29,9 @@ Test suite: "Switch" is: {
   Test test: "Match predicate" is: {
     found <- false
     2 switch \
-    case: {|i| i < 2 } do: { Test fail } ;
-    case: {|i| i = 2 } do: { found <-- true } ;
-    case: {|i| i > 2 } do: { Test fail }
+    case: { i -> i < 2 } do: { Test fail } ;
+    case: { i -> i = 2 } do: { found <-- true } ;
+    case: { i -> i > 2 } do: { Test fail }
 
     Test is-true: found
   }

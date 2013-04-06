@@ -148,13 +148,13 @@ FinchParser <- [|Parser|
     }
 
     assignment {
-      self match: Token/Name : Token/Arrow then: {|name arrow|
+      self match: Token/Name : Token/Arrow then: { name arrow ->
         // TODO(bob): Handle "undefined".
         value <- self assignment
         return Expr var-name: name text value: value
       }
 
-      self match: Token/Name : Token/LongArrow then: {|name arrow|
+      self match: Token/Name : Token/LongArrow then: { name arrow ->
         value <- self assignment
         return Expr set-name: name text value: value
       }
@@ -171,7 +171,7 @@ FinchParser <- [|Parser|
 
       message <- ""
       args <- #[]
-      self while-match: Token/Keyword do: {|keyword|
+      self while-match: Token/Keyword do: { keyword ->
         message <-- message + keyword text
         args add: self operator
       }
@@ -185,7 +185,7 @@ FinchParser <- [|Parser|
 
     operator {
       expr <- self unary
-      self while-match: Token/Operator do: {|operator|
+      self while-match: Token/Operator do: { operator ->
         right <- self unary
         expr <-- Expr message-receiver: expr name: operator text args: #[right]
       }
@@ -194,26 +194,26 @@ FinchParser <- [|Parser|
 
     unary {
       expr <- self primary
-      self while-match: Token/Name do: {|name|
+      self while-match: Token/Name do: { name ->
         expr <-- Expr message-receiver: expr name: name text args: #[]
       }
       expr
     }
 
     primary {
-      self match: Token/Number then: {|token|
+      self match: Token/Number then: { token ->
         return Expr number: token text
       }
 
-      self match: Token/String then: {|token|
+      self match: Token/String then: { token ->
         return Expr string: token text
       }
 
-      self match: Token/Name then: {|token|
+      self match: Token/Name then: { token ->
         return Expr name: token text
       }
 
-      self match: Token/Self then: {|token|
+      self match: Token/Self then: { token ->
         return Expr self_
       }
 
@@ -265,7 +265,7 @@ FinchParser <- [|Parser|
         // Parse the parameter list if present.
         params <- #[]
         self match: Token/Pipe then: {
-          self while-match: Token/Name do: {|name|
+          self while-match: Token/Name do: { name ->
             params add: name text
           }
           self consume: Token/Pipe
@@ -281,7 +281,7 @@ FinchParser <- [|Parser|
       self if-look-ahead: Token/Keyword then: {
         message <- ""
         args <- #[]
-        self while-match: Token/Keyword do: {|keyword|
+        self while-match: Token/Keyword do: { keyword ->
           message <-- keyword text
           args <- self operator
         }
@@ -321,19 +321,19 @@ FinchParser <- [|Parser|
     }
 
     parse-define {
-      self match: Token/Name : Token/Arrow then: {|name arrow|
+      self match: Token/Name : Token/Arrow then: { name arrow ->
         // Field.
         body <- self assignment
         return Define name: name text body: body method?: false
       }
 
-      self match: Token/Name then: {|name|
+      self match: Token/Name then: { name ->
         // Unary method.
         body <- self parse-define-method: #[]
         return Define name: name text body: body method?: true
       }
 
-      self match: Token/Operator then: {|operator|
+      self match: Token/Operator then: { operator ->
         // Operator.
         param <- (self consume: Token/Name) text
 
@@ -345,7 +345,7 @@ FinchParser <- [|Parser|
         name <- ""
         params <- #[]
 
-        self while-match: Token/Keyword do: {|keyword|
+        self while-match: Token/Keyword do: { keyword ->
           name <-- name + keyword text
           params add: (self consume: Token/Name) text
         }
@@ -368,7 +368,7 @@ FinchParser <- [|Parser|
   ]
 ]
 
-files each: {|file|
+files each: { file ->
   write-line: file
   source <- Io read-file: file
   lexer <- Lexer new-path: file source: source
