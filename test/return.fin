@@ -1,28 +1,4 @@
 Test suite: "Return" is: {
-  // TODO(bob): Getting rid of 'break' expressions for now since they don't
-  // seem to be intuitive or that useful.
-  /*
-  Test test: "break exits block" is: {
-    var a = "before"
-    {
-      a = "inside"
-      break
-      a = "after"
-    } call
-
-    Test that: a equals: "inside"
-  }
-
-  Test test: "the block returns the value passed to break" is: {
-    var result = {
-      break "b"
-      "a"
-    } call
-
-    Test that: result equals: "b"
-  }
-  */
-
   Test test: "return exits enclosing method" is: {
     var a = "0"
     var obj = [
@@ -32,11 +8,11 @@ Test suite: "Return" is: {
           a = a + "2"
           return
           a = a + "3"
-        } call
+        }.call
         a = a + "4"
       }
     ]
-    obj foo
+    obj.foo
 
     Test that: a equals: "012"
   }
@@ -50,7 +26,7 @@ Test suite: "Return" is: {
       }
     ]
 
-    Test that: obj foo equals: "result"
+    Test that: obj.foo equals: "result"
   }
 
   Test test: "returns work even when passed to tail calls" is: {
@@ -61,7 +37,7 @@ Test suite: "Return" is: {
       }
     ]
 
-    Test that: obj foo equals: "result"
+    Test that: obj.foo equals: "result"
   }
 
   Test test: "returns work in the middle of an expression" is: {
@@ -70,9 +46,9 @@ Test suite: "Return" is: {
     // the stack, causing all sorts of trouble.
     var obj = [
       foo { "left" + return "right" }
-      bar { self foo }
+      bar { self.foo }
     ]
 
-    Test that: obj bar equals: "right"
+    Test that: obj.bar equals: "right"
   }
 }

@@ -22,74 +22,74 @@ Test suite: "Objects" is: {
   }
 
   Test test: "Type tests" is: {
-    Test is-true:  #[1] array?
-    Test is-false: #[1] block?
-    Test is-false: #[1] boolean?
-    Test is-false: #[1] fiber?
-    Test is-false: #[1] number?
-    Test is-false: #[1] string?
+    Test is-true:  #[1].array?
+    Test is-false: #[1].block?
+    Test is-false: #[1].boolean?
+    Test is-false: #[1].fiber?
+    Test is-false: #[1].number?
+    Test is-false: #[1].string?
 
-    Test is-false: { 0 } array?
-    Test is-true:  { 0 } block?
-    Test is-false: { 0 } boolean?
-    Test is-false: { 0 } fiber?
-    Test is-false: { 0 } number?
-    Test is-false: { 0 } string?
+    Test is-false: { 0 }.array?
+    Test is-true:  { 0 }.block?
+    Test is-false: { 0 }.boolean?
+    Test is-false: { 0 }.fiber?
+    Test is-false: { 0 }.number?
+    Test is-false: { 0 }.string?
 
-    Test is-false: true array?
-    Test is-false: true block?
-    Test is-true:  true boolean?
-    Test is-false: true fiber?
-    Test is-false: true number?
-    Test is-false: true string?
+    Test is-false: true.array?
+    Test is-false: true.block?
+    Test is-true:  true.boolean?
+    Test is-false: true.fiber?
+    Test is-false: true.number?
+    Test is-false: true.string?
 
-    Test is-false: false array?
-    Test is-false: false block?
-    Test is-true:  false boolean?
-    Test is-false: false fiber?
-    Test is-false: false number?
-    Test is-false: false string?
+    Test is-false: false.array?
+    Test is-false: false.block?
+    Test is-true:  false.boolean?
+    Test is-false: false.fiber?
+    Test is-false: false.number?
+    Test is-false: false.string?
 
     // TODO(bob): Fibers are disabled right now.
     /*
     var fiber = Fiber new: { 0 }
-    Test is-false: fiber array?
-    Test is-false: fiber block?
-    Test is-false: fiber boolean?
-    Test is-true:  fiber fiber?
-    Test is-false: fiber number?
-    Test is-false: fiber string?
+    Test is-false: fiber.array?
+    Test is-false: fiber.block?
+    Test is-false: fiber.boolean?
+    Test is-true:  fiber.fiber?
+    Test is-false: fiber.number?
+    Test is-false: fiber.string?
     */
 
-    Test is-false: 123 array?
-    Test is-false: 123 block?
-    Test is-false: 123 boolean?
-    Test is-false: 123 fiber?
-    Test is-true:  123 number?
-    Test is-false: 123 string?
+    Test is-false: 123.array?
+    Test is-false: 123.block?
+    Test is-false: 123.boolean?
+    Test is-false: 123.fiber?
+    Test is-true:  123.number?
+    Test is-false: 123.string?
 
-    Test is-false: "hi" array?
-    Test is-false: "hi" block?
-    Test is-false: "hi" boolean?
-    Test is-false: "hi" fiber?
-    Test is-false: "hi" number?
-    Test is-true:  "hi" string?
+    Test is-false: "hi".array?
+    Test is-false: "hi".block?
+    Test is-false: "hi".boolean?
+    Test is-false: "hi".fiber?
+    Test is-false: "hi".number?
+    Test is-true:  "hi".string?
   }
 
   Test test: "methods are inherited from parent" is: {
     var parent = [ method { "parent" } ]
     var child = [|parent|]
 
-    Test that: child method equals: "parent"
+    Test that: child.method equals: "parent"
   }
 
   Test test: "self inside an object literal is the new object" is: {
     var obj = [
       a { "a" }
-      _b = self a
+      _b = self.a
       b { _b }
     ]
 
-    Test that: obj b equals: "a"
+    Test that: obj.b equals: "a"
   }
 }

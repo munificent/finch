@@ -233,7 +233,7 @@ namespace Finch
         while (IsDigit(Peek())) Advance();
         
         // Read the fractional part, if any.
-        if (Peek() == '.')
+        if (Peek() == '.' && IsDigit(Peek(1)))
         {
             Advance();
             while (IsDigit(Peek())) Advance();

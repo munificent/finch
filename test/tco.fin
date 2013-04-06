@@ -1,42 +1,42 @@
 Test suite: "Tail Call Optimization" is: {
   Test test: "Self call" is: {
     var recurse = 1000
-    var maxstack = *primitive* callstack-depth + 10 // add in a little flexibility
+    var maxstack = *primitive*.callstack-depth + 10 // add in a little flexibility
     var c = {
       // make sure the callstack didn't grow
       if: recurse == 1 then: {
-        Test is-true: *primitive* callstack-depth < maxstack
+        Test is-true: *primitive*.callstack-depth < maxstack
       }
 
       // recursive tail call
       recurse = recurse - 1
-      if: recurse > 0 then: { c call }
+      if: recurse > 0 then: { c.call }
     }
 
     // kick it off
-    c call
+    c.call
   }
 
   Test test: "Other call" is: {
     var recurse = 1000
-    var maxstack = *primitive* callstack-depth + 10 // add in a little flexibility
+    var maxstack = *primitive*.callstack-depth + 10 // add in a little flexibility
     var c = {
       // make sure the callstack didn't grow
       if: recurse == 1 then: {
-        Test is-true: *primitive* callstack-depth < maxstack
+        Test is-true: *primitive*.callstack-depth < maxstack
       }
 
       // recursive tail call
       recurse = recurse - 1
-      if: recurse > 0 then: { d call }
+      if: recurse > 0 then: { d.call }
     }
 
     var d = {
       // just do another tail call back to the first
-      c call
+      c.call
     }
 
     // kick it off
-    c call
+    c.call
   }
 }

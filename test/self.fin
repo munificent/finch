@@ -2,51 +2,51 @@ Test suite: "Self" is: {
   Test test: "Self in non-method block is nil" is: {
     var block = { self }
 
-    Test that: block call equals: nil
+    Test that: block.call equals: nil
   }
 
   Test test: "Self in block is outer self" is: {
     var foo = [
       to-string { "foo" }
       bar {
-        var block = { self to-string }
-        block call
+        var block = { self.to-string }
+        block.call
       }
     ]
 
-    Test that: foo bar equals: "foo"
+    Test that: foo.bar equals: "foo"
   }
 
   Test test: "Self in parent method is child" is: {
     var parent = [
-      call-to-string { self to-string }
+      call-to-string { self.to-string }
       to-string { "parent" }
     ]
 
     var child = [|parent| to-string { "child" } ]
 
-    Test that: parent call-to-string equals: "parent"
-    Test that: child call-to-string equals: "child"
+    Test that: parent.call-to-string equals: "parent"
+    Test that: child.call-to-string equals: "child"
   }
 
   Test test: "Self in block is lexical not dynamic scope" is: {
     // create a block in one object scope
     var foo = [
       to-string { "foo" }
-      block { { self to-string } }
+      block { { self.to-string } }
     ]
 
     // and call it from within a different object
     var bar = [
       to-string { "bar" }
-      call-block: block { block call }
+      call-block: block { block.call }
     ]
 
-    Test that: (bar call-block: foo block) equals: "foo"
+    Test that: (bar call-block: foo.block) equals: "foo"
 
     // needs to play nice with inheritance too
     var foo2 = [|foo| to-string { "foo2" } ]
-    Test that: (bar call-block: foo2 block) equals: "foo2"
+    Test that: (bar call-block: foo2.block) equals: "foo2"
   }
 
   Test test: "Recursive inherited method restores outer self" is: {
@@ -54,12 +54,12 @@ Test suite: "Self" is: {
     var parent = [
       recurse: recurse {
         // see what self is bound to
-        var a = self to-string
+        var a = self.to-string
         if: recurse then: {
           // call this exact same method but with a different self
           a = a + (child recurse: false)
           // see that self was correctly restored to parent
-          a = a + self to-string
+          a = a + self.to-string
         }
         a
       }
@@ -77,19 +77,19 @@ Test suite: "Self" is: {
     var parent = [
       to-string { "parent" }
       make-block {
-        _block = { self to-string }
+        _block = { self.to-string }
       }
-      call-block { _block call }
+      call-block { _block.call }
     ]
 
     var child = [|parent|
       to-string { "child" }
     ]
 
-    parent make-block
-    Test that: child call-block equals: "parent"
+    parent.make-block
+    Test that: child.call-block equals: "parent"
 
-    child make-block
-    Test that: child call-block equals: "child"
+    child.make-block
+    Test that: child.call-block equals: "child"
   }
 }

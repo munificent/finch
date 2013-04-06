@@ -22,9 +22,9 @@ Test suite: "Arithmetic" is: {
   }
 
   Test test: "Sqrt" is: {
-    Test that: 0 sqrt   equals: 0
-    Test that: 1 sqrt   equals: 1
-    Test that: 4 sqrt   equals: 2
-    Test that: 9 sqrt   equals: 3
+    Test that: 0.sqrt   equals: 0
+    Test that: 1.sqrt   equals: 1
+    Test that: 4.sqrt   equals: 2
+    Test that: 9.sqrt   equals: 3
   }
 }

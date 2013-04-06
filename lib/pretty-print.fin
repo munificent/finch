@@ -23,12 +23,12 @@ var PrettyPrinter = [
 
 
 Expr proto :: (
-  to-string { self pretty-print }
+  to-string { self.pretty-print }
 
   pretty-print {
-    var printer = PrettyPrinter new
+    var printer = PrettyPrinter.new
     self print-to: printer
-    printer to-string
+    printer.to-string
   }
 
   print-to: printer {
@@ -52,7 +52,7 @@ Expr bind-proto :: print-to: printer {
   _receiver print-to: printer
   printer write: " :: "
 
-  if: _defines count == 1 then: {
+  if: _defines.count == 1 then: {
     (_defines at: 0) print-to: printer
   } else: {
     printer write: "(\n"
@@ -63,7 +63,7 @@ Expr bind-proto :: print-to: printer {
 
 Expr block-proto :: print-to: printer {
   printer write: "{ "
-  if: _params count > 0 then: {
+  if: _params.count > 0 then: {
     _params each: { param ->
       printer write: param
     } between: {

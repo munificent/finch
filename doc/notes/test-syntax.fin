@@ -49,7 +49,7 @@ Object :: (
   number?  { false }
   string?  { false }
 
-  if-true: then else: else { else call }
+  if-true: then else: else { else.call }
 
   // calling a non-block like a block just returns the value
   call { self }
@@ -69,7 +69,7 @@ true :: (
   not { false }
   boolean? { true }
   to-string { "true" }
-  if-true: then else: else { then call }
+  if-true: then else: else { then.call }
 )
 
 false :: (
@@ -113,32 +113,32 @@ Ether :: (
 
   // while
   while: condition do: block {
-    if: condition call then: {
-      block call
+    if: condition.call then: {
+      block.call
       while: condition do: block
     }
   }
 
   while: condition-a and: condition-b do: block {
-    while: { condition-a call and: condition-b } do: block
+    while: { condition-a.call and: condition-b } do: block
   }
 
   // until
   until: condition do: block {
-    while: { condition call not } do: block
+    while: { condition.call.not } do: block
   }
 
   // build the output methods in terms of the single primitive one
   write: text {
     // make sure the argument is always converted to a string before
     // passing to the primitive version which can't do that.
-    #PRIM# write: text to-string
+    #PRIM# write: text.to-string
   }
 
   write-line: text {
     // make sure the argument is always converted to a string before
     // passing to the primitive version which can't do that.
-    #PRIM# write: text to-string + "\n"
+    #PRIM# write: text.to-string + "\n"
   }
 )
 
@@ -150,14 +150,14 @@ var Fiber = (||
   spawn: block {
     var fiber = Fiber new: block
     // immediately run it, discarding the first yielded result
-    fiber run
+    fiber.run
     fiber
   }
 
-  current { #PRIM# current-fiber }
+  current { #PRIM#.current-fiber }
 
   yield: value {
-    #PRIM# switch-to-fiber: Fiber current run-by passing: value
+    #PRIM# switch-to-fiber: Fiber.current.run-by passing: value
   }
 
   yield { Fiber yield: nil }
@@ -167,7 +167,7 @@ Fibers :: (
   fiber? { true }
 
   run: value {
-    _run-by = Fiber current
+    _run-by = Fiber.current
     #PRIM# switch-to-fiber: self passing: value
   }
 
@@ -188,7 +188,7 @@ Numbers :: (
 
 Object :: (
   // Adding anything to a string converts it to a string and concatenates.
-  +string: left { #PRIM# string-concat: left and: self to-string }
+  +string: left { #PRIM# string-concat: left and: self.to-string }
 
   // Comparisons between unrelated types always return false.
   ==number: left { false }
@@ -199,7 +199,7 @@ Strings :: (
   string? { true }
 
   // Adding a number to a string converts it to a string and concatenates.
-  +number: left { left to-string + self }
+  +number: left { left.to-string + self }
 
   // Double-dispatch.
   + right { right +string: self }
@@ -250,7 +250,7 @@ Arrays :: (
   }
 
   each: block {
-    from: 0 to: self length - 1 do: { i ->
+    from: 0 to: self.length - 1 do: { i ->
       block call: (self at: i)
     }
   }
@@ -306,11 +306,11 @@ Object :: switch {
 var Switches = (||
   case: case do: block {
     // if this switch has already matched a case, just do nothing
-    if: _done? not then: {
+    if: _done?.not then: {
       // if the case is a block, then it's a predicate so evaluate
       // it, otherwise it's a value, so compare it to the value being
       // switched
-      var matched = if: case block? then: {
+      var matched = if: case.block? then: {
         case call: _value
       } else: {
         _value == case
@@ -330,7 +330,7 @@ var Switches = (||
 
   default: block {
     // if this switch has already matched a case, just do nothing
-    if: _done? not then: {
+    if: _done?.not then: {
       // execute the block
       _result = block call: _value
       _done? = true

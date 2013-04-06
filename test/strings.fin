@@ -4,16 +4,16 @@ Test suite: "Strings" is: {
   var banana = [ to-string { "banana" } ]
 
   Test test: "count" is: {
-    Test that: ""        count equals: 0
-    Test that: "a"       count equals: 1
-    Test that: "1234567" count equals: 7
+    Test that: "".count        equals: 0
+    Test that: "a".count       equals: 1
+    Test that: "1234567".count equals: 7
   }
 
   Test test: "to-string" is: {
-    Test that: 123 to-string        equals: "123"
-    Test that: "foo" to-string      equals: "foo"
-    Test that: #[1, 2, 3] to-string equals: "#[1, 2, 3]"
-    Test that: apple to-string      equals: "apple"
+    Test that: 123.to-string        equals: "123"
+    Test that: "foo".to-string      equals: "foo"
+    Test that: #[1, 2, 3].to-string equals: "#[1, 2, 3]"
+    Test that: apple.to-string      equals: "apple"
   }
 
   Test test: "Concatenation" is: {

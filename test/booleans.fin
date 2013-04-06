@@ -1,14 +1,14 @@
 Test suite: "Booleans" is: {
   Test test: "to-string" is: {
-    Test that: true to-string  equals: "true"
-    Test that: false to-string equals: "false"
+    Test that: true.to-string  equals: "true"
+    Test that: false.to-string equals: "false"
   }
 
   Test test: "not" is: {
-    Test that: true not  equals: false
-    Test that: false not equals: true
-    Test that: true not not  equals: true
-    Test that: false not not equals: false
+    Test that: true.not  equals: false
+    Test that: false.not equals: true
+    Test that: true.not.not  equals: true
+    Test that: false.not.not equals: false
   }
 
   Test test: "and:" is: {

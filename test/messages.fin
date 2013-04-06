@@ -5,7 +5,7 @@ Test suite: "Messages" is: {
       Test is-nil: b
       Test is-nil: c
       Test is-nil: d
-    } call
+    }.call
 
     { a b c d ->
       Test that: a equals: 1

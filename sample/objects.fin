@@ -27,14 +27,14 @@ var jetta = Car make: "volkswagen" model: "jetta"
 
 // and call a method on its prototype, which in turn references the
 // specific car's state
-write-line: jetta to-string
+write-line: jetta.to-string
 
 // now let's try adding something to the car prototype. first we'll
 // check to see that it isn't there
-write-line: jetta short-name ' this should write nil
+write-line: jetta.short-name // this should write nil
 
 // now we'll add a method to the prototype
 Cars :: short-name { _make + " " + _model }
 
 // now lets call it on jetta and see if we can find it
-write-line: jetta short-name
+write-line: jetta.short-name

@@ -12,7 +12,7 @@ Test suite: "Cascades" is: {
 
   Test test: "Unary" is: {
     called = ""
-    obj foo ; bar ; baz
+    obj.foo ; bar ; baz
     Test that: called equals: "foobarbaz"
   }
 
@@ -30,7 +30,7 @@ Test suite: "Cascades" is: {
 
   Test test: "Mixed" is: {
     called = ""
-    obj me add: "foo" + "bar" and: "baz" ; + "bar" ; bar
+    obj.me add: "foo" + "bar" and: "baz" ; + "bar" ; bar
     Test that: called equals: "foobarbazbarbar"
   }
 }

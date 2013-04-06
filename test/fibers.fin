@@ -6,13 +6,13 @@ Test suite: "Fibers" is: {
     }
 
     Test is-false: executed
-    Test is-false: fiber running?
-    Test is-false: fiber done?
+    Test is-false: fiber.running?
+    Test is-false: fiber.done?
 
     fiber run
     Test is-true: executed
-    Test is-false: fiber running?
-    Test is-true: fiber done?
+    Test is-false: fiber.running?
+    Test is-true: fiber.done?
   }
 
   Test test: "spawn: immediately starts" is: {
@@ -22,8 +22,8 @@ Test suite: "Fibers" is: {
     }
 
     Test is-true: executed
-    Test is-false: fiber running?
-    Test is-true: fiber done?
+    Test is-false: fiber.running?
+    Test is-true: fiber.done?
   }
 
   Test test: "yield: returns value" is: {
@@ -31,15 +31,15 @@ Test suite: "Fibers" is: {
       Fiber yield: 123
     }
 
-    var result = fiber run
+    var result = fiber.run
 
     Test that: result equals: 123
-    Test is-false: fiber running?
-    Test is-false: fiber done?
+    Test is-false: fiber.running?
+    Test is-false: fiber.done?
 
-    fiber run
-    Test is-false: fiber running?
-    Test is-true: fiber done?
+    fiber.run
+    Test is-false: fiber.running?
+    Test is-true: fiber.done?
   }
 
   Test test: "last run returns block value" is: {
@@ -48,12 +48,12 @@ Test suite: "Fibers" is: {
       345
     }
 
-    var result1 = fiber run
-    var result2 = fiber run
+    var result1 = fiber.run
+    var result2 = fiber.run
 
     Test that: result1 equals: 123
     Test that: result2 equals: 345
-    Test is-false: fiber running?
+    Test is-false: fiber.running?
   }
 
   Test test: "run returns nil after last yield" is: {
@@ -61,22 +61,22 @@ Test suite: "Fibers" is: {
       Fiber yield: 123
     }
 
-    var result1 = fiber run
-    var result2 = fiber run
+    var result1 = fiber.run
+    var result2 = fiber.run
 
     Test that: result1 equals: 123
     Test that: result2 equals: nil
-    Test is-false: fiber running?
+    Test is-false: fiber.running?
   }
 
   Test test: "run: passes in value" is: {
     var passed-in = nil
     var fiber = Fiber new: {
-      passed-in = Fiber yield
+      passed-in = Fiber.yield
     }
 
     // run to first yield
-    fiber run
+    fiber.run
 
     // pass value into yield and resume
     fiber run: 123

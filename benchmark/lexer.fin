@@ -51,7 +51,7 @@ var SourceSpans = [
   start { _start }
   end { _end }
 
-  to-string { _file path + ":" + _start + ":" + _end }
+  to-string { _file.path + ":" + _start + ":" + _end }
 ]
 
 var SourceFile = [

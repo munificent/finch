@@ -70,8 +70,8 @@ Test suite: "Variables" is: {
     ]
 
     Test that: _field equals: nil
-    foo create
+    foo.create
     Test that: _field equals: nil
-    foo test
+    foo.test
   }
 }

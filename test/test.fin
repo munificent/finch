@@ -13,7 +13,7 @@ var Test = [
 
   suite: name is: body {
     _suite = name
-    body call
+    body.call
     _suite = ""
   }
 
@@ -23,7 +23,7 @@ var Test = [
     _failed      = 0
     _test-shown? = false
 
-    body call
+    body.call
 
     if: _failed > 0 then: {
       write-line: "FAIL " + _suite + " / " + _test + " passed " +
@@ -36,7 +36,7 @@ var Test = [
   }
 
   show-header {
-    if: _test-shown? not then: {
+    if: _test-shown?.not then: {
       write-line: _suite + " / " + _test
       _test-shown? = true
     }
@@ -57,9 +57,9 @@ var Test = [
       _failed = _failed + 1
       _total-fails = _total-fails + 1
 
-      self show-header
-      write-line: "  Test " + _tests to-string + " failed. Expected " +
-        expected + " but got " + actual + "."
+      self.show-header
+      write-line: "  Test " + _tests + " failed. Expected " + expected +
+          " but got " + actual + "."
     }
   }
 
@@ -68,8 +68,7 @@ var Test = [
     if: _total-fails == 0 then: {
       write-line: "All " + _total-tests + " tests passed."
     } else: {
-      write-line: _total-fails to-string + " out of " + _total-tests +
-        " tests failed."
+      write-line: _total-fails + " out of " + _total-tests + " tests failed."
     }
     write-line: ""
   }
@@ -98,4 +97,4 @@ load: "test/switch.fin"
 //load: "test/tco.fin"
 load: "test/variables.fin"
 
-Test complete
+Test.complete

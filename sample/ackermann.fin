@@ -14,7 +14,7 @@ var Ackermann = { m n ->
 // size is around 2,048 and the call stack size is around 4,096 (!)
 from: 0 to: 3 do: { m ->
   from: 0 to: 6 do: { n ->
-    write: (Ackermann call: m : n) to-string + " "
+    write: (Ackermann call: m : n).to-string + " "
   }
   write-line: ""
 }

@@ -2,7 +2,7 @@ Object :: (
   // By default, just check reference equality.
   == right { self === right }
 
-  != right { (self == right) not }
+  != right { (self == right).not }
 
   && right { self if-true: { right } else: { self } }
 
@@ -18,7 +18,7 @@ Object :: (
   number?  { false }
   string?  { false }
 
-  if-true: then else: else { else call }
+  if-true: then else: else { else.call }
 
   // calling a non-block like a block just returns the value
   call { self }
@@ -40,7 +40,7 @@ true :: (
   not { false }
   boolean? { true }
   to-string { "true" }
-  if-true: then else: else { then call }
+  if-true: then else: else { then.call }
 )
 
 false :: (
@@ -63,7 +63,7 @@ Ether :: (
     from: start to: end step: step do: block
   }
 
-  do: block { block call }
+  do: block { block.call }
 
   if: condition then: then { condition if-true: then else: { nil } }
   if: condition then: then else: else { condition if-true: then else: else }
@@ -79,31 +79,31 @@ Ether :: (
   }
 
   while: condition do: block {
-    if: condition call then: {
-      block call
+    if: condition.call then: {
+      block.call
       while: condition do: block
     }
   }
 
   while: condition-a and: condition-b do: block {
-    while: { condition-a call and: condition-b } do: block
+    while: { condition-a.call and: condition-b } do: block
   }
 
   until: condition do: block {
-    while: { condition call not } do: block
+    while: { condition.call.not } do: block
   }
 
   // Build the output methods in terms of the single primitive one.
   write: text {
     // Make sure the argument is always converted to a string before
     // passing to the primitive version which can't do that.
-    *primitive* write: text to-string
+    *primitive* write: text.to-string
   }
 
   write-line: text {
     // Make sure the argument is always converted to a string before
     // passing to the primitive version which can't do that.
-    *primitive* write: text to-string + "\n"
+    *primitive* write: text.to-string + "\n"
   }
 )
 
@@ -115,14 +115,14 @@ var Fiber = [
   spawn: block {
     var fiber = Fiber new: block
     // Immediately run it, discarding the first yielded result.
-    fiber run
+    fiber.run
     fiber
   }
 
-  current { *primitive* current-fiber }
+  current { *primitive*.current-fiber }
 
   yield: value {
-    *primitive* switch-to-fiber: Fiber current run-by passing: value
+    *primitive* switch-to-fiber: Fiber.current.run-by passing: value
   }
 
   yield { Fiber yield: nil }
@@ -132,7 +132,7 @@ Fibers :: (
   fiber? { true }
 
   run: value {
-    _run-by = Fiber current
+    _run-by = Fiber.current
     *primitive* switch-to-fiber: self passing: value
   }
 
@@ -153,7 +153,7 @@ Numbers :: (
 
 Object :: (
   // Adding anything to a string converts it to a string and concatenates.
-  +string: left { *primitive* string-concat: left and: self to-string }
+  +string: left { *primitive* string-concat: left and: self.to-string }
 
   // Comparisons between unrelated types always return false.
   ==number: left { false }
@@ -164,7 +164,7 @@ Strings :: (
   string? { true }
 
   // Adding a number to a string converts it to a string and concatenates.
-  +number: left { left to-string + self }
+  +number: left { left.to-string + self }
 
   // Double-dispatch.
   + right { right +string: self }
@@ -180,7 +180,7 @@ Strings :: (
 
   contains: needle { (self index-of: needle) != -1 }
 
-  from: from { self from: from count: self count - from }
+  from: from { self from: from count: self.count - from }
   from: from to: to { self from: from count: to - from }
 )
 
@@ -210,15 +210,15 @@ Arrays :: (
   }
 
   each: block {
-    from: 0 to: self count - 1 do: { i ->
+    from: 0 to: self.count - 1 do: { i ->
       block call: (self at: i)
     }
   }
 
   each: block between: between {
     var first = true
-    from: 0 to: self count - 1 do: { i ->
-      if: first not then: between
+    from: 0 to: self.count - 1 do: { i ->
+      if: first.not then: between
       first = false
       block call: (self at: i)
     }
@@ -236,23 +236,23 @@ Arrays :: (
 Object :: true? { false }
 true :: true? { true }
 
-Blocks :: true? { self call true? }
+Blocks :: true? { self.call.true? }
 
 // Short-circuiting logical operators
 Object :: (
   and: right {
-    if: self true? then: {
-      right true?
+    if: self.true? then: {
+      right.true?
     } else: {
       false
     }
   }
 
   or: right {
-    if: self true? then: {
+    if: self.true? then: {
       true
     } else: {
-      right true?
+      right.true?
     }
   }
 )
@@ -275,11 +275,11 @@ Object :: switch {
 var Switches = [
   case: case do: block {
     // If this switch has already matched a case, just do nothing.
-    if: _done? not then: {
+    if: _done?.not then: {
       // If the case is a block, then it's a predicate so evaluate
       // it, otherwise it's a value, so compare it to the value being
       // switched.
-      var matched = if: case block? then: {
+      var matched = if: case.block? then: {
         case call: _value
       } else: {
         _value == case
@@ -299,7 +299,7 @@ var Switches = [
 
   default: block {
     // If this switch has already matched a case, just do nothing.
-    if: _done? not then: {
+    if: _done?.not then: {
       // Execute the block.
       _result = block call: _value
       _done? = true

@@ -251,12 +251,13 @@ namespace Finch
     Ref<Expr> FinchParser::Unary(bool & isMessage)
     {
         Ref<Expr> object = Primary();
-        
-        while (LookAhead(TOKEN_NAME))
+
+        while (LookAhead(TOKEN_DOT, TOKEN_NAME))
         {
+            Consume(); // ".".
             String message = Consume()->Text();
             Array<Ref<Expr> > args;
-            
+
             isMessage = true;
             object = Ref<Expr>(new MessageExpr(object, message, args));
         }
