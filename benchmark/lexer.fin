@@ -100,7 +100,7 @@ Lexers <- [
     token <- self next-token
     while: { token != nil } do: {
       block call: token
-      token <-- self next-token
+      token = self next-token
     }
   }
 
@@ -131,7 +131,7 @@ Lexers <- [
       case: Token/Comma do: {
         if: _eat-newlines? then: {
           // Discard newline.
-          done? <-- false
+          done? = false
         } else: {
           // Discard any newlines after this one.
           _eat-newlines? <- true
@@ -139,7 +139,7 @@ Lexers <- [
       } ;
       case: Token/IgnoreLine do: {
         // Eat the ignore token.
-        done? <-- false
+        done? = false
 
         // And newlines after it.
         _eat-newlines? <- true
@@ -218,7 +218,7 @@ Lexers <- [
     type <- Token/Name
     if: self current == ":" then: {
       self advance
-      type <-- Token/Keyword
+      type = Token/Keyword
     }
 
     self make-token: type
@@ -230,14 +230,14 @@ Lexers <- [
     type <- Token/Operator
 
     while: { self done? not } and: { self current alpha-or-operator? } do: {
-      if: self current alpha? then: { type <-- Token/Name }
+      if: self current alpha? then: { type = Token/Name }
       self advance
     }
 
     // See if it ends with a ":"
     if: self current == ":" then: {
       self advance
-      type <-- Token/Keyword
+      type = Token/Keyword
     }
 
     self make-token: type
@@ -268,15 +268,15 @@ Lexers <- [
 
         c <- self advance
         c switch \
-        case: "n" do: { text <-- text + "\n" } ;
-        case: "\"" do: { text <-- text + "\"" } ;
-        case: "\\" do: { text <-- text + "\\" } ;
+        case: "n" do: { text = text + "\n" } ;
+        case: "\"" do: { text = text + "\"" } ;
+        case: "\\" do: { text = text + "\\" } ;
         default: {
           return self make-token: Token/Error text:
               "Unrecognized string escape '" + c + "'."
         }
       } else: {
-        text <-- text + self current
+        text = text + self current
         self advance
       }
     }
@@ -307,7 +307,7 @@ tokens <- 0
 
 from: 1 to: 10 do: { i ->
   lexer <- Lexer new-path: "lexer.fin" source: file
-  lexer each: { token -> tokens <-- tokens + 1 }
+  lexer each: { token -> tokens = tokens + 1 }
 }
 
 write-line: tokens == 13910

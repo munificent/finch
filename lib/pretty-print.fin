@@ -6,7 +6,7 @@ PrettyPrinter <- [
   proto <- [
     to-string {
       result <- ""
-      _buffer each: { s -> result <-- result + s }
+      _buffer each: { s -> result = result + s }
       result
     }
 

@@ -43,7 +43,6 @@ namespace Finch
                 case TOKEN_OPERATOR:
                 case TOKEN_PIPE:
                 case TOKEN_ARROW:
-                case TOKEN_LONG_ARROW:
                 case TOKEN_RIGHT_ARROW:
                 case TOKEN_SEMICOLON:
 

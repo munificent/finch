@@ -9,7 +9,7 @@ Test suite: "Tail Call Optimization" is: {
       }
 
       // recursive tail call
-      recurse <-- recurse - 1
+      recurse = recurse - 1
       if: recurse > 0 then: { c call }
     }
 
@@ -27,7 +27,7 @@ Test suite: "Tail Call Optimization" is: {
       }
 
       // recursive tail call
-      recurse <-- recurse - 1
+      recurse = recurse - 1
       if: recurse > 0 then: { d call }
     }
 

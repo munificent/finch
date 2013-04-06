@@ -137,12 +137,12 @@ FinchParser <- [|Parser|
         defines <- #[]
         self if-look-ahead: Token/LeftParen then: {
           self consume: Token/LeftParen
-          defines <-- self parse-defines
+          defines = self parse-defines
         } else: {
-          defines <-- #[self parse-define]
+          defines = #[self parse-define]
         }
 
-        expr <-- Expr bind-receiver: expr defines: defines
+        expr = Expr bind-receiver: expr defines: defines
       }
       expr
     }
@@ -172,7 +172,7 @@ FinchParser <- [|Parser|
       message <- ""
       args <- #[]
       self while-match: Token/Keyword do: { keyword ->
-        message <-- message + keyword text
+        message = message + keyword text
         args add: self operator
       }
 
@@ -187,7 +187,7 @@ FinchParser <- [|Parser|
       expr <- self unary
       self while-match: Token/Operator do: { operator ->
         right <- self unary
-        expr <-- Expr message-receiver: expr name: operator text args: #[right]
+        expr = Expr message-receiver: expr name: operator text args: #[right]
       }
       expr
     }
@@ -195,7 +195,7 @@ FinchParser <- [|Parser|
     unary {
       expr <- self primary
       self while-match: Token/Name do: { name ->
-        expr <-- Expr message-receiver: expr name: name text args: #[]
+        expr = Expr message-receiver: expr name: name text args: #[]
       }
       expr
     }
@@ -223,18 +223,18 @@ FinchParser <- [|Parser|
           parent <- nil
           self match: Token/Pipe then: {
             // No explicit parent.
-            parent <-- nil
+            parent = nil
           } else: {
-            parent <-- self assignment
+            parent = self assignment
             self consume: Token/Pipe
           }
 
           defines <- nil
           self match: Token/RightParen then: {
             // No defines.
-            defines <-- #[]
+            defines = #[]
           } else: {
-            defines <-- self parse-defines
+            defines = self parse-defines
           }
 
           return Expr object-parent: parent defines: defines
@@ -251,9 +251,9 @@ FinchParser <- [|Parser|
         elements <- nil
         self match: Token/RightBracket then: {
           // Allow empty arrays.
-          elements <-- #[]
+          elements = #[]
         } else: {
-          elements <-- self parse-sequence
+          elements = self parse-sequence
           self consume: Token/RightBracket
         }
 
@@ -282,7 +282,7 @@ FinchParser <- [|Parser|
         message <- ""
         args <- #[]
         self while-match: Token/Keyword do: { keyword ->
-          message <-- keyword text
+          message = keyword text
           args <- self operator
         }
         return Expr message-receiver: nil name: message args: args
@@ -346,7 +346,7 @@ FinchParser <- [|Parser|
         params <- #[]
 
         self while-match: Token/Keyword do: { keyword ->
-          name <-- name + keyword text
+          name = name + keyword text
           params add: (self consume: Token/Name) text
         }
 

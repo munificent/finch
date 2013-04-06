@@ -53,9 +53,10 @@ namespace Finch
                 TOKEN_LINE, TOKEN_EOF);
         
         // test the reserved words
-        TestLex("<- <--",
+        TestLex("<- = ->",
             TOKEN_ARROW,
-            TOKEN_LONG_ARROW,
+            TOKEN_EQ,
+            TOKEN_RIGHT_ARROW,
             TOKEN_LINE, TOKEN_EOF);
         
         // test numbers

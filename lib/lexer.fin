@@ -72,10 +72,10 @@ SourceFiles <- [
     column <- 1
     from: 0 to: index - 1 do: { i ->
       if: (_source at: i) == "\n" then: {
-        line <-- line + 1
-        column <-- 1
+        line = line + 1
+        column = 1
       } else: {
-        column <-- column + 1
+        column = column + 1
       }
     }
 
@@ -122,7 +122,7 @@ Lexers <- [
     token <- self next-token
     while: { token != nil } do: {
       block call: token
-      token <-- self next-token
+      token = self next-token
     }
   }
 
@@ -163,7 +163,7 @@ Lexers <- [
       case: Token/Comma do: {
         if: _eat-newlines? then: {
           // Discard newline.
-          done? <-- false
+          done? = false
         } else: {
           // Discard any newlines after this one.
           _eat-newlines? <- true
@@ -171,7 +171,7 @@ Lexers <- [
       } ;
       case: Token/IgnoreLine do: {
         // Eat the ignore token.
-        done? <-- false
+        done? = false
 
         // And newlines after it.
         _eat-newlines? <- true
@@ -266,12 +266,12 @@ Lexers <- [
       case: (self current == "/") && (self next == "*") do: {
         self advance
         self advance
-        nesting <-- nesting + 1
+        nesting = nesting + 1
       } ;
       case: (self current == "*") && (self next == "/") do: {
         self advance
         self advance
-        nesting <-- nesting - 1
+        nesting = nesting - 1
       } ;
       default: { self advance }
     }
@@ -284,7 +284,7 @@ Lexers <- [
     type <- Token/Name
     if: self current == ":" then: {
       self advance
-      type <-- Token/Keyword
+      type = Token/Keyword
     }
 
     self make-token: type
@@ -296,14 +296,14 @@ Lexers <- [
     type <- Token/Operator
 
     while: { self eof? not } and: { self current identifier? } do: {
-      if: self current alpha? then: { type <-- Token/Name }
+      if: self current alpha? then: { type = Token/Name }
       self advance
     }
 
     // See if it ends with a ":"
     if: self current == ":" then: {
       self advance
-      type <-- Token/Keyword
+      type = Token/Keyword
     }
 
     self make-token: type
@@ -334,16 +334,16 @@ Lexers <- [
 
         c <- self advance
         c switch \
-        case: "n"  do: { text <-- text + "\n" } ;
-        case: "\"" do: { text <-- text + "\"" } ;
-        case: "\\" do: { text <-- text + "\\" } ;
-        case: "t"  do: { text <-- text + "\t" } ;
+        case: "n"  do: { text = text + "\n" } ;
+        case: "\"" do: { text = text + "\"" } ;
+        case: "\\" do: { text = text + "\\" } ;
+        case: "t"  do: { text = text + "\t" } ;
         default: {
           return self make-token: Token/Error text:
               "Unrecognized string escape '" + c + "'."
         }
       } else: {
-        text <-- text + self current
+        text = text + self current
         self advance
       }
     }
@@ -362,12 +362,12 @@ Lexers <- [
   make-token: type {
     text <- _source from: _start to: _pos
 
-    if: text == "<-"        then: { type <-- Token/Arrow }
-    if: text == "<--"       then: { type <-- Token/LongArrow }
-    if: text == "self"      then: { type <-- Token/Self }
-    if: text == "undefined" then: { type <-- Token/Undefined }
-    if: text == "break"     then: { type <-- Token/Break }
-    if: text == "return"    then: { type <-- Token/Return }
+    if: text == "<-"        then: { type = Token/Arrow }
+    if: text == "="       then: { type = Token/LongArrow }
+    if: text == "self"      then: { type = Token/Self }
+    if: text == "undefined" then: { type = Token/Undefined }
+    if: text == "break"     then: { type = Token/Break }
+    if: text == "return"    then: { type = Token/Return }
 
     self make-token: type text: (_source from: _start to: _pos)
   }
@@ -407,13 +407,13 @@ files each: { file ->
   source <- Io read-file: file
   lexer <- Lexer new-path: file source: source
   lexer each: { token ->
-    tokens <-- tokens + 1
+    tokens = tokens + 1
     if: (token type == Token/Error) then: {
       write-line: token
-      errors <-- errors + 1
+      errors = errors + 1
     }
 
-    if: (token type == Token/Comma) then: { lines <-- lines + 1 }
+    if: (token type == Token/Comma) then: { lines = lines + 1 }
   }
 }
 

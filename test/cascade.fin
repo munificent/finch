@@ -2,34 +2,34 @@ Test suite: "Cascades" is: {
   called <- ""
   // make an object that implements to-string
   obj <- [
-    foo { called <-- called + "foo" }
-    bar { called <-- called + "bar" }
-    baz { called <-- called + "baz" }
+    foo { called = called + "foo" }
+    bar { called = called + "bar" }
+    baz { called = called + "baz" }
     me { self }
-    + other { called <-- called + other }
-    add: a and: b { called <-- called + a + b }
+    + other { called = called + other }
+    add: a and: b { called = called + a + b }
   ]
 
   Test test: "Unary" is: {
-    called <-- ""
+    called = ""
     obj foo ; bar ; baz
     Test that: called equals: "foobarbaz"
   }
 
   Test test: "Binary" is: {
-    called <-- ""
+    called = ""
     obj + "foo" ; + "bar" ; + "baz"
     Test that: called equals: "foobarbaz"
   }
 
   Test test: "Keyword" is: {
-    called <-- ""
+    called = ""
     obj add: "foo" and: "bar" ; add: "bar" and: "baz"
     Test that: called equals: "foobarbarbaz"
   }
 
   Test test: "Mixed" is: {
-    called <-- ""
+    called = ""
     obj me add: "foo" + "bar" and: "baz" ; + "bar" ; bar
     Test that: called equals: "foobarbazbarbar"
   }

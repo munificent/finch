@@ -20,14 +20,14 @@ Test suite: "Variables" is: {
   Test test: "Assignment" is: {
     a <- "before"
     Test that: a equals: "before"
-    a <-- "after"
+    a = "after"
     Test that: a equals: "after"
   }
 
   // TODO(bob): These are compile errors now.
 /*
   Test test: "Assign Undefined" is: {
-    a <-- "something"
+    a = "something"
     // since a wasn't defined, should do nothing
     Test that: a equals: nil
   }
@@ -75,7 +75,7 @@ Test suite: "Variables" is: {
 
   Test test: "Assign to outer scope" is: {
     a <- "outer"
-    do: { a <-- "inner" }
+    do: { a = "inner" }
     Test that: a equals: "inner"
   }
 
@@ -99,7 +99,7 @@ Test suite: "Variables" is: {
       get { _a }
     ]
     child <- [|parent|
-      assign { _a <-- "child" }
+      assign { _a = "child" }
     ]
 
     child assign

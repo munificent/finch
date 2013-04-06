@@ -24,8 +24,8 @@ namespace Finch
         TOKEN_SEMICOLON,
         
         TOKEN_ARROW,
-        TOKEN_LONG_ARROW,
         TOKEN_RIGHT_ARROW,
+        TOKEN_EQ,
         TOKEN_BIND,
         TOKEN_SELF,
         TOKEN_UNDEFINED,

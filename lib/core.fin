@@ -54,7 +54,7 @@ Ether :: (
 
     while: { i <= end } do: {
       block call: i
-      i <-- i + step
+      i = i + step
     }
   }
 
@@ -219,7 +219,7 @@ Arrays :: (
     first <- true
     from: 0 to: self count - 1 do: { i ->
       if: first not then: between
-      first <-- false
+      first = false
       block call: (self at: i)
     }
   }

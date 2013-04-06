@@ -2,7 +2,7 @@ Test suite: "Fibers" is: {
   Test test: "new: doesn't immediately start" is: {
     executed <- false
     fiber <- Fiber new: {
-      executed <-- true
+      executed = true
     }
 
     Test is-false: executed
@@ -18,7 +18,7 @@ Test suite: "Fibers" is: {
   Test test: "spawn: immediately starts" is: {
     executed <- false
     fiber <- Fiber spawn: {
-      executed <-- true
+      executed = true
     }
 
     Test is-true: executed
@@ -72,7 +72,7 @@ Test suite: "Fibers" is: {
   Test test: "run: passes in value" is: {
     passed-in <- nil
     fiber <- Fiber new: {
-      passed-in <-- Fiber yield
+      passed-in = Fiber yield
     }
 
     // run to first yield

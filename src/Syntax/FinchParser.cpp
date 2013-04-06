@@ -145,7 +145,7 @@ namespace Finch
     
     Ref<Expr> FinchParser::Assignment()
     {
-        if (LookAhead(TOKEN_NAME, TOKEN_LONG_ARROW))
+        if (LookAhead(TOKEN_NAME, TOKEN_EQ))
         {
             String name = Consume()->Text();
             

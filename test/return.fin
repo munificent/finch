@@ -5,9 +5,9 @@ Test suite: "Return" is: {
   Test test: "break exits block" is: {
     a <- "before"
     {
-      a <-- "inside"
+      a = "inside"
       break
-      a <-- "after"
+      a = "after"
     } call
 
     Test that: a equals: "inside"
@@ -27,13 +27,13 @@ Test suite: "Return" is: {
     a <- "0"
     obj <- [
       foo {
-        a <-- a + "1"
+        a = a + "1"
         {
-          a <-- a + "2"
+          a = a + "2"
           return
-          a <-- a + "3"
+          a = a + "3"
         } call
-        a <-- a + "4"
+        a = a + "4"
       }
     ]
     obj foo

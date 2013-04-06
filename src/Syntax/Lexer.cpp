@@ -69,13 +69,7 @@ namespace Finch
                 
                 case '-':
                     Advance();
-                    if (Peek() == '>')
-                    {
-                        // "->".
-                        Advance();
-                        return Ref<Token>(new Token(TOKEN_RIGHT_ARROW, "->"));
-                    }
-                    else if (IsDigit(Peek())) return ReadNumber();
+                    if (IsDigit(Peek())) return ReadNumber();
                     return ReadOperator();
                 
                 case '/':
@@ -96,8 +90,7 @@ namespace Finch
                         return ReadOperator();
                     }
                     break;
-                    
-                
+
                 case '"': return ReadString();
                     
                 default:
@@ -295,7 +288,8 @@ namespace Finch
         String name = mLine.Substring(mStart, mPos - mStart);
         
         if (name == "<-") return Ref<Token>(new Token(TOKEN_ARROW));
-        if (name == "<--") return Ref<Token>(new Token(TOKEN_LONG_ARROW));
+        if (name == "->") return Ref<Token>(new Token(TOKEN_RIGHT_ARROW));
+        if (name == "=") return Ref<Token>(new Token(TOKEN_EQ));
         
         return Ref<Token>(new Token(TOKEN_OPERATOR, name));
     }

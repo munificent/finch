@@ -57,16 +57,16 @@ Test suite: "Self" is: {
         a <- self to-string
         if: recurse then: {
           // call this exact same method but with a different self
-          a <-- a + (child recurse: false)
+          a = a + (child recurse: false)
           // see that self was correctly restored to parent
-          a <-- a + self to-string
+          a = a + self to-string
         }
         a
       }
       to-string { "p" }
     ]
 
-    child <-- [|parent| to-string { "c" } ]
+    child = [|parent| to-string { "c" } ]
 
     Test that: (parent recurse: false) equals: "p"
     Test that: (child  recurse: false) equals: "c"

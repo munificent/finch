@@ -11,10 +11,10 @@ self true false nil undefined
 
 // assignment
 a <- b
-a <-- b
+a = b
 
 // but not in the middle of other operators
-><--?
+>=?
 
  <-
 (<-)<-[<-]<-{<-}
@@ -87,7 +87,7 @@ Ether :: (
 
     while: { i <= end } do: {
       block call: i
-      i <-- i + step
+      i = i + step
     }
   }
 

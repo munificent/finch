@@ -26,7 +26,7 @@ Test suite: "Booleans" is: {
 
     // should short-circuit
     shorted <- true
-    Test is-false: ({ false } and: { shorted <-- false, true })
+    Test is-false: ({ false } and: { shorted = false, true })
     Test is-true: shorted
   }
 
@@ -45,7 +45,7 @@ Test suite: "Booleans" is: {
 
     // should short-circuit
     shorted <- true
-    Test is-true: ({ true } or: { shorted <-- false, false })
+    Test is-true: ({ true } or: { shorted = false, false })
     Test is-true: shorted
   }
 }
