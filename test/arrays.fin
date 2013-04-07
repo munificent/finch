@@ -1,11 +1,11 @@
 Test.suite("Arrays") is {
-  Test.test("Array count:") is {
-    Test.that((Array count: 3).count) equals(3)
-    Test.that((Array count: 5).count) equals(5)
+  Test.test("Array count") is {
+    Test.that(Array.count(3).count) equals(3)
+    Test.that(Array.count(5).count) equals(5)
   }
 
-  Test.test("Array count:fill-with:") is {
-    var a = Array count: 3 fill-with: "hi"
+  Test.test("Array count fill-with") is {
+    var a = Array.count(3) fill-with("hi")
     Test.that(a.at(0)) equals("hi")
     Test.that(a.at(1)) equals("hi")
     Test.that(a.at(2)) equals("hi")

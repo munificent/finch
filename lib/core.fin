@@ -186,11 +186,11 @@ Strings :: (
 )
 
 var Array = [
-  count: count {
-    self count: count fill-with: nil
+  count count {
+    self.count(count) fill-with(nil)
   }
 
-  count: count fill-with: element {
+  count count fill-with element {
     var result = #[]
 
     from (1) to (count) do { i -> result.add(element) }
