@@ -64,19 +64,19 @@ Test suite: "Strings" is: {
     Test that: ("0123456789" from: 2) equals: "23456789"
   }
 
-  Test test: "index-of:" is: {
-    Test that: ("0123456789" index-of: "0") equals: 0
-    Test that: ("0123456789" index-of: "234") equals: 2
-    Test that: ("0123456789" index-of: "56789") equals: 5
-    Test that: ("0123456789" index-of: "not found") equals: -1
-    Test that: ("" index-of: "not found") equals: -1
+  Test test: "index-of" is: {
+    Test that: "0123456789".index-of("0") equals: 0
+    Test that: "0123456789".index-of("234") equals: 2
+    Test that: "0123456789".index-of("56789") equals: 5
+    Test that: "0123456789".index-of("not found") equals: -1
+    Test that: "".index-of("not found") equals: -1
   }
 
-  Test test: "contains:" is: {
-    Test is-true: ("0123456789" contains: "0")
-    Test is-true: ("0123456789" contains: "234")
-    Test is-true: ("0123456789" contains: "56789")
-    Test is-false: ("0123456789" contains: "not found")
-    Test is-false: ("" contains: "not found")
+  Test test: "contains" is: {
+    Test is-true: ("0123456789".contains("0"))
+    Test is-true: ("0123456789".contains("234"))
+    Test is-true: ("0123456789".contains("56789"))
+    Test is-false: ("0123456789".contains("not found"))
+    Test is-false: ("".contains("not found"))
   }
 }

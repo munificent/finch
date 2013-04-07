@@ -115,7 +115,7 @@ namespace Finch
         AddPrimitive(mStringPrototype, "at:",         StringAt);
         AddPrimitive(mStringPrototype, "from:count:", StringFromCount);
         AddPrimitive(mStringPrototype, "hash-code",   StringHashCode);
-        AddPrimitive(mStringPrototype, "index-of:",   StringIndexOf);
+        AddPrimitive(mStringPrototype, "index-of ",   StringIndexOf);
         
         // Ether.
         MakeGlobal("Ether");
@@ -128,7 +128,7 @@ namespace Finch
         Value primitives = MakeGlobal("*primitive*");
         AddPrimitive(primitives, "string-concat:and:",       PrimitiveStringConcat);
         AddPrimitive(primitives, "string-compare:to:",       PrimitiveStringCompare);
-        AddPrimitive(primitives, "write:",                   PrimitiveWrite);
+        AddPrimitive(primitives, "write ",                   PrimitiveWrite);
         /*
          AddPrimitive(primitives, "new-fiber:",               PrimitiveNewFiber);
          AddPrimitive(primitives, "current-fiber",            PrimitiveGetCurrentFiber);

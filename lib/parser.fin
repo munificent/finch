@@ -20,29 +20,29 @@ var Parser = [
 
     if-look-ahead: type then: then else: else {
       self fill-look-ahead: 1
-      if: (_read at: 0) type == type then: then else: else
+      if ((_read at: 0) type == type) then (then) else (else)
     }
 
     if-look-ahead: type1 : type2 then: then {
       self fill-look-ahead: 2
-      var pass = (_read at: 0) type == type1 and: { (_read at: 1) type == type2 }
-      if: pass then: then
+      var pass = ((_read at: 0) type == type1).and { (_read at: 1) type == type2 }
+      if (pass) then (then)
     }
 
     look-ahead: type1 : type2 : type3 {
       self fill-look-ahead: 3
-      (_read at: 0) type == type1 and: {
-        (_read at: 2) type == type2 and: {
+      ((_read at: 0) type == type1).and {
+        ((_read at: 2) type == type2).and {
           (_read at: 3) type == type3
         }
       }
     }
 
     match: type {
-      if: (self look-ahead: type) then: {
+      if (self look-ahead: type) then {
         self consume
         true
-      } else: {
+      } else {
         false
       }
     }
@@ -82,7 +82,6 @@ var Parser = [
     consume {
       self fill-look-ahead: 1
       var token = _read remove-at: 0
-      //write-line: "consume " + token
       token
     }
 
@@ -91,8 +90,8 @@ var Parser = [
       self if-look-ahead: type then: {
         self consume
       } else: {
-        write-line: error
-        write-line: "Got " + self current
+        write-line(error)
+        write-line("Got " + self current)
       }
     }
 
@@ -101,7 +100,7 @@ var Parser = [
     }
 
     fill-look-ahead: count {
-      while: { _read count < count } do: {
+      while { _read count < count } do {
         _read add: _tokens next-token
       }
     }
@@ -124,7 +123,7 @@ var FinchParser = [|Parser|
       var exprs = self parse-sequence
 
       // If there's just one, don't wrap it.
-      if: exprs count == 1 then: {
+      if (exprs count == 1) then {
         return exprs at: 0
       }
 
@@ -176,9 +175,9 @@ var FinchParser = [|Parser|
         args add: self operator
       }
 
-      if: args count > 0 then: {
+      if (args count > 0) then {
         Expr message-receiver: expr name: message args: args
-      } else: {
+      } else {
         expr
       }
     }
@@ -288,7 +287,7 @@ var FinchParser = [|Parser|
         return Expr message-receiver: nil name: message args: args
       }
 
-      write-line: "Could not parse " + self current
+      write-line("Could not parse " + self current)
       self consume
       nil
     }
@@ -310,7 +309,7 @@ var FinchParser = [|Parser|
 
     parse-defines {
       var defines = #[]
-      loop: {
+      loop {
         defines add: self parse-define
 
         // TODO(bob): This is kinda nasty.
@@ -355,7 +354,7 @@ var FinchParser = [|Parser|
       }
 
       // TODO(bob): Handle error.
-      write-line: "Unexpected token " + self current + " after bind."
+      write-line("Unexpected token " + self current + " after bind.")
     }
 
     parse-define-method: params {
@@ -368,11 +367,11 @@ var FinchParser = [|Parser|
   ]
 ]
 
-files each: { file ->
-  write-line: file
+files.each { file ->
+  write-line(file)
   var source = Io read-file: file
   var lexer = Lexer new-path: file source: source
   var parser = FinchParser new-tokens: lexer
   var expr = parser parse
-  write-line: expr pretty-print
+  write-line(expr pretty-print)
 }

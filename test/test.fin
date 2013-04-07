@@ -1,4 +1,4 @@
-write-line: "Running Finch test suite."
+write-line("Running Finch test suite.")
 
 // define a Test object the tests can use
 var Test = [
@@ -25,19 +25,19 @@ var Test = [
 
     body.call
 
-    if: _failed > 0 then: {
-      write-line: "FAIL " + _suite + " / " + _test + " passed " +
-        (_tests - _failed) + " / " + _tests + " tests"
-    } else: {
-      write-line: "PASS " + _suite + " / " + _test + " passed " +
-        (_tests - _failed) + " / " + _tests + " tests"
+    if (_failed > 0) then {
+      write-line("FAIL " + _suite + " / " + _test + " passed " +
+        (_tests - _failed) + " / " + _tests + " tests")
+    } else {
+      write-line("PASS " + _suite + " / " + _test + " passed " +
+        (_tests - _failed) + " / " + _tests + " tests")
     }
     _test = ""
   }
 
   show-header {
-    if: _test-shown?.not then: {
-      write-line: _suite + " / " + _test
+    if (_test-shown?.not) then {
+      write-line(_suite + " / " + _test)
       _test-shown? = true
     }
   }
@@ -53,24 +53,24 @@ var Test = [
     _tests = _tests + 1
     _total-tests = _total-tests + 1
 
-    if: actual != expected then: {
+    if (actual != expected) then {
       _failed = _failed + 1
       _total-fails = _total-fails + 1
 
       self.show-header
-      write-line: "  Test " + _tests + " failed. Expected " + expected +
-          " but got " + actual + "."
+      write-line("  Test " + _tests + " failed. Expected " + expected +
+          " but got " + actual + ".")
     }
   }
 
   complete {
-    write-line: ""
-    if: _total-fails == 0 then: {
-      write-line: "All " + _total-tests + " tests passed."
-    } else: {
-      write-line: _total-fails + " out of " + _total-tests + " tests failed."
+    write-line("")
+    if (_total-fails == 0) then {
+      write-line("All " + _total-tests + " tests passed.")
+    } else {
+      write-line(_total-fails + " out of " + _total-tests + " tests failed.")
     }
-    write-line: ""
+    write-line("")
   }
 
   to-string { "Test" }

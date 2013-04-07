@@ -29,7 +29,7 @@ Test suite: "Variables" is: {
   Test test: "Nested Local Scope" is: {
     var a = "local"
 
-    do: { Test that: a equals: "local" }
+    do { Test that: a equals: "local" }
 
     Test that: a equals: "local"
   }
@@ -37,7 +37,7 @@ Test suite: "Variables" is: {
   Test test: "Shadowed Local Scope" is: {
     var a = "outer"
 
-    do: {
+    do {
       var a = "inner"
       Test that: a equals: "inner"
     }
@@ -48,7 +48,7 @@ Test suite: "Variables" is: {
   Test test: "Unshadow" is: {
     var a = "first"
 
-    do: {
+    do {
       Test that: a equals: "first"
       var a = "shadow"
       Test that: a equals: "shadow"
@@ -59,7 +59,7 @@ Test suite: "Variables" is: {
 
   Test test: "Assign to outer scope" is: {
     var a = "outer"
-    do: { a = "inner" }
+    do { a = "inner" }
     Test that: a equals: "inner"
   }
 

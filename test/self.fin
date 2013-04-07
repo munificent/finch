@@ -55,7 +55,7 @@ Test suite: "Self" is: {
       recurse: recurse {
         // see what self is bound to
         var a = self.to-string
-        if: recurse then: {
+        if (recurse) then {
           // call this exact same method but with a different self
           a = a + (child recurse: false)
           // see that self was correctly restored to parent

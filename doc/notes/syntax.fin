@@ -7,10 +7,10 @@ obj message
 obj + arg
 
 // keyword message
-obj do: arg with: other
+obj do (arg) with (other)
 
 // implicit Ether receiver
-if: 1 < 2 then: { obj message }
+if (1 < 2) then { obj message }
 + foo
 
 // blocks

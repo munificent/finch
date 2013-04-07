@@ -4,7 +4,7 @@ Object :: (
 
   != right { (self == right).not }
 
-  && right { self if-true: { right } else: { self } }
+  && right { self.if-true { right } else { self } }
 
   // Any non-true object is implicitly "false", so sending "not" to it
   // returns true.
@@ -18,7 +18,7 @@ Object :: (
   number?  { false }
   string?  { false }
 
-  if-true: then else: else { else.call }
+  if-true then else else { else.call }
 
   // calling a non-block like a block just returns the value
   call { self }
@@ -40,7 +40,7 @@ true :: (
   not { false }
   boolean? { true }
   to-string { "true" }
-  if-true: then else: else { then.call }
+  if-true then else else { then.call }
 )
 
 false :: (
@@ -49,61 +49,62 @@ false :: (
 )
 
 Ether :: (
-  from: start to: end step: step do: block {
+  from start to end step step do block {
     var i = start
 
-    while: { i <= end } do: {
+    while { i <= end } do {
       block call: i
       i = i + step
     }
   }
 
-  from: start to: end do: block {
-    var step = (if: start <= end then: 1 else: -1)
-    from: start to: end step: step do: block
+  from start to end do block {
+    var step = if (start <= end) then (1) else (-1)
+    from (start) to (end) step (step) do (block)
   }
 
-  do: block { block.call }
+  do block { block.call }
 
-  if: condition then: then { condition if-true: then else: { nil } }
-  if: condition then: then else: else { condition if-true: then else: else }
+  if condition then then { condition.if-true (then) else { nil } }
+  if condition then then else else { condition.if-true (then) else (else) }
 
-  if: if1 then: then1 else-if: if2 then: then2 else: else {
-    if: if1 then: then1 else: {
-      if: if2 then: then2 else: else
+  if if1 then then1 else-if if2 then then2 else else {
+    if (if1) then (then1) else {
+      if (if2) then (then2) else (else)
     }
   }
 
-  loop: block {
-    while: true do: block
+  loop block {
+    while (true) do (block)
   }
 
-  while: condition do: block {
-    if: condition.call then: {
+  while condition do block {
+    if (condition.call) then {
       block.call
-      while: condition do: block
+      while (condition) do (block)
     }
   }
 
-  while: condition-a and: condition-b do: block {
-    while: { condition-a.call and: condition-b } do: block
+  while condition-a and condition-b do block {
+    while { condition-a.call.and(condition-b) } do (block)
   }
 
-  until: condition do: block {
-    while: { condition.call.not } do: block
+  until condition do block {
+    while { condition.call.not } do (block)
   }
 
   // Build the output methods in terms of the single primitive one.
-  write: text {
+  write text {
     // Make sure the argument is always converted to a string before
     // passing to the primitive version which can't do that.
-    *primitive* write: text.to-string
+    *primitive*.write(text.to-string)
   }
 
-  write-line: text {
+  write-line text {
     // Make sure the argument is always converted to a string before
     // passing to the primitive version which can't do that.
-    *primitive* write: text.to-string + "\n"
+    *primitive*.write(text.to-string)
+    *primitive*.write("\n")
   }
 )
 
@@ -176,9 +177,9 @@ Strings :: (
   <= right { (*primitive* string-compare: self to: right) <= 0 }
   >= right { (*primitive* string-compare: self to: right) >= 0 }
 
-  starts-with: needle { (self index-of: needle) == 0 }
+  starts-with needle { self.index-of(needle) == 0 }
 
-  contains: needle { (self index-of: needle) != -1 }
+  contains needle { self.index-of(needle) != -1 }
 
   from: from { self from: from count: self.count - from }
   from: from to: to { self from: from count: to - from }
@@ -192,7 +193,7 @@ var Array = [
   count: count fill-with: element {
     var result = #[]
 
-    from: 1 to: count do: { i -> result add: element }
+    from (1) to (count) do { i -> result add: element }
     result
   }
 ]
@@ -203,30 +204,30 @@ Arrays :: (
   ++ right {
     var result = #[]
 
-    self each: { e -> result add: e }
-    right each: { e -> result add: e }
+    self.each { e -> result add: e }
+    right.each { e -> result add: e }
 
     result
   }
 
-  each: block {
-    from: 0 to: self.count - 1 do: { i ->
+  each block {
+    from (0) to (self.count - 1) do { i ->
       block call: (self at: i)
     }
   }
 
-  each: block between: between {
+  each block between between {
     var first = true
-    from: 0 to: self.count - 1 do: { i ->
-      if: first.not then: between
+    from (0) to (self.count - 1) do { i ->
+      if (first.not) then (between)
       first = false
       block call: (self at: i)
     }
   }
 
-  map: block {
+  map block {
     var result = #[]
-    self each: { element -> result add: (block call: element) }
+    self.each { element -> result add: (block call: element) }
     result
   }
 )
@@ -240,18 +241,18 @@ Blocks :: true? { self.call.true? }
 
 // Short-circuiting logical operators
 Object :: (
-  and: right {
-    if: self.true? then: {
+  and right {
+    if (self.true?) then {
       right.true?
-    } else: {
+    } else {
       false
     }
   }
 
-  or: right {
-    if: self.true? then: {
+  or right {
+    if (self.true?) then {
       true
-    } else: {
+    } else {
       right.true?
     }
   }
@@ -275,17 +276,17 @@ Object :: switch {
 var Switches = [
   case: case do: block {
     // If this switch has already matched a case, just do nothing.
-    if: _done?.not then: {
+    if (_done?.not) then {
       // If the case is a block, then it's a predicate so evaluate
       // it, otherwise it's a value, so compare it to the value being
       // switched.
-      var matched = if: case.block? then: {
+      var matched = if (case.block?) then {
         case call: _value
-      } else: {
+      } else {
         _value == case
       }
 
-      if: matched then: {
+      if (matched) then {
         // Execute the block.
         _result = block call: _value
         _done? = true
@@ -299,7 +300,7 @@ var Switches = [
 
   default: block {
     // If this switch has already matched a case, just do nothing.
-    if: _done?.not then: {
+    if (_done?.not) then {
       // Execute the block.
       _result = block call: _value
       _done? = true

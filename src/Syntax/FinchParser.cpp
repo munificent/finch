@@ -247,29 +247,68 @@ namespace Finch
         
         return object;
     }
-    
+
+    // TODO(bob): Rename since this now handles messages with args too.
     Ref<Expr> FinchParser::Unary(bool & isMessage)
     {
         Ref<Expr> object = Primary();
 
-        while (LookAhead(TOKEN_DOT, TOKEN_NAME))
+        while (Match(TOKEN_DOT))
         {
-            Consume(); // ".".
-            String message = Consume()->Text();
+            isMessage = true;
+            String name;
             Array<Ref<Expr> > args;
 
-            isMessage = true;
-            object = Ref<Expr>(new MessageExpr(object, message, args));
+            if (LookAhead(TOKEN_NAME, TOKEN_LEFT_PAREN) ||
+                LookAhead(TOKEN_NAME, TOKEN_LEFT_BRACE))
+            {
+                // It's a message send with arguments.
+                do
+                {
+                    name += Consume()->Text() + " ";
+                    args.Add(Primary());
+                }
+                while (LookAhead(TOKEN_NAME, TOKEN_LEFT_PAREN) ||
+                       LookAhead(TOKEN_NAME, TOKEN_LEFT_BRACE));
+
+            }
+            else
+            {
+                // It's an unary message.
+                name = Consume(TOKEN_NAME, "Expect message name after '.'")->Text();
+                // TODO(bob): Handle null.
+            }
+
+            object = Ref<Expr>(new MessageExpr(object, name, args));
         }
-        
+
         return object;
     }
     
     Ref<Expr> FinchParser::Primary()
     {
-        if (LookAhead(TOKEN_NAME))
+        if (LookAhead(TOKEN_NAME, TOKEN_LEFT_PAREN) ||
+            LookAhead(TOKEN_NAME, TOKEN_LEFT_BRACE))
         {
-            return Ref<Expr>(new NameExpr(Consume()->Text()));
+            // It's a message send to Ether.
+            String name;
+            Array<Ref<Expr> > args;
+
+            do
+            {
+                name += Consume()->Text() + " ";
+                args.Add(Primary());
+            }
+            while (LookAhead(TOKEN_NAME, TOKEN_LEFT_PAREN) ||
+                   LookAhead(TOKEN_NAME, TOKEN_LEFT_BRACE));
+
+            return Ref<Expr>(new MessageExpr(
+                Ref<Expr>(new NameExpr("Ether")), name, args));
+        }
+        else if (LookAhead(TOKEN_NAME))
+        {
+            String name = Consume()->Text();
+            return Ref<Expr>(new NameExpr(name));
         }
         else if (LookAhead(TOKEN_NUMBER))
         {
@@ -284,13 +323,6 @@ namespace Finch
             // Implicit receiver keyword message.
             return ParseKeyword(Ref<Expr>(new NameExpr("Ether")));
         }
-        //### getting rid of this for now to possibly free it up for some other
-        // use
-        /*
-        else if (Match(TOKEN_DOT))
-        {
-            return Ref<Expr>(new NameExpr("self"));
-        }*/
         else if (Match(TOKEN_SELF))
         {
             return Ref<Expr>(new SelfExpr());
@@ -473,10 +505,29 @@ namespace Finch
             
             expr.Define(false, name, body);
         }
-        else if (LookAhead(TOKEN_NAME))
+        else if (LookAhead(TOKEN_NAME, TOKEN_LEFT_BRACE))
         {
             // Unary.
             String name = Consume()->Text();
+
+            ParseDefineBody(expr, name, params);
+        }
+        else if (LookAhead(TOKEN_NAME))
+        {
+            // Mixfix.
+            String name = "";
+
+            // name param {
+            // name param name param {
+            // name param name param name param {
+            while (LookAhead(TOKEN_NAME))
+            {
+                name += Consume()->Text() + " ";
+                Ref<Token> param = Consume(TOKEN_NAME,
+                    "Expect parameter after method name part.");
+                // TODO(bob): Handle null.
+                params.Add(param->Text());
+            }
             
             ParseDefineBody(expr, name, params);
         }

@@ -6,12 +6,12 @@ var PrettyPrinter = [
   proto = [
     to-string {
       var result = ""
-      _buffer each: { s -> result = result + s }
+      _buffer.each { s -> result = result + s }
       result
     }
 
-    write: string { _buffer add: string }
-    write-line: string {
+    write string { _buffer add: string }
+    write-line string {
       _buffer add: string + "\n"
     }
 
@@ -32,135 +32,133 @@ Expr proto :: (
   }
 
   print-to: printer {
-    printer write: "<not impl>"
+    printer.write("<not impl>")
   }
 )
 
 Expr array-proto :: print-to: printer {
-  printer write: "#["
+  printer.write("#[")
 
-  _elements each: { element ->
+  _elements.each { element ->
     element print-to: printer
   } between: {
-    printer write: ", "
+    printer.write(", ")
   }
 
-  printer write: "]"
+  printer.write("]")
 }
 
 Expr bind-proto :: print-to: printer {
   _receiver print-to: printer
-  printer write: " :: "
+  printer.write(" :: ")
 
-  if: _defines.count == 1 then: {
+  if (_defines.count == 1) then {
     (_defines at: 0) print-to: printer
-  } else: {
-    printer write: "(\n"
+  } else {
+    printer.write("(\n")
     self print-defines-to: printer
-    printer write: ")"
+    printer.write(")")
   }
 }
 
 Expr block-proto :: print-to: printer {
-  printer write: "{ "
-  if: _params.count > 0 then: {
-    _params each: { param ->
-      printer write: param
-    } between: {
-      printer write: " "
+  printer.write("{ ")
+  if (_params.count > 0) then {
+    _params.each { param ->
+      printer.write(param)
+    } between {
+      printer.write(" ")
     }
 
-    printer write: " -> "
+    printer.write(" -> ")
   }
 
   _body print-to: printer
 
-  printer write: " }"
+  printer.write(" }")
 }
 
 Expr define-proto :: print-defines-to: printer {
-  _defines each: { define ->
+  _defines.each { define ->
     define print-to: printer
   } between: {
-    printer write: "\n"
+    printer.write("\n")
   }
 }
 
 Define proto :: print-to: printer {
-  printer write: _name
+  printer.write(_name)
 
-  if: _method? then: {
+  if (_method?) then {
     // TODO(bob): Pull out params.
     _body print-to: printer
-  } else: {
-    printer write: " = "
+  } else {
+    printer.write(" = ")
     _body print-to: printer
   }
 }
 
 Expr message-proto :: print-to: printer {
-  printer write: "("
+  printer.write("(")
 
   // Will be nil for messages sent to Ether.
-  if: _receiver != nil then: {
+  if (_receiver != nil) then {
     _receiver print-to: printer
-    printer write: " "
+    printer.write(" ")
   }
 
-  printer write: _name
-
-  printer write: "<todo: message args>" // _args
-
-  printer write: ")"
+  printer.write(_name)
+  printer.write("<todo: message args>") // _args
+  printer.write(")")
 }
 
 Expr name-proto :: print-to: printer {
-  printer write: _name
+  printer.write(_name)
 }
 
 Expr number-proto :: print-to: printer {
-  printer write: _value
+  printer.write(_value)
 }
 
 Expr object-proto :: print-to: printer {
-  if: _parent == nil then: {
-    printer write-line: "["
-  } else: {
-    printer write: "[|"
+  if (_parent == nil) then {
+    printer.write-line("[")
+  } else {
+    printer.write("[|")
     _parent print-to: printer
-    printer write-line: "|"
+    printer.write-line("|")
   }
 
   self print-defines-to: printer
-  printer write: ")"
+  printer.write(")")
 }
 
 Expr self-proto :: print-to: printer {
-  printer write: "self"
+  printer.write("self")
 }
 
 Expr sequence-proto :: print-to: printer {
-  _exprs each: { expr ->
+  _exprs.each { expr ->
     expr print-to: printer
   } between: {
-    printer write: "\n"
+    printer.write("\n")
   }
 }
 
 Expr set-proto :: print-to: printer {
-  printer write: "<set not impl>"
+  printer.write("<set not impl>")
 }
 
 Expr string-proto :: print-to: printer {
-  printer write: "\""
+  printer.write("\"")
   // TODO(bob): Handle escapes.
-  printer write: _value
-  printer write: "\""
+  printer.write(_value)
+  printer.write("\"")
 }
 
 Expr var-proto :: print-to: printer {
-  printer write: "var "
-  printer write: _name
-  printer write: " = "
+  printer.write("var ")
+  printer.write(_name)
+  printer.write(" = ")
   _value print-to: printer
 }

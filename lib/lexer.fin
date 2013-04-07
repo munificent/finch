@@ -70,11 +70,11 @@ var SourceFiles = [
   index-to-position: index {
     var line = 1
     var column = 1
-    from: 0 to: index - 1 do: { i ->
-      if: (_source at: i) == "\n" then: {
+    from (0) to (index - 1) do { i ->
+      if ((_source at: i) == "\n") then {
         line = line + 1
         column = 1
-      } else: {
+      } else {
         column = column + 1
       }
     }
@@ -85,23 +85,23 @@ var SourceFiles = [
 
 Strings :: (
   alpha? {
-    "abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ_" contains: self
+    "abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ_".contains(self)
   }
 
   operator? {
-    "-+=/<>?~!,#$%^&*" contains: self
+    "-+=/<>?~!,#$%^&*".contains(self)
   }
 
   identifier? {
-    ((self alpha?) or: { self operator? }) or: { self digit? }
+    ((self alpha?).or { self operator? }).or { self digit? }
   }
 
   digit? {
-    "0123456789" contains: self
+    "0123456789".contains(self)
   }
 
   whitespace? {
-    " \t" contains: self
+    " \t".contains(self)
   }
 )
 
@@ -118,9 +118,9 @@ var Lexer = [
 ]
 
 var Lexers = [
-  each: block {
+  each block {
     var token = self next-token
-    while: { token != nil } do: {
+    while { token != nil } do {
       block call: token
       token = self next-token
     }
@@ -134,24 +134,24 @@ var Lexers = [
   eof? { _pos >= _source count }
 
   advance-while: predicate {
-    while: { self eof? not } and: { predicate call: self current } do: {
+    while { self eof? not } and { predicate call: self current } do {
       self advance
     }
   }
 
   current { _source at: _pos }
   next {
-    if: _pos >= (_source count - 1) then: {
+    if (_pos >= (_source count - 1)) then {
       ""
-    } else: {
+    } else {
       _source at: _pos + 1
     }
   }
 
   // Reads the next token from the source and handles newlines.
   next-token {
-    loop: {
-      if: self eof? then: {
+    loop {
+      if (self eof?) then {
         var span = SourceSpan new-file: _file start: _pos end: _pos
         return Token new: Token/Eof text: "" span: span
       }
@@ -161,10 +161,10 @@ var Lexers = [
       var done? = true
       token type switch \
       case: Token/Comma do: {
-        if: _eat-newlines? then: {
+        if (_eat-newlines?) then {
           // Discard newline.
           done? = false
-        } else: {
+        } else {
           // Discard any newlines after this one.
           _eat-newlines? = true
         }
@@ -187,13 +187,13 @@ var Lexers = [
       case: Token/LeftBrace   do: { _eat-newlines? = true } ;
       default: { _eat-newlines? = false }
 
-      if: done? then: { return token }
+      if (done?) then { return token }
     }
   }
 
   // Reads the next token from the source. Doesn't do any newline normalization.
   next-token-raw {
-    loop: {
+    loop {
       _start = _pos
       var c = self current
       true switch \
@@ -211,31 +211,31 @@ var Lexers = [
       case: c == "|"  do: { return self single-token: Token/Pipe } ;
       case: c == "/"  do: {
         self advance
-        if: self current == "/" then: {
+        if (self current == "/") then {
           // Line comment, so ignore the rest of the line and emit the line
           // token.
           self advance-while: { c -> c != "\n" }
           return self single-token: Token/Comma
-        } else-if: self current == "*" then: {
+        } else-if (self current == "*") then {
           self skip-block-comment
-        } else: {
+        } else {
           return self read-operator
         }
       } ;
       case: c == ":"  do: {
         self advance
-        if: self current == ":" then: {
+        if (self current == ":") then {
           self advance
           return self make-token: Token/Bind
-        } else: {
+        } else {
           return self make-token: Token/Keyword
         }
       } ;
       case: c == "-" do: {
         self advance
-        if: self current digit? then: {
+        if (self current digit?) then {
           return self read-number
-        } else: {
+        } else {
           return self read-operator
         }
       } ;
@@ -257,7 +257,7 @@ var Lexers = [
 
     var nesting = 1
 
-    while: { nesting > 0 } do: {
+    while { nesting > 0 } do {
       true switch \
       case: self eof? do: {
         // TODO(bob): Unterminated comment, should return error.
@@ -282,7 +282,7 @@ var Lexers = [
 
     // See if it ends with a ":"
     var type = Token/Name
-    if: self current == ":" then: {
+    if (self current == ":") then {
       self advance
       type = Token/Keyword
     }
@@ -295,13 +295,13 @@ var Lexers = [
     // encounters a letter.
     var type = Token/Operator
 
-    while: { self eof? not } and: { self current identifier? } do: {
-      if: self current alpha? then: { type = Token/Name }
+    while { self eof? not } and { self current identifier? } do {
+      if (self current alpha?) then { type = Token/Name }
       self advance
     }
 
     // See if it ends with a ":"
-    if: self current == ":" then: {
+    if (self current == ":") then {
       self advance
       type = Token/Keyword
     }
@@ -313,21 +313,21 @@ var Lexers = [
     self advance
 
     var text = ""
-    loop: {
-      if: self eof? then: {
+    loop {
+      if (self eof?) then {
         return self make-token: Token/Error text: "Unterminated string"
       }
 
-      if: self current == "\"" then: {
+      if (self current == "\"") then {
         self advance
         return self make-token: Token/String text: text
       }
 
       // Handle string escapes.
-      if: self current == "\\" then: {
+      if (self current == "\\") then {
         self advance
 
-        if: self eof? then: {
+        if (self eof?) then {
           return self make-token: Token/Error text:
               "Unterminated string escape."
         }
@@ -362,11 +362,11 @@ var Lexers = [
   make-token: type {
     var text = _source from: _start to: _pos
 
-    if: text == "="         then: { type = Token/Equals }
-    if: text == "self"      then: { type = Token/Self }
-    if: text == "undefined" then: { type = Token/Undefined }
-    if: text == "break"     then: { type = Token/Break }
-    if: text == "return"    then: { type = Token/Return }
+    if (text == "="        ) then { type = Token/Equals }
+    if (text == "self"     ) then { type = Token/Self }
+    if (text == "undefined") then { type = Token/Undefined }
+    if (text == "break"    ) then { type = Token/Break }
+    if (text == "return"   ) then { type = Token/Return }
 
     self make-token: type text: (_source from: _start to: _pos)
   }
@@ -401,19 +401,19 @@ var files = #[
 var tokens = 0
 var errors = 0
 var lines = 0
-files each: { file ->
-  write-line: file
+files.each { file ->
+  write-line(file)
   var source = Io read-file: file
   var lexer = Lexer new-path: file source: source
-  lexer each: { token ->
+  lexer.each { token ->
     tokens = tokens + 1
-    if: (token type == Token/Error) then: {
-      write-line: token
+    if (token type == Token/Error) then {
+      write-line(token)
       errors = errors + 1
     }
 
-    if: (token type == Token/Comma) then: { lines = lines + 1 }
+    if (token type == Token/Comma) then { lines = lines + 1 }
   }
 }
 
-write-line: tokens + " tokens with " + errors + " errors in " + lines + " lines"
+write-line(tokens + " tokens with " + errors + " errors in " + lines + " lines")

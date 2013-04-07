@@ -5,20 +5,20 @@
 
 var Dragon = [
   generate: depth {
-    write: "dragon curve " + depth + " depth: "
+    write("dragon curve " + depth + " depth: ")
     self iterate: depth turn: "R"
-    write-line: "" // end the line
+    write-line("") // end the line
   }
 
   // the inner recursive method
   iterate: depth turn: turn {
-    if: depth > 0 then: {
+    if (depth > 0) then {
       self iterate: depth - 1 turn: "R"
-      write: turn
+      write(turn)
       self iterate: depth - 1 turn: "L"
     }
   }
 ]
 
 // test it
-from: 1 to: 5 do: { n -> Dragon generate: n }
+from (1) to (5) do { n -> Dragon generate: n }
