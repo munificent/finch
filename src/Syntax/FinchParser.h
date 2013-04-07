@@ -31,19 +31,15 @@ namespace Finch
         // The grammar productions, from lowest to highest precedence.
         Ref<Expr> Expression();
         Ref<Expr> Sequence();
-        Ref<Expr> Variable();
+        Ref<Expr> Statement();
         Ref<Expr> Bind();
         Ref<Expr> Assignment();
-        Ref<Expr> Keyword();
         Ref<Expr> Operator();
-        Ref<Expr> Unary();
+        Ref<Expr> Message();
         Ref<Expr> Primary();
 
         // Parses just the message send part of a message "foo(1, 2) bar(3)"
         Ref<Expr> ParseMessage(Ref<Expr> receiver);
-
-        // Parses just the message send part of a keyword message: "foo: a bar: b"
-        Ref<Expr> ParseKeyword(Ref<Expr> object);
 
         // Parses a block literal. Assumes the "{" has already been consumed.
         Ref<Expr> ParseBlock();

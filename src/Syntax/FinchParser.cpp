@@ -26,7 +26,7 @@ namespace Finch
             // TODO(bob): This is wrong, actually. It means if you enter:
             //   1, 2, 3
             // on the REPL, it will stop after 1. :(
-            Ref<Expr> expr = Variable();
+            Ref<Expr> expr = Statement();
             
             // Discard a trailing newline.
             Match(TOKEN_LINE);
@@ -66,7 +66,7 @@ namespace Finch
         
         while (true)
         {
-            Ref<Expr> expr = Variable();
+            Ref<Expr> expr = Statement();
             exprs.Add(expr);
             
             if (!Match(TOKEN_LINE)) break;
@@ -86,7 +86,7 @@ namespace Finch
         return Ref<Expr>(new SequenceExpr(exprs));
     }
     
-    Ref<Expr> FinchParser::Variable()
+    Ref<Expr> FinchParser::Statement()
     {
         // The grammar is carefully constrained to only allow variables to be
         // declared at the "top level" of a block and not inside nested
@@ -113,9 +113,30 @@ namespace Finch
             }
             else
             {
-                Ref<Expr> value = Variable();
+                Ref<Expr> value = Assignment();
                 return Ref<Expr>(new VarExpr(name->Text(), value));
             }
+        }
+
+        if (Match(TOKEN_RETURN))
+        {
+            // TODO(bob): Move this below sequence in the grammar so that you
+            // can't do this in the middle of an expression.
+            Ref<Expr> result;
+            if (LookAhead(TOKEN_LINE) ||
+                LookAhead(TOKEN_RIGHT_PAREN) ||
+                LookAhead(TOKEN_RIGHT_BRACE) ||
+                LookAhead(TOKEN_RIGHT_BRACKET))
+            {
+                // No return value so implicitly return Nil.
+                result = Ref<Expr>(new NameExpr("nil"));
+            }
+            else
+            {
+                result = Assignment();
+            }
+            
+            return Ref<Expr>(new ReturnExpr(result));
         }
 
         return Bind();
@@ -151,37 +172,24 @@ namespace Finch
         {
             String name = Consume()->Text();
             
-            Consume(); // the arrow
+            Consume(); // "=".
             
-            // get the initial value
+            // The initial value.
             Ref<Expr> value = Assignment();
             
             return Ref<Expr>(new SetExpr(name, value));
         }
-        else return Keyword();
-    }
-        
-    Ref<Expr> FinchParser::Keyword()
-    {
-        Ref<Expr> object = Operator();
-        
-        Ref<Expr> keyword = ParseKeyword(object);
-        if (!keyword.IsNull())
-        {
-            return keyword;
-        }
-        
-        return object;
+        else return Operator();
     }
     
     Ref<Expr> FinchParser::Operator()
     {
-        Ref<Expr> object = Unary();
+        Ref<Expr> object = Message();
         
         while (LookAhead(TOKEN_OPERATOR))
         {
             String op = Consume()->Text();
-            Ref<Expr> arg = Unary();
+            Ref<Expr> arg = Message();
 
             Array<Ref<Expr> > args;
             args.Add(arg);
@@ -192,8 +200,7 @@ namespace Finch
         return object;
     }
 
-    // TODO(bob): Rename since this now handles messages with args too.
-    Ref<Expr> FinchParser::Unary()
+    Ref<Expr> FinchParser::Message()
     {
         Ref<Expr> object = Primary();
 
@@ -240,30 +247,9 @@ namespace Finch
         {
             return Ref<Expr>(new StringExpr(Consume()->Text()));
         }
-        else if (LookAhead(TOKEN_KEYWORD))
-        {
-            // Implicit receiver keyword message.
-            return ParseKeyword(Ref<Expr>(new NameExpr("Ether")));
-        }
         else if (Match(TOKEN_SELF))
         {
             return Ref<Expr>(new SelfExpr());
-        }
-        else if (Match(TOKEN_RETURN))
-        {
-            // TODO(bob): Move this below sequence in the grammar so that you
-            // can't do this in the middle of an expression.
-            Ref<Expr> result;
-            if (LookAhead(TOKEN_LINE) ||
-                LookAhead(TOKEN_RIGHT_PAREN) ||
-                LookAhead(TOKEN_RIGHT_BRACE) ||
-                LookAhead(TOKEN_RIGHT_BRACKET)) {
-                // No return value so implicitly return Nil.
-                result = Ref<Expr>(new NameExpr("nil"));
-            } else {
-                result = Assignment();
-            }
-            return Ref<Expr>(new ReturnExpr(result));
         }
         else if (Match(TOKEN_LEFT_PAREN))
         {
@@ -374,25 +360,6 @@ namespace Finch
                LookAhead(TOKEN_NAME, TOKEN_LEFT_BRACE));
 
         return Ref<Expr>(new MessageExpr(receiver, name, args));
-    }
-
-    Ref<Expr> FinchParser::ParseKeyword(Ref<Expr> object)
-    {
-        String             message;
-        Array<Ref<Expr> >  args;
-        
-        while (LookAhead(TOKEN_KEYWORD))
-        {
-            message += Consume()->Text();
-            args.Add(Operator());
-        }
-        
-        if (message.Length() > 0)
-        {
-            return Ref<Expr>(new MessageExpr(object, message, args));
-        }
-        
-        return Ref<Expr>();
     }
 
     Ref<Expr> FinchParser::ParseBlock()

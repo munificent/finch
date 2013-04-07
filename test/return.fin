@@ -39,16 +39,4 @@ Test.suite("Return") is {
 
     Test.that(obj.foo) equals("result")
   }
-
-  Test.test("returns work in the middle of an expression") is {
-    // This is a regression test for a bug. If you did a return in the middle
-    // of an expression, the other operands in the expression would be left on
-    // the stack, causing all sorts of trouble.
-    var obj = [
-      foo { "left" + return "right" }
-      bar { self.foo }
-    ]
-
-    Test.that(obj.bar) equals("right")
-  }
 }

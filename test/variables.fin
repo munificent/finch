@@ -4,13 +4,6 @@ Test.suite("Variables") is {
     Test.that(a) equals("something")
   }
 
-  Test.test("Chain") is {
-    // TODO(bob): Do we want to allow this?
-    var a = var b = "something"
-    Test.that(a) equals("something")
-    Test.that(b) equals("something")
-  }
-
   Test.test("Redefinition") is {
     var a = "before"
     Test.that(a) equals("before")
