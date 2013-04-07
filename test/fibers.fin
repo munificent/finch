@@ -69,7 +69,7 @@ Test.suite("Fibers") is {
     Test.is-false(fiber.running?)
   }
 
-  Test.test("run: passes in value") is {
+  Test.test("run passes in value") is {
     var passed-in = nil
     var fiber = Fiber.new {
       passed-in = Fiber.yield
@@ -79,7 +79,7 @@ Test.suite("Fibers") is {
     fiber.run
 
     // pass value into yield and resume
-    fiber run: 123
+    fiber.run(123)
 
     Test.that(passed-in) equals(123)
   }

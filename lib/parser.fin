@@ -1,7 +1,7 @@
 // TODO(bob): Really need to fix relative path loading.
-load: "../../lib/lexer.fin"
-load: "../../lib/ast.fin"
-load: "../../lib/pretty-print.fin"
+load("../../lib/lexer.fin")
+load("../../lib/ast.fin")
+load("../../lib/pretty-print.fin")
 
 var Parser = [
   new-tokens: tokens {
@@ -50,27 +50,27 @@ var Parser = [
     // If the next token matches the given type, calls the block.
     match: type then: then else: else {
       self if-look-ahead: type then: {
-        then call: self consume
+        then.call(self.consume)
       } else: else
     }
 
     // If the next token matches the given type, calls the block.
     match: type then: block {
       self if-look-ahead: type then: {
-        block call: self consume
+        block.call(self.consume)
       }
     }
 
     // If the next token matches the given type, calls the block.
     match: type1 : type2 then: block {
       self if-look-ahead: type1 : type2 then: {
-        block call: self consume : self consume
+        block.call(self.consume, self.consume)
       }
     }
 
     while-match: type do: block {
       self if-look-ahead: type then: {
-        block call: self consume
+        block.call(self.consume)
         self while-match: type do: block
       }
     }
@@ -369,7 +369,7 @@ var FinchParser = [|Parser|
 
 files.each { file ->
   write-line(file)
-  var source = Io read-file: file
+  var source = Io.read-file(file)
   var lexer = Lexer new-path: file source: source
   var parser = FinchParser new-tokens: lexer
   var expr = parser parse

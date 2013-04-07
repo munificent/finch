@@ -77,24 +77,25 @@ var Test = [
 ]
 
 // run the test scripts
-//### bob: hack! path should be relative to this script's path!
-load: "test/arithmetic.fin"
-load: "test/arrays.fin"
-load: "test/booleans.fin"
-load: "test/cascade.fin"
-load: "test/comments.fin"
+// TODO(bob): hack! path should be relative to this script's path!
+load("test/arithmetic.fin")
+load("test/arrays.fin")
+load("test/booleans.fin")
+load("test/cascade.fin")
+load("test/comments.fin")
 // TODO(bob): Commenting out fibers because I think I'm going to change how they
 // work.
-//load: "../../test/fibers.fin"
-load: "test/literals.fin"
-load: "test/messages.fin"
-load: "test/objects.fin"
-load: "test/return.fin"
-load: "test/self.fin"
-load: "test/strings.fin"
-load: "test/switch.fin"
+//load("../../test/fibers.fin")
+load("test/literals.fin")
+load("test/messages.fin")
+load("test/objects.fin")
+load("test/return.fin")
+load("test/self.fin")
+load("test/strings.fin")
+// TODO(bob): Cascades are broken right now, so no switch.
+//load("test/switch.fin")
 // TODO(bob): TCO isn't working right now because of the register window stuff.
-//load: "test/tco.fin"
-load: "test/variables.fin"
+//load("test/tco.fin")
+load("test/variables.fin")
 
 Test.complete

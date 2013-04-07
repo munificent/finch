@@ -22,16 +22,16 @@ Object :: (
 
   // calling a non-block like a block just returns the value
   call { self }
-  call: a { self }
-  call: a : b { self }
-  call: a : b : c { self }
-  call: a : b : c : d { self }
-  call: a : b : c : d : e { self }
-  call: a : b : c : d : e : f { self }
-  call: a : b : c : d : e : f : g { self }
-  call: a : b : c : d : e : f : g : h { self }
-  call: a : b : c : d : e : f : g : h : i { self }
-  call: a : b : c : d : e : f : g : h : i : j { self }
+  call(a) { self }
+  call(a, b) { self }
+  call(a, b, c) { self }
+  call(a, b, c, d) { self }
+  call(a, b, c, d, e) { self }
+  call(a, b, c, d, e, f) { self }
+  call(a, b, c, d, e, f, g) { self }
+  call(a, b, c, d, e, f, g, h) { self }
+  call(a, b, c, d, e, f, g, h, i) { self }
+  call(a, b, c, d, e, f, g, h, i, j) { self }
 
   yourself { self }
 )
@@ -53,7 +53,7 @@ Ether :: (
     var i = start
 
     while { i <= end } do {
-      block call: i
+      block.call(i)
       i = i + step
     }
   }
@@ -65,32 +65,32 @@ Ether :: (
 
   do(block) { block.call }
 
-  if(condition) then(then) { condition.if-true (then) else { nil } }
-  if(condition) then(then) else(else) { condition.if-true (then) else (else) }
+  if(condition) then(then) { condition.if-true(then) else { nil } }
+  if(condition) then(then) else(else) { condition.if-true(then) else(else) }
 
   if(if1) then(then1) else-if(if2) then(then2) else(else) {
-    if (if1) then (then1) else {
-      if (if2) then (then2) else (else)
+    if(if1) then(then1) else {
+      if(if2) then(then2) else(else)
     }
   }
 
   loop(block) {
-    while (true) do (block)
+    while(true) do(block)
   }
 
   while(condition) do(block) {
     if (condition.call) then {
       block.call
-      while (condition) do (block)
+      while(condition) do(block)
     }
   }
 
   while(condition-a) and(condition-b) do(block) {
-    while { condition-a.call.and(condition-b) } do (block)
+    while { condition-a.call.and(condition-b) } do(block)
   }
 
   until(condition) do(block) {
-    while { condition.call.not } do (block)
+    while { condition.call.not } do(block)
   }
 
   // Build the output methods in terms of the single primitive one.
@@ -154,7 +154,7 @@ Numbers :: (
 
 Object :: (
   // Adding anything to a string converts it to a string and concatenates.
-  string+(left) { *primitive* string-concat: left and: self.to-string }
+  string+(left) { *primitive*.string-concat(left, self.to-string) }
 
   // Comparisons between unrelated types always return false.
   number==(left) { false }
@@ -171,11 +171,11 @@ Strings :: (
   + right { right.string+(self) }
   == right { right.string==(self) }
 
-  string==(left) { (*primitive* string-compare: left to: self) == 0 }
-  < right { (*primitive* string-compare: self to: right) < 0 }
-  > right { (*primitive* string-compare: self to: right) > 0 }
-  <= right { (*primitive* string-compare: self to: right) <= 0 }
-  >= right { (*primitive* string-compare: self to: right) >= 0 }
+  string==(left) { (*primitive*.string-compare(left, self)) == 0 }
+  < right { (*primitive*.string-compare(self, right)) < 0 }
+  > right { (*primitive*.string-compare(self, right)) > 0 }
+  <= right { (*primitive*.string-compare(self, right)) <= 0 }
+  >= right { (*primitive*.string-compare(self, right)) >= 0 }
 
   starts-with(needle) { self.index-of(needle) == 0 }
 
@@ -212,7 +212,7 @@ Arrays :: (
 
   each(block) {
     from (0) to (self.count - 1) do { i ->
-      block call: self.at(i)
+      block.call(self.at(i))
     }
   }
 
@@ -221,13 +221,13 @@ Arrays :: (
     from (0) to (self.count - 1) do { i ->
       if (first.not) then (between)
       first = false
-      block call: self.at(i)
+      block.call(self.at(i))
     }
   }
 
   map(block) {
     var result = #[]
-    self.each { element -> result.add(block call: element) }
+    self.each { element -> result.add(block.call(element)) }
     result
   }
 )
@@ -258,11 +258,13 @@ Object :: (
   }
 )
 
+// TODO(bob): Cascades are broken right now, so no switch.
+/*
 // switch/case construct. usage looks like:
-// c switch \
-//     case: "{" do: { "foo" };
-//     case: "}" do: { "blah" };
-//     default: { "argh" }
+// c.switch \
+//     .case("{") do { "foo" } ;
+//     .case("}") do { "blah" } ;
+//     .default { "argh" }
 Object :: switch {
   // ### bob: having to do this is lame. :(
   var outer-self = self
@@ -274,21 +276,21 @@ Object :: switch {
 }
 
 var Switches = [
-  case: case do: block {
+  case (case) do(block) {
     // If this switch has already matched a case, just do nothing.
-    if (_done?.not) then {
+    if(_done?.not) then {
       // If the case is a block, then it's a predicate so evaluate
       // it, otherwise it's a value, so compare it to the value being
       // switched.
-      var matched = if (case.block?) then {
-        case call: _value
+      var matched = if(case.block?) then {
+        case.call(_value)
       } else {
         _value == case
       }
 
-      if (matched) then {
+      if(matched) then {
         // Execute the block.
-        _result = block call: _value
+        _result = block.call(_value)
         _done? = true
       }
     }
@@ -298,17 +300,18 @@ var Switches = [
     _result
   }
 
-  default: block {
+  default(block) {
     // If this switch has already matched a case, just do nothing.
-    if (_done?.not) then {
+    if(_done?.not) then {
       // Execute the block.
-      _result = block call: _value
+      _result = block.call(_value)
       _done? = true
     }
 
     _result
   }
 ]
+*/
 
 // ###bob: temp; run tests
-//load: "test/test.fin"
+//load("test/test.fin")

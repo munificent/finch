@@ -118,11 +118,11 @@ var Lexer = [
 ]
 
 var Lexers = [
-  each block {
-    var token = self next-token
+  each.block {
+    var token = self.next-token
     while { token != nil } do {
-      block call: token
-      token = self next-token
+      block.call(token)
+      token = self.next-token
     }
   }
 
@@ -131,11 +131,11 @@ var Lexers = [
     _source.at(_pos - 1)
   }
 
-  eof? { _pos >= _source count }
+  eof? { _pos >= _source.count }
 
   advance-while: predicate {
-    while { self eof? not } and { predicate call: self current } do {
-      self advance
+    while { self.eof?.not } and { predicate.call(self.current) } do {
+      self.advance
     }
   }
 
@@ -159,8 +159,8 @@ var Lexers = [
       var token = self next-token-raw
 
       var done? = true
-      token type switch \
-      case: Token/Comma do: {
+      token.type.switch \
+      .case(Token/Comma) do {
         if (_eat-newlines?) then {
           // Discard newline.
           done? = false
@@ -169,23 +169,23 @@ var Lexers = [
           _eat-newlines? = true
         }
       } ;
-      case: Token/IgnoreLine do: {
+      .case(Token/IgnoreLine) do {
         // Eat the ignore token.
         done? = false
 
         // And newlines after it.
         _eat-newlines? = true
       } ;
-      case: Token/Keyword     do: { _eat-newlines? = true } ;
-      case: Token/Operator    do: { _eat-newlines? = true } ;
-      case: Token/Pipe        do: { _eat-newlines? = true } ;
-      case: Token/Arrow       do: { _eat-newlines? = true } ;
-      case: Token/LongArrow   do: { _eat-newlines? = true } ;
-      case: Token/Semicolon   do: { _eat-newlines? = true } ;
-      case: Token/LeftParen   do: { _eat-newlines? = true } ;
-      case: Token/LeftBracket do: { _eat-newlines? = true } ;
-      case: Token/LeftBrace   do: { _eat-newlines? = true } ;
-      default: { _eat-newlines? = false }
+      .case(Token/Keyword    ) do { _eat-newlines? = true } ;
+      .case(Token/Operator   ) do { _eat-newlines? = true } ;
+      .case(Token/Pipe       ) do { _eat-newlines? = true } ;
+      .case(Token/Arrow      ) do { _eat-newlines? = true } ;
+      .case(Token/LongArrow  ) do { _eat-newlines? = true } ;
+      .case(Token/Semicolon  ) do { _eat-newlines? = true } ;
+      .case(Token/LeftParen  ) do { _eat-newlines? = true } ;
+      .case(Token/LeftBracket) do { _eat-newlines? = true } ;
+      .case(Token/LeftBrace  ) do { _eat-newlines? = true } ;
+      .default { _eat-newlines? = false }
 
       if (done?) then { return token }
     }
@@ -196,20 +196,20 @@ var Lexers = [
     loop {
       _start = _pos
       var c = self current
-      true switch \
-      case: c == "("  do: { return self single-token: Token/LeftParen } ;
-      case: c == ")"  do: { return self single-token: Token/RightParen } ;
-      case: c == "["  do: { return self single-token: Token/LeftBracket } ;
-      case: c == "]"  do: { return self single-token: Token/RightBracket } ;
-      case: c == "{"  do: { return self single-token: Token/LeftBrace } ;
-      case: c == "}"  do: { return self single-token: Token/RightBrace } ;
-      case: c == ","  do: { return self single-token: Token/Comma } ;
-      case: c == "\n" do: { return self single-token: Token/Comma } ;
-      case: c == "\\" do: { return self single-token: Token/IgnoreLine } ;
-      case: c == ";"  do: { return self single-token: Token/Semicolon } ;
-      case: c == "."  do: { return self single-token: Token/Dot } ;
-      case: c == "|"  do: { return self single-token: Token/Pipe } ;
-      case: c == "/"  do: {
+      true.switch \
+      .case(c == "(" ) do { return self single-token: Token/LeftParen } ;
+      .case(c == ")" ) do { return self single-token: Token/RightParen } ;
+      .case(c == "[" ) do { return self single-token: Token/LeftBracket } ;
+      .case(c == "]" ) do { return self single-token: Token/RightBracket } ;
+      .case(c == "{" ) do { return self single-token: Token/LeftBrace } ;
+      .case(c == "}" ) do { return self single-token: Token/RightBrace } ;
+      .case(c == "," ) do { return self single-token: Token/Comma } ;
+      .case(c == "\n") do { return self single-token: Token/Comma } ;
+      .case(c == "\\") do { return self single-token: Token/IgnoreLine } ;
+      .case(c == ";" ) do { return self single-token: Token/Semicolon } ;
+      .case(c == "." ) do { return self single-token: Token/Dot } ;
+      .case(c == "|" ) do { return self single-token: Token/Pipe } ;
+      .case(c == "/" ) do {
         self advance
         if (self current == "/") then {
           // Line comment, so ignore the rest of the line and emit the line
@@ -222,7 +222,7 @@ var Lexers = [
           return self read-operator
         }
       } ;
-      case: c == ":"  do: {
+      .case(c == ":") do {
         self advance
         if (self current == ":") then {
           self advance
@@ -231,7 +231,7 @@ var Lexers = [
           return self make-token: Token/Keyword
         }
       } ;
-      case: c == "-" do: {
+      .case(c == "-") do {
         self advance
         if (self current digit?) then {
           return self read-number
@@ -239,12 +239,12 @@ var Lexers = [
           return self read-operator
         }
       } ;
-      case: c whitespace? do: { self advance-while: { c -> c whitespace? } } ;
-      case: c alpha?      do: { return self read-name } ;
-      case: c operator?   do: { return self read-operator } ;
-      case: c == "\""      do: { return self read-string } ;
-      case: c digit?      do: { return self read-number } ;
-      default: {
+      .case(c whitespace?) do { self advance-while: { c -> c whitespace? } } ;
+      .case(c alpha?     ) do { return self read-name } ;
+      .case(c operator?  ) do { return self read-operator } ;
+      .case(c == "\""    ) do { return self read-string } ;
+      .case(c digit?     ) do { return self read-number } ;
+      .default {
         // If we got here, we failed to handle the current character.
         return self single-token: Token/Error
       }
@@ -258,22 +258,22 @@ var Lexers = [
     var nesting = 1
 
     while { nesting > 0 } do {
-      true switch \
-      case: self eof? do: {
+      true.switch \
+      .case(self eof?) do {
         // TODO(bob): Unterminated comment, should return error.
         return
       } ;
-      case: (self current == "/") && (self next == "*") do: {
+      .case((self current == "/") && (self next == "*")) do {
         self advance
         self advance
         nesting = nesting + 1
       } ;
-      case: (self current == "*") && (self next == "/") do: {
+      .case((self current == "*") && (self next == "/")) do {
         self advance
         self advance
         nesting = nesting - 1
       } ;
-      default: { self advance }
+      .default { self advance }
     }
   }
 
@@ -314,35 +314,35 @@ var Lexers = [
 
     var text = ""
     loop {
-      if (self eof?) then {
+      if(self eof?) then {
         return self make-token: Token/Error text: "Unterminated string"
       }
 
-      if (self current == "\"") then {
+      if(self current == "\"") then {
         self advance
         return self make-token: Token/String text: text
       }
 
       // Handle string escapes.
-      if (self current == "\\") then {
+      if(self current == "\\") then {
         self advance
 
-        if (self eof?) then {
+        if(self eof?) then {
           return self make-token: Token/Error text:
               "Unterminated string escape."
         }
 
         var c = self advance
-        c switch \
-        case: "n"  do: { text = text + "\n" } ;
-        case: "\"" do: { text = text + "\"" } ;
-        case: "\\" do: { text = text + "\\" } ;
-        case: "t"  do: { text = text + "\t" } ;
-        default: {
+        c.switch \
+        .case("n" ) do { text = text + "\n" } ;
+        .case("\"") do { text = text + "\"" } ;
+        .case("\\") do { text = text + "\\" } ;
+        .case("t" ) do { text = text + "\t" } ;
+        .default {
           return self make-token: Token/Error text:
               "Unrecognized string escape '" + c + "'."
         }
-      } else: {
+      } else {
         text = text + self current
         self advance
       }
@@ -403,7 +403,7 @@ var errors = 0
 var lines = 0
 files.each { file ->
   write-line(file)
-  var source = Io read-file: file
+  var source = Io.read-file(file)
   var lexer = Lexer new-path: file source: source
   lexer.each { token ->
     tokens = tokens + 1

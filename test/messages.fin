@@ -12,21 +12,21 @@ Test.suite("Messages") is {
       Test.is-nil(b)
       Test.is-nil(c)
       Test.is-nil(d)
-    } call: 1
+    }.call(1)
 
     { a b c d ->
       Test.that(a) equals(1)
       Test.that(b) equals(2)
       Test.is-nil(c)
       Test.is-nil(d)
-    } call: 1 : 2
+    }.call(1, 2)
 
     { a b c d ->
       Test.that(a) equals(1)
       Test.that(b) equals(2)
       Test.that(c) equals(3)
       Test.is-nil(d)
-    } call: 1 : 2 : 3
+    }.call(1, 2, 3)
   }
 
   Test.test("extra args are ignored") is {
@@ -35,6 +35,6 @@ Test.suite("Messages") is {
       Test.that(b) equals(2)
       Test.that(c) equals(3)
       Test.that(d) equals(4)
-    } call: 1 : 2 : 3 : 4 : 5 : 6 : 7
+    }.call(1, 2, 3, 4, 5, 6, 7)
   }
 }

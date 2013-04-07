@@ -263,23 +263,14 @@ namespace Finch
                 LookAhead(TOKEN_NAME, TOKEN_LEFT_BRACE))
             {
                 // It's a message send with arguments.
-                do
-                {
-                    name += Consume()->Text() + " ";
-                    args.Add(Primary());
-                }
-                while (LookAhead(TOKEN_NAME, TOKEN_LEFT_PAREN) ||
-                       LookAhead(TOKEN_NAME, TOKEN_LEFT_BRACE));
-
+                object = ParseMessage(object);
             }
             else
             {
                 // It's an unary message.
                 name = Consume(TOKEN_NAME, "Expect message name after '.'")->Text();
-                // TODO(bob): Handle null.
+                object = Ref<Expr>(new MessageExpr(object, name, args));
             }
-
-            object = Ref<Expr>(new MessageExpr(object, name, args));
         }
 
         return object;
@@ -291,19 +282,7 @@ namespace Finch
             LookAhead(TOKEN_NAME, TOKEN_LEFT_BRACE))
         {
             // It's a message send to Ether.
-            String name;
-            Array<Ref<Expr> > args;
-
-            do
-            {
-                name += Consume()->Text() + " ";
-                args.Add(Primary());
-            }
-            while (LookAhead(TOKEN_NAME, TOKEN_LEFT_PAREN) ||
-                   LookAhead(TOKEN_NAME, TOKEN_LEFT_BRACE));
-
-            return Ref<Expr>(new MessageExpr(
-                Ref<Expr>(new NameExpr("Ether")), name, args));
+            return ParseMessage(Ref<Expr>(new NameExpr("Ether")));
         }
         else if (LookAhead(TOKEN_NAME))
         {
@@ -406,30 +385,7 @@ namespace Finch
         }
         else if (Match(TOKEN_LEFT_BRACE))
         {
-            Array<String> params;
-
-            // Try to parse an argument list. Look for a series of names
-            // followed by a "->".
-            int numArgs = 0;
-            while (LookAhead(numArgs, TOKEN_NAME))
-            {
-                numArgs++;
-            }
-
-            if (numArgs > 0 && LookAhead(numArgs, TOKEN_ARROW))
-            {
-                for (int i = 0; i < numArgs; i++)
-                {
-                    params.Add(Consume()->Text());
-                }
-
-                Consume(); // "->".
-            }
-
-            Ref<Expr> body = Expression();
-            Consume(TOKEN_RIGHT_BRACE, "Expect closing '}' after block.");
-            
-            return Ref<Expr>(new BlockExpr(params, body));
+            return ParseBlock();
         }
         else
         {
@@ -441,7 +397,42 @@ namespace Finch
         }
     }
 
-    // Parses just the message send part of a keyword message: "foo: a bar: b"
+    Ref<Expr> FinchParser::ParseMessage(Ref<Expr> receiver)
+    {
+        String name;
+        Array<Ref<Expr> > args;
+
+        do
+        {
+            name += Consume()->Text();
+
+            if (Match(TOKEN_LEFT_BRACE))
+            {
+                args.Add(ParseBlock());
+                name += " ";
+            }
+            else
+            {
+                // Parenthesized argument list.
+                Consume(TOKEN_LEFT_PAREN, "Expect '(' after method name.");
+
+                // Parse a comma (or line) separated list of parameters.
+                do
+                {
+                    args.Add(Assignment());
+                    name += " ";
+                }
+                while (Match(TOKEN_LINE));
+
+                Consume(TOKEN_RIGHT_PAREN, "Expect ')' after argument.");
+            }
+        }
+        while (LookAhead(TOKEN_NAME, TOKEN_LEFT_PAREN) ||
+               LookAhead(TOKEN_NAME, TOKEN_LEFT_BRACE));
+
+        return Ref<Expr>(new MessageExpr(receiver, name, args));
+    }
+
     Ref<Expr> FinchParser::ParseKeyword(Ref<Expr> object)
     {
         String             message;
@@ -462,7 +453,35 @@ namespace Finch
         
         return Ref<Expr>();
     }
-    
+
+    Ref<Expr> FinchParser::ParseBlock()
+    {
+        Array<String> params;
+
+        // Try to parse an argument list. Look for a series of names
+        // followed by a "->".
+        int numArgs = 0;
+        while (LookAhead(numArgs, TOKEN_NAME))
+        {
+            numArgs++;
+        }
+
+        if (numArgs > 0 && LookAhead(numArgs, TOKEN_ARROW))
+        {
+            for (int i = 0; i < numArgs; i++)
+            {
+                params.Add(Consume()->Text());
+            }
+
+            Consume(); // "->".
+        }
+
+        Ref<Expr> body = Expression();
+        Consume(TOKEN_RIGHT_BRACE, "Expect closing '}' after block.");
+
+        return Ref<Expr>(new BlockExpr(params, body));
+    }
+
     void FinchParser::ParseDefines(DefineExpr & expr, TokenType endToken)
     {
         while (true)
@@ -519,14 +538,19 @@ namespace Finch
 
             while (LookAhead(TOKEN_NAME))
             {
-                name += Consume()->Text() + " ";
+                name += Consume()->Text();
 
                 Consume(TOKEN_LEFT_PAREN, "Expect '(' after method name.");
 
-                Ref<Token> param = Consume(TOKEN_NAME,
-                    "Expect parameter name after '('.");
-                // TODO(bob): Handle null.
-                params.Add(param->Text());
+                // Parse a comma (or line) separated list of parameters.
+                do
+                {
+                    Ref<Token> param = Consume(TOKEN_NAME,
+                                               "Expect parameter name after '('.");
+                    params.Add(param->Text());
+                    name += " ";
+                }
+                while (Match(TOKEN_LINE));
 
                 Consume(TOKEN_RIGHT_PAREN, "Expect ')' after parameter.");
             }

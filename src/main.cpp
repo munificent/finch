@@ -59,7 +59,7 @@ int main (int argc, char * const argv[])
     Interpreter               interpreter(host);
 
     // Set up the standalone-provided behavior.
-    interpreter.BindMethod("Ether", "load:", LoadFile);
+    interpreter.BindMethod("Ether", "load ", LoadFile);
 
     // Figure out the absolute path to the core library, relative to the
     // executable. Assumes a directory layout like:

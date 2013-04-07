@@ -67,16 +67,16 @@ namespace Finch
         // Blocks.
         mBlockPrototype = MakeGlobal("Blocks");
         AddPrimitive(mBlockPrototype, "call", BlockCall);
-        AddPrimitive(mBlockPrototype, "call:", BlockCall);
-        AddPrimitive(mBlockPrototype, "call::", BlockCall);
-        AddPrimitive(mBlockPrototype, "call:::", BlockCall);
-        AddPrimitive(mBlockPrototype, "call::::", BlockCall);
-        AddPrimitive(mBlockPrototype, "call:::::", BlockCall);
-        AddPrimitive(mBlockPrototype, "call::::::", BlockCall);
-        AddPrimitive(mBlockPrototype, "call:::::::", BlockCall);
-        AddPrimitive(mBlockPrototype, "call::::::::", BlockCall);
-        AddPrimitive(mBlockPrototype, "call:::::::::", BlockCall);
-        AddPrimitive(mBlockPrototype, "call::::::::::", BlockCall);
+        AddPrimitive(mBlockPrototype, "call ", BlockCall);
+        AddPrimitive(mBlockPrototype, "call  ", BlockCall);
+        AddPrimitive(mBlockPrototype, "call   ", BlockCall);
+        AddPrimitive(mBlockPrototype, "call    ", BlockCall);
+        AddPrimitive(mBlockPrototype, "call     ", BlockCall);
+        AddPrimitive(mBlockPrototype, "call      ", BlockCall);
+        AddPrimitive(mBlockPrototype, "call       ", BlockCall);
+        AddPrimitive(mBlockPrototype, "call        ", BlockCall);
+        AddPrimitive(mBlockPrototype, "call         ", BlockCall);
+        AddPrimitive(mBlockPrototype, "call          ", BlockCall);
         
         // Fibers.
         mFiberPrototype = MakeGlobal("Fibers");
@@ -122,13 +122,13 @@ namespace Finch
         
         // Io.
         Value io = MakeGlobal("Io");
-        AddPrimitive(io, "read-file:", IoReadFile);
+        AddPrimitive(io, "read-file ", IoReadFile);
         
         // Bare primitive object.
         Value primitives = MakeGlobal("*primitive*");
-        AddPrimitive(primitives, "string-concat:and:",       PrimitiveStringConcat);
-        AddPrimitive(primitives, "string-compare:to:",       PrimitiveStringCompare);
-        AddPrimitive(primitives, "write ",                   PrimitiveWrite);
+        AddPrimitive(primitives, "string-concat  ",  PrimitiveStringConcat);
+        AddPrimitive(primitives, "string-compare  ", PrimitiveStringCompare);
+        AddPrimitive(primitives, "write ",           PrimitiveWrite);
         /*
          AddPrimitive(primitives, "new-fiber ",               PrimitiveNewFiber);
          AddPrimitive(primitives, "current-fiber",            PrimitiveGetCurrentFiber);

@@ -39,9 +39,16 @@ namespace Finch
         Ref<Expr> Operator(bool & isMessage);
         Ref<Expr> Unary(bool & isMessage);
         Ref<Expr> Primary();
-        
+
+        // Parses just the message send part of a message "foo(1, 2) bar(3)"
+        Ref<Expr> ParseMessage(Ref<Expr> receiver);
+
+        // Parses just the message send part of a keyword message: "foo: a bar: b"
         Ref<Expr> ParseKeyword(Ref<Expr> object);
-        
+
+        // Parses a block literal. Assumes the "{" has already been consumed.
+        Ref<Expr> ParseBlock();
+
         void ParseDefines(DefineExpr & expr, TokenType endToken);
         void ParseDefine(DefineExpr & expr);
         void ParseDefineBody(DefineExpr & expr, String name,
