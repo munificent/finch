@@ -1,11 +1,11 @@
-Test suite: "Self" is: {
-  Test test: "Self in non-method block is nil" is: {
+Test.suite("Self") is {
+  Test.test("Self in non-method block is nil") is {
     var block = { self }
 
-    Test that: block.call equals: nil
+    Test.that(block.call) equals(nil)
   }
 
-  Test test: "Self in block is outer self" is: {
+  Test.test("Self in block is outer self") is {
     var foo = [
       to-string { "foo" }
       bar {
@@ -14,10 +14,10 @@ Test suite: "Self" is: {
       }
     ]
 
-    Test that: foo.bar equals: "foo"
+    Test.that(foo.bar) equals("foo")
   }
 
-  Test test: "Self in parent method is child" is: {
+  Test.test("Self in parent method is child") is {
     var parent = [
       call-to-string { self.to-string }
       to-string { "parent" }
@@ -25,11 +25,11 @@ Test suite: "Self" is: {
 
     var child = [|parent| to-string { "child" } ]
 
-    Test that: parent.call-to-string equals: "parent"
-    Test that: child.call-to-string equals: "child"
+    Test.that(parent.call-to-string) equals("parent")
+    Test.that(child.call-to-string) equals("child")
   }
 
-  Test test: "Self in block is lexical not dynamic scope" is: {
+  Test.test("Self in block is lexical not dynamic scope") is {
     // create a block in one object scope
     var foo = [
       to-string { "foo" }
@@ -42,14 +42,14 @@ Test suite: "Self" is: {
       call-block: block { block.call }
     ]
 
-    Test that: (bar call-block: foo.block) equals: "foo"
+    Test.that(bar call-block: foo.block) equals("foo")
 
     // needs to play nice with inheritance too
     var foo2 = [|foo| to-string { "foo2" } ]
-    Test that: (bar call-block: foo2.block) equals: "foo2"
+    Test.that(bar call-block: foo2.block) equals("foo2")
   }
 
-  Test test: "Recursive inherited method restores outer self" is: {
+  Test.test("Recursive inherited method restores outer self") is {
     var child = nil
     var parent = [
       recurse: recurse {
@@ -68,12 +68,12 @@ Test suite: "Self" is: {
 
     child = [|parent| to-string { "c" } ]
 
-    Test that: (parent recurse: false) equals: "p"
-    Test that: (child  recurse: false) equals: "c"
-    Test that: (parent recurse: true) equals: "pcp"
+    Test.that(parent recurse: false) equals("p")
+    Test.that(child  recurse: false) equals("c")
+    Test.that(parent recurse: true) equals("pcp")
   }
 
-  Test test: "Storing a block in a method caches self at that time" is: {
+  Test.test("Storing a block in a method caches self at that time") is {
     var parent = [
       to-string { "parent" }
       make-block {
@@ -87,9 +87,9 @@ Test suite: "Self" is: {
     ]
 
     parent.make-block
-    Test that: child.call-block equals: "parent"
+    Test.that(child.call-block) equals("parent")
 
     child.make-block
-    Test that: child.call-block equals: "child"
+    Test.that(child.call-block) equals("child")
   }
 }

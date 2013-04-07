@@ -1,5 +1,5 @@
-Test suite: "Return" is: {
-  Test test: "return exits enclosing method" is: {
+Test.suite("Return") is {
+  Test.test("return exits enclosing method") is {
     var a = "0"
     var obj = [
       foo {
@@ -14,10 +14,10 @@ Test suite: "Return" is: {
     ]
     obj.foo
 
-    Test that: a equals: "012"
+    Test.that(a) equals("012")
   }
 
-  Test test: "the method returns the value passed to return" is: {
+  Test.test("the method returns the value passed to return") is {
     var a = "before"
     var obj = [
       foo {
@@ -26,10 +26,10 @@ Test suite: "Return" is: {
       }
     ]
 
-    Test that: obj.foo equals: "result"
+    Test.that(obj.foo) equals("result")
   }
 
-  Test test: "returns work even when passed to tail calls" is: {
+  Test.test("returns work even when passed to tail calls") is {
     var a = "before"
     var obj = [
       foo {
@@ -37,10 +37,10 @@ Test suite: "Return" is: {
       }
     ]
 
-    Test that: obj.foo equals: "result"
+    Test.that(obj.foo) equals("result")
   }
 
-  Test test: "returns work in the middle of an expression" is: {
+  Test.test("returns work in the middle of an expression") is {
     // This is a regression test for a bug. If you did a return in the middle
     // of an expression, the other operands in the expression would be left on
     // the stack, causing all sorts of trouble.
@@ -49,6 +49,6 @@ Test suite: "Return" is: {
       bar { self.foo }
     ]
 
-    Test that: obj.bar equals: "right"
+    Test.that(obj.bar) equals("right")
   }
 }

@@ -1,107 +1,107 @@
-Test suite: "Arrays" is: {
-  Test test: "Array count:" is: {
-    Test that: (Array count: 3).count equals: 3
-    Test that: (Array count: 5).count equals: 5
+Test.suite("Arrays") is {
+  Test.test("Array count:") is {
+    Test.that((Array count: 3).count) equals(3)
+    Test.that((Array count: 5).count) equals(5)
   }
 
-  Test test: "Array count:fill-with:" is: {
+  Test.test("Array count:fill-with:") is {
     var a = Array count: 3 fill-with: "hi"
-    Test that: a.at(0) equals: "hi"
-    Test that: a.at(1) equals: "hi"
-    Test that: a.at(2) equals: "hi"
+    Test.that(a.at(0)) equals("hi")
+    Test.that(a.at(1)) equals("hi")
+    Test.that(a.at(2)) equals("hi")
   }
 
-  Test test: "literal" is: {
-    Test that: #[].count equals: 0
+  Test.test("literal") is {
+    Test.that(#[].count) equals(0)
 
     var a = #[3, 4]
-    Test that: a.count equals: 2
-    Test that: a.at(0) equals: 3
-    Test that: a.at(1) equals: 4
+    Test.that(a.count) equals(2)
+    Test.that(a.at(0)) equals(3)
+    Test.that(a.at(1)) equals(4)
   }
 
-  Test test: "count" is: {
-    Test that: #[].count        equals: 0
-    Test that: #[2].count       equals: 1
-    Test that: #[2, 3].count    equals: 2
-    Test that: #[2, 3, 4].count equals: 3
+  Test.test("count") is {
+    Test.that(#[].count       ) equals(0)
+    Test.that(#[2].count      ) equals(1)
+    Test.that(#[2, 3].count   ) equals(2)
+    Test.that(#[2, 3, 4].count) equals(3)
   }
 
-  Test test: "add" is: {
+  Test.test("add") is {
     // Returns added item.
-    Test that: #[].add(2) equals: 2
+    Test.that(#[].add(2)) equals(2)
 
     var a = #[1, 2]
     a.add(3)
-    Test that: a.count equals: 3
-    Test that: a.at(2) equals: 3
+    Test.that(a.count) equals(3)
+    Test.that(a.at(2)) equals(3)
   }
 
-  Test test: "at" is: {
-    Test that: #[4, 5, 6].at(0) equals: 4
-    Test that: #[4, 5, 6].at(1) equals: 5
-    Test that: #[4, 5, 6].at(2) equals: 6
-    Test that: #[4, 5, 6].at(-1) equals: 6
-    Test that: #[4, 5, 6].at(-2) equals: 5
-    Test that: #[4, 5, 6].at(-3) equals: 4
+  Test.test("at") is {
+    Test.that(#[4, 5, 6].at(0)) equals(4)
+    Test.that(#[4, 5, 6].at(1)) equals(5)
+    Test.that(#[4, 5, 6].at(2)) equals(6)
+    Test.that(#[4, 5, 6].at(-1)) equals(6)
+    Test.that(#[4, 5, 6].at(-2)) equals(5)
+    Test.that(#[4, 5, 6].at(-3)) equals(4)
   }
 
-  Test test: "at:put:" is: {
+  Test.test("at put") is {
     var a = #[1, 2, 3]
-    Test that: a.at(1) equals: 2
-    a at: 1 put: 5
-    Test that: a.at(1) equals: 5
+    Test.that(a.at(1)) equals(2)
+    a.at(1) put(5)
+    Test.that(a.at(1)) equals(5)
   }
 
-  Test test: "each" is: {
+  Test.test("each") is {
     var a = #[1, 2, 3]
     var c = 0
     var b = a.each { e -> c = c + e }
 
-    Test that: c equals: 6
+    Test.that(c) equals(6)
   }
 
-  Test test: "map" is: {
+  Test.test("map") is {
     var a = #[1, 2, 3]
     var b = a.map { e -> e + 1 }
 
-    Test that: b.count equals: 3
-    Test that: b.at(0) equals: 2
-    Test that: b.at(1) equals: 3
-    Test that: b.at(2) equals: 4
+    Test.that(b.count) equals(3)
+    Test.that(b.at(0)) equals(2)
+    Test.that(b.at(1)) equals(3)
+    Test.that(b.at(2)) equals(4)
   }
 
-  Test test: "++" is: {
+  Test.test("++") is {
     var a = #[1, 2] ++ #[3, 4]
 
-    Test that: a.count equals: 4
-    Test that: a.at(0) equals: 1
-    Test that: a.at(1) equals: 2
-    Test that: a.at(2) equals: 3
-    Test that: a.at(3) equals: 4
+    Test.that(a.count) equals(4)
+    Test.that(a.at(0)) equals(1)
+    Test.that(a.at(1)) equals(2)
+    Test.that(a.at(2)) equals(3)
+    Test.that(a.at(3)) equals(4)
   }
 
-  Test test: "remove-at:" is: {
+  Test.test("remove-at") is {
     var a = #[1, 2, 3, 4]
-    var b = a remove-at: 2
+    var b = a.remove-at(2)
 
-    Test that: a.count equals: 3
-    Test that: a.at(0) equals: 1
-    Test that: a.at(1) equals: 2
-    Test that: a.at(2) equals: 4
+    Test.that(a.count) equals(3)
+    Test.that(a.at(0)) equals(1)
+    Test.that(a.at(1)) equals(2)
+    Test.that(a.at(2)) equals(4)
 
-    Test that: b equals: 3
+    Test.that(b) equals(3)
   }
 
-  Test test: "remove-at: negative index" is: {
+  Test.test("remove-at negative index") is {
     var a = #[1, 2, 3, 4]
-    var b = a remove-at: -3
+    var b = a.remove-at(-3)
 
-    Test that: a.count equals: 3
-    Test that: a.at(0) equals: 1
-    Test that: a.at(1) equals: 3
-    Test that: a.at(2) equals: 4
+    Test.that(a.count) equals(3)
+    Test.that(a.at(0)) equals(1)
+    Test.that(a.at(1)) equals(3)
+    Test.that(a.at(2)) equals(4)
 
-    Test that: b equals: 2
+    Test.that(b) equals(2)
   }
 }

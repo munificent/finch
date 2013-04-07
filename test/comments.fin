@@ -1,30 +1,31 @@
-Test suite: "Comments" is: {
-  Test test: "line comment in continued line" is: {
-    Test that: 1 equals:
+Test.suite("Comments") is {
+  Test.test("line comment in continued line") is {
+    Test.that(1) equals(
     // comment
-    1
+    1)
   }
 
-  Test test: "line comment in name" is: {
+  Test.test("line comment in name") is {
     var foo = 1
-    Test that: 1 equals: foo//comment
+    var bar = foo//comment
+    Test.that(bar) equals(foo)
   }
 
-  Test test: "line comment in operator" is: {
-    Test that: 3 equals: 1 +//comment
-    2
+  Test.test("line comment in operator") is {
+    Test.that(3) equals(1 +//comment
+    2)
   }
 
-  Test test: "block comment in name" is: {
+  Test.test("block comment in name") is {
     var foo = 1
-    Test that: foo/*comment*/ equals: 1
+    Test.that(foo/*comment*/) equals(1)
   }
 
-  Test test: "block comment in operator" is: {
-    Test that: 1 +/*comment*/2 equals: 3
+  Test.test("block comment in operator") is {
+    Test.that(1 +/*comment*/2) equals(3)
   }
 
-  Test test: "nested block comment" is: {
-    Test that: 1 + /* 2 /* 3 */ 4 */ 5 equals: 6
+  Test.test("nested block comment") is {
+    Test.that(1 + /* 2 /* 3 */ 4 */ 5) equals(6)
   }
 }

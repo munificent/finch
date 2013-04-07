@@ -17,7 +17,7 @@ var PrettyPrinter = [
 
     // TODO(bob): Use these:
     indent { _indent = _indent + "  " }
-    dedent { _indent = _indent from: 2 }
+    dedent { _indent = _indent.from(2) }
   ]
 ]
 

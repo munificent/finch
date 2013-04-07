@@ -360,7 +360,7 @@ var Lexers = [
   }
 
   make-token: type {
-    var text = _source from: _start to: _pos
+    var text = _source.from(_start) to(_pos)
 
     if (text == "="        ) then { type = Token/Equals }
     if (text == "self"     ) then { type = Token/Self }
@@ -368,7 +368,7 @@ var Lexers = [
     if (text == "break"    ) then { type = Token/Break }
     if (text == "return"   ) then { type = Token/Return }
 
-    self make-token: type text: (_source from: _start to: _pos)
+    self make-token: type text: _source.from(_start) to(_pos)
   }
 
   make-token: type text: text {

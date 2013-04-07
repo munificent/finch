@@ -81,7 +81,7 @@ var Parser = [
 
     consume {
       self fill-look-ahead: 1
-      var token = _read remove-at: 0
+      var token = _read.remove-at(0)
       token
     }
 

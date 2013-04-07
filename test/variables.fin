@@ -1,77 +1,77 @@
-Test suite: "Variables" is: {
-  Test test: "Define" is: {
+Test.suite("Variables") is {
+  Test.test("Define") is {
     var a = "something"
-    Test that: a equals: "something"
+    Test.that(a) equals("something")
   }
 
-  Test test: "Chain" is: {
+  Test.test("Chain") is {
     // TODO(bob): Do we want to allow this?
     var a = var b = "something"
-    Test that: a equals: "something"
-    Test that: b equals: "something"
+    Test.that(a) equals("something")
+    Test.that(b) equals("something")
   }
 
-  Test test: "Redefinition" is: {
+  Test.test("Redefinition") is {
     var a = "before"
-    Test that: a equals: "before"
+    Test.that(a) equals("before")
     // TODO(bob): This should be an error.
     var a = "after"
-    Test that: a equals: "after"
+    Test.that(a) equals("after")
   }
 
-  Test test: "Assignment" is: {
+  Test.test("Assignment") is {
     var a = "before"
-    Test that: a equals: "before"
+    Test.that(a) equals("before")
     a = "after"
-    Test that: a equals: "after"
+    Test.that(a) equals("after")
   }
 
-  Test test: "Nested Local Scope" is: {
+  Test.test("Nested Local Scope") is {
     var a = "local"
 
-    do { Test that: a equals: "local" }
+    do { Test.that(a) equals("local") }
 
-    Test that: a equals: "local"
+    Test.that(a) equals("local")
   }
 
-  Test test: "Shadowed Local Scope" is: {
+  Test.test("Shadowed Local Scope") is {
     var a = "outer"
 
     do {
       var a = "inner"
-      Test that: a equals: "inner"
+      Test.that(a) equals("inner")
     }
 
-    Test that: a equals: "outer"
+    Test.that(a) equals("outer")
   }
 
-  Test test: "Unshadow" is: {
+  Test.test("Unshadow") is {
     var a = "first"
 
     do {
-      Test that: a equals: "first"
+      Test.that(a) equals("first")
       var a = "shadow"
-      Test that: a equals: "shadow"
+      Test.that(a) equals("shadow")
       var a = undefined
-      Test that: a equals: "first"
+      Test.that(a) equals("first")
     }
   }
 
-  Test test: "Assign to outer scope" is: {
+  Test.test("Assign to outer scope") is {
     var a = "outer"
     do { a = "inner" }
-    Test that: a equals: "inner"
+    Test.that(a) equals("inner")
   }
 
-  Test test: "Field" is: {
+  Test.test("Field") is {
     var foo = [
       create { _field = "field" }
-      test { Test that: _field equals: "field" }
+      test { Test.that(_field) equals("field") }
     ]
 
-    Test that: _field equals: nil
+    Test.that(_field) equals(nil)
     foo.create
-    Test that: _field equals: nil
+    Test.that(_field) equals(nil)
     foo.test
   }
 }

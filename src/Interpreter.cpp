@@ -61,8 +61,8 @@ namespace Finch
         AddPrimitive(mArrayPrototype, "count",       ArrayCount);
         AddPrimitive(mArrayPrototype, "add ",        ArrayAdd);
         AddPrimitive(mArrayPrototype, "at ",         ArrayAt);
-        AddPrimitive(mArrayPrototype, "at:put:",     ArrayAtPut);
-        AddPrimitive(mArrayPrototype, "remove-at:",  ArrayRemoveAt);
+        AddPrimitive(mArrayPrototype, "at put ",     ArrayAtPut);
+        AddPrimitive(mArrayPrototype, "remove-at ",  ArrayRemoveAt);
         
         // Blocks.
         mBlockPrototype = MakeGlobal("Blocks");
@@ -87,7 +87,7 @@ namespace Finch
         mNumberPrototype = MakeGlobal("Numbers");
         AddPrimitive(mNumberPrototype, "abs", NumberAbs);
         AddPrimitive(mNumberPrototype, "neg", NumberNeg);
-        AddPrimitive(mNumberPrototype, "mod:", NumberMod);
+        AddPrimitive(mNumberPrototype, "mod ", NumberMod);
         AddPrimitive(mNumberPrototype, "floor", NumberFloor);
         AddPrimitive(mNumberPrototype, "ceiling", NumberCeiling);
         AddPrimitive(mNumberPrototype, "sqrt",  NumberSqrt);
@@ -97,12 +97,12 @@ namespace Finch
         AddPrimitive(mNumberPrototype, "asin",  NumberAsin);
         AddPrimitive(mNumberPrototype, "acos",  NumberAcos);
         AddPrimitive(mNumberPrototype, "atan",  NumberAtan);
-        AddPrimitive(mNumberPrototype, "atan:", NumberAtan2);
-        AddPrimitive(mNumberPrototype, "+number:", NumberAdd);
-        AddPrimitive(mNumberPrototype, "-number:", NumberSubtract);
-        AddPrimitive(mNumberPrototype, "*number:", NumberMultiply);
-        AddPrimitive(mNumberPrototype, "/number:", NumberDivide);
-        AddPrimitive(mNumberPrototype, "==number:", NumberEquals);
+        AddPrimitive(mNumberPrototype, "atan ", NumberAtan2);
+        AddPrimitive(mNumberPrototype, "number+ ", NumberAdd);
+        AddPrimitive(mNumberPrototype, "number- ", NumberSubtract);
+        AddPrimitive(mNumberPrototype, "number* ", NumberMultiply);
+        AddPrimitive(mNumberPrototype, "number/ ", NumberDivide);
+        AddPrimitive(mNumberPrototype, "number== ", NumberEquals);
         AddPrimitive(mNumberPrototype, "!=",  NumberNotEquals);
         AddPrimitive(mNumberPrototype, "<",   NumberLessThan);
         AddPrimitive(mNumberPrototype, ">",   NumberGreaterThan);
@@ -113,7 +113,7 @@ namespace Finch
         mStringPrototype = MakeGlobal("Strings");
         AddPrimitive(mStringPrototype, "count",       StringCount);
         AddPrimitive(mStringPrototype, "at ",         StringAt);
-        AddPrimitive(mStringPrototype, "from:count:", StringFromCount);
+        AddPrimitive(mStringPrototype, "from count ", StringFromCount);
         AddPrimitive(mStringPrototype, "hash-code",   StringHashCode);
         AddPrimitive(mStringPrototype, "index-of ",   StringIndexOf);
         
@@ -130,9 +130,9 @@ namespace Finch
         AddPrimitive(primitives, "string-compare:to:",       PrimitiveStringCompare);
         AddPrimitive(primitives, "write ",                   PrimitiveWrite);
         /*
-         AddPrimitive(primitives, "new-fiber:",               PrimitiveNewFiber);
+         AddPrimitive(primitives, "new-fiber ",               PrimitiveNewFiber);
          AddPrimitive(primitives, "current-fiber",            PrimitiveGetCurrentFiber);
-         AddPrimitive(primitives, "switch-to-fiber:passing:", PrimitiveSwitchToFiber);
+         AddPrimitive(primitives, "switch-to-fiber passing ", PrimitiveSwitchToFiber);
          */
         AddPrimitive(primitives, "callstack-depth",          PrimitiveGetCallstackDepth);
         

@@ -1,77 +1,77 @@
-Test suite: "Fibers" is: {
-  Test test: "new: doesn't immediately start" is: {
+Test.suite("Fibers") is {
+  Test.test("new doesn't immediately start") is {
     var executed = false
-    var fiber = Fiber new: {
+    var fiber = Fiber.new {
       executed = true
     }
 
-    Test is-false: executed
-    Test is-false: fiber.running?
-    Test is-false: fiber.done?
+    Test.is-false(executed)
+    Test.is-false(fiber.running?)
+    Test.is-false(fiber.done?)
 
     fiber run
-    Test is-true: executed
-    Test is-false: fiber.running?
-    Test is-true: fiber.done?
+    Test.is-true(executed)
+    Test.is-false(fiber.running?)
+    Test.is-true(fiber.done?)
   }
 
-  Test test: "spawn: immediately starts" is: {
+  Test.test("spawn immediately starts") is {
     var executed = false
-    var fiber = Fiber spawn: {
+    var fiber = Fiber.spawn {
       executed = true
     }
 
-    Test is-true: executed
-    Test is-false: fiber.running?
-    Test is-true: fiber.done?
+    Test.is-true(executed)
+    Test.is-false(fiber.running?)
+    Test.is-true(fiber.done?)
   }
 
-  Test test: "yield: returns value" is: {
-    var fiber = Fiber new: {
-      Fiber yield: 123
+  Test.test("yield returns value") is {
+    var fiber = Fiber.new {
+      Fiber.yield(123)
     }
 
     var result = fiber.run
 
-    Test that: result equals: 123
-    Test is-false: fiber.running?
-    Test is-false: fiber.done?
+    Test.that(result) equals(123)
+    Test.is-false(fiber.running?)
+    Test.is-false(fiber.done?)
 
     fiber.run
-    Test is-false: fiber.running?
-    Test is-true: fiber.done?
+    Test.is-false(fiber.running?)
+    Test.is-true(fiber.done?)
   }
 
-  Test test: "last run returns block value" is: {
-    var fiber = Fiber new: {
-      Fiber yield: 123
+  Test.test("last run returns block value") is {
+    var fiber = Fiber.new {
+      Fiber.yield(123)
       345
     }
 
     var result1 = fiber.run
     var result2 = fiber.run
 
-    Test that: result1 equals: 123
-    Test that: result2 equals: 345
-    Test is-false: fiber.running?
+    Test.that(result1) equals(123)
+    Test.that(result2) equals(345)
+    Test.is-false(fiber.running?)
   }
 
-  Test test: "run returns nil after last yield" is: {
-    var fiber = Fiber new: {
-      Fiber yield: 123
+  Test.test("run returns nil after last yield") is {
+    var fiber = Fiber.new {
+      Fiber.yield(123)
     }
 
     var result1 = fiber.run
     var result2 = fiber.run
 
-    Test that: result1 equals: 123
-    Test that: result2 equals: nil
-    Test is-false: fiber.running?
+    Test.that(result1) equals(123)
+    Test.that(result2) equals(nil)
+    Test.is-false(fiber.running?)
   }
 
-  Test test: "run: passes in value" is: {
+  Test.test("run: passes in value") is {
     var passed-in = nil
-    var fiber = Fiber new: {
+    var fiber = Fiber.new {
       passed-in = Fiber.yield
     }
 
@@ -81,6 +81,6 @@ Test suite: "Fibers" is: {
     // pass value into yield and resume
     fiber run: 123
 
-    Test that: passed-in equals: 123
+    Test.that(passed-in) equals(123)
   }
 }

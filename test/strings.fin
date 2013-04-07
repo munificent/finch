@@ -1,82 +1,82 @@
-Test suite: "Strings" is: {
+Test.suite("Strings") is {
   // make a couple of objects that implement to-string
   var apple = [ to-string { "apple" } ]
   var banana = [ to-string { "banana" } ]
 
-  Test test: "count" is: {
-    Test that: "".count        equals: 0
-    Test that: "a".count       equals: 1
-    Test that: "1234567".count equals: 7
+  Test.test("count") is {
+    Test.that("".count       ) equals(0)
+    Test.that("a".count      ) equals(1)
+    Test.that("1234567".count) equals(7)
   }
 
-  Test test: "to-string" is: {
-    Test that: 123.to-string        equals: "123"
-    Test that: "foo".to-string      equals: "foo"
-    Test that: #[1, 2, 3].to-string equals: "#[1, 2, 3]"
-    Test that: apple.to-string      equals: "apple"
+  Test.test("to-string") is {
+    Test.that(123.to-string       ) equals("123")
+    Test.that("foo".to-string     ) equals("foo")
+    Test.that(#[1, 2, 3].to-string) equals("#[1, 2, 3]")
+    Test.that(apple.to-string     ) equals("apple")
   }
 
-  Test test: "Concatenation" is: {
-    Test that: "a" + 1 + 2     equals: "a12"
-    Test that: 1 + "a" + 2     equals: "1a2"
-    Test that: 1 + 2 + "a"     equals: "3a"
-    Test that: "left" + apple  equals: "leftapple"
+  Test.test("Concatenation") is {
+    Test.that("a" + 1 + 2   ) equals("a12")
+    Test.that(1 + "a" + 2   ) equals("1a2")
+    Test.that(1 + 2 + "a"   ) equals("3a")
+    Test.that("left" + apple) equals("leftapple")
   }
 
-  Test test: "Comparison" is: {
-    Test is-true: "a" == "a"
-    Test is-false: "a" == "b"
+  Test.test("Comparison") is {
+    Test.is-true("a" == "a")
+    Test.is-false("a" == "b")
 
-    Test is-false: "a" != "a"
-    Test is-true: "a" != "b"
+    Test.is-false("a" != "a")
+    Test.is-true("a" != "b")
 
-    Test is-true: "a" < "b"
-    Test is-false: "b" < "a"
-    Test is-false: "a" < "a"
+    Test.is-true("a" < "b")
+    Test.is-false("b" < "a")
+    Test.is-false("a" < "a")
 
-    Test is-false: "a" > "b"
-    Test is-true: "b" > "a"
-    Test is-false: "a" > "a"
+    Test.is-false("a" > "b")
+    Test.is-true("b" > "a")
+    Test.is-false("a" > "a")
 
-    Test is-true: "a" <= "b"
-    Test is-false: "b" <= "a"
-    Test is-true: "a" <= "a"
+    Test.is-true("a" <= "b")
+    Test.is-false("b" <= "a")
+    Test.is-true("a" <= "a")
 
-    Test is-false: "a" >= "b"
-    Test is-true: "b" >= "a"
-    Test is-true: "a" >= "a"
+    Test.is-false("a" >= "b")
+    Test.is-true("b" >= "a")
+    Test.is-true("a" >= "a")
 
     // equality is *strict* and doesn't implicitly convert
-    Test is-false: "apple" == apple
+    Test.is-false("apple" == apple)
   }
 
-  Test test: "from:count:" is: {
-    Test that: ("0123456789" from: 0 count: 1) equals: "0"
-    Test that: ("0123456789" from: 2 count: 5) equals: "23456"
+  Test.test("from count") is {
+    Test.that("0123456789".from(0) count(1)) equals("0")
+    Test.that("0123456789".from(2) count(5)) equals("23456")
   }
 
-  Test test: "from:to:" is: {
-    Test that: ("0123456789" from: 0 to: 1) equals: "0"
-    Test that: ("0123456789" from: 2 to: 5) equals: "234"
+  Test.test("from to") is {
+    Test.that("0123456789".from(0) to(1)) equals("0")
+    Test.that("0123456789".from(2) to(5)) equals("234")
   }
 
-  Test test: "from:to:" is: {
-    Test that: ("0123456789" from: 2) equals: "23456789"
+  Test.test("from") is {
+    Test.that("0123456789".from(2)) equals("23456789")
   }
 
-  Test test: "index-of" is: {
-    Test that: "0123456789".index-of("0") equals: 0
-    Test that: "0123456789".index-of("234") equals: 2
-    Test that: "0123456789".index-of("56789") equals: 5
-    Test that: "0123456789".index-of("not found") equals: -1
-    Test that: "".index-of("not found") equals: -1
+  Test.test("index-of") is {
+    Test.that("0123456789".index-of("0")) equals(0)
+    Test.that("0123456789".index-of("234")) equals(2)
+    Test.that("0123456789".index-of("56789")) equals(5)
+    Test.that("0123456789".index-of("not found")) equals(-1)
+    Test.that("".index-of("not found")) equals(-1)
   }
 
-  Test test: "contains" is: {
-    Test is-true: ("0123456789".contains("0"))
-    Test is-true: ("0123456789".contains("234"))
-    Test is-true: ("0123456789".contains("56789"))
-    Test is-false: ("0123456789".contains("not found"))
-    Test is-false: ("".contains("not found"))
+  Test.test("contains") is {
+    Test.is-true("0123456789".contains("0"))
+    Test.is-true("0123456789".contains("234"))
+    Test.is-true("0123456789".contains("56789"))
+    Test.is-false("0123456789".contains("not found"))
+    Test.is-false("".contains("not found"))
   }
 }

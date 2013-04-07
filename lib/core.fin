@@ -111,10 +111,10 @@ Ether :: (
 Blocks :: block? { true }
 
 var Fiber = [
-  new: block { *primitive* new-fiber: block }
+  new block { *primitive*.new-fiber(block) }
 
-  spawn: block {
-    var fiber = Fiber new: block
+  spawn block {
+    var fiber = Fiber.new(block)
     // Immediately run it, discarding the first yielded result.
     fiber.run
     fiber
@@ -122,11 +122,11 @@ var Fiber = [
 
   current { *primitive*.current-fiber }
 
-  yield: value {
-    *primitive* switch-to-fiber: Fiber.current.run-by passing: value
+  yield value {
+    *primitive*.switch-to-fiber(Fiber.current.run-by) passing(value)
   }
 
-  yield { Fiber yield: nil }
+  yield { Fiber.yield(nil) }
 ]
 
 Fibers :: (
@@ -134,7 +134,7 @@ Fibers :: (
 
   run: value {
     _run-by = Fiber.current
-    *primitive* switch-to-fiber: self passing: value
+    *primitive*.switch-to-fiber(self) passing(value)
   }
 
   run { self run: nil }
@@ -145,33 +145,33 @@ Numbers :: (
   number? { true }
 
   // Double-dispatch.
-  + right { right +number: self }
-  - right { right -number: self }
-  * right { right *number: self }
-  / right { right /number: self }
-  == right { right ==number: self }
+  + right { right.number+(self) }
+  - right { right.number-(self) }
+  * right { right.number*(self) }
+  / right { right.number/(self) }
+  == right { right.number==(self) }
 )
 
 Object :: (
   // Adding anything to a string converts it to a string and concatenates.
-  +string: left { *primitive* string-concat: left and: self.to-string }
+  string+ left { *primitive* string-concat: left and: self.to-string }
 
   // Comparisons between unrelated types always return false.
-  ==number: left { false }
-  ==string: left { false }
+  number== left { false }
+  string== left { false }
 )
 
 Strings :: (
   string? { true }
 
   // Adding a number to a string converts it to a string and concatenates.
-  +number: left { left.to-string + self }
+  number+ left { left.to-string + self }
 
   // Double-dispatch.
-  + right { right +string: self }
-  == right { right ==string: self }
+  + right { right.string+(self) }
+  == right { right.string==(self) }
 
-  ==string: left { (*primitive* string-compare: left to: self) == 0 }
+  string== left { (*primitive* string-compare: left to: self) == 0 }
   <  right { (*primitive* string-compare: self to: right) < 0 }
   >  right { (*primitive* string-compare: self to: right) > 0 }
   <= right { (*primitive* string-compare: self to: right) <= 0 }
@@ -181,8 +181,8 @@ Strings :: (
 
   contains needle { self.index-of(needle) != -1 }
 
-  from: from { self from: from count: self.count - from }
-  from: from to: to { self from: from count: to - from }
+  from from { self.from(from) count(self.count - from) }
+  from from to to { self.from(from) count(to - from) }
 )
 
 var Array = [
