@@ -20,20 +20,20 @@ var Parser = [
 
     if-look-ahead: type then: then else: else {
       self fill-look-ahead: 1
-      if ((_read at: 0) type == type) then (then) else (else)
+      if (_read.at(0).type == type) then (then) else (else)
     }
 
     if-look-ahead: type1 : type2 then: then {
       self fill-look-ahead: 2
-      var pass = ((_read at: 0) type == type1).and { (_read at: 1) type == type2 }
+      var pass = (_read.at(0).type == type1).and { (_read.at(1) type == type2 }
       if (pass) then (then)
     }
 
     look-ahead: type1 : type2 : type3 {
       self fill-look-ahead: 3
-      ((_read at: 0) type == type1).and {
-        ((_read at: 2) type == type2).and {
-          (_read at: 3) type == type3
+      (_read.at(0).type == type1).and {
+        (_read.at(2).type == type2).and {
+          _read.at(3).type == type3
         }
       }
     }
@@ -76,7 +76,7 @@ var Parser = [
     }
 
     current {
-      _read at: 0
+      _read.at(0)
     }
 
     consume {
@@ -100,8 +100,8 @@ var Parser = [
     }
 
     fill-look-ahead: count {
-      while { _read count < count } do {
-        _read add: _tokens next-token
+      while { _read.count < count } do {
+        _read.add(_tokens.next-token)
       }
     }
   ]
@@ -124,7 +124,7 @@ var FinchParser = [|Parser|
 
       // If there's just one, don't wrap it.
       if (exprs count == 1) then {
-        return exprs at: 0
+        return exprs.at(0)
       }
 
       Expr sequence: exprs
@@ -172,7 +172,7 @@ var FinchParser = [|Parser|
       var args = #[]
       self while-match: Token/Keyword do: { keyword ->
         message = message + keyword text
-        args add: self operator
+        args.add(self.operator)
       }
 
       if (args count > 0) then {
@@ -265,7 +265,7 @@ var FinchParser = [|Parser|
         var params = #[]
         self match: Token/Pipe then: {
           self while-match: Token/Name do: { name ->
-            params add: name text
+            params.add(name.text)
           }
           self consume: Token/Pipe
         }
@@ -302,7 +302,7 @@ var FinchParser = [|Parser|
         self if-look-ahead: Token/RightBrace   then: { return exprs }
         self if-look-ahead: Token/Eof          then: { return exprs }
 
-        exprs add: self bind
+        exprs.add(self.bind)
       }
       exprs
     }
@@ -310,7 +310,7 @@ var FinchParser = [|Parser|
     parse-defines {
       var defines = #[]
       loop {
-        defines add: self parse-define
+        defines.add(self.parse-define)
 
         // TODO(bob): This is kinda nasty.
         self match: Token/RightParen then: { return defines }
@@ -346,7 +346,7 @@ var FinchParser = [|Parser|
 
         self while-match: Token/Keyword do: { keyword ->
           name = name + keyword text
-          params add: (self consume: Token/Name) text
+          params.add((self consume: Token/Name).text)
         }
 
         var body = self parse-define-method: params

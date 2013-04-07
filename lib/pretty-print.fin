@@ -10,9 +10,9 @@ var PrettyPrinter = [
       result
     }
 
-    write string { _buffer add: string }
+    write string { _buffer.add(string) }
     write-line string {
-      _buffer add: string + "\n"
+      _buffer.add(string + "\n")
     }
 
     // TODO(bob): Use these:
@@ -53,7 +53,7 @@ Expr bind-proto :: print-to: printer {
   printer.write(" :: ")
 
   if (_defines.count == 1) then {
-    (_defines at: 0) print-to: printer
+    _defines.at(0) print-to: printer
   } else {
     printer.write("(\n")
     self print-defines-to: printer

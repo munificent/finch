@@ -193,7 +193,7 @@ var Array = [
   count: count fill-with: element {
     var result = #[]
 
-    from (1) to (count) do { i -> result add: element }
+    from (1) to (count) do { i -> result.add(element) }
     result
   }
 ]
@@ -204,15 +204,15 @@ Arrays :: (
   ++ right {
     var result = #[]
 
-    self.each { e -> result add: e }
-    right.each { e -> result add: e }
+    self.each { e -> result.add(e) }
+    right.each { e -> result.add(e) }
 
     result
   }
 
   each block {
     from (0) to (self.count - 1) do { i ->
-      block call: (self at: i)
+      block call: self.at(i)
     }
   }
 
@@ -221,13 +221,13 @@ Arrays :: (
     from (0) to (self.count - 1) do { i ->
       if (first.not) then (between)
       first = false
-      block call: (self at: i)
+      block call: self.at(i)
     }
   }
 
   map block {
     var result = #[]
-    self.each { element -> result add: (block call: element) }
+    self.each { element -> result.add(block call: element) }
     result
   }
 )

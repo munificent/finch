@@ -20,7 +20,7 @@ namespace Finch
         ASSERT_NOT_NULL(array);
         
         array->Elements().Add(args[0]);
-        return self;
+        return args[0];
     }
     
     PRIMITIVE(ArrayAt)

@@ -59,8 +59,8 @@ namespace Finch
         // Arrays.
         mArrayPrototype = MakeGlobal("Arrays");
         AddPrimitive(mArrayPrototype, "count",       ArrayCount);
-        AddPrimitive(mArrayPrototype, "add:",        ArrayAdd);
-        AddPrimitive(mArrayPrototype, "at:",         ArrayAt);
+        AddPrimitive(mArrayPrototype, "add ",        ArrayAdd);
+        AddPrimitive(mArrayPrototype, "at ",         ArrayAt);
         AddPrimitive(mArrayPrototype, "at:put:",     ArrayAtPut);
         AddPrimitive(mArrayPrototype, "remove-at:",  ArrayRemoveAt);
         
@@ -112,7 +112,7 @@ namespace Finch
         // Strings.
         mStringPrototype = MakeGlobal("Strings");
         AddPrimitive(mStringPrototype, "count",       StringCount);
-        AddPrimitive(mStringPrototype, "at:",         StringAt);
+        AddPrimitive(mStringPrototype, "at ",         StringAt);
         AddPrimitive(mStringPrototype, "from:count:", StringFromCount);
         AddPrimitive(mStringPrototype, "hash-code",   StringHashCode);
         AddPrimitive(mStringPrototype, "index-of ",   StringIndexOf);
