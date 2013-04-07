@@ -81,7 +81,8 @@ var Test = [
 load("test/arithmetic.fin")
 load("test/arrays.fin")
 load("test/booleans.fin")
-load("test/cascade.fin")
+// TODO(bob): Cascades are removed right now.
+//load("test/cascade.fin")
 load("test/comments.fin")
 // TODO(bob): Commenting out fibers because I think I'm going to change how they
 // work.

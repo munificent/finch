@@ -34,10 +34,9 @@ namespace Finch
         Ref<Expr> Variable();
         Ref<Expr> Bind();
         Ref<Expr> Assignment();
-        Ref<Expr> Cascade();
-        Ref<Expr> Keyword(bool & isMessage);
-        Ref<Expr> Operator(bool & isMessage);
-        Ref<Expr> Unary(bool & isMessage);
+        Ref<Expr> Keyword();
+        Ref<Expr> Operator();
+        Ref<Expr> Unary();
         Ref<Expr> Primary();
 
         // Parses just the message send part of a message "foo(1, 2) bar(3)"

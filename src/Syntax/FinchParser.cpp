@@ -158,90 +158,34 @@ namespace Finch
             
             return Ref<Expr>(new SetExpr(name, value));
         }
-        else return Cascade();
+        else return Keyword();
     }
-    
-    Ref<Expr> FinchParser::Cascade()
-    {
-        bool isMessage = false;
-        Ref<Expr> keyword = Keyword(isMessage);
         
-        // if we got an actual message send, we can cascade it.
-        if (isMessage)
-        {
-            MessageExpr * expr = static_cast<MessageExpr*>(&*keyword);
-            
-            while (Match(TOKEN_SEMICOLON))
-            {
-                Array<Ref<Expr> > args;
-                bool dummy;
-                
-                //### bob: there's overlap here with Keyword(), Operator(), and
-                // Unary(). should refactor.
-                // figure out what kind of method we're cascading
-                if (LookAhead(TOKEN_NAME))
-                {
-                    // unary
-                    String name = Consume()->Text();
-                    expr->AddSend(name, args);
-                }
-                else if (LookAhead(TOKEN_OPERATOR))
-                {
-                    // binary
-                    String name = Consume()->Text();
-                    
-                    // one arg
-                    args.Add(Unary(dummy));
-                    expr->AddSend(name, args);
-                }
-                else if (LookAhead(TOKEN_KEYWORD))
-                {
-                    // keyword
-                    String name;
-                    while (LookAhead(TOKEN_KEYWORD))
-                    {
-                        // build the full method name
-                        name += Consume()->Text();
-                        
-                        // parse each keyword's arg
-                        args.Add(Operator(dummy));
-                    }
-                    
-                    expr->AddSend(name, args);
-                }
-            }
-        }
-        
-        return keyword;
-    }
-    
-    Ref<Expr> FinchParser::Keyword(bool & isMessage)
+    Ref<Expr> FinchParser::Keyword()
     {
-        Ref<Expr> object = Operator(isMessage);
+        Ref<Expr> object = Operator();
         
         Ref<Expr> keyword = ParseKeyword(object);
         if (!keyword.IsNull())
         {
-            isMessage = true;
             return keyword;
         }
         
         return object;
     }
     
-    Ref<Expr> FinchParser::Operator(bool & isMessage)
+    Ref<Expr> FinchParser::Operator()
     {
-        Ref<Expr> object = Unary(isMessage);
+        Ref<Expr> object = Unary();
         
         while (LookAhead(TOKEN_OPERATOR))
         {
             String op = Consume()->Text();
-            Ref<Expr> arg = Unary(isMessage);
+            Ref<Expr> arg = Unary();
 
             Array<Ref<Expr> > args;
             args.Add(arg);
             
-            isMessage = true;
             object = Ref<Expr>(new MessageExpr(object, op, args));
         }
         
@@ -249,13 +193,12 @@ namespace Finch
     }
 
     // TODO(bob): Rename since this now handles messages with args too.
-    Ref<Expr> FinchParser::Unary(bool & isMessage)
+    Ref<Expr> FinchParser::Unary()
     {
         Ref<Expr> object = Primary();
 
         while (Match(TOKEN_DOT))
         {
-            isMessage = true;
             String name;
             Array<Ref<Expr> > args;
 
@@ -441,9 +384,7 @@ namespace Finch
         while (LookAhead(TOKEN_KEYWORD))
         {
             message += Consume()->Text();
-            
-            bool dummy;
-            args.Add(Operator(dummy));
+            args.Add(Operator());
         }
         
         if (message.Length() > 0)
