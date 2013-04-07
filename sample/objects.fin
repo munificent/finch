@@ -2,7 +2,7 @@
 // the factory for all other cars.
 var Car = [
   // Define a constructor method on the factory.
-  make: make model: model {
+  make(make) model(model) {
     // The constructor simply derives a new car from the car
     // prototype and then stores the make and model in it.
     [|Cars| _make = make, _model = model ]
@@ -23,7 +23,7 @@ var Cars = [
 ]
 
 // now lets make a car
-var jetta = Car make: "volkswagen" model: "jetta"
+var jetta = Car.make("volkswagen") model("jetta")
 
 // and call a method on its prototype, which in turn references the
 // specific car's state

@@ -517,16 +517,18 @@ namespace Finch
             // Mixfix.
             String name = "";
 
-            // name param {
-            // name param name param {
-            // name param name param name param {
             while (LookAhead(TOKEN_NAME))
             {
                 name += Consume()->Text() + " ";
+
+                Consume(TOKEN_LEFT_PAREN, "Expect '(' after method name.");
+
                 Ref<Token> param = Consume(TOKEN_NAME,
-                    "Expect parameter after method name part.");
+                    "Expect parameter name after '('.");
                 // TODO(bob): Handle null.
                 params.Add(param->Text());
+
+                Consume(TOKEN_RIGHT_PAREN, "Expect ')' after parameter.");
             }
             
             ParseDefineBody(expr, name, params);
@@ -536,11 +538,11 @@ namespace Finch
             // Binary.
             String name = Consume()->Text();
             
-            // One arg.
+            // One parameter.
             Ref<Token> param = Consume(TOKEN_NAME,
                 "Expect parameter name after operator in a bind expression.");
             params.Add(param->Text());
-            
+
             ParseDefineBody(expr, name, params);
         }
         else if (LookAhead(TOKEN_KEYWORD))

@@ -9,12 +9,12 @@ var Parent = [
   get-name { "parent" }
   called-name { self.get-name }
 
-  recursive-name: depth {
+  recursive-name(depth) {
     if (depth > 0) then {
-      _name + " " + (Parent recursive-name: 0) + " " +
-      _name + " " + (Child recursive-name: 0) + " " +
+      _name + " " + Parent.recursive-name(0) + " " +
+      _name + " " + Child.recursive-name(0) + " " +
       _name
-    } else: { _name }
+    } else { _name }
   }
 ]
 
@@ -26,37 +26,37 @@ var Child = [|Parent|
 // basic just call a method on an object
 write-line(Parent.name + " (expect: parent)")
 write-line(Parent.called-name + " (expect: parent)")
-write-line((Parent recursive-name: 1) +
+write-line(Parent.recursive-name(1) +
     " (expect: parent parent parent child parent)")
 
 // make sure calling an inherited method uses the child as self
 write-line(Child.name + " (expect: child)")
 write-line(Child.called-name + " (expect: child)")
-write-line((Child recursive-name: 1) +
+write-line((Child.recursive-name(1) +
     " (expect: child parent child child child)")
 
 var Other = [
   name { "Other" }
-  call-me: block { block.call }
+  call-me(block) { block.call }
 ]
 
 // passing a block to a method should *not* use the method's self
 // in this case, since the block is not defined in any object, self
 // should be nil
-write-line((Other call-me: { self.name }) + " (expect nil)")
+write-line(Other.call-me { self.name } + " (expect nil)")
 
 var Foo = [
   name { "Foo" }
 
   route-through-other {
-    Other call-me: { self.name }
+    Other.call-me { self.name }
   }
 ]
 
 // passing a block to a method should *not* use the method's self
 // instead, should use the self where the block is declared. in this
 // case, that's inside Foo
-write-line(Foo route-through-other + " (expect Foo)")
+write-line(Foo.route-through-other + " (expect Foo)")
 
 Child :: get-block { { self.name } }
 
@@ -64,4 +64,4 @@ Child :: get-block { { self.name } }
 // method's self
 var b = Child.get-block
 write-line(b.call + " (expect child)")
-write-line((Other call-me: b) + " (expect child)")
+write-line(Other.call-me(b) + " (expect child)")
