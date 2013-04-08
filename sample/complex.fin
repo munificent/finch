@@ -1,7 +1,7 @@
 // create the main factory object
 var Complex = [
   // constructor
-  new: real i: imaginary {
+  new(real, imaginary) {
     [|Complexes| _real = real, _imaginary = imaginary ]
   }
 ]
@@ -22,16 +22,16 @@ var Complexes = [
 
   // arithmetic
   + right {
-    Complex new: _real + right.real i: _imaginary + right.imaginary
+    Complex.new(_real + right.real, _imaginary + right.imaginary)
   }
 
   - right {
-    Complex new: _real - right.real i: _imaginary - right.imaginary
+    Complex.new(_real - right.real, _imaginary - right.imaginary)
   }
 
   * right {
-    Complex new: (_real * right.real) - (_imaginary * right.imaginary) i:
-           (_imaginary * right.real) + (_real * right.imaginary)
+    Complex.new((_real * right.real) - (_imaginary * right.imaginary),
+           (_imaginary * right.real) + (_real * right.imaginary))
   }
 
   magnitude {
@@ -40,11 +40,11 @@ var Complexes = [
 ]
 
 // allow creating complex numbers from normal ones
-Numbers :: i { Complex new: 0 i: self }
+Numbers :: i { Complex.new(0, self) }
 
 // test it out a bit
 var a = 4.i
-var b = Complex new: 2 i: 3
+var b = Complex.new(2, 3)
 
 write-line("a = " + a)
 write-line("b = " + b)

@@ -32,7 +32,7 @@ write-line(Parent.recursive-name(1) +
 // make sure calling an inherited method uses the child as self
 write-line(Child.name + " (expect: child)")
 write-line(Child.called-name + " (expect: child)")
-write-line((Child.recursive-name(1) +
+write-line(Child.recursive-name(1) +
     " (expect: child parent child child child)")
 
 var Other = [
