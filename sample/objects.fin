@@ -1,6 +1,6 @@
 // Define a singleton object for the Car "type". This object will be
 // the factory for all other cars.
-var Car = [
+obj Car {
   // Define a constructor method on the factory.
   make(make) model(model) {
     // The constructor simply derives a new car from the car
@@ -9,10 +9,10 @@ var Car = [
     // Like ruby, the last expression in the method is implicitly
     // the returned value.
   }
-]
+}
 
 // Define the car prototype. All cars will derive from this.
-var Cars = [
+obj Cars {
   // Accessors for their make and model.
   make { _make }
   model { _model }
@@ -20,7 +20,7 @@ var Cars = [
   to-string {
     "This car is a " + _make + " " + _model + "."
   }
-]
+}
 
 // now lets make a car
 var jetta = Car.make("volkswagen") model("jetta")

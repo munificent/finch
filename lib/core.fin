@@ -112,7 +112,7 @@ def Blocks {
   block? { true }
 }
 
-var Fiber = [
+obj Fiber {
   new(block) { *primitive*.new-fiber(block) }
 
   spawn(block) {
@@ -129,7 +129,7 @@ var Fiber = [
   }
 
   yield { Fiber.yield(nil) }
-]
+}
 
 def Fibers {
   fiber? { true }
@@ -187,7 +187,7 @@ def Strings {
   from(from) to(to) { self.from(from) count(to - from) }
 }
 
-var Array = [
+obj Array {
   count(count) {
     self.count(count) fill-with(nil)
   }
@@ -198,7 +198,7 @@ var Array = [
     from (1) to (count) do { i -> result.add(element) }
     result
   }
-]
+}
 
 def Arrays {
   array? { true }

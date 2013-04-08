@@ -4,7 +4,7 @@ def nil {
   name { "nil" }
 }
 
-var Parent = [
+obj Parent {
   _name = "parent"
   name { _name }
 
@@ -18,7 +18,7 @@ var Parent = [
       _name
     } else { _name }
   }
-]
+}
 
 var Child = [|Parent|
   _name = "child"
@@ -37,23 +37,23 @@ write-line(Child.called-name + " (expect: child)")
 write-line(Child.recursive-name(1) +
     " (expect: child parent child child child)")
 
-var Other = [
+obj Other {
   name { "Other" }
   call-me(block) { block.call }
-]
+}
 
 // passing a block to a method should *not* use the method's self
 // in this case, since the block is not defined in any object, self
 // should be nil
 write-line(Other.call-me { self.name } + " (expect nil)")
 
-var Foo = [
+obj Foo {
   name { "Foo" }
 
   route-through-other {
     Other.call-me { self.name }
   }
-]
+}
 
 // passing a block to a method should *not* use the method's self
 // instead, should use the self where the block is declared. in this

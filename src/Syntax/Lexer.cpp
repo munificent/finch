@@ -56,15 +56,8 @@ namespace Finch
                 case '|': return SingleToken(TOKEN_PIPE);
                 
                 case ':':
-                    Advance();
-                    if (Peek() == ':')
-                    {
-                        // "::".
-                        Advance();
-                        return Ref<Token>(new Token(TOKEN_BIND));
-                    }
-
                     // Just a ":" by itself.
+                    Advance();
                     return Ref<Token>(new Token(TOKEN_KEYWORD, ":"));
                 
                 case '-':
@@ -265,6 +258,7 @@ namespace Finch
         String name = mLine.Substring(mStart, mPos - mStart);
         
         if (name == "def") return Ref<Token>(new Token(TOKEN_DEF));
+        if (name == "obj") return Ref<Token>(new Token(TOKEN_OBJ));
         if (name == "return") return Ref<Token>(new Token(TOKEN_RETURN));
         if (name == "self") return Ref<Token>(new Token(TOKEN_SELF));
         if (name == "undefined") return Ref<Token>(new Token(TOKEN_UNDEFINED));

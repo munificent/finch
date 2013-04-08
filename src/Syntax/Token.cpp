@@ -19,10 +19,10 @@ namespace Finch
             case TOKEN_SEMICOLON:       cout << "semicolon"; break;
             case TOKEN_ARROW:           cout << "->"; break;
             case TOKEN_EQ:              cout << "="; break;
-            case TOKEN_BIND:            cout << "::"; break;
             case TOKEN_SELF:            cout << "self"; break;
             case TOKEN_UNDEFINED:       cout << "undefined"; break;
             case TOKEN_DEF:             cout << "def"; break;
+            case TOKEN_OBJ:             cout << "obj"; break;
             case TOKEN_RETURN:          cout << "return"; break;
             case TOKEN_VAR:             cout << "var"; break;
 

@@ -1,7 +1,7 @@
 Test.suite("Cascades") is {
   var called = ""
   // make an object that implements to-string
-  var obj = [
+  var object = [
     foo { called = called + "foo" }
     bar { called = called + "bar" }
     baz { called = called + "baz" }
@@ -12,25 +12,25 @@ Test.suite("Cascades") is {
 
   Test.test("Unary") is {
     called = ""
-    obj.foo ; bar ; baz
+    object.foo ; bar ; baz
     Test.that(called) equals("foobarbaz")
   }
 
   Test.test("Binary") is {
     called = ""
-    obj + "foo" ; + "bar" ; + "baz"
+    object + "foo" ; + "bar" ; + "baz"
     Test.that(called) equals("foobarbaz")
   }
 
   Test.test("Keyword") is {
     called = ""
-    obj add: "foo" and: "bar" ; add: "bar" and: "baz"
+    object add: "foo" and: "bar" ; add: "bar" and: "baz"
     Test.that(called) equals("foobarbarbaz")
   }
 
   Test.test("Mixed") is {
     called = ""
-    obj.me add: "foo" + "bar" and: "baz" ; + "bar" ; bar
+    object.me add: "foo" + "bar" and: "baz" ; + "bar" ; bar
     Test.that(called) equals("foobarbazbarbar")
   }
 }

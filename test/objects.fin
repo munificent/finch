@@ -84,12 +84,12 @@ Test.suite("Objects") is {
   }
 
   Test.test("self inside an object literal is the new object") is {
-    var obj = [
+    var object = [
       a { "a" }
       _b = self.a
       b { _b }
     ]
 
-    Test.that(obj.b) equals("a")
+    Test.that(object.b) equals("a")
   }
 }

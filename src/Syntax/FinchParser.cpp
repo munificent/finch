@@ -110,6 +110,26 @@ namespace Finch
             return Ref<Expr>(def);
         }
 
+        // Named object.
+        else if (LookAhead(TOKEN_OBJ, TOKEN_NAME))
+        {
+            Consume(); // "obj".
+            String name = Consume()->Text();
+
+            // TODO(bob): Syntax for specifying parent.
+            Ref<Expr> parent = Ref<Expr>(new NameExpr("Object"));
+            ObjectExpr * object = new ObjectExpr(parent);
+
+            Consume(TOKEN_LEFT_BRACE, "Expect '{' after 'obj'.");
+
+            if (!Match(TOKEN_RIGHT_BRACE))
+            {
+                ParseDefines(*object, TOKEN_RIGHT_BRACE);
+            }
+
+            return Ref<Expr>(new VarExpr(name, Ref<Expr>(object)));
+        }
+        
         if (Match(TOKEN_VAR))
         {
             Ref<Token> name = Consume(TOKEN_NAME, "Expect name after 'var'.");
@@ -245,8 +265,29 @@ namespace Finch
             Consume(TOKEN_RIGHT_PAREN, "Expect closing ')'.");
             return expr;
         }
+        else if (Match(TOKEN_OBJ))
+        {
+            // Object literal.
+
+            // TODO(bob): Syntax for specifying parent.
+            Ref<Expr> parent = Ref<Expr>(new NameExpr("Object"));
+            ObjectExpr * object = new ObjectExpr(parent);
+            Ref<Expr> expr = Ref<Expr>(object);
+
+            Consume(TOKEN_LEFT_BRACE, "Expect '{' after 'obj'.");
+
+            if (!Match(TOKEN_RIGHT_BRACE))
+            {
+                ParseDefines(*object, TOKEN_RIGHT_BRACE);
+            }
+
+            return expr;
+        }
         else if (Match(TOKEN_LEFT_BRACKET))
         {
+            // TODO(bob): Remove old style object literals when obj {} form
+            // supports specifying parent.
+            
             // Object literal.
             
             // Parse the parent, if given.
@@ -464,26 +505,9 @@ namespace Finch
 
             ParseDefineBody(expr, name, params);
         }
-        else if (LookAhead(TOKEN_KEYWORD))
-        {
-            // Keyword.
-            String name;
-            while (LookAhead(TOKEN_KEYWORD))
-            {
-                // Build the full method name.
-                name += Consume()->Text();
-                
-                // Parse each keyword's parameter.
-                Ref<Token> param = Consume(TOKEN_NAME,
-                    "Expect parameter name after keyword in a bind expression.");
-                params.Add(param->Text());
-            }
-            
-            ParseDefineBody(expr, name, params);
-        }
         else
         {
-            Error("Expect message after '::'.");
+            Error("Expect definition.");
         }
     }
     

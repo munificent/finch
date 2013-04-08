@@ -1,13 +1,13 @@
 // create the main factory object
-var Complex = [
+obj Complex {
   // constructor
   new(real, imaginary) {
     [|Complexes| _real = real, _imaginary = imaginary ]
   }
-]
+}
 
 // the prototypical complex number
-var Complexes = [
+obj Complexes {
   _real = 0
   _imaginary = 0
 
@@ -37,7 +37,7 @@ var Complexes = [
   magnitude {
     ((_real * _real) + (_imaginary * _imaginary)).sqrt
   }
-]
+}
 
 // allow creating complex numbers from normal ones
 def Numbers {

@@ -25,11 +25,11 @@ namespace Finch
         
         TOKEN_ARROW,
         TOKEN_EQ,
-        TOKEN_BIND,
         TOKEN_SELF,
         TOKEN_UNDEFINED,
 
         TOKEN_DEF,
+        TOKEN_OBJ,
         TOKEN_RETURN,
         TOKEN_VAR,
 

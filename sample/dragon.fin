@@ -3,7 +3,7 @@
 // of left and right turns required to draw a dragon curve with the
 // given recursion depth.
 
-var Dragon = [
+obj Dragon {
   generate(depth) {
     write("dragon curve " + depth + " depth: ")
     self.iterate(depth, "R")
@@ -18,7 +18,7 @@ var Dragon = [
       self.iterate(depth - 1, "L")
     }
   }
-]
+}
 
 // test it
 from (1) to (6) do { n -> Dragon.generate(n) }
