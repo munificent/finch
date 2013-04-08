@@ -33,7 +33,7 @@ namespace Finch
     void LexerTests::Run()
     {
         // test the single character tokens
-        TestLex("()[]{}.|,;",
+        TestLex("()[]{}.,;",
             TOKEN_LEFT_PAREN,
             TOKEN_RIGHT_PAREN,
             TOKEN_LEFT_BRACKET,
@@ -41,7 +41,6 @@ namespace Finch
             TOKEN_LEFT_BRACE,
             TOKEN_RIGHT_BRACE,
             TOKEN_DOT,
-            TOKEN_PIPE,
             TOKEN_LINE, // ,
             TOKEN_SEMICOLON,
             TOKEN_LINE, TOKEN_EOF);

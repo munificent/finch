@@ -5,7 +5,7 @@ obj Car {
   make(make) model(model) {
     // The constructor simply derives a new car from the car
     // prototype and then stores the make and model in it.
-    [|Cars| _make = make, _model = model ]
+    obj -> Cars { _make = make, _model = model }
     // Like ruby, the last expression in the method is implicitly
     // the returned value.
   }

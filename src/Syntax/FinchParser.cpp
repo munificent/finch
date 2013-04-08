@@ -116,8 +116,16 @@ namespace Finch
             Consume(); // "obj".
             String name = Consume()->Text();
 
-            // TODO(bob): Syntax for specifying parent.
-            Ref<Expr> parent = Ref<Expr>(new NameExpr("Object"));
+            Ref<Expr> parent;
+            if (Match(TOKEN_ARROW))
+            {
+                parent = Primary();
+            }
+            else
+            {
+                parent = Ref<Expr>(new NameExpr("Object"));
+            }
+            
             ObjectExpr * object = new ObjectExpr(parent);
 
             Consume(TOKEN_LEFT_BRACE, "Expect '{' after 'obj'.");
@@ -209,7 +217,17 @@ namespace Finch
 
     Ref<Expr> FinchParser::Message()
     {
-        Ref<Expr> object = Primary();
+        Ref<Expr> object;
+        if (LookAhead(TOKEN_NAME, TOKEN_LEFT_PAREN) ||
+            LookAhead(TOKEN_NAME, TOKEN_LEFT_BRACE))
+        {
+            // It's a message send to Ether.
+            object = ParseMessage(Ref<Expr>(new NameExpr("Ether")));
+        }
+        else
+        {
+            object = Primary();
+        }
 
         while (Match(TOKEN_DOT))
         {
@@ -235,13 +253,7 @@ namespace Finch
     
     Ref<Expr> FinchParser::Primary()
     {
-        if (LookAhead(TOKEN_NAME, TOKEN_LEFT_PAREN) ||
-            LookAhead(TOKEN_NAME, TOKEN_LEFT_BRACE))
-        {
-            // It's a message send to Ether.
-            return ParseMessage(Ref<Expr>(new NameExpr("Ether")));
-        }
-        else if (LookAhead(TOKEN_NAME))
+        if (LookAhead(TOKEN_NAME))
         {
             String name = Consume()->Text();
             return Ref<Expr>(new NameExpr(name));
@@ -269,8 +281,16 @@ namespace Finch
         {
             // Object literal.
 
-            // TODO(bob): Syntax for specifying parent.
-            Ref<Expr> parent = Ref<Expr>(new NameExpr("Object"));
+            Ref<Expr> parent;
+            if (Match(TOKEN_ARROW))
+            {
+                parent = Primary();
+            }
+            else
+            {
+                parent = Ref<Expr>(new NameExpr("Object"));
+            }
+
             ObjectExpr * object = new ObjectExpr(parent);
             Ref<Expr> expr = Ref<Expr>(object);
 
@@ -281,38 +301,6 @@ namespace Finch
                 ParseDefines(*object, TOKEN_RIGHT_BRACE);
             }
 
-            return expr;
-        }
-        else if (Match(TOKEN_LEFT_BRACKET))
-        {
-            // TODO(bob): Remove old style object literals when obj {} form
-            // supports specifying parent.
-            
-            // Object literal.
-            
-            // Parse the parent, if given.
-            Ref<Expr> parent;
-            if (Match(TOKEN_PIPE))
-            {
-                parent = Assignment();
-                Consume(TOKEN_PIPE, "Expect closing '|' after parent.");
-            }
-            else
-            {
-                // No parent, so implicit "Object".
-                // TODO(bob): Just leave null in AST and have compiler handle
-                // this?
-                parent = Ref<Expr>(new NameExpr("Object"));
-            }
-            
-            ObjectExpr * object = new ObjectExpr(parent);
-            Ref<Expr> expr = Ref<Expr>(object);
-            
-            if (!Match(TOKEN_RIGHT_BRACKET))
-            {
-                ParseDefines(*object, TOKEN_RIGHT_BRACKET);
-            }
-            
             return expr;
         }
         else if (Match(TOKEN_HASH))

@@ -57,10 +57,10 @@ Test.suite("Variables") is {
   }
 
   Test.test("Field") is {
-    var foo = [
+    obj foo {
       create { _field = "field" }
       test { Test.that(_field) equals("field") }
-    ]
+    }
 
     Test.that(_field) equals(nil)
     foo.create

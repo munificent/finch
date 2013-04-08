@@ -20,7 +20,6 @@ namespace Finch
         TOKEN_AT,
         TOKEN_DOT,
         TOKEN_HASH,
-        TOKEN_PIPE,
         TOKEN_SEMICOLON,
         
         TOKEN_ARROW,

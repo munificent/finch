@@ -53,7 +53,6 @@ namespace Finch
                 case '#': return SingleToken(TOKEN_HASH);
                 case ';': return SingleToken(TOKEN_SEMICOLON);
                 case '\\': return SingleToken(TOKEN_IGNORE_LINE);
-                case '|': return SingleToken(TOKEN_PIPE);
                 
                 case ':':
                     // Just a ":" by itself.
@@ -125,7 +124,7 @@ namespace Finch
     bool Lexer::IsOperator(char c) const
     {
         return (c != '\0') &&
-               (strchr("-+=/<>?~!$%^&*", c) != NULL);
+               (strchr("-+=/<>?~!$%^&*|", c) != NULL);
     }
     
     char Lexer::Peek(int ahead) const

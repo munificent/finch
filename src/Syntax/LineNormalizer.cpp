@@ -41,7 +41,6 @@ namespace Finch
                 // discard newlines after token that can't end expression
                 case TOKEN_KEYWORD:
                 case TOKEN_OPERATOR:
-                case TOKEN_PIPE:
                 case TOKEN_EQ:
                 case TOKEN_ARROW:
                 case TOKEN_SEMICOLON:

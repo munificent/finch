@@ -1,7 +1,7 @@
 Test.suite("Return") is {
   Test.test("return exits enclosing method") is {
     var a = "0"
-    var object = [
+    obj object {
       foo {
         a = a + "1"
         {
@@ -11,7 +11,7 @@ Test.suite("Return") is {
         }.call
         a = a + "4"
       }
-    ]
+    }
     object.foo
 
     Test.that(a) equals("012")
@@ -19,23 +19,23 @@ Test.suite("Return") is {
 
   Test.test("the method returns the value passed to return") is {
     var a = "before"
-    var object = [
+    obj object {
       foo {
         return "result"
         "bad"
       }
-    ]
+    }
 
     Test.that(object.foo) equals("result")
   }
 
   Test.test("returns work even when passed to tail calls") is {
     var a = "before"
-    var object = [
+    obj object {
       foo {
         if (true) then { return "result" }
       }
-    ]
+    }
 
     Test.that(object.foo) equals("result")
   }

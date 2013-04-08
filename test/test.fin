@@ -1,7 +1,7 @@
 write-line("Running Finch test suite.")
 
 // define a Test object the tests can use
-var Test = [
+obj Test {
   _suite       = ""
   _test        = ""
   _test-shown? = false
@@ -74,7 +74,7 @@ var Test = [
   }
 
   to-string { "Test" }
-]
+}
 
 // run the test scripts
 // TODO(bob): hack! path should be relative to this script's path!

@@ -2,7 +2,7 @@
 obj Complex {
   // constructor
   new(real, imaginary) {
-    [|Complexes| _real = real, _imaginary = imaginary ]
+    obj -> Complexes { _real = real, _imaginary = imaginary }
   }
 }
 

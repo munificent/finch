@@ -20,10 +20,10 @@ obj Parent {
   }
 }
 
-var Child = [|Parent|
+obj Child -> Parent {
   _name = "child"
   get-name { "child" }
-]
+}
 
 // basic just call a method on an object
 write-line(Parent.name + " (expect: parent)")

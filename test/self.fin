@@ -6,24 +6,24 @@ Test.suite("Self") is {
   }
 
   Test.test("Self in block is outer self") is {
-    var foo = [
+    obj foo {
       to-string { "foo" }
       bar {
         var block = { self.to-string }
         block.call
       }
-    ]
+    }
 
     Test.that(foo.bar) equals("foo")
   }
 
   Test.test("Self in parent method is child") is {
-    var parent = [
+    obj parent {
       call-to-string { self.to-string }
       to-string { "parent" }
-    ]
+    }
 
-    var child = [|parent| to-string { "child" } ]
+    obj child -> parent { to-string { "child" } }
 
     Test.that(parent.call-to-string) equals("parent")
     Test.that(child.call-to-string) equals("child")
@@ -31,27 +31,27 @@ Test.suite("Self") is {
 
   Test.test("Self in block is lexical not dynamic scope") is {
     // create a block in one object scope
-    var foo = [
+    obj foo {
       to-string { "foo" }
       block { { self.to-string } }
-    ]
+    }
 
     // and call it from within a different object
-    var bar = [
+    obj bar {
       to-string { "bar" }
       call-block(block) { block.call }
-    ]
+    }
 
     Test.that(bar.call-block(foo.block)) equals("foo")
 
     // needs to play nice with inheritance too
-    var foo2 = [|foo| to-string { "foo2" } ]
+    obj foo2 -> foo { to-string { "foo2" } }
     Test.that(bar.call-block(foo2.block)) equals("foo2")
   }
 
   Test.test("Recursive inherited method restores outer self") is {
     var child = nil
-    var parent = [
+    obj parent {
       recurse(recurse) {
         // see what self is bound to
         var a = self.to-string
@@ -64,9 +64,9 @@ Test.suite("Self") is {
         a
       }
       to-string { "p" }
-    ]
+    }
 
-    child = [|parent| to-string { "c" } ]
+    child = obj -> parent { to-string { "c" } }
 
     Test.that(parent.recurse(false)) equals("p")
     Test.that(child.recurse(false)) equals("c")
@@ -74,17 +74,17 @@ Test.suite("Self") is {
   }
 
   Test.test("Storing a block in a method caches self at that time") is {
-    var parent = [
+    obj parent {
       to-string { "parent" }
       make-block {
         _block = { self.to-string }
       }
       call-block { _block.call }
-    ]
+    }
 
-    var child = [|parent|
+    obj child -> parent {
       to-string { "child" }
-    ]
+    }
 
     parent.make-block
     Test.that(child.call-block) equals("parent")

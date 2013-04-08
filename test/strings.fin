@@ -1,7 +1,7 @@
 Test.suite("Strings") is {
   // make a couple of objects that implement to-string
-  var apple = [ to-string { "apple" } ]
-  var banana = [ to-string { "banana" } ]
+  obj apple { to-string { "apple" } }
+  obj banana { to-string { "banana" } }
 
   Test.test("count") is {
     Test.that("".count       ) equals(0)
