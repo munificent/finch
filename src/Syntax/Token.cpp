@@ -22,6 +22,7 @@ namespace Finch
             case TOKEN_BIND:            cout << "::"; break;
             case TOKEN_SELF:            cout << "self"; break;
             case TOKEN_UNDEFINED:       cout << "undefined"; break;
+            case TOKEN_DEF:             cout << "def"; break;
             case TOKEN_RETURN:          cout << "return"; break;
             case TOKEN_VAR:             cout << "var"; break;
 

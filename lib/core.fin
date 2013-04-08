@@ -1,4 +1,4 @@
-Object :: (
+def Object {
   // By default, just check reference equality.
   == right { self === right }
 
@@ -34,21 +34,21 @@ Object :: (
   call(a, b, c, d, e, f, g, h, i, j) { self }
 
   yourself { self }
-)
+}
 
-true :: (
+def true {
   not { false }
   boolean? { true }
   to-string { "true" }
   if-true(then) else(else) { then.call }
-)
+}
 
-false :: (
+def false {
   boolean? { true }
   to-string { "false" }
-)
+}
 
-Ether :: (
+def Ether {
   from(start) to(end) step(step) do(block) {
     var i = start
 
@@ -106,9 +106,11 @@ Ether :: (
     *primitive*.write(text.to-string)
     *primitive*.write("\n")
   }
-)
+}
 
-Blocks :: block? { true }
+def Blocks {
+  block? { true }
+}
 
 var Fiber = [
   new(block) { *primitive*.new-fiber(block) }
@@ -129,7 +131,7 @@ var Fiber = [
   yield { Fiber.yield(nil) }
 ]
 
-Fibers :: (
+def Fibers {
   fiber? { true }
 
   run(value) {
@@ -139,9 +141,9 @@ Fibers :: (
 
   run { self.run(nil) }
   run-by { _run-by }
-)
+}
 
-Numbers :: (
+def Numbers {
   number? { true }
 
   // Double-dispatch.
@@ -150,18 +152,18 @@ Numbers :: (
   * right { right.number*(self) }
   / right { right.number/(self) }
   == right { right.number==(self) }
-)
+}
 
-Object :: (
+def Object {
   // Adding anything to a string converts it to a string and concatenates.
   string+(left) { *primitive*.string-concat(left, self.to-string) }
 
   // Comparisons between unrelated types always return false.
   number==(left) { false }
   string==(left) { false }
-)
+}
 
-Strings :: (
+def Strings {
   string? { true }
 
   // Adding a number to a string converts it to a string and concatenates.
@@ -183,7 +185,7 @@ Strings :: (
 
   from(from) { self.from(from) count(self.count - from) }
   from(from) to(to) { self.from(from) count(to - from) }
-)
+}
 
 var Array = [
   count(count) {
@@ -198,7 +200,7 @@ var Array = [
   }
 ]
 
-Arrays :: (
+def Arrays {
   array? { true }
 
   ++ right {
@@ -230,17 +232,24 @@ Arrays :: (
     self.each { element -> result.add(block.call(element)) }
     result
   }
-)
+}
 
 // Truthiness: only two things are true: the true object, and blocks that
 // evaluate to it.
-Object :: true? { false }
-true :: true? { true }
+def Object {
+  true? { false }
+}
 
-Blocks :: true? { self.call.true? }
+def true {
+  true? { true }
+}
+
+def Blocks {
+  true? { self.call.true? }
+}
 
 // Short-circuiting logical operators
-Object :: (
+def Object {
   and(right) {
     if (self.true?) then {
       right.true?
@@ -256,7 +265,7 @@ Object :: (
       right.true?
     }
   }
-)
+}
 
 // TODO(bob): Cascades are broken right now, so no switch.
 /*
@@ -265,14 +274,16 @@ Object :: (
 //     .case("{") do { "foo" } ;
 //     .case("}") do { "blah" } ;
 //     .default { "argh" }
-Object :: switch {
-  // ### bob: having to do this is lame. :(
-  var outer-self = self
-  [|Switches|
-    _value  = outer-self
-    _done?  = false
-    _result = nil
-  ]
+def Object {
+  switch {
+    // ### bob: having to do this is lame. :(
+    var outer-self = self
+    [|Switches|
+      _value  = outer-self
+      _done?  = false
+      _result = nil
+    ]
+  }
 }
 
 var Switches = [

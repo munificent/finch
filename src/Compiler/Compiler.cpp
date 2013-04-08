@@ -1,9 +1,9 @@
 #include <iostream>
 
 #include "ArrayExpr.h"
-#include "BindExpr.h"
 #include "BlockExpr.h"
 #include "Compiler.h"
+#include "DefExpr.h"
 #include "Interpreter.h"
 #include "MessageExpr.h"
 #include "NameExpr.h"
@@ -106,21 +106,21 @@ namespace Finch
         }
         ReleaseRegister();
     }
-    
-    void Compiler::Visit(const BindExpr & expr, int dest)
-    {
-        // Evaluate the object that stuff is being bound to.
-        expr.Target()->Accept(*this, dest);
-        
-        // Bind the definitions.
-        CompileDefinitions(expr, dest);
-    }
-    
+
     void Compiler::Visit(const BlockExpr & expr, int dest)
     {
         CompileNestedBlock(Block::BLOCK_METHOD_ID, expr, dest);
     }
-    
+
+    void Compiler::Visit(const DefExpr & expr, int dest)
+    {
+        // Evaluate the object that stuff is being bound to.
+        LoadName(expr.Name(), dest);
+
+        // Bind the definitions.
+        CompileDefinitions(expr, dest);
+    }
+
     void Compiler::Visit(const MessageExpr & expr, int dest)
     {
         // Load the receiver.
@@ -161,49 +161,9 @@ namespace Finch
     
     void Compiler::Visit(const NameExpr & expr, int dest)
     {
-        if (mParent == NULL)
-        {
-            // Accessing a top-level name, so it's a global.
-            int index = mInterpreter.DefineGlobal(expr.Name());
-            mBlock->Write(OP_GET_GLOBAL, index, dest);
-        }
-        else if (Expr::IsField(expr.Name()))
-        {
-            // Accessing a field.
-            StringId index = mInterpreter.AddString(expr.Name());
-            mBlock->Write(OP_GET_FIELD, index, dest);
-        }
-        else
-        {
-            Upvalue upvalue;
-            bool isLocal;
-            int index;
-            Upvalue resolvedUpvalue;
-            ResolveName(this, expr.Name(), &upvalue, &isLocal, &index,
-                        &resolvedUpvalue);
-            
-            if (isLocal)
-            {
-                // Copy the local to the destination register.
-                mBlock->Write(OP_MOVE, index, dest);
-            }
-            else if (resolvedUpvalue.IsValid())
-            {
-                // Load the upvalue into the destination register.
-                mBlock->Write(OP_GET_UPVALUE, resolvedUpvalue.Slot(), dest);
-            }
-            else
-            {
-                // We couldn't find the name, so assume it's a global. This
-                // allows for mutually recursive references to top-level names:
-                // as long as the name is initialized before it's actually
-                // accessed at runtime, this will work.
-                int index = mInterpreter.DefineGlobal(expr.Name());
-                mBlock->Write(OP_GET_GLOBAL, index, dest);
-            }
-        }
+        LoadName(expr.Name(), dest);
     }
-        
+
     void Compiler::Visit(const NumberExpr & expr, int dest)
     {
         Value number = mInterpreter.NewNumber(expr.GetValue());
@@ -352,6 +312,8 @@ namespace Finch
         }
         else
         {
+            // TODO(bob): Should be an error to define var with same name in
+            // same scope now.
             // Doing <- on an existing name just assigns.
             int local = mLocals.IndexOf(expr.Name());
             if (local == -1) {
@@ -373,7 +335,53 @@ namespace Finch
             mBlock->Write(OP_MOVE, local, dest);
         }
     }
-    
+
+    void Compiler::LoadName(const String & name, int dest)
+    {
+        if (mParent == NULL)
+        {
+            // Accessing a top-level name, so it's a global.
+            int index = mInterpreter.DefineGlobal(name);
+            mBlock->Write(OP_GET_GLOBAL, index, dest);
+            return;
+        }
+
+        if (Expr::IsField(name))
+        {
+            // Accessing a field.
+            StringId index = mInterpreter.AddString(name);
+            mBlock->Write(OP_GET_FIELD, index, dest);
+            return;
+        }
+
+        Upvalue upvalue;
+        bool isLocal;
+        int index;
+        Upvalue resolvedUpvalue;
+        ResolveName(this, name, &upvalue, &isLocal, &index, &resolvedUpvalue);
+
+        if (isLocal)
+        {
+            // Copy the local to the destination register.
+            mBlock->Write(OP_MOVE, index, dest);
+            return;
+        }
+
+        if (resolvedUpvalue.IsValid())
+        {
+            // Load the upvalue into the destination register.
+            mBlock->Write(OP_GET_UPVALUE, resolvedUpvalue.Slot(), dest);
+            return;
+        }
+
+        // We couldn't find the name, so assume it's a global. This
+        // allows for mutually recursive references to top-level names:
+        // as long as the name is initialized before it's actually
+        // accessed at runtime, this will work.
+        index = mInterpreter.DefineGlobal(name);
+        mBlock->Write(OP_GET_GLOBAL, index, dest);
+    }
+
     // TODO(bob): The number of args here is a bit hairy. Once SetExpr is
     // implemented and using this, see if we can clean it up a bit.
     void Compiler::ResolveName(Compiler * compiler, const String & name,

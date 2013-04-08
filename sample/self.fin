@@ -1,6 +1,8 @@
 // tests various edges regarding self
 
-nil :: name { "nil" }
+def nil {
+  name { "nil" }
+}
 
 var Parent = [
   _name = "parent"
@@ -58,7 +60,9 @@ var Foo = [
 // case, that's inside Foo
 write-line(Foo.route-through-other + " (expect Foo)")
 
-Child :: get-block { { self.name } }
+def Child {
+  get-block { { self.name } }
+}
 
 // returning a block from a method should keep the block bound to the
 // method's self

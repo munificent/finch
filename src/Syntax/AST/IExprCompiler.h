@@ -10,8 +10,8 @@
 namespace Finch
 {
     class ArrayExpr;
-    class BindExpr;
     class BlockExpr;
+    class DefExpr;
     class MessageExpr;
     class NameExpr;
     class NumberExpr;
@@ -32,8 +32,8 @@ namespace Finch
         virtual ~IExprCompiler() {}
         
         virtual void Visit(const ArrayExpr & expr, int dest) = 0;
-        virtual void Visit(const BindExpr & expr, int dest) = 0;
         virtual void Visit(const BlockExpr & expr, int dest) = 0;
+        virtual void Visit(const DefExpr & expr, int dest) = 0;
         virtual void Visit(const MessageExpr & expr, int dest) = 0;
         virtual void Visit(const NameExpr & expr, int dest) = 0;
         virtual void Visit(const NumberExpr & expr, int dest) = 0;

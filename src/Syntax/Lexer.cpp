@@ -264,6 +264,7 @@ namespace Finch
         
         String name = mLine.Substring(mStart, mPos - mStart);
         
+        if (name == "def") return Ref<Token>(new Token(TOKEN_DEF));
         if (name == "return") return Ref<Token>(new Token(TOKEN_RETURN));
         if (name == "self") return Ref<Token>(new Token(TOKEN_SELF));
         if (name == "undefined") return Ref<Token>(new Token(TOKEN_UNDEFINED));

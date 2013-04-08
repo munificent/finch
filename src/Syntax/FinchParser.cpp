@@ -1,6 +1,6 @@
 #include "ArrayExpr.h"
-#include "BindExpr.h"
 #include "BlockExpr.h"
+#include "DefExpr.h"
 #include "FinchParser.h"
 #include "IErrorReporter.h"
 #include "ILineReader.h"
@@ -97,7 +97,18 @@ namespace Finch
         // (var a = "foo") shouldn't be allowed in the middle of message sends.
         // So the grammar must be careful to disallow this:
         //
-        //   foo bar: "baz" bang: (var a = "blah")
+        //   foo.bar("baz", var a = "blah")
+
+        if (Match(TOKEN_DEF))
+        {
+            // TODO(bob): Allow parenthesized expression here too.
+            Ref<Token> name = Consume(TOKEN_NAME, "Expect name after 'def'.");
+
+            Consume(TOKEN_LEFT_BRACE, "Expect '{' after definition receiver.");
+            DefExpr * def = new DefExpr(name->Text());
+            ParseDefines(*def, TOKEN_RIGHT_BRACE);
+            return Ref<Expr>(def);
+        }
 
         if (Match(TOKEN_VAR))
         {
@@ -139,33 +150,9 @@ namespace Finch
             return Ref<Expr>(new ReturnExpr(result));
         }
 
-        return Bind();
+        return Assignment();
     }
-    
-    Ref<Expr> FinchParser::Bind()
-    {
-        Ref<Expr> expr = Assignment();
         
-        while (Match(TOKEN_BIND))
-        {
-            BindExpr * bind = new BindExpr(expr);
-            expr = Ref<Expr>(bind);
-
-            if (Match(TOKEN_LEFT_PAREN))
-            {
-                // Multiple bind.
-                ParseDefines(*bind, TOKEN_RIGHT_PAREN);
-            }
-            else
-            {
-                // Single bind.
-                ParseDefine(*bind);
-            }
-        }
-        
-        return expr;
-    }
-    
     Ref<Expr> FinchParser::Assignment()
     {
         if (LookAhead(TOKEN_NAME, TOKEN_EQ))
@@ -254,7 +241,7 @@ namespace Finch
         else if (Match(TOKEN_LEFT_PAREN))
         {
             // Parenthesized expression.
-            Ref<Expr> expr = Bind();
+            Ref<Expr> expr = Assignment();
             Consume(TOKEN_RIGHT_PAREN, "Expect closing ')'.");
             return expr;
         }

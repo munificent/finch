@@ -63,8 +63,8 @@ namespace Finch
         virtual ~Compiler() {}
 
         virtual void Visit(const ArrayExpr & expr, int dest);
-        virtual void Visit(const BindExpr & expr, int dest);
         virtual void Visit(const BlockExpr & expr, int dest);
+        virtual void Visit(const DefExpr & expr, int dest);
         virtual void Visit(const MessageExpr & expr, int dest);
         virtual void Visit(const NameExpr & expr, int dest);
         virtual void Visit(const NumberExpr & expr, int dest);
@@ -76,7 +76,10 @@ namespace Finch
         virtual void Visit(const StringExpr & expr, int dest);
         virtual void Visit(const UndefineExpr & expr, int dest);
         virtual void Visit(const VarExpr & expr, int dest);
-        
+
+        // Load a variable with the given name in the current block.
+        void LoadName(const String & name, int dest);
+
         void ResolveName(Compiler * compiler, const String & name,
             Upvalue * outUpvalue, bool * outIsLocal, int * outIndex,
             Upvalue * outResolvedUpvalue);

@@ -29,6 +29,7 @@ namespace Finch
         TOKEN_SELF,
         TOKEN_UNDEFINED,
 
+        TOKEN_DEF,
         TOKEN_RETURN,
         TOKEN_VAR,
 

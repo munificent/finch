@@ -32,7 +32,6 @@ namespace Finch
         Ref<Expr> Expression();
         Ref<Expr> Sequence();
         Ref<Expr> Statement();
-        Ref<Expr> Bind();
         Ref<Expr> Assignment();
         Ref<Expr> Operator();
         Ref<Expr> Message();

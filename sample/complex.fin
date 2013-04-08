@@ -40,7 +40,9 @@ var Complexes = [
 ]
 
 // allow creating complex numbers from normal ones
-Numbers :: i { Complex.new(0, self) }
+def Numbers {
+  i { Complex.new(0, self) }
+}
 
 // test it out a bit
 var a = 4.i
