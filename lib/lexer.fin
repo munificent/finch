@@ -378,7 +378,7 @@ var Lexers = [
 ]
 
 // Tokenize some real files.
-var files = #[
+var files = [
   "../../lib/core.fin"
   "../../lib/lexer.fin"
   "../../test/arithmetic.fin"

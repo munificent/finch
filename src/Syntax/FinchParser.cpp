@@ -303,9 +303,8 @@ namespace Finch
 
             return expr;
         }
-        else if (Match(TOKEN_HASH))
+        else if (Match(TOKEN_LEFT_BRACKET))
         {
-            Consume(TOKEN_LEFT_BRACKET, "Expect '[' to begin array literal.");
             Array<Ref<Expr> > exprs;
             
             // Allow zero-element arrays.

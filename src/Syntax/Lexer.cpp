@@ -50,7 +50,6 @@ namespace Finch
                 case ',': return SingleToken(TOKEN_LINE);
                 case '@': return SingleToken(TOKEN_AT);
                 case '.': return SingleToken(TOKEN_DOT);
-                case '#': return SingleToken(TOKEN_HASH);
                 case ';': return SingleToken(TOKEN_SEMICOLON);
                 case '\\': return SingleToken(TOKEN_IGNORE_LINE);
                 

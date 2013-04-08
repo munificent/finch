@@ -11,7 +11,7 @@ var Parser = [
   traits = [
     init-tokens: tokens {
       _tokens = tokens
-      _read = #[]
+      _read = []
     }
 
     if-look-ahead: type then: then {
@@ -133,12 +133,12 @@ var FinchParser = [|Parser|
     bind {
       var expr = self assignment
       self while-match: Token/Bind do: {
-        var defines = #[]
+        var defines = []
         self if-look-ahead: Token/LeftParen then: {
           self consume: Token/LeftParen
           defines = self parse-defines
         } else: {
-          defines = #[self parse-define]
+          defines = [self parse-define]
         }
 
         expr = Expr bind-receiver: expr defines: defines
@@ -169,7 +169,7 @@ var FinchParser = [|Parser|
       var expr = self operator
 
       var message = ""
-      var args = #[]
+      var args = []
       self while-match: Token/Keyword do: { keyword ->
         message = message + keyword text
         args.add(self.operator)
@@ -186,7 +186,7 @@ var FinchParser = [|Parser|
       var expr = self unary
       self while-match: Token/Operator do: { operator ->
         var right = self unary
-        expr = Expr message-receiver: expr name: operator text args: #[right]
+        expr = Expr message-receiver: expr name: operator text args: [right]
       }
       expr
     }
@@ -194,7 +194,7 @@ var FinchParser = [|Parser|
     unary {
       var expr = self primary
       self while-match: Token/Name do: { name ->
-        expr = Expr message-receiver: expr name: name text args: #[]
+        expr = Expr message-receiver: expr name: name text args: []
       }
       expr
     }
@@ -231,7 +231,7 @@ var FinchParser = [|Parser|
           var defines = nil
           self match: Token/RightParen then: {
             // No defines.
-            defines = #[]
+            defines = []
           } else: {
             defines = self parse-defines
           }
@@ -250,7 +250,7 @@ var FinchParser = [|Parser|
         var elements = nil
         self match: Token/RightBracket then: {
           // Allow empty arrays.
-          elements = #[]
+          elements = []
         } else: {
           elements = self parse-sequence
           self consume: Token/RightBracket
@@ -262,7 +262,7 @@ var FinchParser = [|Parser|
       // Block.
       self match: Token/LeftBrace then: {
         // Parse the parameter list if present.
-        var params = #[]
+        var params = []
         self match: Token/Pipe then: {
           self while-match: Token/Name do: { name ->
             params.add(name.text)
@@ -279,7 +279,7 @@ var FinchParser = [|Parser|
       // Keyword send to Ether.
       self if-look-ahead: Token/Keyword then: {
         var message = ""
-        var args = #[]
+        var args = []
         self while-match: Token/Keyword do: { keyword ->
           message = keyword text
           var args = self operator
@@ -293,7 +293,7 @@ var FinchParser = [|Parser|
     }
 
     parse-sequence {
-      var exprs = #[self bind]
+      var exprs = [self bind]
       self while-match: Token/Comma do: {
         // There may be a trailing line after the last expression in a block.
         // If we eat the line and then see a closing brace or eof, stop.
@@ -308,7 +308,7 @@ var FinchParser = [|Parser|
     }
 
     parse-defines {
-      var defines = #[]
+      var defines = []
       loop {
         defines.add(self.parse-define)
 
@@ -328,7 +328,7 @@ var FinchParser = [|Parser|
 
       self match: Token/Name then: { name ->
         // Unary method.
-        var body = self parse-define-method: #[]
+        var body = self parse-define-method: []
         return Define name: name text body: body method?: true
       }
 
@@ -336,13 +336,13 @@ var FinchParser = [|Parser|
         // Operator.
         var param = (self consume: Token/Name) text
 
-        var body = self parse-define-method: #[param]
+        var body = self parse-define-method: [param]
         return Define name: operator text body: body method?: true
       }
 
       self if-look-ahead: Token/Keyword then: {
         var name = ""
-        var params = #[]
+        var params = []
 
         self while-match: Token/Keyword do: { keyword ->
           name = name + keyword text

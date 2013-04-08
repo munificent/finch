@@ -22,12 +22,12 @@ Test.suite("Objects") is {
   }
 
   Test.test("Type tests") is {
-    Test.is-true(#[1].array?)
-    Test.is-false(#[1].block?)
-    Test.is-false(#[1].boolean?)
-    Test.is-false(#[1].fiber?)
-    Test.is-false(#[1].number?)
-    Test.is-false(#[1].string?)
+    Test.is-true([1].array?)
+    Test.is-false([1].block?)
+    Test.is-false([1].boolean?)
+    Test.is-false([1].fiber?)
+    Test.is-false([1].number?)
+    Test.is-false([1].string?)
 
     Test.is-false({ 0 }.array?)
     Test.is-true({ 0 }.block?)

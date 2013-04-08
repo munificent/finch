@@ -1,6 +1,6 @@
 var PrettyPrinter = [
   new {
-    [|PrettyPrinter proto| _buffer = #[], _indent = "" ]
+    [|PrettyPrinter proto| _buffer = [], _indent = "" ]
   }
 
   proto = [
@@ -37,7 +37,7 @@ Expr proto :: (
 )
 
 Expr array-proto :: print-to: printer {
-  printer.write("#[")
+  printer.write("[")
 
   _elements.each { element ->
     element print-to: printer

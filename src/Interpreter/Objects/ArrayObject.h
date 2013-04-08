@@ -32,7 +32,7 @@ namespace Finch
         
         virtual String AsString() const
         {
-            String text = "#[";
+            String text = "[";
             
             if (mElements.Count() > 0) text += mElements[0].AsString();
             for (int i = 1; i < mElements.Count(); i++)

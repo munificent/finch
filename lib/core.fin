@@ -193,7 +193,7 @@ obj Array {
   }
 
   count(count) fill-with(element) {
-    var result = #[]
+    var result = []
 
     from (1) to (count) do { i -> result.add(element) }
     result
@@ -204,7 +204,7 @@ def Arrays {
   array? { true }
 
   ++ right {
-    var result = #[]
+    var result = []
 
     self.each { e -> result.add(e) }
     right.each { e -> result.add(e) }
@@ -228,7 +228,7 @@ def Arrays {
   }
 
   map(block) {
-    var result = #[]
+    var result = []
     self.each { element -> result.add(block.call(element)) }
     result
   }
