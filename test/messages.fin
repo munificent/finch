@@ -1,3 +1,5 @@
+load("test/test.fin")
+
 Test.suite("Messages") is {
   Test.test("missing args are nil") is {
     { a b c d ->

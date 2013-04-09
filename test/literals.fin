@@ -1,3 +1,5 @@
+load("test/test.fin")
+
 Test.suite("Literals") is {
   Test.test("Numbers") is {
     Test.that(0.to-string) equals("0")

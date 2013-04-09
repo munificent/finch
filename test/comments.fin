@@ -1,3 +1,5 @@
+load("test/test.fin")
+
 Test.suite("Comments") is {
   Test.test("line comment in continued line") is {
     Test.that(1) equals(

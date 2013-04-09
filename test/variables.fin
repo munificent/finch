@@ -1,3 +1,5 @@
+load("test/test.fin")
+
 Test.suite("Variables") is {
   Test.test("Define") is {
     var a = "something"

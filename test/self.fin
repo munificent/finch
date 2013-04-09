@@ -1,3 +1,5 @@
+load("test/test.fin")
+
 Test.suite("Self") is {
   Test.test("Self in non-method block is nil") is {
     var block = { self }

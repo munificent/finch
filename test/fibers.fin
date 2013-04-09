@@ -1,3 +1,6 @@
+// skip: Fibers are disabled right now.
+load("test/test.fin")
+
 Test.suite("Fibers") is {
   Test.test("new doesn't immediately start") is {
     var executed = false

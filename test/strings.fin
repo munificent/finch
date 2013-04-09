@@ -1,3 +1,5 @@
+load("test/test.fin")
+
 Test.suite("Strings") is {
   // make a couple of objects that implement to-string
   obj apple { to-string { "apple" } }

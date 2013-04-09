@@ -1,3 +1,5 @@
+load("test/test.fin")
+
 Test.suite("Arrays") is {
   Test.test("Array count") is {
     Test.that(Array.count(3).count) equals(3)

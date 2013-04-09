@@ -79,7 +79,7 @@ def Ether {
   }
 
   while(condition) do(block) {
-    if (condition.call) then {
+    if(condition.call) then {
       block.call
       while(condition) do(block)
     }

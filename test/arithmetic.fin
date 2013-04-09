@@ -1,3 +1,5 @@
+load("test/test.fin")
+
 Test.suite("Arithmetic") is {
   Test.test("Addition") is {
     Test.that(1 + 2   ) equals(3)

@@ -1,3 +1,5 @@
+load("test/test.fin")
+
 Test.suite("Return") is {
   Test.test("return exits enclosing method") is {
     var a = "0"

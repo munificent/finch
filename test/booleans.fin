@@ -1,3 +1,5 @@
+load("test/test.fin")
+
 Test.suite("Booleans") is {
   Test.test("to-string") is {
     Test.that(true.to-string ) equals("true")
