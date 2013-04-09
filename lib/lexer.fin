@@ -379,22 +379,22 @@ var Lexers = [
 
 // Tokenize some real files.
 var files = [
-  "../../lib/core.fin"
-  "../../lib/lexer.fin"
-  "../../test/arithmetic.fin"
-  "../../test/arrays.fin"
-  "../../test/booleans.fin"
-  "../../test/cascade.fin"
-  "../../test/fibers.fin"
-  "../../test/literals.fin"
-  "../../test/messages.fin"
-  "../../test/objects.fin"
-  "../../test/return.fin"
-  "../../test/self.fin"
-  "../../test/strings.fin"
-  "../../test/switch.fin"
-  "../../test/tco.fin"
-  "../../test/test.fin"
+  "../../lib/core.fin",
+  "../../lib/lexer.fin",
+  "../../test/arithmetic.fin",
+  "../../test/arrays.fin",
+  "../../test/booleans.fin",
+  "../../test/cascade.fin",
+  "../../test/fibers.fin",
+  "../../test/literals.fin",
+  "../../test/messages.fin",
+  "../../test/objects.fin",
+  "../../test/return.fin",
+  "../../test/self.fin",
+  "../../test/strings.fin",
+  "../../test/switch.fin",
+  "../../test/tco.fin",
+  "../../test/test.fin",
   "../../test/variables.fin"
 ]
 

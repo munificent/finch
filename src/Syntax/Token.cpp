@@ -14,6 +14,7 @@ namespace Finch
             case TOKEN_RIGHT_BRACE:     cout << "right brace"; break;
             case TOKEN_AT:              cout << "at"; break;
             case TOKEN_DOT:             cout << "dot"; break;
+            case TOKEN_COMMA:           cout << "comma"; break;
             case TOKEN_SEMICOLON:       cout << "semicolon"; break;
             case TOKEN_ARROW:           cout << "->"; break;
             case TOKEN_EQ:              cout << "="; break;
@@ -44,7 +45,6 @@ namespace Finch
                 cout << "keyword '" << token.Text() << "'";
                 break;
                 
-            case TOKEN_LINE:            cout << "newline"; break;
             case TOKEN_IGNORE_LINE:     cout << "ignore line"; break;
             case TOKEN_EOF:             cout << "eof"; break;
             

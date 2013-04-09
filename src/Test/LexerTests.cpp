@@ -41,21 +41,21 @@ namespace Finch
             TOKEN_LEFT_BRACE,
             TOKEN_RIGHT_BRACE,
             TOKEN_DOT,
-            TOKEN_LINE, // ,
+            TOKEN_COMMA,
             TOKEN_SEMICOLON,
-            TOKEN_LINE, TOKEN_EOF);
+            TOKEN_EOF);
         
         // test comments
         TestLex("() // this is ignored",
                 TOKEN_LEFT_PAREN,
                 TOKEN_RIGHT_PAREN,
-                TOKEN_LINE, TOKEN_EOF);
+                TOKEN_SEMICOLON, TOKEN_EOF);
         
         // test the reserved words
         TestLex("= ->",
             TOKEN_EQ,
             TOKEN_ARROW,
-            TOKEN_LINE, TOKEN_EOF);
+            TOKEN_SEMICOLON, TOKEN_EOF);
         
         // test numbers
         TestLex("1 0 23467 -2347 -1",
@@ -64,7 +64,7 @@ namespace Finch
                 TOKEN_NUMBER,
                 TOKEN_NUMBER,
                 TOKEN_NUMBER,
-                TOKEN_LINE, TOKEN_EOF);
+                TOKEN_SEMICOLON, TOKEN_EOF);
         
         EXPECT_EQUAL(0,    LexOne("0")->Number());
         EXPECT_EQUAL(1,    LexOne("1")->Number());
@@ -75,7 +75,7 @@ namespace Finch
         TestLex("\"\" \"foo\"",
                 TOKEN_STRING,
                 TOKEN_STRING,
-                TOKEN_LINE, TOKEN_EOF);
+                TOKEN_SEMICOLON, TOKEN_EOF);
         
         EXPECT_EQUAL("",        LexOne("\"\"")->Text());
         EXPECT_EQUAL("a",       LexOne("\"a\"")->Text());
@@ -90,7 +90,7 @@ namespace Finch
                 TOKEN_NAME,
                 TOKEN_NAME,
                 TOKEN_NAME,
-                TOKEN_LINE, TOKEN_EOF);
+                TOKEN_SEMICOLON, TOKEN_EOF);
 
         TestLex("- + = / < > ? ~ ! $ % ^ & * *$-+-==",
                 TOKEN_OPERATOR,
@@ -108,13 +108,13 @@ namespace Finch
                 TOKEN_OPERATOR,
                 TOKEN_OPERATOR,
                 TOKEN_OPERATOR,
-                TOKEN_LINE, TOKEN_EOF);
+                TOKEN_SEMICOLON, TOKEN_EOF);
 
         TestLex("foo: barBangBaz: :",
                 TOKEN_KEYWORD,
                 TOKEN_KEYWORD,
                 TOKEN_KEYWORD,
-                TOKEN_LINE, TOKEN_EOF);
+                TOKEN_SEMICOLON, TOKEN_EOF);
         
         // test combinations
         TestLex("foo[123]+(*\"huh\")",
@@ -127,13 +127,13 @@ namespace Finch
                 TOKEN_OPERATOR,
                 TOKEN_STRING,
                 TOKEN_RIGHT_PAREN,
-                TOKEN_LINE, TOKEN_EOF);
+                TOKEN_SEMICOLON, TOKEN_EOF);
         
         // edge cases:
         
         TestLex("<---",
                 TOKEN_OPERATOR,
-                TOKEN_LINE, TOKEN_EOF);
+                TOKEN_SEMICOLON, TOKEN_EOF);
     }
     
     Ref<Token> LexerTests::LexOne(const char * text)

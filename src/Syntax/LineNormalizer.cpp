@@ -17,7 +17,7 @@ namespace Finch
             
             switch (token->Type())
             {
-                case TOKEN_LINE:
+                case TOKEN_SEMICOLON:
                     if (mEatNewlines)
                     {
                         // discard any lines
@@ -39,11 +39,11 @@ namespace Finch
                     break;
 
                 // discard newlines after token that can't end expression
+                case TOKEN_COMMA:
                 case TOKEN_KEYWORD:
                 case TOKEN_OPERATOR:
                 case TOKEN_EQ:
                 case TOKEN_ARROW:
-                case TOKEN_SEMICOLON:
 
                 // discard newlines after open group
                 case TOKEN_LEFT_PAREN:

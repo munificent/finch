@@ -39,7 +39,7 @@ namespace Finch
                 case '\0':
                     // End of the line.
                     mNeedsLine = true;
-                    return Ref<Token>(new Token(TOKEN_LINE));
+                    return Ref<Token>(new Token(TOKEN_SEMICOLON));
                     
                 case '(': return SingleToken(TOKEN_LEFT_PAREN);
                 case ')': return SingleToken(TOKEN_RIGHT_PAREN);
@@ -47,7 +47,7 @@ namespace Finch
                 case ']': return SingleToken(TOKEN_RIGHT_BRACKET);
                 case '{': return SingleToken(TOKEN_LEFT_BRACE);
                 case '}': return SingleToken(TOKEN_RIGHT_BRACE);
-                case ',': return SingleToken(TOKEN_LINE);
+                case ',': return SingleToken(TOKEN_COMMA);
                 case '@': return SingleToken(TOKEN_AT);
                 case '.': return SingleToken(TOKEN_DOT);
                 case ';': return SingleToken(TOKEN_SEMICOLON);
@@ -70,7 +70,7 @@ namespace Finch
                         // Line comment, so ignore the rest of the line and
                         // emit the line token.
                         mNeedsLine = true;
-                        return Ref<Token>(new Token(TOKEN_LINE));
+                        return Ref<Token>(new Token(TOKEN_SEMICOLON));
                     }
                     else if (Peek() == '*')
                     {

@@ -19,7 +19,8 @@ namespace Finch
         TOKEN_RIGHT_BRACE,
         TOKEN_AT,
         TOKEN_DOT,
-        TOKEN_SEMICOLON,
+        TOKEN_COMMA,
+        TOKEN_SEMICOLON, // Includes "\n" too.
         
         TOKEN_ARROW,
         TOKEN_EQ,
@@ -37,8 +38,7 @@ namespace Finch
         TOKEN_NAME,
         TOKEN_OPERATOR,
         TOKEN_KEYWORD,
-        
-        TOKEN_LINE, // Includes "," too since they are equivalent in Finch.
+
         TOKEN_IGNORE_LINE,
         
         TOKEN_ERROR,

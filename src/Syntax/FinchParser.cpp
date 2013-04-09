@@ -29,7 +29,7 @@ namespace Finch
             Ref<Expr> expr = Statement();
             
             // Discard a trailing newline.
-            Match(TOKEN_LINE);
+            Match(TOKEN_SEMICOLON);
             
             // Don't return anything if we had a parse error.
             if (HadError()) return Ref<Expr>();
@@ -55,7 +55,7 @@ namespace Finch
         Ref<Expr> expr = Sequence();
 
         // Discard a trailing newline.
-        Match(TOKEN_LINE);
+        Match(TOKEN_SEMICOLON);
         
         return expr;
     }
@@ -69,7 +69,7 @@ namespace Finch
             Ref<Expr> expr = Statement();
             exprs.Add(expr);
             
-            if (!Match(TOKEN_LINE)) break;
+            if (!Match(TOKEN_SEMICOLON)) break;
             
             // There may be a trailing line after the last expression in a
             // block. If we eat the line and then see a closing brace or eof,
@@ -159,10 +159,8 @@ namespace Finch
 
         if (Match(TOKEN_RETURN))
         {
-            // TODO(bob): Move this below sequence in the grammar so that you
-            // can't do this in the middle of an expression.
             Ref<Expr> result;
-            if (LookAhead(TOKEN_LINE) ||
+            if (LookAhead(TOKEN_SEMICOLON) ||
                 LookAhead(TOKEN_RIGHT_PAREN) ||
                 LookAhead(TOKEN_RIGHT_BRACE) ||
                 LookAhead(TOKEN_RIGHT_BRACKET))
@@ -310,17 +308,11 @@ namespace Finch
             // Allow zero-element arrays.
             if (!LookAhead(TOKEN_RIGHT_BRACKET))
             {
-                exprs.Add(Assignment());
-                
-                while (Match(TOKEN_LINE))
+                do
                 {
-                    // There may be a trailing line after the last expression in
-                    // a block. If we eat the line and then see a closing brace
-                    // or eof, just stop here.
-                    if (LookAhead(TOKEN_RIGHT_BRACKET)) break;
-                    
                     exprs.Add(Assignment());
                 }
+                while (Match(TOKEN_COMMA));
             }
             
             Consume(TOKEN_RIGHT_BRACKET, "Expect closing ']'.");
@@ -360,13 +352,13 @@ namespace Finch
                 // Parenthesized argument list.
                 Consume(TOKEN_LEFT_PAREN, "Expect '(' after method name.");
 
-                // Parse a comma (or line) separated list of parameters.
+                // Parse a comma-separated list of arguments.
                 do
                 {
                     args.Add(Assignment());
                     name += " ";
                 }
-                while (Match(TOKEN_LINE));
+                while (Match(TOKEN_COMMA));
 
                 Consume(TOKEN_RIGHT_PAREN, "Expect ')' after argument.");
             }
@@ -411,7 +403,7 @@ namespace Finch
         {
             ParseDefine(expr);
             if (Match(endToken)) break;
-            Consume(TOKEN_LINE, "Definitions should be separated by commas (or newlines).");
+            Consume(TOKEN_SEMICOLON, "Definitions should be separated by newlines (or ';').");
             if (Match(endToken)) break;
         }
     }
@@ -465,7 +457,7 @@ namespace Finch
 
                 Consume(TOKEN_LEFT_PAREN, "Expect '(' after method name.");
 
-                // Parse a comma (or line) separated list of parameters.
+                // Parse a comma-separated list of parameters.
                 do
                 {
                     Ref<Token> param = Consume(TOKEN_NAME,
@@ -473,7 +465,7 @@ namespace Finch
                     params.Add(param->Text());
                     name += " ";
                 }
-                while (Match(TOKEN_LINE));
+                while (Match(TOKEN_COMMA));
 
                 Consume(TOKEN_RIGHT_PAREN, "Expect ')' after parameter.");
             }
