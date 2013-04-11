@@ -31,26 +31,26 @@ Here's a little example to get you going. This little program doesn't draw, but 
 
     :::finch
     // create an object and put it in a variable "dragon"
-    dragon <- [
-      // define a "trace:" method for outputting the series of left and
+    obj dragon {
+      // define a "trace" method for outputting the series of left and
       // right turns needed to draw a dragon curve.
-      trace: depth {
-        self trace-depth: depth turn: "R"
-        write-line: "" // end the line
+      trace(depth) {
+        self.trace-depth(depth, "R")
+        write-line("") // end the line
       }
 
       // the main recursive method
-      trace-depth: n turn: turn {
-        if: n > 0 then: {
-          self trace-depth: n - 1 turn: "R"
-          write: turn
-          self trace-depth: n - 1 turn: "L"
+      trace-depth(n, turn) {
+        if(n > 0) then {
+          self.trace-depth(n - 1, "R")
+          write(turn)
+          self.trace-depth(n - 1, "L")
         }
       }
-    ]
+    }
 
     // now let's try it
-    dragon trace: 5
+    dragon.trace(5)
 
 ## Getting Started
 
@@ -80,12 +80,12 @@ Once you've got it built and running, you'll be at the main interpreter prompt. 
 Once you're in the REPL, you can load and execute a script using <code>load:</code>. The path must be relative to where the executable is. If you've built from XCode, you can run the tests like this:
 
     :::finch
-    >> load: "../../test/test.fin"
+    >> load("../../test/test.fin")
 
 If you built from a makefile, it's:
 
     :::finch
-    >> load: "test/test.fin"
+    >> load("test/test.fin")
 
 ### Where to Go from Here
 

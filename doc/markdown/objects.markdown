@@ -11,39 +11,39 @@ When it comes to an object-oriented language, one of the most important things i
 You create an object by defining these things. The easiest way is with an *object literal*, like so:
 
     :::finch
-    [ greet { write-line: "Hi!" } ]
+    obj { greet { write-line("Hi!") } }
 
 An object literal is a pair of square brackets. Inside the brackets are a series of *definitions*, separated by commas (or newlines).
 
-In the above example, we've defined one thing: an unary method named "greet" whose body is `{ write-line: "Hi!" }`. If we store our object in a variable like this:
+In the above example, we've defined one thing: an unary method named "greet" whose body is `{ write-line("Hi!") }`. If we store our object in a variable like this:
 
     :::finch
-    greeter <- [
-      greet { write-line: "Hi!" }
-    ]
+    obj greeter {
+      greet { write-line("Hi!") }
+    }
 
 Then we can send it a message like so:
 
     :::finch
-    greeter greet // "Hi!"
+    greeter.greet // "Hi!"
 
 ### Method Definitions
 
 Much like unary, operator and keyword *messages*, object literals let you define unary, operator, and keyword *methods*. They look like this:
 
     :::finch
-    greeter <- [
+    obj greeter {
       // unary
-      greet { write-line: "Hi!" }
+      greet { write-line("Hi!") }
 
       // operator
-      +++ other { write-line: "I am at " + other }
+      +++ other { write-line("I am at " + other) }
 
       // keyword
-      greet: who and: who-else {
-        write-line: "Hi, " + who " and " + who-else
+      greet(who) and(who-else) {
+        write-line("Hi, " + who " and " + who-else)
       }
-    ]
+    }
 
 When you send a message to the object, it will look for a matching method, bind the arguments to the method's parameters, and then call its block. So when you do:
 
@@ -57,14 +57,14 @@ It will bind `"Fred"` to `other` and then call the block.
 Within the body of a method, you can access and set state on the object itself. Doing so looks like working with regular variables, except their names start with an underscore (`_`).
 
     :::finch
-    counter <- [
+    obj counter {
       increment {
-        if: _count == nil then: { _count <- 0 }
-        _count <- _count + 1
+        if(_count == nil) then { _count = 0 }
+        _count = _count + 1
       }
 
       count { _count }
-    ]
+    }
 
 Here, the `increment` and `count` methods both use a `_count` field. Fields are
 like variables that are in scope within all methods of an object. Within a method, you can create a field simply by assigning it.
@@ -72,7 +72,7 @@ like variables that are in scope within all methods of an object. Within a metho
 Fields are *not* visible outside of the object's methods. Unlike JavaScript and Self, they aren't just slots. So with the above example, you couldn't do this:
 
     :::finch
-    counter _count // nope
+    counter._count // nope
 
 That's why `greeter` defines a `count` method to explicitly expose that. The idea here is that objects should encapsulate their internal state and only expose an interface to that that they control.
 
@@ -81,38 +81,38 @@ That's why `greeter` defines a `count` method to explicitly expose that. The ide
 Often when you create an object you want it to start with some initial state. To make that easier, you can also initialize fields in an object literal. We can simplify our above example by doing:
 
     :::finch
-    counter <- [
-      _count <- 0
+    obj counter {
+      _count = 0
 
-      increment { _count <- _count + 1 }
+      increment { _count = _count + 1 }
       count { _count }
-    ]
+    }
 
 ### Property Definitions
 
-While it's good that objects encapsulate their state, it's also pretty common for them to expose some of it with simply unary methods that just get a field. To make that easier, you can do this:
+While it's good that objects encapsulate their state, it's also pretty common for them to expose some of it with simple unary methods that just get a field. To make that easier, you can do this:
 
     :::finch
-    counter <- [
-      count <- 0
-      increment { _count <- _count + 1 }
-    ]
+    obj counter {
+      count = 0
+      increment { _count = _count + 1 }
+    }
 
-Here, the `count <- 0` bit is exactly equivalent to initializing `_count` (with the underscore!) to zero, and then defining an accessor method `count` that returns it.
+Here, the `count = 0` bit is exactly equivalent to initializing `_count` (with the underscore!) to zero, and then defining an accessor method `count` that returns it.
 
 ## Self
 
 Within the body of a method, you often want to get the object that the method is being invoked on. In Finch, that's called `self`:
 
     :::finch
-    counter <- [
-      count <- 0
-      increment { _count <- _count + 1 }
+    obj counter {
+      count = 0
+      increment { _count = _count + 1 }
       increment-twice {
-        self increment
-        self increment
+        self.increment
+        self.increment
       }
-    ]
+    }
 
 Here, we're using `self` in order to call one method from another. Unlike Java and C++, but like JavaScript, you have to explicitly use `self` (or `this` in those languages) to send a message to yourself.
 
@@ -123,22 +123,26 @@ The above features are fine when you want a new object, but what if you want to 
 If we have some object `fred`, we can add a method to it like this:
 
     :::finch
-    fred :: dance { writeLine: "Sorry, I'm too sexy." }
-    fred dance // "Sorry, I'm too sexy."
+    def fred {
+      dance { writeLine("Sorry, I'm too sexy.") }
+    }
+    fred.dance // "Sorry, I'm too sexy."
 
 This also works for operators and keyword messages:
 
     :::finch
-    fred :: ? right {
-      writeLine: "What do I do with a " + right + "?"
-    }
+    def fred {
+      ? right {
+        writeLine("What do I do with a " + right + "?")
+      }
 
-    fred :: give: gift to: who {
-      writeLine: "Here, " + who + ", have a " + gift + "."
+      give(gift) to(who) {
+        writeLine("Here, " + who + ", have a " + gift + ".")
+      }
     }
 
     fred ? "plunger"
-    fred give: "plunger" to: "Bill"
+    fred.give("plunger") to("Bill")
 
 ### Multibinds
 
