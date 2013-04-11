@@ -8,4 +8,4 @@ var Fib = [
   }
 ]
 
-write-line(Fib.calc(25) == 75025)
+print(Fib.calc(25) == 75025)

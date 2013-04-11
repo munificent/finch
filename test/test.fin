@@ -1,9 +1,9 @@
 // nontest
 // define a Test object the tests can use
 obj Test {
-  _suite       = ""
-  _test        = ""
-  _tests       = 0
+  _suite = ""
+  _test  = ""
+  _tests = 0
 
   suite(name) is(body) {
     _suite = name
@@ -12,8 +12,8 @@ obj Test {
   }
 
   test(name) is(body) {
-    _test        = name
-    _tests       = 0
+    _test  = name
+    _tests = 0
 
     body.call
 
@@ -23,17 +23,17 @@ obj Test {
   fail { self.is-true(false) }
   pass { self.is-true(true) }
 
-  is-true(actual) { self.that(actual) equals(true) }
-  is-nil(actual) { self.that(actual) equals(nil) }
+  is-true(actual)  { self.that(actual) equals(true) }
+  is-nil(actual)   { self.that(actual) equals(nil) }
   is-false(actual) { self.that(actual) equals(false) }
 
   that(actual) equals(expected) {
     _tests = _tests + 1
 
     if(actual == expected) then {
-      write-line("PASS " + _suite + " / " + _test + " " + _tests)
+      print("PASS " + _suite + " / " + _test + " " + _tests)
     } else {
-      write-line("FAIL " + _suite + " / " + _test + " " + _tests +
+      print("FAIL " + _suite + " / " + _test + " " + _tests +
           ": Expected " + expected + " but got " + actual + ".")
     }
   }

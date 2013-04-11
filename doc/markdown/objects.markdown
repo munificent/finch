@@ -11,15 +11,15 @@ When it comes to an object-oriented language, one of the most important things i
 You create an object by defining these things. The easiest way is with an *object literal*, like so:
 
     :::finch
-    obj { greet { write-line("Hi!") } }
+    obj { greet { print("Hi!") } }
 
 An object literal is a pair of square brackets. Inside the brackets are a series of *definitions*, separated by commas (or newlines).
 
-In the above example, we've defined one thing: an unary method named "greet" whose body is `{ write-line("Hi!") }`. If we store our object in a variable like this:
+In the above example, we've defined one thing: an unary method named "greet" whose body is `{ print("Hi!") }`. If we store our object in a variable like this:
 
     :::finch
     obj greeter {
-      greet { write-line("Hi!") }
+      greet { print("Hi!") }
     }
 
 Then we can send it a message like so:
@@ -34,14 +34,14 @@ Much like unary, operator and keyword *messages*, object literals let you define
     :::finch
     obj greeter {
       // unary
-      greet { write-line("Hi!") }
+      greet { print("Hi!") }
 
       // operator
-      +++ other { write-line("I am at " + other) }
+      +++ other { print("I am at " + other) }
 
       // keyword
       greet(who) and(who-else) {
-        write-line("Hi, " + who " and " + who-else)
+        print("Hi, " + who " and " + who-else)
       }
     }
 
@@ -204,7 +204,7 @@ When an inherited method is called, `self` will still be the object that origina
 
     :::finch
     parent <- [
-      say-name { write-line: self name }
+      say-name { print: self name }
       name { "parent" }
     ]
 
@@ -215,7 +215,7 @@ Likewise, when you access fields in an inherited method, it will look for them i
 
     :::finch
     parent <- [
-      say-name { write-line: _name }
+      say-name { print: _name }
       _name <- "parent"
     ]
 
@@ -257,6 +257,6 @@ Here we're defining a two-dimensional point type. The `Point` object represents 
     :::finch
     a <- Point new-x: 2 y: 3
     b <- Point new-x: 1 y: 4
-    write-line: a + b // (3, 7)
+    print: a + b // (3, 7)
 
 So, without adding any complexity to the language, we can define class-like things where that pattern makes sense. But, if all you need as an object, you don't have to deal with that baggage.

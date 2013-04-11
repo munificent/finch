@@ -6,7 +6,7 @@
 // time, each time it's run.
 var a = Fiber.new {
   from (1) to (10) do { n ->
-    write-line("fiber a yielding " + n)
+    print("fiber a yielding " + n)
     Fiber.yield(n)
   }
 }
@@ -16,5 +16,5 @@ var a = Fiber.new {
 // one at a time. It stops when the generator fiber ends.
 while { a.done?.not } do {
   var result = a.run
-  write-line("main fiber received " + result)
+  print("main fiber received " + result)
 }

@@ -100,7 +100,7 @@ def Ether {
     *primitive*.write(text.to-string)
   }
 
-  write-line(text) {
+  print(text) {
     // Make sure the argument is always converted to a string before
     // passing to the primitive version which can't do that.
     *primitive*.write(text.to-string)
@@ -195,7 +195,7 @@ obj Array {
   count(count) fill-with(element) {
     var result = []
 
-    from (1) to (count) do { i -> result.add(element) }
+    from (1) to (count) do { result.add(element) }
     result
   }
 }

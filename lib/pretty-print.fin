@@ -11,7 +11,7 @@ var PrettyPrinter = [
     }
 
     write string { _buffer.add(string) }
-    write-line string {
+    print string {
       _buffer.add(string + "\n")
     }
 
@@ -122,11 +122,11 @@ Expr number-proto :: print-to: printer {
 
 Expr object-proto :: print-to: printer {
   if (_parent == nil) then {
-    printer.write-line("[")
+    printer.print("[")
   } else {
     printer.write("[|")
     _parent print-to: printer
-    printer.write-line("|")
+    printer.print("|")
   }
 
   self print-defines-to: printer

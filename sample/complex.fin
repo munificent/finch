@@ -48,8 +48,8 @@ def Numbers {
 var a = 4.i
 var b = Complex.new(2, 3)
 
-write-line("a = " + a)
-write-line("b = " + b)
-write-line("|b| = " + b.magnitude)
-write-line("a + b = " + (a + b))
-write-line("a * b = " + (a * b))
+print("a = " + a)
+print("b = " + b)
+print("|b| = " + b.magnitude)
+print("a + b = " + (a + b))
+print("a * b = " + (a * b))

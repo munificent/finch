@@ -402,13 +402,13 @@ var tokens = 0
 var errors = 0
 var lines = 0
 files.each { file ->
-  write-line(file)
+  print(file)
   var source = Io.read-file(file)
   var lexer = Lexer new-path: file source: source
   lexer.each { token ->
     tokens = tokens + 1
     if (token type == Token/Error) then {
-      write-line(token)
+      print(token)
       errors = errors + 1
     }
 
@@ -416,4 +416,4 @@ files.each { file ->
   }
 }
 
-write-line(tokens + " tokens with " + errors + " errors in " + lines + " lines")
+print(tokens + " tokens with " + errors + " errors in " + lines + " lines")

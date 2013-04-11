@@ -11,5 +11,5 @@ def Numbers {
 
 // test
 from (0) to (20) do { i ->
-  write-line("" + i + " fib = " + i.fib)
+  print("" + i + " fib = " + i.fib)
 }

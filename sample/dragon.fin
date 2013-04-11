@@ -7,7 +7,7 @@ obj Dragon {
   generate(depth) {
     write("dragon curve " + depth + " depth: ")
     self.iterate(depth, "R")
-    write-line("") // end the line
+    print("") // end the line
   }
 
   // the inner recursive method

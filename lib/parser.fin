@@ -90,8 +90,8 @@ var Parser = [
       self if-look-ahead: type then: {
         self consume
       } else: {
-        write-line(error)
-        write-line("Got " + self current)
+        print(error)
+        print("Got " + self current)
       }
     }
 
@@ -287,7 +287,7 @@ var FinchParser = [|Parser|
         return Expr message-receiver: nil name: message args: args
       }
 
-      write-line("Could not parse " + self current)
+      print("Could not parse " + self current)
       self consume
       nil
     }
@@ -354,7 +354,7 @@ var FinchParser = [|Parser|
       }
 
       // TODO(bob): Handle error.
-      write-line("Unexpected token " + self current + " after bind.")
+      print("Unexpected token " + self current + " after bind.")
     }
 
     parse-define-method: params {
@@ -368,10 +368,10 @@ var FinchParser = [|Parser|
 ]
 
 files.each { file ->
-  write-line(file)
+  print(file)
   var source = Io.read-file(file)
   var lexer = Lexer new-path: file source: source
   var parser = FinchParser new-tokens: lexer
   var expr = parser parse
-  write-line(expr pretty-print)
+  print(expr pretty-print)
 }

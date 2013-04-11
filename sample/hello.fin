@@ -1,1 +1,1 @@
-write-line("Hello, world!")
+print("Hello, world!")
