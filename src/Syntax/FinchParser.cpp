@@ -251,7 +251,7 @@ namespace Finch
     
     Ref<Expr> FinchParser::Primary()
     {
-        if (LookAhead(TOKEN_NAME))
+        if (LookAhead(TOKEN_NAME) || LookAhead(TOKEN_UNDERSCORE))
         {
             String name = Consume()->Text();
             return Ref<Expr>(new NameExpr(name));
@@ -373,17 +373,17 @@ namespace Finch
     {
         Array<String> params;
 
-        // Try to parse an argument list. Look for a series of names
-        // followed by a "->".
-        int numArgs = 0;
-        while (LookAhead(numArgs, TOKEN_NAME))
+        // Try to parse a parameter list. Look for a series of names followed
+        // by a "->".
+        int numParams = 0;
+        while (LookAhead(numParams, TOKEN_NAME))
         {
-            numArgs++;
+            numParams++;
         }
 
-        if (numArgs > 0 && LookAhead(numArgs, TOKEN_ARROW))
+        if (numParams > 0 && LookAhead(numParams, TOKEN_ARROW))
         {
-            for (int i = 0; i < numArgs; i++)
+            for (int i = 0; i < numParams; i++)
             {
                 params.Add(Consume()->Text());
             }
@@ -393,6 +393,13 @@ namespace Finch
 
         Ref<Expr> body = Expression();
         Consume(TOKEN_RIGHT_BRACE, "Expect closing '}' after block.");
+
+        // If there wasn't a parameter list, see if there are implicit params.
+        if (params.Count() == 0)
+        {
+            ImplicitArgumentTranslator translator(params);
+            body->Accept(translator);
+        }
 
         return Ref<Expr>(new BlockExpr(params, body));
     }
@@ -501,6 +508,96 @@ namespace Finch
         // Attach the block's arguments.
         Ref<Expr> block = Ref<Expr>(new BlockExpr(params, body));
         expr.Define(true, name, block);
+    }
+
+    void ImplicitArgumentTranslator::Visit(ArrayExpr & expr)
+    {
+        for (int i = 0; i < expr.Elements().Count(); i++)
+        {
+            expr.Elements()[i]->Accept(*this);
+        }
+    }
+
+    void ImplicitArgumentTranslator::Visit(BlockExpr & expr)
+    {
+        // Do nothing. The block should have already been translated on its
+        // own when parsed.
+    }
+    
+    void ImplicitArgumentTranslator::Visit(DefExpr & expr)
+    {
+        ASSERT(false, "Translation for DefExpr not implemented yet.");
+    }
+    
+    void ImplicitArgumentTranslator::Visit(MessageExpr & expr)
+    {
+        expr.Receiver()->Accept(*this);
+        for (int i = 0; i < expr.Messages().Count(); i++)
+        {
+            MessageSend & message = expr.Messages()[i];
+            for (int j = 0; j < message.Arguments().Count(); j++)
+            {
+                message.Arguments()[j]->Accept(*this);
+            }
+        }
+    }
+    
+    void ImplicitArgumentTranslator::Visit(NameExpr & expr)
+    {
+        if (expr.Name() == "_")
+        {
+            String name = String::Format("arg %d", mParams.Count());
+            expr.SetName(name);
+            mParams.Add(name);
+        }
+    }
+    
+    void ImplicitArgumentTranslator::Visit(NumberExpr & expr)
+    {
+        // Do nothing.
+    }
+    
+    void ImplicitArgumentTranslator::Visit(ObjectExpr & expr)
+    {
+        ASSERT(false, "Translation for ObjectExpr not implemented yet.");
+    }
+    
+    void ImplicitArgumentTranslator::Visit(ReturnExpr & expr)
+    {
+        expr.Result()->Accept(*this);
+    }
+    
+    void ImplicitArgumentTranslator::Visit(SequenceExpr & expr)
+    {
+        for (int i = 0; i < expr.Expressions().Count(); i++)
+        {
+            expr.Expressions()[i]->Accept(*this);
+        }
+    }
+    
+    void ImplicitArgumentTranslator::Visit(SelfExpr & expr)
+    {
+        // Do nothing.
+    }
+    
+    void ImplicitArgumentTranslator::Visit(SetExpr & expr)
+    {
+        expr.Value()->Accept(*this);
+    }
+    
+    void ImplicitArgumentTranslator::Visit(StringExpr & expr)
+    {
+        // Do nothing.
+    }
+    
+    void ImplicitArgumentTranslator::Visit(UndefineExpr & expr)
+    {
+        // Do nothing.
+    }
+    
+    void ImplicitArgumentTranslator::Visit(VarExpr & expr)
+    {
+        expr.Value()->Accept(*this);
     }
 }
 

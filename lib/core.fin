@@ -206,16 +206,14 @@ def Arrays {
   ++ right {
     var result = []
 
-    self.each { e -> result.add(e) }
-    right.each { e -> result.add(e) }
+    self.each { result.add(_) }
+    right.each { result.add(_) }
 
     result
   }
 
   each(block) {
-    from (0) to (self.count - 1) do { i ->
-      block.call(self.at(i))
-    }
+    from (0) to (self.count - 1) do { block.call(self.at(_)) }
   }
 
   each(block) between(between) {
@@ -229,7 +227,7 @@ def Arrays {
 
   map(block) {
     var result = []
-    self.each { element -> result.add(block.call(element)) }
+    self.each { result.add(block.call(_)) }
     result
   }
 }

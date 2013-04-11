@@ -21,6 +21,7 @@ namespace Finch
         TOKEN_DOT,
         TOKEN_COMMA,
         TOKEN_SEMICOLON, // Includes "\n" too.
+        TOKEN_UNDERSCORE,
         
         TOKEN_ARROW,
         TOKEN_EQ,

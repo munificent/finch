@@ -45,17 +45,12 @@ namespace Finch
 
     bool Parser::Match(TokenType type)
     {
-        if (LookAhead(type))
-        {
-            Consume();
-            return true;
-        }
-        else
-        {
-            return false;
-        }
+        if (!LookAhead(type)) return false;
+
+        Consume();
+        return true;
     }
-    
+
     void Parser::Expect(TokenType expected, const char * errorMessage)
     {
         if (!LookAhead(expected))

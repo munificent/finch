@@ -38,9 +38,10 @@ namespace Finch
             return *this;
         }
         
-        String                    GetName()      const { return mName; }
-        const Array<Ref<Expr> > & GetArguments() const { return mArguments; }
-        
+        String                    Name()      const { return mName; }
+        const Array<Ref<Expr> > & Arguments() const { return mArguments; }
+              Array<Ref<Expr> > & Arguments()       { return mArguments; }
+
     private:
         
         // The name of the message.
@@ -67,7 +68,8 @@ namespace Finch
         
         Ref<Expr>                  Receiver() const { return mReceiver; }
         const Array<MessageSend> & Messages() const { return mMessages; }
-        
+              Array<MessageSend> & Messages()       { return mMessages; }
+
         void AddSend(String name, const Array<Ref<Expr> > & args)
         {
             mMessages.Add(MessageSend(name, args));
@@ -83,18 +85,18 @@ namespace Finch
                 
                 const MessageSend & message = mMessages[i];
                 
-                stream << message.GetName() << " [";
+                stream << message.Name() << "(";
                 
-                if (message.GetArguments().Count() > 0)
+                if (message.Arguments().Count() > 0)
                 {
-                    stream << message.GetArguments()[0];
+                    stream << message.Arguments()[0];
                 }
                 
-                for (int i = 1; i < message.GetArguments().Count(); i++)
+                for (int i = 1; i < message.Arguments().Count(); i++)
                 {
-                    stream << "; " << message.GetArguments()[i];
+                    stream << ", " << message.Arguments()[i];
                 }
-                stream << "]";
+                stream << ")";
             }
         }
         

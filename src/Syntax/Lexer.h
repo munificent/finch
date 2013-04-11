@@ -45,6 +45,7 @@ namespace Finch
         bool IsAlpha(char c) const;
         bool IsDigit(char c) const;
         bool IsOperator(char c) const;
+        bool IsName(char c) const;
         
         ILineReader & mReader;
         

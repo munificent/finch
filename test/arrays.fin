@@ -58,14 +58,14 @@ Test.suite("Arrays") is {
   Test.test("each") is {
     var a = [1, 2, 3]
     var c = 0
-    var b = a.each { e -> c = c + e }
+    var b = a.each { c = c + _ }
 
     Test.that(c) equals(6)
   }
 
   Test.test("map") is {
     var a = [1, 2, 3]
-    var b = a.map { e -> e + 1 }
+    var b = a.map { _ + 1 }
 
     Test.that(b.count) equals(3)
     Test.that(b.at(0)) equals(2)

@@ -133,23 +133,23 @@ namespace Finch
             const MessageSend & message = expr.Messages()[i];
             
             // Compile the arguments.
-            for (int arg = 0; arg < message.GetArguments().Count(); arg++)
+            for (int arg = 0; arg < message.Arguments().Count(); arg++)
             {
                 int argReg = ReserveRegister();
-                message.GetArguments()[arg]->Accept(*this, argReg);
+                message.Arguments()[arg]->Accept(*this, argReg);
             }
             
             // Compile the message send.
             // TODO(bob): Right now, we're only giving 8-bits to the name, which
             // will run out quickly.
-            StringId messageId = mInterpreter.AddString(message.GetName());
+            StringId messageId = mInterpreter.AddString(message.Name());
             OpCode op = static_cast<OpCode>(OP_MESSAGE_0 +
-                message.GetArguments().Count());
+                message.Arguments().Count());
             
             mBlock->Write(op, messageId, receiverReg, dest);
             
             // Free the argument registers.
-            for (int arg = 0; arg < message.GetArguments().Count(); arg++)
+            for (int arg = 0; arg < message.Arguments().Count(); arg++)
             {
                 ReleaseRegister();
             }

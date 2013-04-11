@@ -52,7 +52,15 @@ namespace Finch
                 case '.': return SingleToken(TOKEN_DOT);
                 case ';': return SingleToken(TOKEN_SEMICOLON);
                 case '\\': return SingleToken(TOKEN_IGNORE_LINE);
-                
+
+                case '_':
+                    Advance();
+                    if (IsName(Peek())) return ReadName();
+                    
+                    // Treat "_" by itself as a different token to ensure
+                    // it is only used for implicit arguments.
+                    return Ref<Token>(new Token(TOKEN_UNDERSCORE, "_"));
+
                 case ':':
                     // Just a ":" by itself.
                     Advance();
@@ -125,7 +133,12 @@ namespace Finch
         return (c != '\0') &&
                (strchr("-+=/<>?~!$%^&*|", c) != NULL);
     }
-    
+
+    bool Lexer::IsName(char c) const
+    {
+        return IsOperator(c) || IsAlpha(c) || IsDigit(c);
+    }
+
     char Lexer::Peek(int ahead) const
     {
         if (mPos + ahead >= mLine.Length()) return '\0';
@@ -237,7 +250,7 @@ namespace Finch
     
     Ref<Token> Lexer::ReadName()
     {
-        while (IsOperator(Peek()) || IsAlpha(Peek()) || IsDigit(Peek()))
+        while (IsName(Peek()))
         {
             // Comments take priority over names.
             if ((Peek() == '/') && (Peek(1) == '/')) break;

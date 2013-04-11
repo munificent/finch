@@ -12,7 +12,7 @@ namespace Finch
 {
     using std::ostream;
     
-    // AST node for variable assignment: "foo <-- bar"
+    // AST node for variable assignment: "foo = bar"
     class SetExpr : public Expr
     {
     public:
@@ -26,7 +26,7 @@ namespace Finch
         
         virtual void Trace(ostream & stream) const
         {
-            stream << mName << " <-- " << mValue;
+            stream << mName << " = " << mValue;
         }
             
         EXPRESSION_VISITOR

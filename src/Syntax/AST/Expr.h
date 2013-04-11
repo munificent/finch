@@ -12,6 +12,11 @@
         virtual void Accept(IExprCompiler & compiler, int dest) const   \
         {                                                               \
             compiler.Visit(*this, dest);                                \
+        }                                                               \
+                                                                        \
+        virtual void Accept(IExprVisitor & visitor)                     \
+        {                                                               \
+            visitor.Visit(*this);                                       \
         }
 
 namespace Finch
@@ -35,10 +40,11 @@ namespace Finch
         }
         
         virtual ~Expr() {}
-        
+
         // The visitor pattern.
+        virtual void Accept(IExprVisitor & visitor) = 0;
         virtual void Accept(IExprCompiler & compiler, int dest) const = 0;
-        
+
         virtual void Trace(std::ostream & stream) const = 0;
     };
     

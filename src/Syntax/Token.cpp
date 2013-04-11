@@ -16,6 +16,7 @@ namespace Finch
             case TOKEN_DOT:             cout << "dot"; break;
             case TOKEN_COMMA:           cout << "comma"; break;
             case TOKEN_SEMICOLON:       cout << "semicolon"; break;
+            case TOKEN_UNDERSCORE:      cout << "underscore"; break;
             case TOKEN_ARROW:           cout << "->"; break;
             case TOKEN_EQ:              cout << "="; break;
             case TOKEN_SELF:            cout << "self"; break;

@@ -50,5 +50,32 @@ namespace Finch
         
         NO_COPY(FinchParser);
     };
+
+    // Walks an AST, replacing "_" names with uniquely generated names.
+    class ImplicitArgumentTranslator : public IExprVisitor
+    {
+    public:
+        ImplicitArgumentTranslator(Array<String> & params)
+        :   mParams(params)
+        {}
+        
+        virtual void Visit(ArrayExpr & expr);
+        virtual void Visit(BlockExpr & expr);
+        virtual void Visit(DefExpr & expr);
+        virtual void Visit(MessageExpr & expr);
+        virtual void Visit(NameExpr & expr);
+        virtual void Visit(NumberExpr & expr);
+        virtual void Visit(ObjectExpr & expr);
+        virtual void Visit(ReturnExpr & expr);
+        virtual void Visit(SequenceExpr & expr);
+        virtual void Visit(SelfExpr & expr);
+        virtual void Visit(SetExpr & expr);
+        virtual void Visit(StringExpr & expr);
+        virtual void Visit(UndefineExpr & expr);
+        virtual void Visit(VarExpr & expr);
+
+    private:
+        Array<String> & mParams;
+    };
 }
 

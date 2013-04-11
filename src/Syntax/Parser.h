@@ -47,7 +47,7 @@ namespace Finch
         // Consumes the current Token and returns true if it is the given type,
         // otherwise returns false.
         bool Match(TokenType type);
-        
+
         // Verifies the current Token if it matches the expected type, and
         // reports an error if it doesn't. Does not consume the token either
         // way.

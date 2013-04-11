@@ -21,4 +21,4 @@ obj Dragon {
 }
 
 // test it
-from (1) to (6) do { n -> Dragon.generate(n) }
+from (1) to (6) do { Dragon.generate(_) }

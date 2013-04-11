@@ -1,0 +1,42 @@
+class Foo -> Base {
+  property = 123
+
+  a-method {
+    ...
+  }
+
+  shared a-static-method {
+    ...
+  }
+
+  ctor new(arg) {
+    _field = arg
+  }
+}
+
+obj Foo -> Base {
+  a-static-method {
+    ...
+  }
+
+  new(arg) {
+    var instance = obj -> Foo.traits {
+      _property = 123
+    }
+
+    instance.hidden-init-method-new(arg)
+    instance
+  }
+
+  traits = obj -> Base.traits {
+    property { _property }
+
+    a-method {
+      ...
+    }
+
+    hidden-init-method-new(arg) {
+      _field = arg
+    }
+  }
+}

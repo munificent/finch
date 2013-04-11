@@ -24,6 +24,28 @@ namespace Finch
     class UndefineExpr;
     class VarExpr;
     class Object;
+
+    // Visitor pattern used by the implicit argument translator.
+    class IExprVisitor
+    {
+    public:
+        virtual ~IExprVisitor() {}
+
+        virtual void Visit(ArrayExpr & expr) = 0;
+        virtual void Visit(BlockExpr & expr) = 0;
+        virtual void Visit(DefExpr & expr) = 0;
+        virtual void Visit(MessageExpr & expr) = 0;
+        virtual void Visit(NameExpr & expr) = 0;
+        virtual void Visit(NumberExpr & expr) = 0;
+        virtual void Visit(ObjectExpr & expr) = 0;
+        virtual void Visit(ReturnExpr & expr) = 0;
+        virtual void Visit(SequenceExpr & expr) = 0;
+        virtual void Visit(SelfExpr & expr) = 0;
+        virtual void Visit(SetExpr & expr) = 0;
+        virtual void Visit(StringExpr & expr) = 0;
+        virtual void Visit(UndefineExpr & expr) = 0;
+        virtual void Visit(VarExpr & expr) = 0;
+    };
     
     // Visitor pattern used by the compiler to compile AST to bytecode.
     class IExprCompiler

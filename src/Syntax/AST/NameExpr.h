@@ -19,7 +19,10 @@ namespace Finch
         {}
         
         String Name() const { return mName; }
-        
+
+        // Used to turn implicit argument "_" into a unique name.
+        void SetName(String name) { mName = name; }
+
         virtual void Trace(ostream & stream) const
         {
             stream << mName;
