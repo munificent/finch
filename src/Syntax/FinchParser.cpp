@@ -532,13 +532,9 @@ namespace Finch
     void ImplicitArgumentTranslator::Visit(MessageExpr & expr)
     {
         expr.Receiver()->Accept(*this);
-        for (int i = 0; i < expr.Messages().Count(); i++)
+        for (int i = 0; i < expr.Arguments().Count(); i++)
         {
-            MessageSend & message = expr.Messages()[i];
-            for (int j = 0; j < message.Arguments().Count(); j++)
-            {
-                message.Arguments()[j]->Accept(*this);
-            }
+            expr.Arguments()[i]->Accept(*this);
         }
     }
     

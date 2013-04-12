@@ -126,35 +126,29 @@ namespace Finch
         // Load the receiver.
         int receiverReg = ReserveRegister();
         expr.Receiver()->Accept(*this, receiverReg);
-        
-        // Compile each of the message sends.
-        for (int i = 0; i < expr.Messages().Count(); i++)
+
+        // Compile the arguments.
+        for (int arg = 0; arg < expr.Arguments().Count(); arg++)
         {
-            const MessageSend & message = expr.Messages()[i];
-            
-            // Compile the arguments.
-            for (int arg = 0; arg < message.Arguments().Count(); arg++)
-            {
-                int argReg = ReserveRegister();
-                message.Arguments()[arg]->Accept(*this, argReg);
-            }
-            
-            // Compile the message send.
-            // TODO(bob): Right now, we're only giving 8-bits to the name, which
-            // will run out quickly.
-            StringId messageId = mInterpreter.AddString(message.Name());
-            OpCode op = static_cast<OpCode>(OP_MESSAGE_0 +
-                message.Arguments().Count());
-            
-            mBlock->Write(op, messageId, receiverReg, dest);
-            
-            // Free the argument registers.
-            for (int arg = 0; arg < message.Arguments().Count(); arg++)
-            {
-                ReleaseRegister();
-            }
+            int argReg = ReserveRegister();
+            expr.Arguments()[arg]->Accept(*this, argReg);
         }
-        
+
+        // Compile the message send.
+        // TODO(bob): Right now, we're only giving 8-bits to the name, which
+        // will run out quickly.
+        StringId messageId = mInterpreter.AddString(expr.Name());
+        OpCode op = static_cast<OpCode>(OP_MESSAGE_0 +
+                                        expr.Arguments().Count());
+
+        mBlock->Write(op, messageId, receiverReg, dest);
+
+        // Free the argument registers.
+        for (int arg = 0; arg < expr.Arguments().Count(); arg++)
+        {
+            ReleaseRegister();
+        }
+
         // Free the receiver register.
         ReleaseRegister();
     }
