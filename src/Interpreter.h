@@ -67,7 +67,7 @@ namespace Finch
         const Value & False() const { return mFalse; }
         
     private:
-        Ref<Expr>   Parse(ILineReader & reader);
+        Ref<Expr> Parse(ILineReader & reader);
         
         Value MakeGlobal(const char * name);
         void AddPrimitive(const Value & object, String message,
@@ -79,6 +79,7 @@ namespace Finch
         
         // Indexed collection of global variables.
         Array<Value> mGlobals;
+        
         // Maps global variable names to their indices. Used by the compiler.
         IdTable<int> mGlobalNames;
         

@@ -14,10 +14,7 @@ namespace Finch
     Value DynamicObject::FindMethod(StringId messageId)
     {
         Value method;
-        if (mMethods.Find(messageId, &method))
-        {
-            return method;
-        }
+        if (mMethods.Find(messageId, &method)) return method;
         
         return Value();
     }
@@ -25,10 +22,7 @@ namespace Finch
     PrimitiveMethod DynamicObject::FindPrimitive(StringId messageId)
     {
         PrimitiveMethod primitive;
-        if (mPrimitives.Find(messageId, &primitive))
-        {
-            return primitive;
-        }
+        if (mPrimitives.Find(messageId, &primitive)) return primitive;
         
         return NULL;
     }
@@ -40,11 +34,7 @@ namespace Finch
         while (true)
         {
             Value field;
-            if (object->mFields.Find(name, &field))
-            {
-                // Found it.
-                return field;
-            }
+            if (object->mFields.Find(name, &field)) return field;
             
             // If we're at the root of the inheritance chain, then stop.
             if (object->Parent().IsNull()) break;

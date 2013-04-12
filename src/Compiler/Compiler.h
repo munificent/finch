@@ -92,7 +92,7 @@ namespace Finch
         Compiler * GetEnclosingMethod();
 
         int ReserveRegister();
-        void ReleaseRegister();
+        void ReleaseRegister(int count = 1);
         
         static int sNextMethodId;
         

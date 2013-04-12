@@ -47,6 +47,7 @@ namespace Finch
         // Gets the current number of stack frames on the callstack. Used as a
         // diagnostic to ensure that tail call optimization is working.
         int GetCallstackDepth() const;
+        
     private:
         // A single stack frame on the virtual callstack.
         struct CallFrame
@@ -104,8 +105,8 @@ namespace Finch
         
         bool mIsRunning;
         Interpreter & mInterpreter;
-        Array<Value>  mStack;
-        Stack<CallFrame>     mCallFrames;
+        Array<Value> mStack;
+        Stack<CallFrame> mCallFrames;
         
         // Reference to first upvalue in list of open upvalues. List is ordered
         // from top of stack down.

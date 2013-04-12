@@ -104,6 +104,7 @@ namespace Finch
             // Now add it to the array.
             mBlock->Write(OP_ARRAY_ELEMENT, elementReg, dest);
         }
+
         ReleaseRegister();
     }
 
@@ -143,14 +144,8 @@ namespace Finch
 
         mBlock->Write(op, messageId, receiverReg, dest);
 
-        // Free the argument registers.
-        for (int arg = 0; arg < expr.Arguments().Count(); arg++)
-        {
-            ReleaseRegister();
-        }
-
-        // Free the receiver register.
-        ReleaseRegister();
+        // Free the receiver and argument registers.
+        ReleaseRegister(expr.Arguments().Count() + 1);
     }
     
     void Compiler::Visit(const NameExpr & expr, int dest)
@@ -546,9 +541,9 @@ namespace Finch
         return mInUseRegisters - 1;
     }
     
-    void Compiler::ReleaseRegister()
+    void Compiler::ReleaseRegister(int count)
     {
-        mInUseRegisters--;
+        mInUseRegisters -= count;
     }
 }
 
