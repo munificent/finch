@@ -41,7 +41,7 @@ namespace Finch
         mBlock(),
         mInUseRegisters(0),
         mLocals(),
-        mObjectLiterals(),
+        mObjectRegister(-1),
         mHasReturn(false)
     {}
 
@@ -167,9 +167,10 @@ namespace Finch
         mBlock->Write(OP_OBJECT, dest);
         
         // Keep track of the fact that we're inside an object literal.
-        mObjectLiterals.Push(dest);
+        int previousObject = mObjectRegister;
+        mObjectRegister = dest;
         CompileDefinitions(expr, dest);
-        mObjectLiterals.Pop();
+        mObjectRegister = previousObject;
     }
     
     void Compiler::Visit(const ReturnExpr & expr, int dest)
@@ -194,10 +195,9 @@ namespace Finch
     {
         // If we're inside an object literal, `self` is statically bound to
         // the enclosing object.
-        if (mObjectLiterals.Count() > 0)
+        if (mObjectRegister != -1)
         {
-            int selfReg = mObjectLiterals.Peek();
-            mBlock->Write(OP_MOVE, selfReg, dest);
+            mBlock->Write(OP_MOVE, mObjectRegister, dest);
         }
         else
         {

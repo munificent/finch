@@ -107,11 +107,11 @@ namespace Finch
         Array<String> mLocals;
         Array<Upvalue> mUpvalues;
         
-        // Registers containing the currently enclosing object literals. Within
+        // The register containing the nearest enclosing object literal. Within
         // an object literal a reference to 'self' inside a field initializer
         // will refer to the enclosing object and not the current dynamically
         // bound self.
-        Stack<int> mObjectLiterals;
+        int mObjectRegister;
 
         // `true` if this method contains a `return` expression or contains a
         // block that does. Used to disable tail call elimination in methods
