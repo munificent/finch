@@ -125,7 +125,7 @@ def run_test(path):
 
     # Validate the exit code.
     if proc.returncode != 0:
-        fails.append('Expected return code 0 and got {1}.'.
+        fails.append('Expected return code 0 and got {0}.'.
             format(proc.returncode))
     else:
         # Validate that no test failures occurred.
