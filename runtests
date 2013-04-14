@@ -123,13 +123,18 @@ def run_test(path):
 
     fails = []
 
-    # Validate that no test failures occurred.
-    lines = out.split('\n')
-    while len(lines) > 0:
-        line = lines.pop(0)
-        match = FAIL_PATTERN.search(line)
-        if match:
-            fails.append(match.group(1))
+    # Validate the exit code.
+    if proc.returncode != 0:
+        fails.append('Expected return code 0 and got {1}.'.
+            format(proc.returncode))
+    else:
+        # Validate that no test failures occurred.
+        lines = out.split('\n')
+        while len(lines) > 0:
+            line = lines.pop(0)
+            match = FAIL_PATTERN.search(line)
+            if match:
+                fails.append(match.group(1))
 
     # Display the results.
     if len(fails) == 0:
