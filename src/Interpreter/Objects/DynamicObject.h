@@ -47,7 +47,6 @@ namespace Finch
         void AddPrimitive(StringId messageId, PrimitiveMethod method);
         
     private:
-        void InitializeScope();
         
         String                      mName; //### bob: hack temp
         IdTable<Value>              mFields;
