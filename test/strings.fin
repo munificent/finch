@@ -60,7 +60,7 @@ Test suite: "Strings" is: {
     Test that: ("0123456789" from: 2 to: 5) equals: "234"
   }
 
-  Test test: "from:to:" is: {
+  Test test: "from:" is: {
     Test that: ("0123456789" from: 2) equals: "23456789"
   }
 
